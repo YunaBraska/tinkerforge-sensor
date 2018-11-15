@@ -1,0 +1,27 @@
+package berlin.yuna.hackerschool.model.driver.bricklet;
+
+import berlin.yuna.hackerschool.model.Sensor;
+import berlin.yuna.hackerschool.model.SensorEvent;
+import berlin.yuna.hackerschool.model.driver.Driver;
+import berlin.yuna.hackerschool.logic.SensorRegistration;
+import com.tinkerforge.BrickletHumidity;
+import com.tinkerforge.NotConnectedException;
+import com.tinkerforge.TimeoutException;
+
+import java.util.List;
+import java.util.function.Consumer;
+
+import static berlin.yuna.hackerschool.model.type.ValueType.HUMIDITY;
+
+public class Humidity extends Driver {
+
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+        BrickletHumidity device = (BrickletHumidity) sensor.device;
+        registration.sensitivity(50, HUMIDITY);
+
+        //START EVENTS
+        registration.sendEvent(consumerList, HUMIDITY, sensor, (long) (device.getHumidity() * 10));
+
+        device.addHumidityListener(value -> registration.sendEvent(consumerList, HUMIDITY, sensor, (long) (value * 10)));
+    }
+}

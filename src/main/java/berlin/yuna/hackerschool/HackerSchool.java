@@ -1,4 +1,4 @@
-package berlin.yuna.tinkerforgesensor.hackerschool;
+package berlin.yuna.hackerschool;
 
 import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;

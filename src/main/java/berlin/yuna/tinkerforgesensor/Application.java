@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor;
 
-import berlin.yuna.tinkerforgesensor.hackerschool.Example;
-import berlin.yuna.tinkerforgesensor.hackerschool.HackerSchool;
+import berlin.yuna.hackerschool.Example;
+import berlin.yuna.hackerschool.HackerSchool;
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.AlreadyConnectedException;

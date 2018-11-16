@@ -1,4 +1,4 @@
-package berlin.yuna.hackerschool.model;
+package berlin.yuna.tinkerforgesensor.model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

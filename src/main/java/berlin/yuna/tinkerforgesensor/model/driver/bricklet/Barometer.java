@@ -1,9 +1,9 @@
-package berlin.yuna.hackerschool.model.driver.bricklet;
+package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.hackerschool.model.Sensor;
-import berlin.yuna.hackerschool.model.SensorEvent;
-import berlin.yuna.hackerschool.model.driver.Driver;
-import berlin.yuna.hackerschool.logic.SensorRegistration;
+import berlin.yuna.tinkerforgesensor.model.Sensor;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.driver.Driver;
+import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.BrickletBarometer;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
@@ -11,9 +11,9 @@ import com.tinkerforge.TimeoutException;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static berlin.yuna.hackerschool.model.type.ValueType.AIR_PRESSURE;
-import static berlin.yuna.hackerschool.model.type.ValueType.ALTITUDE;
-import static berlin.yuna.hackerschool.model.type.ValueType.ENVIRONMENT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.AIR_PRESSURE;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ENVIRONMENT;
 
 public class Barometer extends Driver {
 

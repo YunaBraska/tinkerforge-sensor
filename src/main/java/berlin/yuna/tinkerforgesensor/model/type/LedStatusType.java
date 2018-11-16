@@ -1,4 +1,4 @@
-package berlin.yuna.hackerschool.model.type;
+package berlin.yuna.tinkerforgesensor.model.type;
 
 public enum LedStatusType {
     LED_NONE(-1),

@@ -1,6 +1,6 @@
 package com.tinkerforge;
 
-import berlin.yuna.hackerschool.util.Base58;
+import berlin.yuna.tinkerforgesensor.util.Base58;
 
 import java.util.UUID;
 

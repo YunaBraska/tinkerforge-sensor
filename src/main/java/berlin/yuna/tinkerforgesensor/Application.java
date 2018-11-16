@@ -1,9 +1,9 @@
-package berlin.yuna.hackerschool;
+package berlin.yuna.tinkerforgesensor;
 
-import berlin.yuna.hackerschool.a_program.Example;
-import berlin.yuna.hackerschool.a_program.HackerSchool;
-import berlin.yuna.hackerschool.logic.SensorListener;
-import berlin.yuna.hackerschool.util.TinkerForgeUtil;
+import berlin.yuna.tinkerforgesensor.hackerschool.Example;
+import berlin.yuna.tinkerforgesensor.hackerschool.HackerSchool;
+import berlin.yuna.tinkerforgesensor.logic.SensorListener;
+import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.AlreadyConnectedException;
 import com.tinkerforge.CryptoException;
 import com.tinkerforge.NetworkException;
@@ -12,7 +12,7 @@ import com.tinkerforge.TimeoutException;
 
 import java.io.IOException;
 
-import static berlin.yuna.hackerschool.util.TinkerForgeUtil.RefreshType.CUSTOM_INTERVAL;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.CUSTOM_INTERVAL;
 import static javax.management.timer.Timer.ONE_MINUTE;
 
 public class Application extends TinkerForgeUtil {

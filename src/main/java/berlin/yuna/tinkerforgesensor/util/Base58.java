@@ -1,4 +1,4 @@
-package berlin.yuna.hackerschool.util;
+package berlin.yuna.tinkerforgesensor.util;
 
 import java.math.BigInteger;
 

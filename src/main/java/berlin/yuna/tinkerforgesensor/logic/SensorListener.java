@@ -1,9 +1,9 @@
-package berlin.yuna.hackerschool.logic;
+package berlin.yuna.tinkerforgesensor.logic;
 
-import berlin.yuna.hackerschool.model.Sensor;
-import berlin.yuna.hackerschool.model.SensorEvent;
-import berlin.yuna.hackerschool.model.SensorList;
-import berlin.yuna.hackerschool.model.type.ValueType;
+import berlin.yuna.tinkerforgesensor.model.Sensor;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.AlreadyConnectedException;
 import com.tinkerforge.CryptoException;
 import com.tinkerforge.DummyDevice;
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-import static berlin.yuna.hackerschool.model.type.ValueType.DEVICE_CONNECTED;
-import static berlin.yuna.hackerschool.model.type.ValueType.DEVICE_DISCONNECTED;
-import static berlin.yuna.hackerschool.model.type.ValueType.DEVICE_RECONNECTED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
 import static com.tinkerforge.DeviceFactory.createDevice;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;

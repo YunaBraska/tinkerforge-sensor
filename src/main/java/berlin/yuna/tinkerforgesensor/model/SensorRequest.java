@@ -1,14 +1,14 @@
-package berlin.yuna.hackerschool.model;
+package berlin.yuna.tinkerforgesensor.model;
 
-import berlin.yuna.hackerschool.model.type.LedStatusType;
-import berlin.yuna.hackerschool.model.type.ThrowingConsumer;
-import berlin.yuna.hackerschool.util.TinkerForgeUtil;
+import berlin.yuna.tinkerforgesensor.model.type.LedStatusType;
+import berlin.yuna.tinkerforgesensor.model.type.ThrowingConsumer;
+import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 
-import static berlin.yuna.hackerschool.model.type.LedStatusType.LED_ADDITIONAL_OFF;
-import static berlin.yuna.hackerschool.model.type.LedStatusType.LED_ADDITIONAL_ON;
-import static berlin.yuna.hackerschool.model.type.LedStatusType.LED_CUSTOM;
-import static berlin.yuna.hackerschool.model.type.LedStatusType.LED_STATUS_OFF;
-import static berlin.yuna.hackerschool.model.type.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_OFF;
+import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_CUSTOM;
+import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_OFF;
+import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_ON;
 
 public class SensorRequest extends TinkerForgeUtil {
 

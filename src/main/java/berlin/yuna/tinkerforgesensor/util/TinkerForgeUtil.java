@@ -1,6 +1,6 @@
-package berlin.yuna.hackerschool.util;
+package berlin.yuna.tinkerforgesensor.util;
 
-import berlin.yuna.hackerschool.model.Sensor;
+import berlin.yuna.tinkerforgesensor.model.Sensor;
 import com.tinkerforge.DummyDevice;
 
 import java.io.IOException;
@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-import static berlin.yuna.hackerschool.util.TinkerForgeUtil.RefreshType.EACH_SECOND;
-import static berlin.yuna.hackerschool.util.TinkerForgeUtil.RefreshType.POST_PROCESS;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.EACH_SECOND;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.POST_PROCESS;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.readAllBytes;

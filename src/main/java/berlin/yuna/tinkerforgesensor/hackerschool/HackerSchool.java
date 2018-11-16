@@ -1,15 +1,15 @@
-package berlin.yuna.hackerschool.a_program;
+package berlin.yuna.tinkerforgesensor.hackerschool;
 
-import berlin.yuna.hackerschool.model.Sensor;
-import berlin.yuna.hackerschool.model.SensorEvent;
-import berlin.yuna.hackerschool.model.SensorList;
-import berlin.yuna.hackerschool.model.type.ValueType;
-import berlin.yuna.hackerschool.util.TinkerForgeUtil;
+import berlin.yuna.tinkerforgesensor.model.Sensor;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletAmbientLightV2;
 import com.tinkerforge.Device;
 
-import static berlin.yuna.hackerschool.model.type.ValueType.BUTTON_PRESSED;
-import static berlin.yuna.hackerschool.model.type.ValueType.LIGHT_LUX;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 
 public class HackerSchool extends TinkerForgeUtil {
 

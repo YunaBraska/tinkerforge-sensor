@@ -1,6 +1,6 @@
-package berlin.yuna.hackerschool.model.driver;
+package berlin.yuna.tinkerforgesensor.model.driver;
 
-import berlin.yuna.hackerschool.util.TinkerForgeUtil;
+import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 
 public abstract class Driver extends TinkerForgeUtil {
 

@@ -1,4 +1,4 @@
-package berlin.yuna.hackerschool.model.type;
+package berlin.yuna.tinkerforgesensor.model.type;
 
 @FunctionalInterface
 public interface ThrowingConsumer<T, E extends Exception> {

@@ -1,6 +1,6 @@
-package berlin.yuna.hackerschool.model;
+package berlin.yuna.tinkerforgesensor.model;
 
-import berlin.yuna.hackerschool.model.type.ValueType;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
 

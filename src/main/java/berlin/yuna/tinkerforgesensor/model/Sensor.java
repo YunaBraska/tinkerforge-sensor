@@ -1,7 +1,6 @@
-package berlin.yuna.hackerschool.model;
+package berlin.yuna.tinkerforgesensor.model;
 
-import berlin.yuna.hackerschool.logic.SensorRegistration;
-import com.tinkerforge.BrickletMotionDetector;
+import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.NotConnectedException;

@@ -4,14 +4,14 @@ import berlin.yuna.hackerschool.model.Sensor;
 import berlin.yuna.hackerschool.model.SensorEvent;
 import berlin.yuna.hackerschool.model.SensorList;
 import berlin.yuna.hackerschool.model.type.ValueType;
-import berlin.yuna.hackerschool.util.TinkerforgeUtil;
+import berlin.yuna.hackerschool.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletAmbientLightV2;
 import com.tinkerforge.Device;
 
 import static berlin.yuna.hackerschool.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.hackerschool.model.type.ValueType.LIGHT_LUX;
 
-public class HackerSchool extends TinkerforgeUtil {
+public class HackerSchool extends TinkerForgeUtil {
 
     public SensorList<Sensor> sensorList = new SensorList<>();
 

@@ -3,7 +3,7 @@ package berlin.yuna.hackerschool;
 import berlin.yuna.hackerschool.a_program.Example;
 import berlin.yuna.hackerschool.a_program.HackerSchool;
 import berlin.yuna.hackerschool.logic.SensorListener;
-import berlin.yuna.hackerschool.util.TinkerforgeUtil;
+import berlin.yuna.hackerschool.util.TinkerForgeUtil;
 import com.tinkerforge.AlreadyConnectedException;
 import com.tinkerforge.CryptoException;
 import com.tinkerforge.NetworkException;
@@ -12,10 +12,10 @@ import com.tinkerforge.TimeoutException;
 
 import java.io.IOException;
 
-import static berlin.yuna.hackerschool.util.TinkerforgeUtil.RefreshType.CUSTOM_PROCESS;
+import static berlin.yuna.hackerschool.util.TinkerForgeUtil.RefreshType.CUSTOM_INTERVAL;
 import static javax.management.timer.Timer.ONE_MINUTE;
 
-public class Application extends TinkerforgeUtil {
+public class Application extends TinkerForgeUtil {
 
     public static void main(String args[]) {
         new Application().run();
@@ -29,7 +29,7 @@ public class Application extends TinkerforgeUtil {
             hackerSchool.sensorList = sensorListener.sensorList;
             sensorListener.sensorEventConsumerList.add(hackerSchool::onSensorEvent);
             hackerSchool.startup();
-            loop(CUSTOM_PROCESS, run -> Example.refreshBrickPorts(sensorListener.sensorList, ONE_MINUTE));
+            loop(CUSTOM_INTERVAL, run -> Example.refreshBrickPorts(sensorListener.sensorList, ONE_MINUTE));
             loop(60000, run -> console("[INFO] RunningPrograms [%s]", loopList.size()));
             console("Press key to exit");
             console(System.in.read());

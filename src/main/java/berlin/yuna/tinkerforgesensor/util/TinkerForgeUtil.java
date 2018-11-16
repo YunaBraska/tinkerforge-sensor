@@ -11,16 +11,15 @@ import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-import static berlin.yuna.hackerschool.util.TinkerforgeUtil.RefreshType.CUSTOM_PROCESS;
-import static berlin.yuna.hackerschool.util.TinkerforgeUtil.RefreshType.EACH_SECOND;
-import static berlin.yuna.hackerschool.util.TinkerforgeUtil.RefreshType.POST_PROCESS;
+import static berlin.yuna.hackerschool.util.TinkerForgeUtil.RefreshType.EACH_SECOND;
+import static berlin.yuna.hackerschool.util.TinkerForgeUtil.RefreshType.POST_PROCESS;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.readAllBytes;
 import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
 
-public class TinkerforgeUtil {
+public class TinkerForgeUtil {
 
     protected static CopyOnWriteArrayList<Thread> loopList = new CopyOnWriteArrayList<>();
 
@@ -59,7 +58,7 @@ public class TinkerforgeUtil {
     }
 
     public enum RefreshType {
-        EACH_SECOND(1000), CUSTOM_PROCESS(0), POST_PROCESS(-1000);
+        EACH_SECOND(1000), CUSTOM_INTERVAL(0), POST_PROCESS(-1000);
 
         public long ms;
 
@@ -69,7 +68,7 @@ public class TinkerforgeUtil {
     }
 
     protected Thread loop(final Consumer<Long> consumer) {
-        return loop(CUSTOM_PROCESS, consumer);
+        return loop(EACH_SECOND, consumer);
     }
 
     protected Thread loop(final RefreshType refreshType, final Consumer<Long> consumer) {

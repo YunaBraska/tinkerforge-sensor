@@ -4,7 +4,7 @@ import berlin.yuna.hackerschool.model.Sensor;
 import berlin.yuna.hackerschool.model.SensorList;
 import berlin.yuna.hackerschool.model.type.LedStatusType;
 import berlin.yuna.hackerschool.model.type.ValueType;
-import berlin.yuna.hackerschool.util.TinkerforgeUtil;
+import berlin.yuna.hackerschool.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletColor;
 import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
@@ -31,7 +31,7 @@ import static berlin.yuna.hackerschool.model.type.ValueType.TEMPERATURE;
 import static java.lang.String.format;
 import static java.util.Collections.reverse;
 
-public class Example extends TinkerforgeUtil {
+public class Example extends TinkerForgeUtil {
 
     private static LedStatusType status = LED_STATUS_ON;
 

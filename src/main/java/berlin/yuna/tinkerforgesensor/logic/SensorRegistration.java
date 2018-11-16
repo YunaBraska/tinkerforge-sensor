@@ -26,7 +26,7 @@ import berlin.yuna.hackerschool.model.driver.bricklet.SoundPressure;
 import berlin.yuna.hackerschool.model.driver.bricklet.VoltageCurrent2;
 import berlin.yuna.hackerschool.model.type.LedStatusType;
 import berlin.yuna.hackerschool.model.type.ValueType;
-import berlin.yuna.hackerschool.util.TinkerforgeUtil;
+import berlin.yuna.hackerschool.util.TinkerForgeUtil;
 import com.tinkerforge.*;
 
 import java.awt.Color;
@@ -43,7 +43,7 @@ import static berlin.yuna.hackerschool.model.type.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.hackerschool.model.type.LedStatusType.LED_STATUS_ON;
 import static java.util.Arrays.stream;
 
-public class SensorRegistration extends TinkerforgeUtil {
+public class SensorRegistration extends TinkerForgeUtil {
 
     public static final int SENSOR_VALUE_LIMIT = 99;
 

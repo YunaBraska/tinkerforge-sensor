@@ -91,6 +91,7 @@ loop(run -> myFunction());
 - [X] get first, second, third,... value with [value-type] ordered by [sensor-port] 
 
 #### TODO
+- [ ] Examples in test resources
 - [ ] Spring integration
 
 * Sensors

@@ -40,8 +40,7 @@ public class SensorRequest extends TinkerForgeUtil {
                     custom.accept(customValue != null ? customValue : (long) LED_CUSTOM.bit);
                     break;
             }
-        } catch (Exception e) {
-            error("[%s] [%s] [%s]", getClass().getSimpleName(), e.getClass().getSimpleName(), e.getMessage());
+        } catch (Exception ignored) {
         }
 
     }

@@ -8,7 +8,7 @@ Removes pain of the Sensor UID, how to speak to the sensor and what values can i
 
 #### How it works
 * Connecting is done simply with the auto closeable [SensorListener](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/SensorListener.java) which returns a [SensorList](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/SensorList.java) (Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/Sensor.java))
-* The Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/Sensor.java)s (containing TinkerForge original [Device](com.tinkerforge.Device)) are extending [SensorRegistration](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/SensorRegistration.java) which contains the generic mapped actions/driver and gets automatically callbacks as [SensorEvent](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/SensorEvent.java)s
+* The Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/Sensor.java)s (containing TinkerForge original [Device](https://www.tinkerforge.com/de/doc/Software/Device_Identifier.html)) are extending [SensorRegistration](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/SensorRegistration.java) which contains the generic mapped actions/driver and gets automatically callbacks as [SensorEvent](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/SensorEvent.java)s
 * The [SensorEvent](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/SensorEvent.java) contains the source [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/Sensor.java), Tinkerforge [DeviceClassType](https://www.tinkerforge.com/de/doc/Software/Device_Identifier.html), [Value](https://docs.oracle.com/javase/7/docs/api/java/lang/Long.html) (long), and [ValueType](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
 * Supported devices [Bricks](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/driver/brick) and [Bricklets](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/driver/bricklet) - feel free for pull request as the driver classes are not so hard to implement, its just a mapping ;)
 ```java
@@ -52,17 +52,23 @@ private void onSensorEvent(final Sensor currentSensor, final ValueType valueType
 
 * simple loop (thread) with auto start for subprogram. (The loop returns the original thread)
 ```java
-//With enum
-loop(EACH_SECOND, run -> myFunction());
+//With enum input
+loop("loopName", EACH_SECOND, run -> myFunction());
 //With custom time ms
-loop(1000, run -> myFunction());
+loop("loopName", 1000, run -> myFunction());
 //With default time 1000 ms
-loop(run -> myFunction());
+loop("loopName", run -> myFunction());
+//stop loop
+loopEnd("loopName");
+//Get loop
+loop("loopName");
 ```
 
 #### Features done
 * SensorListener/Registration
 - [X] Find all sensors from connection
+- [X] Auto-reconnect - (TinkerForge auto-connect on default is not working with multiple sensors)
+- [X] Don't disrupt when other sensors are connecting
 - [X] Connect/Disconnect event
 - [X] AutoCloseable
 - [X] Register and map sensor actions
@@ -107,14 +113,10 @@ loop(run -> myFunction());
 * Sensor Display Segment
 - [ ] Fix character 'P' and 'M'
 - [ ] Parse brightness ${1}, ${2}, ${3},...
-- [ ] Parse brightness ${1}, ${2}, ${3},...
 
 * SensorListener/Registration
 - [ ] Stop a loop/program/thread by name
 - [ ] Better sensor sensibly configuration - sensors are floating currently the event stream (could overload connection when reacting on each micro change)
 
 * Connections
-- [ ] WLAN Enumeration
-- [ ] Auto-reconnect
-- [ ] Connect to multiple hosts
-- [ ] Don't disrupt when others are connecting
+- [ ] Auto-reconnect WIFI - its not working properly and removes somehow the dummy device which is not acceptable

@@ -8,12 +8,12 @@ public class SensorEvent {
     public final Sensor sensor;
     public final Class<? extends Device> sensorType;
     public final Long value;
-    public final ValueType sensorValueType;
+    public final ValueType valueType;
 
-    public SensorEvent(Sensor sensor, Long value, ValueType sensorValueType) {
+    public SensorEvent(Sensor sensor, Long value, ValueType valueType) {
         this.sensor = sensor;
         this.value = value;
-        this.sensorValueType = sensorValueType;
+        this.valueType = valueType;
         if (sensor != null) {
             this.sensorType = sensor.device.getClass();
         } else {

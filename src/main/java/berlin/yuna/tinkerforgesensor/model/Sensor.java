@@ -23,17 +23,23 @@ public class Sensor extends SensorRegistration {
     public boolean hasStatusLed = false;
     public int port = -1;
 
+    /**
+     * WARN NOT USE IT AS THIS COULD END IN CONNECTION TIMEOUT
+     * @param device
+     * @param parent
+     * @throws TimeoutException
+     * @throws NotConnectedException
+     */
+    public Sensor(final Device device, final Sensor parent) throws TimeoutException, NotConnectedException {
+        this(device, parent, device.getIdentity().uid);
+    }
 
-    public Sensor(final Device device, final Sensor parent) {
-        try {
-            this.uid = device.getIdentity().uid;
-            this.name = device.getClass().getSimpleName();
-            this.device = device;
-            this.parent = parent;
-            port();
-        } catch (TimeoutException | NotConnectedException e) {
-            throw new RuntimeException(e);
-        }
+    public Sensor(final Device device, final Sensor parent, final String uid) {
+        this.uid = uid;
+        this.name = device.getClass().getSimpleName();
+        this.device = device;
+        this.parent = parent;
+        port();
     }
 
     /**
@@ -47,22 +53,25 @@ public class Sensor extends SensorRegistration {
 
     public synchronized int refreshPort() {
         try {
-            Device.Identity identity = device.getIdentity();
-            if (identity.connectedUid.equals("0")) {
-                isBrick = true;
-                port = 10;
-                return port;
-            } else if (isDigit(identity.position)) {
-                isBrick = true;
-                port = (getNumericValue(identity.position) + 1) * 10;
-                return port;
-            } else {
-                isBrick = false;
-                port = (((int) toLowerCase(identity.position)) - 96) + (parent == null ? 0 : parent.port());
-                return port;
-            }
+            return refreshPortE();
         } catch (TimeoutException | NotConnectedException e) {
-            error("[%s] [%s] [%s]", getClass().getSimpleName(), e.getClass().getSimpleName(), e.getMessage());
+            return port;
+        }
+    }
+
+    public synchronized int refreshPortE() throws TimeoutException, NotConnectedException {
+        Device.Identity identity = device.getIdentity();
+        if (identity.connectedUid.equals("0")) {
+            isBrick = true;
+            port = 10;
+            return port;
+        } else if (isDigit(identity.position)) {
+            isBrick = true;
+            port = (getNumericValue(identity.position) + 1) * 10;
+            return port;
+        } else {
+            isBrick = false;
+            port = (((int) toLowerCase(identity.position)) - 96) + (parent == null ? 0 : parent.port());
             return port;
         }
     }

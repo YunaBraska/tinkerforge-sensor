@@ -7,51 +7,57 @@ import com.tinkerforge.DummyDevice;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
+import static java.lang.String.format;
 import static java.util.Comparator.comparingInt;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toList;
 
 public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
-    public List<Sensor> sort() {
+    private final ReentrantLock lock = new ReentrantLock();
+
+    public synchronized List<Sensor> sort() {
         return stream().sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
-    public List<Sensor> sort(Predicate<? super T> predicate) {
+    public synchronized List<Sensor> sort(Predicate<? super T> predicate) {
         return stream().filter(predicate).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
-    public Sensor first(final Class<? extends Device> sensorType) {
+    public synchronized Sensor first(final Class<? extends Device> sensorType) {
         List<Sensor> sensor = sensor(sensorType);
         return sensor.isEmpty() ? getDummy() : sensor.get(0);
     }
 
-    public Sensor second(final Class<? extends Device> sensorType) {
+    public synchronized Sensor second(final Class<? extends Device> sensorType) {
         return sensor(sensorType).get(1);
     }
 
-    public Sensor third(final Class<? extends Device> sensorType) {
+    public synchronized Sensor third(final Class<? extends Device> sensorType) {
         return sensor(sensorType).get(2);
     }
 
-    public Sensor fourth(final Class<? extends Device> sensorType) {
+    public synchronized Sensor fourth(final Class<? extends Device> sensorType) {
         return sensor(sensorType).get(3);
     }
 
-    public Sensor sensor(final Class<? extends Device> sensorType, final int index) {
+    public synchronized Sensor sensor(final Class<? extends Device> sensorType, final int index) {
         return sensor(sensorType).get(index);
     }
 
-    public List<Sensor> sensor(final Class<? extends Device> sensorType) {
+    public synchronized List<Sensor> sensor(final Class<? extends Device> sensorType) {
+        waitForUnlock(10000);
         return stream().filter(item -> sensorType.isInstance(item.device)).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
-    public Long value(final ValueType sensorValueType) {
+    public synchronized Long value(final ValueType sensorValueType) {
         return value(sensorValueType, 0L);
     }
 
-    public Long value(final ValueType sensorValueType, final Long fallback) {
+    public synchronized Long value(final ValueType sensorValueType, final Long fallback) {
         for (Sensor sensor : this) {
             RollingList<Long> sensorValues = sensor.values.get(sensorValueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
@@ -62,7 +68,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return fallback;
     }
 
-    public HashMap<Sensor, Long> values(final ValueType sensorValueType) {
+    public synchronized HashMap<Sensor, Long> values(final ValueType sensorValueType) {
         HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
             RollingList<Long> sensorValues = sensor.values.get(sensorValueType);
@@ -74,7 +80,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return result;
     }
 
-    public HashMap<Sensor, Long> min(final ValueType sensorValueType) {
+    public synchronized HashMap<Sensor, Long> min(final ValueType sensorValueType) {
         HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
             RollingList<Long> sensorValues = sensor.values.get(sensorValueType);
@@ -86,7 +92,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return result;
     }
 
-    public HashMap<Sensor, Long> max(final ValueType sensorValueType) {
+    public synchronized HashMap<Sensor, Long> max(final ValueType sensorValueType) {
         HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
             RollingList<Long> sensorValues = sensor.values.get(sensorValueType);
@@ -98,7 +104,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return result;
     }
 
-    public HashMap<Sensor, Long> average(final ValueType sensorValueType) {
+    public synchronized HashMap<Sensor, Long> average(final ValueType sensorValueType) {
         HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
             RollingList<Long> sensorValues = sensor.values.get(sensorValueType);
@@ -110,7 +116,45 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return result;
     }
 
-    public Sensor getDummy() {
+    public synchronized boolean isLocked() {
+        return lock.isLocked();
+    }
+
+    public synchronized void lock() {
+        try {
+            lock(30000);
+        } catch (InterruptedException ignore) {
+        }
+    }
+
+    public synchronized boolean lock(long waitForUnlock) throws InterruptedException {
+        return lock.tryLock(waitForUnlock, MILLISECONDS);
+    }
+
+    public void unlock() {
+        lock.unlock();
+    }
+
+    public synchronized void waitForUnlock(long waitForUnlock) {
+        try {
+            lock(waitForUnlock);
+            lock.unlock();
+        } catch (IllegalMonitorStateException | InterruptedException e) {
+            System.err.println(format("[ERROR] LOCK [waitForUnlock] [%s]", e.getClass().getSimpleName()));
+        }
+    }
+
+    public synchronized boolean add(T t) {
+        int i = indexOf(t);
+        if (i > -1) {
+            add(i, t);
+            return true;
+        }
+        return super.add(t);
+    }
+
+    public synchronized Sensor getDummy() {
+        waitForUnlock(10000);
         return first(DummyDevice.class);
     }
 }

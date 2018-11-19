@@ -3,81 +3,216 @@ package berlin.yuna.tinkerforgesensor.logic;
 import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.model.TimeoutExecutor;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.tinkerforge.AlreadyConnectedException;
-import com.tinkerforge.CryptoException;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
-import com.tinkerforge.NetworkException;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import java.io.Closeable;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECOVER;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loopEnd;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loops;
 import static com.tinkerforge.DeviceFactory.createDevice;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
+import static java.lang.String.format;
 
 public class SensorListener implements Closeable {
 
     /**
-     * IPConnection
+     * IPConnection connection of the {@link Sensor} and for enumerating available {@link Sensor}
      */
-    public final IPConnection connection = new IPConnection();
+    public IPConnection connection = new IPConnection();
+
+    /**
+     * SensorList holds all connected {@link Sensor} {@link SensorListener#checkConnection()} managing that list
+     * This list is never empty as and contains {@link SensorListener#defaultSensor} as fallback
+     */
     public final SensorList<Sensor> sensorList = new SensorList<>();
+
+    /**
+     * List of {@link Consumer} for getting all {@link SensorEvent} see {@link SensorRegistration#sendEvent(List, ValueType, Sensor, Long)}
+     */
     public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
 
-    public SensorListener(final String host, final Integer port) throws NetworkException, AlreadyConnectedException, NotConnectedException, TimeoutException, CryptoException {
-        this(host, port, null);
+    private boolean reconnectionRequest;
+
+    private final String host;
+    private final String password;
+    private final Integer port;
+    private final Sensor defaultSensor;
+    private final int timeoutMs = 3000;
+    private final boolean ignoreConnectionError;
+    private final String ConnectionHandlerName = getClass().getSimpleName() + "_" + UUID.randomUUID();
+
+    /**
+     * Dummy Sensorlist, wont connect to any {@link Sensor} as the host is not set
+     *
+     * @throws NetworkConnectionException should never happen
+     */
+    public SensorListener() throws NetworkConnectionException {
+        this(null, null, null);
     }
 
-    public SensorListener(final String host, final Integer port, final String password) throws NetworkException, AlreadyConnectedException, NotConnectedException, TimeoutException, CryptoException {
-        sensorList.add(new Sensor(new DummyDevice(), null).addListener(sensorEventConsumerList));
+    /**
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     *
+     * @param host for {@link SensorListener#connection}
+     * @param port for {@link SensorListener#connection}
+     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
+     */
+    public SensorListener(final String host, final Integer port) throws NetworkConnectionException {
+        this(host, port, null, false);
+    }
+
+    /**
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     *
+     * @param host                  for {@link SensorListener#connection}
+     * @param port                  for {@link SensorListener#connection}
+     * @param ignoreConnectionError ignores any {@link NetworkConnectionException} and tries to auto reconnect
+     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
+     */
+    public SensorListener(final String host, final Integer port, final boolean ignoreConnectionError) throws NetworkConnectionException {
+        this(host, port, null, ignoreConnectionError);
+    }
+
+    /**
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     *
+     * @param host     for {@link SensorListener#connection}
+     * @param port     for {@link SensorListener#connection}
+     * @param password for {@link SensorListener#connection}
+     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
+     */
+    public SensorListener(final String host, final Integer port, final String password) throws NetworkConnectionException {
+        this(host, port, password, false);
+    }
+
+    /**
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     *
+     * @param host                  for {@link SensorListener#connection}
+     * @param port                  for {@link SensorListener#connection}
+     * @param password              for {@link SensorListener#connection}
+     * @param ignoreConnectionError ignores any {@link NetworkConnectionException} and tries to auto reconnect
+     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
+     */
+    public SensorListener(final String host, final Integer port, final String password, final boolean ignoreConnectionError) throws NetworkConnectionException {
+        this.host = host;
+        this.password = password;
+        this.port = port;
+        DummyDevice dummyDevice = new DummyDevice();
+        this.ignoreConnectionError = ignoreConnectionError;
+        this.defaultSensor = new Sensor(dummyDevice, null, dummyDevice.getIdentity().uid).addListener(sensorEventConsumerList);
+        connect();
+    }
+
+    /**
+     * connects to given host - this method will be called from {@link SensorListener} constructor and will automatically call {@link SensorListener#disconnect()}
+     *
+     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
+     */
+    public synchronized void connect() throws NetworkConnectionException {
+        disconnect();
         connection.setAutoReconnect(true);
         connection.addEnumerateListener(this::doPlugAndPlay);
-//        connection.addConnectedListener(event -> handleConnect(event, false));
-//        connection.addDisconnectedListener(event -> handleConnect(event, true));
-        connection.setTimeout(2500);
-        connection.connect(host, port);
-        if (password != null && !password.trim().equals("")) {
-            connection.authenticate(password);
+        connection.setTimeout(timeoutMs - 256);
+        connection.addConnectedListener(event -> handleConnect(event, false));
+        connection.addDisconnectedListener(event -> handleConnect(event, true));
+        if (host != null) {
+            Object result = TimeoutExecutor.execute(timeoutMs - 256, () -> {
+                connection.connect(host, port);
+                if (!isEmpty(password)) {
+                    connection.authenticate(password);
+                }
+                connection.enumerate();
+                return true;
+            });
+            if (!ignoreConnectionError && result instanceof Throwable) {
+                throw new NetworkConnectionException((Throwable) result);
+            }
         }
-        connection.enumerate();
+        loopEnd(ConnectionHandlerName);
+        createLoop(ConnectionHandlerName, timeoutMs, run -> checkConnection());
     }
 
-    private void handleConnect(final short connectionEvent, boolean disconnectEvent) {
-        try {
-            if (disconnectEvent) {
-                switch (connectionEvent) {
-                    case IPConnection.DISCONNECT_REASON_REQUEST:
-                    case IPConnection.DISCONNECT_REASON_ERROR:
-                    case IPConnection.DISCONNECT_REASON_SHUTDOWN:
-                        sensorList.clear();
-                        sendEvent(null, (long) connectionEvent, DEVICE_DISCONNECTED);
-                        break;
-                }
-            } else {
-                switch (connectionEvent) {
-                    case IPConnection.CONNECT_REASON_REQUEST:
-                        connection.enumerate();
-                        sendEvent(null, (long) connectionEvent, DEVICE_CONNECTED);
-                        break;
+    /**
+     * disconnects all {@link Sensor} from the given host see {@link SensorListener#close()}
+     */
+    public synchronized void disconnect() {
+        close();
+    }
 
-                    case IPConnection.CONNECT_REASON_AUTO_RECONNECT:
-                        sendEvent(null, (long) connectionEvent, DEVICE_RECONNECTED);
-                        connection.enumerate();
-                        break;
+    /**
+     * disconnects all {@link Sensor} from the given host and removes the sensors from {@link SensorListener#sensorList}
+     */
+    @Override
+    public void close() {
+        try {
+            clearSensorList();
+            connection.disconnect();
+            loopEnd(ConnectionHandlerName);
+        } catch (InterruptedException e) {
+            System.err.println(format("[ERROR] LOCK [close] [%s]", e.getClass().getSimpleName()));
+        } catch (NotConnectedException ignored) {
+
+        }
+    }
+
+    private synchronized void clearSensorList() throws InterruptedException {
+        try {
+            sensorList.lock(timeoutMs);
+            connection = new IPConnection();
+            sensorList.clear();
+            sensorList.add(defaultSensor);
+        } finally {
+            sensorList.unlock();
+        }
+    }
+
+    private synchronized void checkConnection() {
+        System.out.println(format("[INFO] RunningPrograms [%s] SensorSize [%s]", loops.size(), sensorList.size()));
+        sensorList.waitForUnlock(timeoutMs);
+        recoverDummySensor();
+        if (reconnectionRequest) {
+            sendEvent(defaultSensor, 1, DEVICE_RECOVER);
+            try {
+                connect();
+            } catch (NetworkConnectionException ignored) {
+            }
+            reconnectionRequest = false;
+        } else if (sensorList.size() <= 1) {
+            reconnectionRequest = true;
+            sendEvent(defaultSensor, 1, DEVICE_RECOVER);
+        } else {
+            for (Sensor sensor : sensorList) {
+                try {
+                    sensor.refreshPortE();
+                } catch (TimeoutException | NotConnectedException e) {
+                    sendEvent(sensor, 404, DEVICE_TIMEOUT);
+                    sendEvent(sensor, 404, DEVICE_RECOVER);
+                    sensorList.remove(sensor);
+                    reconnectionRequest = true;
+                    break;
                 }
             }
-        } catch (NotConnectedException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -90,51 +225,114 @@ public class SensorListener implements Closeable {
             final int deviceIdentifier,
             final short enumerationType
     ) {
+        reconnectionRequest = false;
+        Sensor sensor = sensorList.first(DummyDevice.class);
         try {
             //MetaFile (DeviceProvider is) needed for Java 1.6 ServiceLoader
-            Sensor sensor;
-            long listenerPeriod = 100;
             switch (enumerationType) {
                 case ENUMERATION_TYPE_AVAILABLE:
-                    sensor = new Sensor(createDevice(deviceIdentifier, uid, connection), findParent(connectedUid)).addListener(sensorEventConsumerList);
-                    sensorList.add(sensor);
-                    sendEvent(sensor, 0L, DEVICE_CONNECTED);
+                    sensor = new Sensor(createDevice(deviceIdentifier, uid, connection), findParent(connectedUid), uid);
+                    initSensor(sensor, uid, 0L, DEVICE_CONNECTED);
                     break;
                 case ENUMERATION_TYPE_CONNECTED:
-                    sensor = new Sensor(createDevice(deviceIdentifier, uid, connection), findParent(connectedUid)).addListener(sensorEventConsumerList);
-                    sensorList.add(sensor);
-                    sendEvent(sensor, 1L, DEVICE_RECONNECTED);
+                    sensor = new Sensor(createDevice(deviceIdentifier, uid, connection), findParent(connectedUid), uid);
+                    initSensor(sensor, uid, 1L, DEVICE_RECONNECTED);
                     break;
                 case ENUMERATION_TYPE_DISCONNECTED:
                     sensor = sensorList.stream().filter(entity -> entity.uid.equals(uid)).findFirst().orElse(null);
-                    sensorList.remove(sensor);
                     sendEvent(sensor, 2L, DEVICE_DISCONNECTED);
+                    sensorList.remove(sensor);
                     break;
+            }
+        } catch (TimeoutException to) {
+            if (sensor != null && !sensor.is(DummyDevice.class)) {
+                initSensor(sensor, uid, 208, DEVICE_RECONNECTED);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private Sensor findParent(String connectedUid) throws TimeoutException, NotConnectedException {
+    private void initSensor(final Sensor sensor, final String uid, final long value, final ValueType valueType) {
+        Optional<Sensor> first = sensorList.stream().filter(s -> s.uid.equals(uid)).findFirst();
+        if (first.isPresent()) {
+            try {
+                sensorList.lock(timeoutMs);
+                sensorList.remove(sensor);
+            } catch (InterruptedException e) {
+                System.err.println(format("[ERROR] LOCK [initSensor] [%s]", e.getClass().getSimpleName()));
+            } finally {
+                sensorList.unlock();
+            }
+        }
+        initLed(sensor);
+        sensorList.add(sensor);
+        sensor.addListener(sensorEventConsumerList);
+        sendEvent(sensor, value, valueType);
+    }
+
+    private void initLed(Sensor sensor) {
+        if (sensor.hasStatusLed) {
+            for (int i = 0; i < 3; i++) {
+                reconnectionRequest = false;
+                if (i % 2 == 0) {
+                    sensor.ledStatusOn();
+                } else {
+                    sensor.ledStatusOff();
+                }
+                try {
+                    Thread.sleep(128);
+                } catch (InterruptedException ignore) {
+                }
+            }
+        }
+    }
+
+    private Sensor findParent(final String connectedUid) {
         Sensor parent = null;
         for (Sensor sensor : sensorList) {
-            if (sensor.device.getIdentity().uid.equals(connectedUid)) {
+            if (sensor.uid.equals(connectedUid)) {
                 parent = sensor;
             }
         }
         return parent;
     }
 
-    private void sendEvent(Sensor sensor, long l, ValueType deviceConnected) {
-        sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, l, deviceConnected)));
+    private void sendEvent(final Sensor sensor, final long value, final ValueType valueType) {
+        if (sensor != null) {
+            sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, valueType)));
+        }
     }
 
-    @Override
-    public void close() {
-        try {
-            connection.disconnect();
-        } catch (NotConnectedException ignored) {
+    private synchronized void handleConnect(final short connectionEvent, boolean disconnectEvent) {
+        if (disconnectEvent) {
+            switch (connectionEvent) {
+                case IPConnection.DISCONNECT_REASON_REQUEST:
+                case IPConnection.DISCONNECT_REASON_ERROR:
+                case IPConnection.DISCONNECT_REASON_SHUTDOWN:
+                    disconnect();
+                    sendEvent(defaultSensor, (long) connectionEvent, DEVICE_DISCONNECTED);
+                    break;
+            }
+        } else {
+            switch (connectionEvent) {
+                case IPConnection.CONNECT_REASON_REQUEST:
+                    sendEvent(defaultSensor, (long) connectionEvent, DEVICE_CONNECTED);
+                    break;
+                case IPConnection.CONNECT_REASON_AUTO_RECONNECT:
+                    sendEvent(defaultSensor, (long) connectionEvent, DEVICE_RECONNECTED);
+                    break;
+            }
+        }
+    }
+
+    private synchronized void recoverDummySensor() {
+        if (sensorList.size() == 0) {
+            try {
+                clearSensorList();
+            } catch (InterruptedException e) {
+                System.err.println(format("[ERROR] LOCK [recoverDummySensor] [%s]", e.getClass().getSimpleName()));
+            }
         }
     }
 }

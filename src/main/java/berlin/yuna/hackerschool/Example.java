@@ -13,7 +13,6 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_CUSTOM;
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_OFF;
@@ -33,6 +32,11 @@ import static java.util.Collections.reverse;
 
 public class Example extends TinkerForgeUtil {
 
+    public Integer addiere(Integer zahl1, Integer zahl2) {
+        Integer ergebnis = zahl1 + zahl2;
+        return ergebnis;
+    }
+
     private static LedStatusType status = LED_STATUS_ON;
 
     public static void animateStatusLEDs(final SensorList<Sensor> sensorList) {
@@ -44,7 +48,6 @@ public class Example extends TinkerForgeUtil {
         for (Sensor sensor : sortedList) {
             if (sensor.hasStatusLed && sensor.isBrick) {
                 sensor.led(status);
-                sensor.led(status == LED_STATUS_ON ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF);
                 sleep(128);
             }
         }

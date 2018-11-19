@@ -13,7 +13,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Barometer;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplaySegment;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Dummy;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Default;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Humidity;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Humidity2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightAmbient;
@@ -123,7 +123,7 @@ public class SensorRegistration extends TinkerForgeUtil {
         Device device = sensor.device;
         try {
             if (device instanceof DummyDevice) {
-                Dummy.register(this, sensor, consumerList, period);
+                Default.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletRGBLEDButton) {
                 ButtonRGB.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickDC) {
@@ -359,8 +359,8 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletVoltageCurrentV2) {
                 VoltageCurrent2.register(this, sensor, consumerList, period);
             }
-        } catch (NotConnectedException | TimeoutException e) {
-            throw new RuntimeException(e);
+        } catch (NotConnectedException | TimeoutException ignored) {
+            sendEvent(consumerList, ValueType.DEVICE_TIMEOUT, sensor, 403L);
         }
     }
 
@@ -369,13 +369,16 @@ public class SensorRegistration extends TinkerForgeUtil {
     }
 
     public void sendEvent(final List<Consumer<SensorEvent>> consumerList, final ValueType sensorValueType, final Sensor sensor, final Long value) {
-        RollingList<Long> sensorValueList = values.computeIfAbsent(sensorValueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
-        Integer sensitivityValue = sensitivity.computeIfAbsent(sensorValueType, v -> 0);
+        if (sensor != null) {
+            RollingList<Long> sensorValueList = values.computeIfAbsent(sensorValueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
+            Integer sensitivityValue = sensitivity.computeIfAbsent(sensorValueType, v -> 0);
 
-        if (percentageOccur(new ArrayList<>(sensorValueList), value) <= sensitivityValue) {
-            consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, sensorValueType)));
+            if (percentageOccur(new ArrayList<>(sensorValueList), value) <= sensitivityValue) {
+                consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, sensorValueType)));
+            }
+
+            values.get(sensorValueType).add(value);
         }
-        values.get(sensorValueType).add(value);
     }
 
     //FIXME: make sensitivity better

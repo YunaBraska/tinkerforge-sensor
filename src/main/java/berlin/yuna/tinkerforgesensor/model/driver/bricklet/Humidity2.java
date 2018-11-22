@@ -20,7 +20,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 public class Humidity2 extends Driver {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) throws TimeoutException, NotConnectedException {
         BrickletHumidityV2 device = (BrickletHumidityV2) sensor.device;
         registration.sensitivity(50, HUMIDITY, TEMPERATURE);
 

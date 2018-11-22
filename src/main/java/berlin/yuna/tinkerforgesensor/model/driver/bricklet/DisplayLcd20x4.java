@@ -20,7 +20,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ENVIRONMENT;
 
 public class DisplayLcd20x4 extends Driver {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) {
         BrickletLCD20x4 device = (BrickletLCD20x4) sensor.device;
 
         registration.sensitivity(100, BUTTON);
@@ -101,7 +101,7 @@ public class DisplayLcd20x4 extends Driver {
         return stringBuilder.toString();
     }
 
-    static String utf16ToKS0066U(String utf16) {
+    private static String utf16ToKS0066U(String utf16) {
         StringBuilder ks0066u = new StringBuilder();
         char c;
 

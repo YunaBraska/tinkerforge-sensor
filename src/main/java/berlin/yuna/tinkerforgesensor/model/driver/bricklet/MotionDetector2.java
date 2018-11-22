@@ -5,8 +5,6 @@ import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.driver.Driver;
 import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.BrickletMotionDetectorV2;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -20,7 +18,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED
 
 public class MotionDetector2 extends Driver {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
         BrickletMotionDetectorV2 device = (BrickletMotionDetectorV2) sensor.device;
         registration.sensitivity(100, MOTION_DETECTED_ON, MOTION_DETECTED_OFF);
 

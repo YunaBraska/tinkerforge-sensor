@@ -12,8 +12,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_
 
 public class SensorRequest extends TinkerForgeUtil {
 
-    public final Object customValue;
-    public final LedStatusType ledStatusType;
+    private final Object customValue;
+    private final LedStatusType ledStatusType;
 
     public SensorRequest(final LedStatusType ledStatusType, final Object customValue) {
         this.ledStatusType = ledStatusType;

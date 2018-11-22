@@ -16,12 +16,11 @@ public class Application extends TinkerForgeUtil {
     private void run() {
         console(readFile("start.txt"));
         try (SensorListener sensorListener = new SensorListener("localhost", 4223, true)) {
-//        try (SensorListener sensorListener = new SensorListener("localhost", 4223)) {
-//        try (SensorListener sensorListener = new SensorListener("hackerschool", 4223, "7576Simba")) {
+//        try (SensorListener sensorListener = new SensorListener("hackerschool", 4223, "7576Simba", true)) {
             HackerSchool hackerSchool = new HackerSchool();
             hackerSchool.sensorList = sensorListener.sensorList;
-            sensorListener.sensorEventConsumerList.add(hackerSchool::onSensorEvent);
             hackerSchool.startup();
+            sensorListener.sensorEventConsumerList.add(hackerSchool::onSensorEvent);
             console("Press key to exit");
             console(System.in.read());
         } catch (IOException | NetworkConnectionException e) {

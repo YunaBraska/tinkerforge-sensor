@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class DummyDevice extends Device {
 
-    private Identity identity = prepareIdentity();
+    private final Identity identity = prepareIdentity();
 
     public DummyDevice() {
         this(Base58.encode(UUID.randomUUID().toString().getBytes()), new IPConnection());

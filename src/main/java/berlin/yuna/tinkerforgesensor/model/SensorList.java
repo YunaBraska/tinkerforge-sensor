@@ -49,7 +49,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized List<Sensor> sensor(final Class<? extends Device> sensorType) {
-        waitForUnlock(10000);
+        waitForUnlock(10101);
         return stream().filter(item -> sensorType.isInstance(item.device)).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
@@ -132,15 +132,18 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public void unlock() {
-        lock.unlock();
+        if (lock.isLocked()) {
+            lock.unlock();
+        }
     }
 
     public synchronized void waitForUnlock(long waitForUnlock) {
         try {
             lock(waitForUnlock);
-            lock.unlock();
         } catch (IllegalMonitorStateException | InterruptedException e) {
-            System.err.println(format("[ERROR] LOCK [waitForUnlock] [%s]", e.getClass().getSimpleName()));
+            System.err.println(format("[ERROR] LOCK [waitForUnlock] [%s] [%s]", waitForUnlock, e.getClass().getSimpleName()));
+        } finally {
+            unlock();
         }
     }
 
@@ -154,7 +157,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized Sensor getDummy() {
-        waitForUnlock(10000);
+        waitForUnlock(12345);
         return first(DummyDevice.class);
     }
 }

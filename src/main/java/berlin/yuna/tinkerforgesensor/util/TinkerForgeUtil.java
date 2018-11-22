@@ -2,7 +2,6 @@ package berlin.yuna.tinkerforgesensor.util;
 
 import berlin.yuna.tinkerforgesensor.model.Loop;
 import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.exception.LoopAlreadyExistsException;
 import com.tinkerforge.DummyDevice;
 
 import java.io.IOException;
@@ -107,7 +106,7 @@ public class TinkerForgeUtil {
 
     public static Loop createLoop(final String name, final long refreshMs, final Consumer<Long> consumer) {
         if (loops.containsKey(name)) {
-            throw new LoopAlreadyExistsException(format("Cant create loop with name [%s]. The name is already taken by an different loop", name));
+            loopEnd(name);
         }
         Loop loop = new Loop(name, refreshMs, consumer);
         loops.put(name, loop);
@@ -160,7 +159,7 @@ public class TinkerForgeUtil {
     public enum RefreshType {
         EACH_SECOND(1000), CUSTOM_INTERVAL(0), POST_PROCESS(-1000);
 
-        public long ms;
+        public final long ms;
 
         RefreshType(long ms) {
             this.ms = ms;

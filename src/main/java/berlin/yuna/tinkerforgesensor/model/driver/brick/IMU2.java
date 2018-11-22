@@ -76,7 +76,7 @@ public class IMU2 extends Driver {
                     registration.sendEvent(consumerList, GRAVITY_VECTOR_Y, sensor, (long) gravityVector[1]);
                     registration.sendEvent(consumerList, GRAVITY_VECTOR_Z, sensor, (long) gravityVector[2]);
                     registration.sendEvent(consumerList, CALIBRATION, sensor, (long) calibrationStatus);
-                    registration.sendEvent(consumerList, TEMPERATURE, sensor, (long) temperature);
+                    //registration.sendEvent(consumerList, TEMPERATURE, sensor, (long) temperature);
                     registration.sendEvent(consumerList, IMU, sensor, 2L);
                 }
         );

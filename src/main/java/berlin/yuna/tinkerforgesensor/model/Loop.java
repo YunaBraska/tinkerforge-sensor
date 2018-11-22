@@ -1,7 +1,5 @@
 package berlin.yuna.tinkerforgesensor.model;
 
-import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-
 import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.EACH_SECOND;
@@ -10,7 +8,7 @@ import static java.lang.System.currentTimeMillis;
 
 public class Loop implements Runnable {
 
-    public Thread thread;
+    private Thread thread;
     private boolean running = false;
 
     private final String name;

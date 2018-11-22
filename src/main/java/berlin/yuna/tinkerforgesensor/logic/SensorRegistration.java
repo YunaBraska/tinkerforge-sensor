@@ -10,6 +10,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.brick.IMU2;
 import berlin.yuna.tinkerforgesensor.model.driver.brick.Master;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Barometer;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Barometer2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplaySegment;
@@ -45,7 +46,7 @@ import static java.util.Arrays.stream;
 
 public class SensorRegistration extends TinkerForgeUtil {
 
-    public static final int SENSOR_VALUE_LIMIT = 99;
+    private static final int SENSOR_VALUE_LIMIT = 99;
 
     public final ConcurrentHashMap<ValueType, RollingList<Long>> values = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<ValueType, Integer> sensitivity = new ConcurrentHashMap<>();
@@ -123,9 +124,9 @@ public class SensorRegistration extends TinkerForgeUtil {
         Device device = sensor.device;
         try {
             if (device instanceof DummyDevice) {
-                Default.register(this, sensor, consumerList, period);
+                Default.register(this, sensor, consumerList);
             } else if (device instanceof BrickletRGBLEDButton) {
-                ButtonRGB.register(this, sensor, consumerList, period);
+                ButtonRGB.register(this, sensor, consumerList);
             } else if (device instanceof BrickDC) {
                 DC.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickIMU) {
@@ -169,7 +170,7 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletAnalogOutV3) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletBarometerV2) {
-                deviceNotSupportedYet(device);
+                Barometer2.register(this, sensor, consumerList);
             } else if (device instanceof BrickletCAN) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletCANV2) {
@@ -203,9 +204,9 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletHallEffect) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletHumidity) {
-                Humidity.register(this, sensor, consumerList, period);
+                Humidity.register(this, sensor, consumerList);
             } else if (device instanceof BrickletHumidityV2) {
-                Humidity2.register(this, sensor, consumerList, period);
+                Humidity2.register(this, sensor, consumerList);
             } else if (device instanceof BrickletIO16) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletIO16V2) {
@@ -269,9 +270,9 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletMoisture) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletMotionDetector) {
-                MotionDetector.register(this, sensor, consumerList, period);
+                MotionDetector.register(this, sensor, consumerList);
             } else if (device instanceof BrickletMotionDetectorV2) {
-                MotionDetector2.register(this, sensor, consumerList, period);
+                MotionDetector2.register(this, sensor, consumerList);
             } else if (device instanceof BrickletMotorizedLinearPoti) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletMultiTouch) {
@@ -325,7 +326,7 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletRotaryPoti) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletSegmentDisplay4x7) {
-                DisplaySegment.register(this, sensor, consumerList, period);
+                DisplaySegment.register(this, sensor);
             } else if (device instanceof BrickletSolidStateRelay) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletSolidStateRelayV2) {

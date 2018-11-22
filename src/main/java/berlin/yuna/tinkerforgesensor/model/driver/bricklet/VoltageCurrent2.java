@@ -22,7 +22,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE;
 
 public class VoltageCurrent2 extends Driver {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) {
         BrickletVoltageCurrentV2 device = (BrickletVoltageCurrentV2) sensor.device;
         registration.sensitivity(50, ENERGY);
 

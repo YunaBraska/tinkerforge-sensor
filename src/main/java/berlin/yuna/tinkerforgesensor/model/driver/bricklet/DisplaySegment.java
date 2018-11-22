@@ -1,15 +1,9 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.driver.Driver;
 import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ENVIRONMENT;
 
@@ -17,7 +11,7 @@ public class DisplaySegment extends Driver {
 
     private static short brightness = 5;
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor) {
         BrickletSegmentDisplay4x7 device = (BrickletSegmentDisplay4x7) sensor.device;
         registration.sensitivity(100, ENVIRONMENT);
 
@@ -179,19 +173,19 @@ public class DisplaySegment extends Driver {
         SU_2_UPSIDE(null, 35),
         ;
 
-        public String chr;
-        public short segment;
+        final String chr;
+        final short segment;
 
         Segments(final String chr, final int segment) {
             this.chr = chr;
             this.segment = (short) segment;
         }
 
-        public static short get(final char chr) {
+        static short get(final char chr) {
             return get(Character.toString(chr));
         }
 
-        public static short get(final String chr) {
+        static short get(final String chr) {
             for (Segments segment : Segments.values()) {
                 if (chr.equals(segment.chr))
                     return segment.segment;

@@ -45,7 +45,7 @@ public class IMU extends Driver {
                     registration.sendEvent(consumerList, ANGULAR_VELOCITY_X, sensor, (long) angX);
                     registration.sendEvent(consumerList, ANGULAR_VELOCITY_Y, sensor, (long) angY);
                     registration.sendEvent(consumerList, ANGULAR_VELOCITY_Z, sensor, (long) angZ);
-                    registration.sendEvent(consumerList, TEMPERATURE, sensor, (long) temperature);
+                    //registration.sendEvent(consumerList, TEMPERATURE, sensor, (long) temperature);
                     registration.sendEvent(consumerList, ValueType.IMU, sensor, 1L);
                 }
         );

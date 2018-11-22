@@ -5,8 +5,6 @@ import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.driver.Driver;
 import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.BrickletRGBLEDButton;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
 
 import java.awt.Color;
 import java.util.List;
@@ -23,7 +21,7 @@ import static com.tinkerforge.BrickletRGBLEDButton.BUTTON_STATE_PRESSED;
 
 public class ButtonRGB extends Driver {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
         BrickletRGBLEDButton device = (BrickletRGBLEDButton) sensor.device;
         registration.sensitivity(100, BUTTON);
         device.addButtonStateChangedListener(value -> {

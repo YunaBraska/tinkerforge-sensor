@@ -67,7 +67,6 @@ loop("loopName");
 #### Features done
 * SensorListener/Registration
 - [X] Find all sensors from connection
-- [X] Auto-reconnect - (TinkerForge auto-connect on default is not working with multiple sensors)
 - [X] Don't disrupt when other sensors are connecting
 - [X] Connect/Disconnect event
 - [X] AutoCloseable
@@ -119,4 +118,4 @@ loop("loopName");
 - [ ] Better sensor sensibly configuration - sensors are floating currently the event stream (could overload connection when reacting on each micro change)
 
 * Connections
-- [ ] Auto-reconnect WIFI - its not working properly and removes somehow the dummy device which is not acceptable
+- [ ] Auto-reconnect is not working properly - reconnected devices are getting timeouts

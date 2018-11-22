@@ -6,7 +6,6 @@ import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletAmbientLightV2;
-import com.tinkerforge.Device;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_STATUS;
@@ -22,11 +21,11 @@ public class HackerSchool extends TinkerForgeUtil {
 //        loop("TimeoutMessage", run -> Example.displayTimeoutMessage(sensorList, 2500));
 //        loop("moveMessage", run -> Example.displayMoveMessage(sensorList, 500));
 //        loop("alphabet", run -> Example.displayAlphabet(sensorList, 256));
-        loop("weather", EACH_SECOND, run -> Example.displayWeather(sensorList));
+//        loop("weather", EACH_SECOND, run -> Example.displayWeather(sensorList));
         sleep(5000);
     }
 
-    public void onSensorEvent(final Sensor sensor, final long value, final ValueType valueType) {
+    private void onSensorEvent(final Sensor sensor, final long value, final ValueType valueType) {
         //DEFINE VARIABLES CODING HERE
         Sensor lightSensor = sensorList.first(BrickletAmbientLightV2.class);
         Long lightValue_1 = sensor.value(LIGHT_LUX);

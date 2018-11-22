@@ -29,7 +29,7 @@ public class Base58 {
     public static String encode(byte[] input) {
         // This could be a lot more efficient.
         BigInteger bi = new BigInteger(1, input);
-        StringBuffer s = new StringBuffer();
+        StringBuilder s = new StringBuilder();
         while (bi.compareTo(BASE) >= 0) {
             BigInteger mod = bi.mod(BASE);
             s.insert(0, ALPHABET.charAt(mod.intValue()));

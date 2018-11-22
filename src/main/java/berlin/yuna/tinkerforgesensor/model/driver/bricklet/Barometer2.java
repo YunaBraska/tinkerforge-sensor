@@ -22,7 +22,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 public class Barometer2 extends Driver {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
         BrickletBarometerV2 device = (BrickletBarometerV2) sensor.device;
         registration.sensitivity(50, ENVIRONMENT);
 

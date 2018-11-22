@@ -3,7 +3,6 @@ package berlin.yuna.tinkerforgesensor.logic;
 import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.TimeoutExecutor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
@@ -13,25 +12,25 @@ import com.tinkerforge.TimeoutException;
 
 import java.io.Closeable;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
+import static berlin.yuna.tinkerforgesensor.model.TimeoutExecutor.execute;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECOVER;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_SEARCH;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loopEnd;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loops;
 import static com.tinkerforge.DeviceFactory.createDevice;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
 import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
 
 public class SensorListener implements Closeable {
 
@@ -51,7 +50,7 @@ public class SensorListener implements Closeable {
      */
     public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
 
-    private boolean reconnectionRequest;
+    private long deviceSearch = currentTimeMillis();
 
     private final String host;
     private final String password;
@@ -118,26 +117,28 @@ public class SensorListener implements Closeable {
         this.host = host;
         this.password = password;
         this.port = port;
-        DummyDevice dummyDevice = new DummyDevice();
         this.ignoreConnectionError = ignoreConnectionError;
+
+        DummyDevice dummyDevice = new DummyDevice();
         this.defaultSensor = new Sensor(dummyDevice, null, dummyDevice.getIdentity().uid).addListener(sensorEventConsumerList);
+        sensorList.add(defaultSensor);
         connect();
     }
 
     /**
-     * connects to given host - this method will be called from {@link SensorListener} constructor and will automatically call {@link SensorListener#disconnect()}
+     * connects to given host - this method will be called from {@link SensorListener} constructor
      *
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
     public synchronized void connect() throws NetworkConnectionException {
-        disconnect();
+        connection = new IPConnection();
         connection.setAutoReconnect(true);
         connection.addEnumerateListener(this::doPlugAndPlay);
         connection.setTimeout(timeoutMs - 256);
         connection.addConnectedListener(event -> handleConnect(event, false));
         connection.addDisconnectedListener(event -> handleConnect(event, true));
         if (host != null) {
-            Object result = TimeoutExecutor.execute(timeoutMs - 256, () -> {
+            Object result = execute(timeoutMs - 256, () -> {
                 connection.connect(host, port);
                 if (!isEmpty(password)) {
                     connection.authenticate(password);
@@ -149,7 +150,6 @@ public class SensorListener implements Closeable {
                 throw new NetworkConnectionException((Throwable) result);
             }
         }
-        loopEnd(ConnectionHandlerName);
         createLoop(ConnectionHandlerName, timeoutMs, run -> checkConnection());
     }
 
@@ -165,21 +165,23 @@ public class SensorListener implements Closeable {
      */
     @Override
     public void close() {
-        try {
-            clearSensorList();
-            connection.disconnect();
-            loopEnd(ConnectionHandlerName);
-        } catch (InterruptedException e) {
-            System.err.println(format("[ERROR] LOCK [close] [%s]", e.getClass().getSimpleName()));
-        } catch (NotConnectedException ignored) {
-
-        }
+        execute(timeoutMs + 256, () -> {
+            try {
+                preventDeviceSearch();
+                clearSensorList();
+                connection.setAutoReconnect(false);
+                connection.disconnect();
+            } catch (Exception ignored) {
+            } finally {
+                preventDeviceSearch();
+            }
+            return true;
+        });
     }
 
     private synchronized void clearSensorList() throws InterruptedException {
         try {
             sensorList.lock(timeoutMs);
-            connection = new IPConnection();
             sensorList.clear();
             sensorList.add(defaultSensor);
         } finally {
@@ -190,30 +192,40 @@ public class SensorListener implements Closeable {
     private synchronized void checkConnection() {
         System.out.println(format("[INFO] RunningPrograms [%s] SensorSize [%s]", loops.size(), sensorList.size()));
         sensorList.waitForUnlock(timeoutMs);
-        recoverDummySensor();
-        if (reconnectionRequest) {
-            sendEvent(defaultSensor, 1, DEVICE_RECOVER);
-            try {
-                connect();
-            } catch (NetworkConnectionException ignored) {
-            }
-            reconnectionRequest = false;
-        } else if (sensorList.size() <= 1) {
-            reconnectionRequest = true;
-            sendEvent(defaultSensor, 1, DEVICE_RECOVER);
-        } else {
+        if (sensorList.size() == 1) {
+            deviceSearch();
+        } else if (deviceSearch + timeoutMs < currentTimeMillis()) {
             for (Sensor sensor : sensorList) {
                 try {
                     sensor.refreshPortE();
                 } catch (TimeoutException | NotConnectedException e) {
                     sendEvent(sensor, 404, DEVICE_TIMEOUT);
-                    sendEvent(sensor, 404, DEVICE_RECOVER);
                     sensorList.remove(sensor);
-                    reconnectionRequest = true;
-                    break;
+                    deviceSearch();
                 }
             }
         }
+    }
+
+    private void deviceSearch() {
+        if (deviceSearch + timeoutMs < currentTimeMillis()) {
+            try {
+                preventDeviceSearch();
+                sendEvent(defaultSensor, 1, DEVICE_SEARCH);
+//                connection.enumerate();
+                disconnect();
+                preventDeviceSearch();
+                connect();
+            } catch (NetworkConnectionException e) {
+                System.err.println(format("[ERROR] RECOVER [deviceSearch] [%s]", e.getClass().getSimpleName()));
+            } finally {
+                preventDeviceSearch();
+            }
+        }
+    }
+
+    private void preventDeviceSearch() {
+        deviceSearch = currentTimeMillis();
     }
 
     private void doPlugAndPlay(
@@ -225,18 +237,18 @@ public class SensorListener implements Closeable {
             final int deviceIdentifier,
             final short enumerationType
     ) {
-        reconnectionRequest = false;
-        Sensor sensor = sensorList.first(DummyDevice.class);
+        preventDeviceSearch();
+        Sensor sensor = defaultSensor;
         try {
             //MetaFile (DeviceProvider is) needed for Java 1.6 ServiceLoader
             switch (enumerationType) {
                 case ENUMERATION_TYPE_AVAILABLE:
                     sensor = new Sensor(createDevice(deviceIdentifier, uid, connection), findParent(connectedUid), uid);
-                    initSensor(sensor, uid, 0L, DEVICE_CONNECTED);
+                    initSensor(sensor, 0L, DEVICE_CONNECTED);
                     break;
                 case ENUMERATION_TYPE_CONNECTED:
                     sensor = new Sensor(createDevice(deviceIdentifier, uid, connection), findParent(connectedUid), uid);
-                    initSensor(sensor, uid, 1L, DEVICE_RECONNECTED);
+                    initSensor(sensor, 1L, DEVICE_RECONNECTED);
                     break;
                 case ENUMERATION_TYPE_DISCONNECTED:
                     sensor = sensorList.stream().filter(entity -> entity.uid.equals(uid)).findFirst().orElse(null);
@@ -246,35 +258,27 @@ public class SensorListener implements Closeable {
             }
         } catch (TimeoutException to) {
             if (sensor != null && !sensor.is(DummyDevice.class)) {
-                initSensor(sensor, uid, 208, DEVICE_RECONNECTED);
+                initSensor(sensor, 208, DEVICE_RECONNECTED);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void initSensor(final Sensor sensor, final String uid, final long value, final ValueType valueType) {
-        Optional<Sensor> first = sensorList.stream().filter(s -> s.uid.equals(uid)).findFirst();
-        if (first.isPresent()) {
-            try {
-                sensorList.lock(timeoutMs);
-                sensorList.remove(sensor);
-            } catch (InterruptedException e) {
-                System.err.println(format("[ERROR] LOCK [initSensor] [%s]", e.getClass().getSimpleName()));
-            } finally {
-                sensorList.unlock();
-            }
+    private void initSensor(final Sensor sensor, final long value, final ValueType valueType) {
+        if (sensorList.contains(sensor)) {
+            return;
         }
-        initLed(sensor);
         sensorList.add(sensor);
         sensor.addListener(sensorEventConsumerList);
+        initLed(sensor);
         sendEvent(sensor, value, valueType);
     }
 
     private void initLed(Sensor sensor) {
         if (sensor.hasStatusLed) {
-            for (int i = 0; i < 3; i++) {
-                reconnectionRequest = false;
+            for (int i = 0; i < 7; i++) {
+                preventDeviceSearch();
                 if (i % 2 == 0) {
                     sensor.ledStatusOn();
                 } else {
@@ -285,6 +289,7 @@ public class SensorListener implements Closeable {
                 } catch (InterruptedException ignore) {
                 }
             }
+            sensor.ledStatus();
         }
     }
 
@@ -310,6 +315,7 @@ public class SensorListener implements Closeable {
                 case IPConnection.DISCONNECT_REASON_REQUEST:
                 case IPConnection.DISCONNECT_REASON_ERROR:
                 case IPConnection.DISCONNECT_REASON_SHUTDOWN:
+                    //Clear list fast at USB interruption
                     disconnect();
                     sendEvent(defaultSensor, (long) connectionEvent, DEVICE_DISCONNECTED);
                     break;
@@ -322,16 +328,6 @@ public class SensorListener implements Closeable {
                 case IPConnection.CONNECT_REASON_AUTO_RECONNECT:
                     sendEvent(defaultSensor, (long) connectionEvent, DEVICE_RECONNECTED);
                     break;
-            }
-        }
-    }
-
-    private synchronized void recoverDummySensor() {
-        if (sensorList.size() == 0) {
-            try {
-                clearSensorList();
-            } catch (InterruptedException e) {
-                System.err.println(format("[ERROR] LOCK [recoverDummySensor] [%s]", e.getClass().getSimpleName()));
             }
         }
     }

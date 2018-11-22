@@ -22,7 +22,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_
 
 public class SoundPressure extends Driver {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
+    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) {
         BrickletSoundPressureLevel device = (BrickletSoundPressureLevel) sensor.device;
         registration.sensitivity(50, SOUND);
 

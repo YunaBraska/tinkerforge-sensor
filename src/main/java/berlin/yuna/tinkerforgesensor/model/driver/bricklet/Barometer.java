@@ -1,9 +1,9 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
+import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.driver.Driver;
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.BrickletBarometer;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
@@ -21,7 +21,7 @@ public class Barometer extends Driver {
         BrickletBarometer device = (BrickletBarometer) sensor.device;
         registration.sensitivity(50, ENVIRONMENT);
 
-        device.addAltitudeListener(value -> registration.sendEvent(consumerList, ALTITUDE, sensor, (long) value));
+        device.addAltitudeListener(value -> registration.sendEvent(consumerList, ALTITUDE, sensor, (long) value * 10));
         device.addAirPressureListener(value -> registration.sendEvent(consumerList, AIR_PRESSURE, sensor, (long) value));
 
         device.setAirPressureCallbackPeriod(period);

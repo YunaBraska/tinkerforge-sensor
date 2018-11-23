@@ -9,7 +9,7 @@ import com.tinkerforge.BrickletColor;
 import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
@@ -28,63 +28,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Collections.reverse;
 
 public class Example extends TinkerForgeUtil {
-
-    public Integer addiere(Integer zahl1, Integer zahl2) {
-        double result = 0;
-
-        //########## VARIABLEN ##########
-//        String meinText = "Meine Katze";
-//        Integer meineZahl = 1;
-//        Long meineGrosseZahl = 1L;
-//        Boolean wahrOderFalsch = true;
-        List<String> meineTextListe = asList("Äpfel", "Bananen", "Orangen");
-
-        //########## OPERATIONEN TEXT ##########
-        String meinText = "Meine Katze";
-
-        meinText = meinText + " heißt" + " Videl";
-        //output: "Meine Katze heißt Videl"
-
-        meinText += " heißt Videl";
-        //output: "Meine Katze heißt Videl"
-
-        //########## OPERATIONEN ZAHLEN ##########
-        Integer meineZahl = 1;
-        Long meineGrosseZahl = 1L;
-        Boolean wahrOderFalsch = true;
-        meineZahl++; //output: 2
-        meineZahl += 3; //output: 4
-        meineZahl -= 3; //output: -2
-        meineZahl = meineZahl + 5; //output: 6
-        meineZahl = meineZahl + meineZahl + meineZahl; //output: 3
-        meineZahl = meineZahl - 5; //output: -4
-        meineZahl = meineZahl / 5; //output: 0
-        result = (double) meineZahl / (double) 5; //output: 0,2
-        meineZahl = meineZahl * 5; //output: 1
-        wahrOderFalsch = meineZahl > 5; //output: false
-        wahrOderFalsch = meineZahl < 5; //output: true
-        wahrOderFalsch = (meineZahl < 5) && (meineZahl > 0); //output: true
-        wahrOderFalsch = (meineZahl < -5) || (meineZahl > 0); //output: true
-
-        //########## OPERATIONEN ZAHLEN ##########
-        if (meineZahl == 1) {
-            meinText = meinText + " und isst " + 1 + meineTextListe.get(1);
-            //output: "Meine Katze heißt Videl und isst 1 Bananen"
-        } else if (meinText.contains("Videl")) {
-            meinText = meinText + " und isst " + 5 + meineTextListe.get(2);
-            //output: "Meine Katze heißt Videl und isst 5 Orangen"
-        } else {
-            meinText = meinText + " und hat keine " + meineTextListe.get(0);
-            //output: "Meine Katze heißt Videl und hat keine Äpfel"
-        }
-
-        console("", meinText, meineZahl, meineGrosseZahl, meineTextListe, result, wahrOderFalsch);
-        return null;
-    }
 
     private static LedStatusType status = LED_STATUS_ON;
 

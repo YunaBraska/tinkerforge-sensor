@@ -13,6 +13,7 @@ public class HackerSchool extends TinkerForgeUtil {
     public SensorList<Sensor> sensorList = new SensorList<>();
 
     public void startup() {
+        //CODE HERE
         console(readFile("start.txt"));
     }
 
@@ -21,13 +22,11 @@ public class HackerSchool extends TinkerForgeUtil {
     }
 
     public void shutdown() {
+        //CODE HERE
         console(readFile("stop.txt"));
     }
 
     public void onSensorEvent(final SensorEvent sensorEvent) {
-        if (sensorEvent.valueType.parent == DEVICE_STATUS) {
-            console("[%10s] [%25s] [%s]", sensorEvent.value, sensorEvent.valueType, sensorEvent.sensor.name);
-        }
         onSensorEvent(sensorEvent.sensor, sensorEvent.value, sensorEvent.valueType);
     }
 }

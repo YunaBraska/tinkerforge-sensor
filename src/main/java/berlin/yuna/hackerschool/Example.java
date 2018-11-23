@@ -167,19 +167,4 @@ public class Example extends TinkerForgeUtil {
         }
     }
 
-    public static void displayWeather(SensorList<Sensor> sensorList) {
-        Sensor display = sensorList.first(BrickletLCD20x4.class);
-        double illumination = ((double) sensorList.value(LIGHT_LUX, 1L)) / 100.0; //lx
-        double humidity = ((double) sensorList.value(HUMIDITY, 1L)) / 100.0; //%
-        double airPressure = ((double) sensorList.value(AIR_PRESSURE, 1L)) / 1000.0; //mb
-        double temperature = ((double) sensorList.value(TEMPERATURE, 1L)) / 100.0; //°C
-
-        String text = format("Illumina${space} %s lx\n", roundUp(illumination, 2));
-        text += format("Humidity${space}${space}${space} %s %%\n", roundUp(humidity, 2));
-        text += format("AirPress${space} %s mb\n", roundUp(airPressure, 2));
-        text += format("Temperature${space} %s °C\n", roundUp(temperature, 2));
-
-        display.led(LED_ADDITIONAL_ON);
-        display.value(text);
-    }
 }

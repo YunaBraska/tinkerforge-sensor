@@ -60,6 +60,10 @@ public class SensorRegistration extends TinkerForgeUtil {
         ledConsumer.forEach(sensorLedEventConsumer -> sensorLedEventConsumer.accept(new SensorRequest(LED_STATUS_OFF, null)));
     }
 
+    public void ledStatusOn(final Integer value) {
+        ledConsumer.forEach(sensorLedEventConsumer -> sensorLedEventConsumer.accept(new SensorRequest(LED_STATUS_ON, value.longValue())));
+    }
+
     public void ledStatus() {
         ledConsumer.forEach(sensorLedEventConsumer -> sensorLedEventConsumer.accept(new SensorRequest(LED_STATUS, null)));
     }
@@ -70,6 +74,10 @@ public class SensorRegistration extends TinkerForgeUtil {
 
     public void ledAdditionalOn() {
         ledConsumer.forEach(sensorLedEventConsumer -> sensorLedEventConsumer.accept(new SensorRequest(LED_ADDITIONAL_ON, null)));
+    }
+
+    public void ledAdditionalOn(final Integer value) {
+        ledConsumer.forEach(sensorLedEventConsumer -> sensorLedEventConsumer.accept(new SensorRequest(LED_ADDITIONAL_ON, value)));
     }
 
     public void ledAdditionalOff() {
@@ -204,7 +212,7 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletHallEffect) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletHumidity) {
-                Humidity.register(this, sensor, consumerList);
+                Humidity.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletHumidityV2) {
                 Humidity2.register(this, sensor, consumerList);
             } else if (device instanceof BrickletIO16) {

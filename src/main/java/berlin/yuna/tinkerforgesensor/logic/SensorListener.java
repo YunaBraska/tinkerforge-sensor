@@ -4,6 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.LedStatusType;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
@@ -17,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.model.TimeoutExecutor.execute;
+import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
@@ -284,6 +286,7 @@ public class SensorListener implements Closeable {
                 } else {
                     sensor.ledStatusOff();
                 }
+                sensor.led(LED_ADDITIONAL_ON, 10L + i);
                 try {
                     Thread.sleep(128);
                 } catch (InterruptedException ignore) {

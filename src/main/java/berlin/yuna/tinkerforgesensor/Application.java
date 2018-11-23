@@ -14,19 +14,18 @@ public class Application extends TinkerForgeUtil {
     }
 
     private void run() {
-        console(readFile("start.txt"));
+        HackerSchool hackerSchool = new HackerSchool();
         try (SensorListener sensorListener = new SensorListener("localhost", 4223, true)) {
 //        try (SensorListener sensorListener = new SensorListener("hackerschool", 4223, "7576Simba", true)) {
-            HackerSchool hackerSchool = new HackerSchool();
             hackerSchool.sensorList = sensorListener.sensorList;
-            hackerSchool.startup();
             sensorListener.sensorEventConsumerList.add(hackerSchool::onSensorEvent);
+            hackerSchool.startup();
             console("Press key to exit");
             console(System.in.read());
         } catch (IOException | NetworkConnectionException e) {
             throw new RuntimeException(e);
         } finally {
-            console(readFile("stop.txt"));
+            hackerSchool.shutdown();
         }
     }
 }

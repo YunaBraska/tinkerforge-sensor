@@ -1,9 +1,9 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
+import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.driver.Driver;
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
@@ -22,6 +22,7 @@ public class DisplayLcd20x4 extends Driver {
 
     public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) {
         BrickletLCD20x4 device = (BrickletLCD20x4) sensor.device;
+        sensor.hasStatusLed = false;
 
         registration.sensitivity(100, BUTTON);
         device.addButtonPressedListener(value -> {
@@ -36,7 +37,6 @@ public class DisplayLcd20x4 extends Driver {
 
         registration.sensitivity(100, ENVIRONMENT);
 
-        sensor.hasStatusLed = false;
         registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
                 ignore -> { }, i -> {
                     if (i == LED_ADDITIONAL_ON.bit) {device.backlightOn();}
@@ -49,6 +49,10 @@ public class DisplayLcd20x4 extends Driver {
                         text = String.valueOf(value);
                     }
                     int y = 0;
+                    if(text != null && text.contains("${clear}")) {
+                        device.clearDisplay();
+                        text = text.replace("${clear}", "");
+                    }
                     writeLines(y, device, text);
                 })
         );

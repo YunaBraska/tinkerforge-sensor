@@ -135,6 +135,10 @@ public class TinkerForgeUtil {
         return !(sensor.device instanceof DummyDevice);
     }
 
+    protected static double roundUp(double value) {
+        return roundUp(value, 2);
+    }
+
     protected static double roundUp(double value, int decimals) {
         if (decimals < 0) throw new IllegalArgumentException();
 

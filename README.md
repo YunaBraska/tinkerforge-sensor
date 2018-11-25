@@ -4,7 +4,7 @@ TinkerForge Sensor Library
 
 TinkerForge provides awesome Hardware and APIs. You don't have to care about Hardware and can just start programming.
 This Library is simplifying the API usage in a pure Java 8 way without any Frameworks.
-Removes pain of the Sensor UID, how to speak to the sensor and what values can i get from it etc. so that the focus is more on the logic
+Removes the pain of Sensor UIDs, how to speak to the sensor and what values can i get from it etc. so that the focus is more on the logic
 
 #### How it works
 * Connecting is done simply with the auto closeable [SensorListener](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/SensorListener.java) which returns a [SensorList](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/SensorList.java) (Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/Sensor.java))

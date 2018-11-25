@@ -22,8 +22,6 @@ public class Default extends Driver {
 
         registration.sensitivity(100, DUMMY);
 
-        createLoop(name, 1000, run -> registration.sendEvent(consumerList, DUMMY, sensor, RANDOM.nextLong()));
-
         sensor.hasStatusLed = true;
         registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
                 statusLed -> console("[%s] StatusLed [%s] ", Default.class.getSimpleName(), statusLed),

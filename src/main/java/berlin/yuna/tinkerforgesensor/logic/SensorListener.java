@@ -4,7 +4,6 @@ import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.type.LedStatusType;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
@@ -43,7 +42,7 @@ public class SensorListener implements Closeable {
 
     /**
      * SensorList holds all connected {@link Sensor} {@link SensorListener#checkConnection()} managing that list
-     * This list is never empty as and contains {@link SensorListener#defaultSensor} as fallback
+     * This list is never empty as and contains {@link SensorList#getDefault()} as fallback
      */
     public final SensorList<Sensor> sensorList = new SensorList<>();
 
@@ -57,7 +56,6 @@ public class SensorListener implements Closeable {
     private final String host;
     private final String password;
     private final Integer port;
-    private final Sensor defaultSensor;
     private final int timeoutMs = 3000;
     private final boolean ignoreConnectionError;
     private final String ConnectionHandlerName = getClass().getSimpleName() + "_" + UUID.randomUUID();
@@ -120,10 +118,7 @@ public class SensorListener implements Closeable {
         this.password = password;
         this.port = port;
         this.ignoreConnectionError = ignoreConnectionError;
-
-        DummyDevice dummyDevice = new DummyDevice();
-        this.defaultSensor = new Sensor(dummyDevice, null, dummyDevice.getIdentity().uid).addListener(sensorEventConsumerList);
-        sensorList.add(defaultSensor);
+        sensorList.listener(sensorEventConsumerList);
         connect();
     }
 
@@ -170,7 +165,7 @@ public class SensorListener implements Closeable {
         execute(timeoutMs + 256, () -> {
             try {
                 preventDeviceSearch();
-                clearSensorList();
+                sensorList.clear();
                 connection.setAutoReconnect(false);
                 connection.disconnect();
             } catch (Exception ignored) {
@@ -181,18 +176,7 @@ public class SensorListener implements Closeable {
         });
     }
 
-    private synchronized void clearSensorList() throws InterruptedException {
-        try {
-            sensorList.lock(timeoutMs);
-            sensorList.clear();
-            sensorList.add(defaultSensor);
-        } finally {
-            sensorList.unlock();
-        }
-    }
-
     private synchronized void checkConnection() {
-        System.out.println(format("[INFO] RunningPrograms [%s] SensorSize [%s]", loops.size(), sensorList.size()));
         sensorList.waitForUnlock(timeoutMs);
         if (sensorList.size() == 1) {
             deviceSearch();
@@ -213,7 +197,7 @@ public class SensorListener implements Closeable {
         if (deviceSearch + timeoutMs < currentTimeMillis()) {
             try {
                 preventDeviceSearch();
-                sendEvent(defaultSensor, 1, DEVICE_SEARCH);
+                sendEvent(sensorList.getDefault(), 1, DEVICE_SEARCH);
 //                connection.enumerate();
                 disconnect();
                 preventDeviceSearch();
@@ -240,7 +224,7 @@ public class SensorListener implements Closeable {
             final short enumerationType
     ) {
         preventDeviceSearch();
-        Sensor sensor = defaultSensor;
+        Sensor sensor = sensorList.getDefault();
         try {
             //MetaFile (DeviceProvider is) needed for Java 1.6 ServiceLoader
             switch (enumerationType) {
@@ -320,16 +304,16 @@ public class SensorListener implements Closeable {
                 case IPConnection.DISCONNECT_REASON_SHUTDOWN:
                     //Clear list fast at USB interruption
                     disconnect();
-                    sendEvent(defaultSensor, (long) connectionEvent, DEVICE_DISCONNECTED);
+                    sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_DISCONNECTED);
                     break;
             }
         } else {
             switch (connectionEvent) {
                 case IPConnection.CONNECT_REASON_REQUEST:
-                    sendEvent(defaultSensor, (long) connectionEvent, DEVICE_CONNECTED);
+                    sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_CONNECTED);
                     break;
                 case IPConnection.CONNECT_REASON_AUTO_RECONNECT:
-                    sendEvent(defaultSensor, (long) connectionEvent, DEVICE_RECONNECTED);
+                    sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_RECONNECTED);
                     break;
             }
         }

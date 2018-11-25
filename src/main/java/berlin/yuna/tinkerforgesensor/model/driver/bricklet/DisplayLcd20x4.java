@@ -39,8 +39,9 @@ public class DisplayLcd20x4 extends Driver {
 
         registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
                 ignore -> { }, i -> {
-                    if (i == LED_ADDITIONAL_ON.bit) {device.backlightOn();}
-                    else if (i == LED_ADDITIONAL_OFF.bit) {device.backlightOff();}
+                    if (i == LED_ADDITIONAL_ON.bit) {device.backlightOn();} else if (i == LED_ADDITIONAL_OFF.bit) {
+                        device.backlightOff();
+                    }
                 }, value -> {
                     String text;
                     if (value instanceof String) {
@@ -49,9 +50,9 @@ public class DisplayLcd20x4 extends Driver {
                         text = String.valueOf(value);
                     }
                     int y = 0;
-                    if(text != null && text.contains("${clear}")) {
+                    if (text != null && text.startsWith("${clear}")) {
                         device.clearDisplay();
-                        text = text.replace("${clear}", "");
+                        text = text.substring(8);
                     }
                     writeLines(y, device, text);
                 })
@@ -66,6 +67,19 @@ public class DisplayLcd20x4 extends Driver {
             for (String line : lines) {
                 if (y > 3) {
                     break;
+                }
+                if (line.startsWith("${0}")) {
+                    y = 0;
+                    line = line.substring(4);
+                } else if (line.startsWith("${1}")) {
+                    y = 1;
+                    line = line.substring(4);
+                } else if (line.startsWith("${2}")) {
+                    y = 2;
+                    line = line.substring(4);
+                } else if (line.startsWith("${3}")) {
+                    y = 3;
+                    line = line.substring(4);
                 }
                 line = spaceUp(line);
                 line += leftOverText;
@@ -89,7 +103,7 @@ public class DisplayLcd20x4 extends Driver {
         String text = line;
         if (text.indexOf("${space}") > 0) {
             int spaceUps;
-            while ((spaceUps = text.split("\\$\\{space}").length - 1) > 0) {
+            while ((spaceUps = (text + "splitEnd").split("\\$\\{space}").length - 1) > 0) {
                 int length = text.length() - ("${space}".length() * spaceUps);
                 text = text.replaceFirst("\\$\\{space}", spaces((20 - length) / spaceUps));
             }

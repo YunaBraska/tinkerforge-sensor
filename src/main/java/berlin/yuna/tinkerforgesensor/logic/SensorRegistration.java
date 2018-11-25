@@ -127,6 +127,8 @@ public class SensorRegistration extends TinkerForgeUtil {
         }
     }
 
+    //TODO: for each sensorType return function what happens when value, led, ledAdditional, ... So that defaultSensor can work with that
+    //TODO: create new instances from handler, so that they are having the own state like displayBrightnes and can easily create variables inside
     public void addListener(final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
         int period = 100;
         Device device = sensor.device;

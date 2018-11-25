@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static java.lang.String.format;
@@ -18,6 +19,7 @@ import static java.util.stream.Collectors.toList;
 public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
     private final ReentrantLock lock = new ReentrantLock();
+    private List<Consumer<SensorEvent>> sensorEventConsumerList;
 
     public synchronized List<Sensor> sort() {
         return stream().sorted(comparingInt(Sensor::port)).collect(toList());
@@ -29,7 +31,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
     public synchronized Sensor first(final Class<? extends Device> sensorType) {
         List<Sensor> sensor = sensor(sensorType);
-        return sensor.isEmpty() ? getDummy() : sensor.get(0);
+        return sensor.isEmpty() ? getDefault(sensorType) : sensor.get(0);
     }
 
     public synchronized Sensor second(final Class<? extends Device> sensorType) {
@@ -51,6 +53,15 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
     public synchronized List<Sensor> sensor(final Class<? extends Device> sensorType) {
         waitForUnlock(10101);
         return stream().filter(item -> sensorType.isInstance(item.device)).sorted(comparingInt(Sensor::port)).collect(toList());
+    }
+
+    public Double valueDecimal(final ValueType sensorValueType) {
+        return value(sensorValueType).doubleValue();
+    }
+
+    public Double valueDecimal(final ValueType sensorValueType, final Long fallback) {
+        Long result = value(sensorValueType, fallback);
+        return result == null ? null : result.doubleValue();
     }
 
     public synchronized Long value(final ValueType sensorValueType) {
@@ -156,8 +167,16 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return super.add(t);
     }
 
-    public synchronized Sensor getDummy() {
-        waitForUnlock(12345);
-        return first(DummyDevice.class);
+    public void listener(final List<Consumer<SensorEvent>> sensorEventConsumerList) {
+        this.sensorEventConsumerList = sensorEventConsumerList;
+    }
+
+    public Sensor getDefault() {
+        return getDefault(DummyDevice.class);
+    }
+
+    private Sensor getDefault(final Class<? extends Device> sensorType) {
+        DummyDevice dummyDevice = new DummyDevice();
+        return new Sensor(dummyDevice, null, dummyDevice.getIdentity().uid).addListener(sensorEventConsumerList);
     }
 }

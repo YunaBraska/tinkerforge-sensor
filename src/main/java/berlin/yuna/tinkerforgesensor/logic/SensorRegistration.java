@@ -12,9 +12,9 @@ import berlin.yuna.tinkerforgesensor.model.driver.bricklet.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Barometer;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Barometer2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.ButtonRGB;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Default;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplaySegment;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Default;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Humidity;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Humidity2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightAmbient;
@@ -23,6 +23,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightColor;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightUv;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.MotionDetector2;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.SoundIntensity;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.SoundPressure;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.VoltageCurrent2;
 import berlin.yuna.tinkerforgesensor.model.type.LedStatusType;
@@ -343,7 +344,7 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletSolidStateRelayV2) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletSoundIntensity) {
-                deviceNotSupportedYet(device);
+                SoundIntensity.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletSoundPressureLevel) {
                 SoundPressure.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletTemperature) {

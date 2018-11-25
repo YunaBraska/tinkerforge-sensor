@@ -180,6 +180,12 @@ public class Example extends TinkerForgeUtil {
         for (Long value : values.values()) {
             lineValue.append(format("%15s |", value));
         }
+        lineHead.append(format("%15s |", "Sensors"));
+        lineValue.append(format("%15s |", sensorList.size()));
+
+        lineHead.append(format("%15s |", "Loops"));
+        lineValue.append(format("%15s |", loops.size()));
+
         console("\n" + lineHead.toString() + "\n" + lineValue.toString());
     }
 }

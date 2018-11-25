@@ -101,9 +101,9 @@ public class DisplayLcd20x4 extends Driver {
 
     private static String spaceUp(final String line) {
         String text = line;
-        if (text.indexOf("${space}") > 0) {
+        if (text.contains("${space}")) {
             int spaceUps;
-            while ((spaceUps = (text + "splitEnd").split("\\$\\{space}").length - 1) > 0) {
+            while ((spaceUps = ("splitStart" + text + "splitEnd").split("\\$\\{space}").length - 1) > 0) {
                 int length = text.length() - ("${space}".length() * spaceUps);
                 text = text.replaceFirst("\\$\\{space}", spaces((20 - length) / spaceUps));
             }

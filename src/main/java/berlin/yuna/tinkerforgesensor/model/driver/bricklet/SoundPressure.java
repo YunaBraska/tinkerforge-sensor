@@ -1,9 +1,9 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
+import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.driver.Driver;
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
 import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
@@ -27,7 +27,6 @@ public class SoundPressure extends Driver {
         registration.sensitivity(50, SOUND);
 
         device.addDecibelListener(value -> registration.sendEvent(consumerList, SOUND_DECIBEL, sensor, (long) value));
-        //TODO: Spectrum device.addSpectrumListener(value -> registration.sendEvent(consumerList, SOUND_DECIBEL, sensor, (long) value));
         device.addSpectrumLowLevelListener((spectrumLength, spectrumChunkOffset, spectrumChunkData) ->
         {
             registration.sendEvent(consumerList, SOUND_SPECTRUM_LENGTH, sensor, (long) spectrumLength);
@@ -44,5 +43,11 @@ public class SoundPressure extends Driver {
                     else if (i == LED_STATUS_OFF.bit) {device.setStatusLEDConfig(LED_STATUS_OFF.bit);}
                 },
                 ignore -> { }, ignore -> { }));
+
+        try {
+            device.setDecibelCallbackConfiguration(period, false, 'x', 0, 0);
+            device.setSpectrumCallbackConfiguration(period);
+        } catch (TimeoutException | NotConnectedException ignore) {
+        }
     }
 }

@@ -30,7 +30,9 @@ public class TinkerForgeUtil {
     /**
      * default date formatter
      */
-    protected static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+    protected static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+    protected static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    protected static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     /**
      * @param string to check on
@@ -58,7 +60,7 @@ public class TinkerForgeUtil {
      * @param print message for console
      */
     protected static void console(final String print) {
-        System.out.println(dateString() + print);
+        System.out.println(dateTime() + " " + print);
     }
 
     /**
@@ -67,7 +69,7 @@ public class TinkerForgeUtil {
      * @param print message for console
      */
     protected static void console(final Object... print) {
-        System.out.println(dateString() + format(print[0].toString(), copyOfRange(print, 1, print.length)));
+        System.out.println(dateTime() + " " + format(print[0].toString(), copyOfRange(print, 1, print.length)));
     }
 
     /**
@@ -76,7 +78,7 @@ public class TinkerForgeUtil {
      * @param print message for console
      */
     protected static void error(final String print) {
-        System.err.println(dateString() + print);
+        System.err.println(dateTime() + " " + print);
     }
 
     /**
@@ -85,7 +87,7 @@ public class TinkerForgeUtil {
      * @param print message for console
      */
     protected static void error(final Object... print) {
-        System.err.println(dateString() + format(print[0].toString(), copyOfRange(print, 1, print.length)));
+        System.err.println(dateTime() + " " + format(print[0].toString(), copyOfRange(print, 1, print.length)));
     }
 
     protected static Loop loop(final String name) {
@@ -113,14 +115,18 @@ public class TinkerForgeUtil {
         return loop;
     }
 
-    public static boolean loopEnd(final String name) {
-        Loop loop = loops.get(name);
-        if (loop != null) {
-            loop.stop();
-            loops.remove(name);
-            return true;
+    public static boolean loopEnd(final String... names) {
+        boolean success = true;
+        for (String name : names) {
+            Loop loop = loops.get(name);
+            if (loop != null) {
+                loop.stop();
+                loops.remove(name);
+            } else {
+                success = false;
+            }
         }
-        return false;
+        return success;
     }
 
     protected static void sleep(final long milliSeconds) {
@@ -156,8 +162,16 @@ public class TinkerForgeUtil {
         return stringBuilder.toString();
     }
 
-    private static String dateString() {
-        return dateFormat.format(new Date()) + " ";
+    public static String date() {
+        return dateFormat.format(new Date());
+    }
+
+    public static String time() {
+        return timeFormat.format(new Date());
+    }
+
+    public static String dateTime() {
+        return dateTimeFormat.format(new Date());
     }
 
     public enum RefreshType {

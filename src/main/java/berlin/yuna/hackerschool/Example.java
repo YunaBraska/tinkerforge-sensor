@@ -18,12 +18,16 @@ import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIO
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_CUSTOM;
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.AIR_PRESSURE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_B;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_G;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_R;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_OFF;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 import static java.lang.String.format;
 import static java.util.Collections.reverse;
 
@@ -187,5 +191,21 @@ public class Example extends TinkerForgeUtil {
         lineValue.append(format("%15s |", loops.size()));
 
         console("\n" + lineHead.toString() + "\n" + lineValue.toString());
+    }
+
+    public static void displayWeather(SensorList<Sensor> sensorList) {
+        Sensor display = sensorList.first(BrickletLCD20x4.class);
+        double illumination = ((double) sensorList.value(LIGHT_LUX, 1L)) / 100.0; //lx
+        double humidity = ((double) sensorList.value(HUMIDITY, 1L)) / 100.0; //%
+        double airPressure = ((double) sensorList.value(AIR_PRESSURE, 1L)) / 1000.0; //mb
+        double temperature = ((double) sensorList.value(TEMPERATURE, 1L)) / 100.0; //°C
+
+        String text = format("Illumina${space} %s lx\n", roundUp(illumination, 2));
+        text += format("Humidity${space}${space}${space} %s %%\n", roundUp(humidity, 2));
+        text += format("AirPress${space} %s mb\n", roundUp(airPressure, 2));
+        text += format("Temperature${space} %s °C\n", roundUp(temperature, 2));
+
+        display.led(LED_ADDITIONAL_ON);
+        display.value(text);
     }
 }

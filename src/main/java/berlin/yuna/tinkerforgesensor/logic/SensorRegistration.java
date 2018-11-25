@@ -25,6 +25,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.bricklet.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.MotionDetector2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.SoundIntensity;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.SoundPressure;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Temperature;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.VoltageCurrent2;
 import berlin.yuna.tinkerforgesensor.model.type.LedStatusType;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -348,7 +349,7 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletSoundPressureLevel) {
                 SoundPressure.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletTemperature) {
-                deviceNotSupportedYet(device);
+                Temperature.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletTemperatureIR) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletTemperatureIRV2) {

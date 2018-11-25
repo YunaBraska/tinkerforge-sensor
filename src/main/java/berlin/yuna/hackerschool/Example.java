@@ -10,6 +10,7 @@ import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
 
 import java.awt.Color;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -17,16 +18,12 @@ import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIO
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_CUSTOM;
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.AIR_PRESSURE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_B;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_G;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_R;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_OFF;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 import static java.lang.String.format;
 import static java.util.Collections.reverse;
 
@@ -167,4 +164,22 @@ public class Example extends TinkerForgeUtil {
         }
     }
 
+    public static void printAllValues(final SensorList<Sensor> sensorList) {
+        LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
+        for (ValueType valueType : ValueType.values()) {
+            Long value = sensorList.value(valueType, null);
+            if (value != null) {
+                values.put(valueType, value);
+            }
+        }
+        StringBuilder lineHead = new StringBuilder();
+        StringBuilder lineValue = new StringBuilder();
+        for (ValueType valueType : values.keySet()) {
+            lineHead.append(format("%15s |", valueType));
+        }
+        for (Long value : values.values()) {
+            lineValue.append(format("%15s |", value));
+        }
+        console("\n" + lineHead.toString() + "\n" + lineValue.toString());
+    }
 }

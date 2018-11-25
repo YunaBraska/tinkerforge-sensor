@@ -7,6 +7,7 @@ import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletLCD20x4;
 
+import static berlin.yuna.hackerschool.Example.printAllValues;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE_IR;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
@@ -17,7 +18,7 @@ public class HackerSchool extends TinkerForgeUtil {
     public void startup() {
         //CODE HERE
         console(readFile("start.txt"));
-
+        loop("printValues", run -> printAllValues(sensorList));
 
         loop("testProgram", run -> {
             Sensor display = sensorList.first(BrickletLCD20x4.class);
@@ -27,7 +28,7 @@ public class HackerSchool extends TinkerForgeUtil {
 
             display.ledAdditionalOn();
             display.value("${0}Ho ho ho ${space}");
-            display.value("${1}Mary Chri ${space}");
+            display.value("${1}Mary Christmas ${space}");
             display.value("${2}Temperature ${space}" + roundUp(temperature / 100));
 
 
@@ -52,7 +53,6 @@ public class HackerSchool extends TinkerForgeUtil {
     }
 
     public void onSensorEvent(final SensorEvent sensorEvent) {
-        console("[%10s] [%25s] [%s]", sensorEvent.value, sensorEvent.valueType, sensorEvent.sensor.name);
         onSensorEvent(sensorEvent.sensor, sensorEvent.value, sensorEvent.valueType);
     }
 }

@@ -129,6 +129,7 @@ public class SensorRegistration extends TinkerForgeUtil {
 
     //TODO: for each sensorType return function what happens when value, led, ledAdditional, ... So that defaultSensor can work with that
     //TODO: create new instances from handler, so that they are having the own state like displayBrightnes and can easily create variables inside
+    //TODO: Sensors does have their own types and can be identified by them
     public void addListener(final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
         int period = 100;
         Device device = sensor.device;
@@ -216,7 +217,7 @@ public class SensorRegistration extends TinkerForgeUtil {
             } else if (device instanceof BrickletHumidity) {
                 Humidity.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletHumidityV2) {
-                Humidity2.register(this, sensor, consumerList);
+                Humidity2.register(this, sensor, consumerList, period);
             } else if (device instanceof BrickletIO16) {
                 deviceNotSupportedYet(device);
             } else if (device instanceof BrickletIO16V2) {

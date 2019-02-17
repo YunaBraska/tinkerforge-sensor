@@ -1,47 +1,64 @@
 package berlin.yuna.tinkerforgesensor.model.driver.brick;
 
-import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.driver.Driver;
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickDC;
+import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_OFF;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.generator.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURRENT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.EMERGENCY_SHUTDOWN;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ENERGY;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE;
 
-public class DC extends Driver {
+public class DC extends Sensor<BrickDC> {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
-        BrickDC device = (BrickDC) sensor.device;
-        registration.sensitivity(90, ENERGY);
-        device.setCurrentVelocityPeriod(period);
-        device.addEmergencyShutdownListener(() -> registration.sendEvent(consumerList, EMERGENCY_SHUTDOWN, sensor, 1L));
-        device.addCurrentVelocityListener(value -> registration.sendEvent(consumerList, CURRENT, sensor, (long) value));
-        device.addUnderVoltageListener(value -> registration.sendEvent(consumerList, VOLTAGE, sensor, (long) value));
+    public DC(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickDC) device, parent, uid, true);
+    }
 
-        sensor.hasStatusLed = true;
-        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
-                i -> {
-                    if (i ==  LED_STATUS_ON.bit) {device.enableStatusLED();}
-                    else if (i == LED_STATUS_OFF.bit) {device.disableStatusLED();}
-                }, ignore -> { }, ignore -> { }));
-        //                current.getAcceleration();
-//                current.getChipTemperature();
-//                current.getCurrentConsumption();
-//                current.getCurrentVelocity();
-//                current.getExternalInputVoltage();
-//                current.getMinimumVoltage();
-//                current.getPWMFrequency();
-//                current.getVelocity();
-//                current.getDriveMode();
+    @Override
+    protected Sensor<BrickDC> initListener() throws TimeoutException, NotConnectedException {
+        device.setCurrentVelocityPeriod((int) CALLBACK_PERIOD);
+        device.addEmergencyShutdownListener(() -> sendEvent(EMERGENCY_SHUTDOWN, 1L));
+        device.addCurrentVelocityListener(value -> sendEvent(CURRENT, (long) value));
+        device.addUnderVoltageListener(value -> sendEvent(VOLTAGE, (long) value));
+////                current.getChipTemperature();
+////                current.getCurrentConsumption();
+////                current.getCurrentVelocity();
+////                current.getExternalInputVoltage();
+////                current.getMinimumVoltage();
+////                current.getPWMFrequency();
+////                current.getVelocity();
+////                current.getDriveMode();
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickDC> value(Object value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickDC> ledStatus(Integer value) {
+        try {
+            if (value == LED_STATUS_ON.bit) {
+                device.enableStatusLED();
+            } else if (value == LED_STATUS_OFF.bit) {
+                device.disableStatusLED();
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickDC> ledAdditional(Integer value) {
+        return this;
     }
 }

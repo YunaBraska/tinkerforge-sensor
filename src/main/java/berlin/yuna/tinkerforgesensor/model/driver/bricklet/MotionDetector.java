@@ -1,37 +1,58 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.driver.Driver;
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickletMotionDetector;
+import com.tinkerforge.Device;
+import com.tinkerforge.NotConnectedException;
+import com.tinkerforge.TimeoutException;
 
-import java.util.List;
-import java.util.function.Consumer;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED;
 
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_HEARTBEAT;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_OFF;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_OFF;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_ON;
+/**
+ * Passive infrared (PIR) motion sensor, 7m range with 100° angle
+ * <b>Values</b>
+ * MOTION_DETECTED = 0/1
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html">Official doku</a>
+ */
+public class MotionDetector extends Sensor<BrickletMotionDetector> {
 
-public class MotionDetector extends Driver {
+    public MotionDetector(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickletMotionDetector) device, parent, uid, true);
+    }
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
-        BrickletMotionDetector device = (BrickletMotionDetector) sensor.device;
-        registration.sensitivity(100, MOTION_DETECTED_ON, MOTION_DETECTED_OFF);
+    @Override
+    protected Sensor<BrickletMotionDetector> initListener() {
+        device.addMotionDetectedListener(() -> sendEvent(MOTION_DETECTED, 1L));
+        device.addDetectionCycleEndedListener(() -> sendEvent(MOTION_DETECTED, 0L));
+        return this;
+    }
 
-        device.addMotionDetectedListener(() -> registration.sendEvent(consumerList, MOTION_DETECTED_ON, sensor, 1L));
-        device.addDetectionCycleEndedListener(() -> registration.sendEvent(consumerList, MOTION_DETECTED_OFF, sensor, 0L));
+    @Override
+    public Sensor<BrickletMotionDetector> value(Object value) {
+        return this;
+    }
 
-        sensor.hasStatusLed = true;
-        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
-                i -> {
-                    if (i == LED_STATUS_ON.bit) {device.setStatusLEDConfig((short) LED_STATUS_ON.bit);}
-                    else if (i == LED_STATUS.bit) {device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);}
-                    else if (i == LED_STATUS_OFF.bit) {device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);}
-                },
-                ignore -> { }, ignore -> { }));
+    @Override
+    public Sensor<BrickletMotionDetector> ledStatus(Integer value) {
+        try {
+            if (value == LED_STATUS_ON.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
+            } else if (value == LED_STATUS.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
+            } else if (value == LED_STATUS_OFF.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletMotionDetector> ledAdditional(Integer value) {
+        return this;
     }
 }

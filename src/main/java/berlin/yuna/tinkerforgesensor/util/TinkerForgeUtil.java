@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.util;
 
 import berlin.yuna.tinkerforgesensor.model.Loop;
-import berlin.yuna.tinkerforgesensor.model.Sensor;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
 import com.tinkerforge.DummyDevice;
 
 import java.io.IOException;
@@ -33,6 +33,23 @@ public class TinkerForgeUtil {
     protected static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
     protected static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     protected static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    private ConcurrentHashMap<String, Long> waitProcessList = new ConcurrentHashMap<>();
+
+    public boolean hasWaited(final long waitMs) {
+        StackTraceElement callerTrace = Thread.currentThread().getStackTrace()[2];
+        String name = callerTrace.getClassName() + ":" + callerTrace.getMethodName() + ":" + callerTrace.getLineNumber();
+        return hasWaited(name, waitMs);
+    }
+
+    public boolean hasWaited(final String referenceName, final long waitMs) {
+        Long lastTimeMs = waitProcessList.computeIfAbsent(referenceName, value -> System.currentTimeMillis());
+        if ((lastTimeMs + waitMs) < System.currentTimeMillis()) {
+            waitProcessList.put(referenceName, System.currentTimeMillis());
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @param string to check on

@@ -6,14 +6,15 @@ import java.util.UUID;
 
 public class DummyDevice extends Device {
 
+    public static final Integer DEVICE_IDENTIFIER = -1;
     private final Identity identity = prepareIdentity();
 
     public DummyDevice() {
-        this(Base58.encode(UUID.randomUUID().toString().getBytes()), new IPConnection());
+        this(null, null);
     }
 
-    public DummyDevice(String uid, IPConnection ipCon) {
-        super(uid, ipCon);
+    public DummyDevice(final String uid, final IPConnection ipCon) {
+        super(Base58.encode(UUID.randomUUID().toString().getBytes()), new IPConnection());
         apiVersion[0] = 0;
         apiVersion[1] = 0;
         apiVersion[2] = 1;

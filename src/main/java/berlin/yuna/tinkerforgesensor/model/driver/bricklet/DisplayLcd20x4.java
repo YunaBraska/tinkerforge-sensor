@@ -1,85 +1,139 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
-import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.driver.Driver;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickletLCD20x4;
+import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import java.util.List;
-import java.util.function.Consumer;
+import java.util.UUID;
 
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_OFF;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ENVIRONMENT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
-public class DisplayLcd20x4 extends Driver {
+/**
+ * 20x4 character alphanumeric display with blue backlight
+ * <b>Values</b>
+ * BUTTON_PRESSED 0/1
+ * BUTTON [10, 20, 30, 40] Pressed
+ * BUTTON [11, 21, 31, 41] Pressed
+ * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/LCD_20x4.html">Official doku</a>
+ */
+public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) {
-        BrickletLCD20x4 device = (BrickletLCD20x4) sensor.device;
-        sensor.hasStatusLed = false;
+    public static final String DISPLAY_LINE_ONE = "${0}";
+    public static final String DISPLAY_LINE_TWO = "${1}";
+    public static final String DISPLAY_LINE_THREE = "${2}";
+    public static final String DISPLAY_LINE_FOUR = "${3}";
+    public static final String DISPLAY_CLEAR = "${clear}";
+    public static final String DISPLAY_DYNAMIC_SPACE = "${space}";
+    private static final String DISPLAY_SPLIT_LINE_REGEX = "(\\n|(<br\\s*/*>))";
 
-        registration.sensitivity(100, BUTTON);
+    public DisplayLcd20x4(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickletLCD20x4) device, parent, uid, false);
+    }
+
+    @Override
+    protected Sensor<BrickletLCD20x4> initListener() {
         device.addButtonPressedListener(value -> {
-            registration.sendEvent(consumerList, BUTTON, sensor, (long) value);
-            registration.sendEvent(consumerList, BUTTON_PRESSED, sensor, (long) value);
+            sendEvent(BUTTON_PRESSED, 1L);
+            sendEvent(BUTTON, (value * 10L) + 1L);
         });
-
         device.addButtonReleasedListener(value -> {
-            registration.sendEvent(consumerList, BUTTON, sensor, (long) value);
-            registration.sendEvent(consumerList, BUTTON_RELEASED, sensor, (long) value);
+            sendEvent(BUTTON_PRESSED, 0L);
+            sendEvent(BUTTON_PRESSED, (value * 10L));
         });
+        return this;
+    }
 
-        registration.sensitivity(100, ENVIRONMENT);
+    /**
+     * @param value <br /> Will print everything from input using {@link String#valueOf(Object)} <- auto line break if input is too long
+     *              <br /> new line = \n {@link this#DISPLAY_SPLIT_LINE_REGEX}
+     *              <br /> line number =  {@link this#DISPLAY_LINE_ONE} {@link this#DISPLAY_LINE_TWO} {@link this#DISPLAY_LINE_THREE} {@link this#DISPLAY_LINE_FOUR}
+     *              <br /> Dynamic space = {@link this#DISPLAY_DYNAMIC_SPACE}
+     *              <br /> Clear display = {@link this#DISPLAY_CLEAR}
+     * @return {@link Sensor}
+     */
+    @Override
+    public Sensor<BrickletLCD20x4> value(final Object value) {
+        try {
+            String text;
+            if (value instanceof String) {
+                text = (String) value;
+            } else {
+                text = String.valueOf(value);
+            }
+            int y = 0;
+            if (text != null && text.startsWith(DISPLAY_CLEAR)) {
+                device.clearDisplay();
+                text = text.substring(DISPLAY_CLEAR.length());
+            }
+            writeLines(y, device, text);
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
 
-        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
-                ignore -> { }, i -> {
-                    if (i == LED_ADDITIONAL_ON.bit) {device.backlightOn();} else if (i == LED_ADDITIONAL_OFF.bit) {
-                        device.backlightOff();
-                    }
-                }, value -> {
-                    String text;
-                    if (value instanceof String) {
-                        text = (String) value;
-                    } else {
-                        text = String.valueOf(value);
-                    }
-                    int y = 0;
-                    if (text != null && text.startsWith("${clear}")) {
-                        device.clearDisplay();
-                        text = text.substring(8);
-                    }
-                    writeLines(y, device, text);
-                })
-        );
+    @Override
+    public Sensor<BrickletLCD20x4> ledStatus(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletLCD20x4> ledAdditional(final Integer value) {
+        try {
+            if (value == LED_ADDITIONAL_ON.bit) {
+                device.backlightOn();
+            } else if (value == LED_ADDITIONAL_OFF.bit) {
+                device.backlightOff();
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    protected Sensor<BrickletLCD20x4> flashLed() {
+        try {
+            this.ledAdditionalOn();
+            for (int i = 0; i < 7; i++) {
+                value(DISPLAY_LINE_TWO + DISPLAY_DYNAMIC_SPACE + "HOWDY [" + i + "]" + DISPLAY_DYNAMIC_SPACE);
+                value(DISPLAY_LINE_THREE + DISPLAY_DYNAMIC_SPACE + UUID.randomUUID() + DISPLAY_DYNAMIC_SPACE);
+                Thread.sleep(128);
+            }
+            value(DISPLAY_CLEAR);
+            this.ledAdditionalOff();
+        } catch (Exception ignore) {
+        }
+        return this;
     }
 
     private static void writeLines(final int posY, final BrickletLCD20x4 device, final String text) throws TimeoutException, NotConnectedException {
         if (text != null && !text.isEmpty()) {
             int y = posY;
             String leftOverText = "";
-            String[] lines = text.split("(\\n|(<br\\s*/*>))");
+            String[] lines = text.split(DISPLAY_SPLIT_LINE_REGEX);
             for (String line : lines) {
                 if (y > 3) {
                     break;
                 }
-                if (line.startsWith("${0}")) {
+                if (line.startsWith(DISPLAY_LINE_ONE)) {
                     y = 0;
-                    line = line.substring(4);
-                } else if (line.startsWith("${1}")) {
+                    line = line.substring(DISPLAY_LINE_ONE.length());
+                } else if (line.startsWith(DISPLAY_LINE_TWO)) {
                     y = 1;
-                    line = line.substring(4);
-                } else if (line.startsWith("${2}")) {
+                    line = line.substring(DISPLAY_LINE_TWO.length());
+                } else if (line.startsWith(DISPLAY_LINE_THREE)) {
                     y = 2;
-                    line = line.substring(4);
-                } else if (line.startsWith("${3}")) {
+                    line = line.substring(DISPLAY_LINE_THREE.length());
+                } else if (line.startsWith(DISPLAY_LINE_FOUR)) {
                     y = 3;
-                    line = line.substring(4);
+                    line = line.substring(DISPLAY_LINE_FOUR.length());
                 }
                 line = spaceUp(line);
                 line += leftOverText;
@@ -101,10 +155,10 @@ public class DisplayLcd20x4 extends Driver {
 
     private static String spaceUp(final String line) {
         String text = line;
-        if (text.contains("${space}")) {
+        if (text.contains(DISPLAY_DYNAMIC_SPACE)) {
             int spaceUps;
             while ((spaceUps = ("splitStart" + text + "splitEnd").split("\\$\\{space}").length - 1) > 0) {
-                int length = text.length() - ("${space}".length() * spaceUps);
+                int length = text.length() - ((DISPLAY_DYNAMIC_SPACE).length() * spaceUps);
                 text = text.replaceFirst("\\$\\{space}", spaces((20 - length) / spaceUps));
             }
         }

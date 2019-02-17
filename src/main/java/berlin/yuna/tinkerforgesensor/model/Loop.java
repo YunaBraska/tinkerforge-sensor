@@ -47,13 +47,13 @@ public class Loop implements Runnable {
             frames++;
             sleep(15);
             if (currentTimeMillis() - time >= refreshMs) {
-                consumer.accept(EACH_SECOND.ms);
-                time += EACH_SECOND.ms;
+                consumer.accept(refreshMs);
+                time += refreshMs;
                 ticks = 0;
                 frames = 0;
             } else if (currentTimeMillis() - time >= EACH_SECOND.ms) {
-                consumer.accept(refreshMs);
-                time += refreshMs;
+                consumer.accept(EACH_SECOND.ms);
+                time += EACH_SECOND.ms;
                 ticks = 0;
                 frames = 0;
             }

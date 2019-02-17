@@ -1,25 +1,50 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.driver.Driver;
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickletUVLight;
+import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT;
+import static berlin.yuna.tinkerforgesensor.generator.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
 
-public class LightUv extends Driver {
+/**
+ * Measures UV light
+ *  <b>Values</b>
+ *  LIGHT_UV[index] = n / 10.0
+ *  <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html">Official doku</a>
+ */
+public class LightUv extends Sensor<BrickletUVLight> {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
-        BrickletUVLight device = (BrickletUVLight) sensor.device;
-        registration.sensitivity(100, LIGHT);
-        device.setUVLightCallbackPeriod(period);
-        device.addUVLightListener(value -> registration.sendEvent(consumerList, LIGHT_UV, sensor, value));
+    public LightUv(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickletUVLight) device, parent, uid, false);
+    }
+
+    @Override
+    protected Sensor<BrickletUVLight> initListener() {
+        try {
+            device.addUVLightListener(value -> sendEvent(LIGHT_UV, value));
+            device.setUVLightCallbackPeriod(CALLBACK_PERIOD);
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletUVLight> value(final Object value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletUVLight> ledStatus(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletUVLight> ledAdditional(final Integer value) {
+        return this;
     }
 }

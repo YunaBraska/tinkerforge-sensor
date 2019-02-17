@@ -1,32 +1,60 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
-import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.driver.Driver;
+import berlin.yuna.tinkerforgesensor.generator.SensorRegistry;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import com.tinkerforge.Device;
+import com.tinkerforge.DummyDevice;
+import com.tinkerforge.NotConnectedException;
+import com.tinkerforge.TimeoutException;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.function.Consumer;
+import static java.lang.String.format;
 
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DUMMY;
+public class Default extends Sensor<DummyDevice> {
 
-public class Default extends Driver {
+    private Class<? extends Sensor> sensorImitate;
+    public static final DummyDevice DUMMY_DEVICE = new DummyDevice();
 
-    private static final Random RANDOM = new Random();
-    private static final String name = Default.class.getSimpleName() + "_" + UUID.randomUUID().toString();
+    public Default(final Device device, final Sensor sensor, final String uid) throws NetworkConnectionException {
+        super(DUMMY_DEVICE, null, DUMMY_DEVICE.getIdentity().uid);
+    }
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
-        loopEnd(name);
+    public Default(final Class<?> sensorOrDevice) throws NetworkConnectionException {
+        super(DUMMY_DEVICE, null, DUMMY_DEVICE.getIdentity().uid);
+        port = -99;
+        if (Sensor.class.isAssignableFrom(sensorOrDevice)) {
+            this.sensorImitate = (Class<? extends Sensor>) sensorOrDevice;
+        } else if (Device.class.isAssignableFrom(sensorOrDevice)) {
+            sensorImitate = SensorRegistry.getSensor(device.getClass()).newInstance(device, null, uid).getClass();
+        } else {
+            throw new RuntimeException(format("Unsupported sensor [%s]", sensorOrDevice.getSimpleName()));
+        }
+    }
 
-        registration.sensitivity(100, DUMMY);
+    @Override
+    public synchronized int refreshPortE() throws TimeoutException, NotConnectedException {
+        return port;
+    }
 
-        sensor.hasStatusLed = true;
-        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
-                statusLed -> console("[%s] StatusLed [%s] ", Default.class.getSimpleName(), statusLed),
-                additionalLed -> console("[%s] AdditionalLed [%s] ", Default.class.getSimpleName(), additionalLed),
-                value -> console("[%s] Value [%s] ", Default.class.getSimpleName(), value)
-        ));
+    @Override
+    public Sensor<DummyDevice> value(Object value) {
+        if (sensorImitate == BarometerV2.class) {
+            //TODO
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<DummyDevice> ledStatus(Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<DummyDevice> ledAdditional(Integer value) {
+        return this;
+    }
+
+    @Override
+    protected Sensor<DummyDevice> initListener() {
+        return this;
     }
 }

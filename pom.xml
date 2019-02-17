@@ -6,7 +6,7 @@
 
     <groupId>berlin.yuna</groupId>
     <artifactId>tinkerforge-sensor</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
     
     <name>${project.artifactId}</name>
@@ -35,6 +35,36 @@
         <project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
         <git-project.url>https://github.com/YunaBraska/tinkerforge-sensor</git-project.url>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.tinkerforge</groupId>
+            <artifactId>tinkerforge</artifactId>
+            <version>2.1.22</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-junit</artifactId>
+            <version>2.0.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- CODE GENERATION -->
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+            <version>1.11.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
     
     <build>
         <plugins>
@@ -63,8 +93,8 @@
                                 <goal>check</goal>
                             </goals>
                             <configuration>
-                                <failBuildInCaseOfDifferentContentConflict>true
-                                </failBuildInCaseOfDifferentContentConflict>
+                                <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
+                                <checkTestClasspath>false</checkTestClasspath>
                                 <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
                                 <ignoredResources>
                                     <ignoredResource>.*</ignoredResource>
@@ -162,14 +192,6 @@
                 </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.tinkerforge</groupId>
-            <artifactId>tinkerforge</artifactId>
-            <version>2.1.19</version>
-        </dependency>
-    </dependencies>
     
     <scm>
         <connection>scm:git:${git-project.url}</connection>

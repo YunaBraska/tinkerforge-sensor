@@ -1,39 +1,115 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.driver.Driver;
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
+import com.tinkerforge.Device;
+import com.tinkerforge.NotConnectedException;
+import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ENVIRONMENT;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 
-public class DisplaySegment extends Driver {
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
+import static java.time.format.DateTimeFormatter.ofPattern;
+
+/**
+ * Four 7-segment displays with switchable colon
+ * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Segment_Display_4x7.html">Official doku</a>
+ * <b>Technical help</b>
+ * <br /><a href="https://en.wikichip.org/wiki/seven-segment_display/representing_letters">Representing Letters</a>
+ * <br /><a href="https://www.systutorials.com/4670/ascii-table-and-ascii-code">ascii-table-and-ascii-code</a>
+ */
+public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
 
     private static short brightness = 5;
+    private String lastText = "";
+    public static DateTimeFormatter DATE_TIME_FORMAT = ofPattern("HH:mm");
 
-    public static void register(final SensorRegistration registration, final Sensor sensor) {
-        BrickletSegmentDisplay4x7 device = (BrickletSegmentDisplay4x7) sensor.device;
-        registration.sensitivity(100, ENVIRONMENT);
 
-        sensor.hasStatusLed = false;
-        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
-                ignore -> { }, value -> {
-                        brightness = (value > -1 && value < 8) ? value.shortValue() : brightness;
-                }, value -> {
-                    StringBuilder text;
-                    if (value instanceof String) {
-                        text = new StringBuilder(value.toString().trim());
-                    } else {
-                        text = new StringBuilder(String.valueOf(value));
-                    }
-                    while (text.length() < 4) {
-                        text.append(" ");
-                    }
-//                        console("[%s] [%s]", DisplaySegment.class.getSimpleName(), text.substring(0, 4));
-                    short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
-                    device.setSegments(segments, brightness, false);
-                })
-        );
+    public DisplaySegment(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickletSegmentDisplay4x7) device, parent, uid, false);
+    }
+
+    @Override
+    protected Sensor<BrickletSegmentDisplay4x7> initListener() {
+        return this;
+    }
+
+    /**
+     * @param value <br /> [String] print values on display
+     *              <br /> [TemporalAccessor] prints the current time like {@link LocalDateTime#`now()}
+     *              <br /> [DateTimeFormatter] sets the time format default is "DateTimeFormatter.ofPattern("HH:mm")" {@link this#DATE_TIME_FORMAT}
+     * @return {@link Sensor}
+     */
+    @Override
+    public Sensor<BrickletSegmentDisplay4x7> value(final Object value) {
+        try {
+            if (value instanceof DateTimeFormatter) {
+                DATE_TIME_FORMAT = (DateTimeFormatter) value;
+            } else if (value instanceof TemporalAccessor) {
+                value(DATE_TIME_FORMAT.format((TemporalAccessor) value));
+            } else if (value instanceof String) {
+                String preText = value.toString().trim();
+                boolean colon = false;
+                if (preText.contains(":")) {
+                    colon = true;
+                    preText = preText.replace(":", "");
+                }
+                StringBuilder text = new StringBuilder(preText);
+                while (text.length() < 4) {
+                    text.insert(0, ' ');
+                }
+                short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
+                device.setSegments(segments, brightness, colon);
+                lastText = text.toString();
+            } else {
+                value(String.valueOf(value));
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletSegmentDisplay4x7> ledStatus(final Integer value) {
+        return this;
+    }
+
+    /**
+     * @param value <br /> [0/1] LED ON/OFF
+     *              <br /> [2 ... 9] Brightness
+     * @return {@link Sensor}
+     */
+    @Override
+    public Sensor<BrickletSegmentDisplay4x7> ledAdditional(final Integer value) {
+        if (value == LED_ADDITIONAL_ON.bit) {
+            value(7);
+        } else if (value == LED_ADDITIONAL_OFF.bit) {
+            value("");
+        } else {
+            brightness = (short) (value.shortValue() - 2);
+            value(lastText);
+        }
+        return this;
+    }
+
+    @Override
+    protected Sensor<BrickletSegmentDisplay4x7> flashLed() {
+        try {
+            this.ledAdditionalOn();
+            for (int i = 0; i < 9; i++) {
+                ledAdditional(i);
+                value(LocalDateTime.now());
+                Thread.sleep(128);
+            }
+            this.ledAdditionalOff();
+        } catch (Exception ignore) {
+        }
+        return this;
     }
 
     public enum Segments {
@@ -64,10 +140,10 @@ public class DisplaySegment extends Driver {
         SJ_1("J", 30),
         SK_1("K", 117),
         SL_1("L", 56),
-        SM_1("M", 30), //FIXME: J ?
+        SM_1("M", 85),
         SN_1("N", 55),
         SO_1("O", S0.segment),
-        SP_1("P", 115), //FIXME: X ?
+        SP_1("P", 115),
         SQ_1("Q", 103),
         SR_1("R", 80),
         SS_1("S", S5.segment),
@@ -94,7 +170,7 @@ public class DisplaySegment extends Driver {
         SM_2("m", SM_1.segment),
         SN_2("n", 84),
         SO_2("o", 92),
-        SP_2("P", SP_1.segment),
+        SP_2("p", SP_1.segment),
         SQ_2("q", SQ_1.segment),
         SR_2("r", SR_1.segment),
         SS_2("s", SS_1.segment),
@@ -193,36 +269,4 @@ public class DisplaySegment extends Driver {
             return 0;
         }
     }
-
-    //Not Matching = K(117), Z(82), -(192) [ ]
-    // \ (0x64)
-    // / (0x52)
-    // - 0x40
-    // ] 0x90
-    // [ 0xb9
-    //https://en.wikichip.org/wiki/seven-segment_display/representing_letters
-    //https://www.systutorials.com/4670/ascii-table-and-ascii-code/
-//    private static final byte[] DIGITS = {
-//            /*  0     1     2     3     4     5     6     7     8     9     :     ;     */
-//            0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x00, 0x00,
-//            /*  <     =     >     ?     @     A     B     C     D     E     F     G     */
-//            0x00, 0x48, 0x00, 0x53, 0x00, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x3D,
-//            /*  H     I     J     K     L     M     N     O     P     Q     R     S     */
-//            0x76, 0x30, 0x1E, 0x75, 0x38, 0x2D, 0x54, 0x3F, 0x73, 0x6F, 0x50, 0x6D,
-//            /*  T     U     V     W     X     Y     Z     [     \     ]     ^     _     */
-//            0x78, 0x3E, 0x3E, 0x1D, 0x76, 0x6E, 0x52, 0x00, 0x64, 0x00, 0x00, 0x08,
-//            /*  `     a     b     c     d     e     f     g     h     i     j     k     */
-//            0x00, 0x77, 0x7C, 0x58, 0x5E, 0x79, 0x71, 0x3D, 0x74, 0x30, 0x1E, 0x75,
-//            /*  l     m     n     o     p     q     r     s     t     u     v     w     */
-//            0x38, 0x2D, 0x54, 0x5C, 0x73, 0x67, 0x50, 0x6D, 0x78, 0x1C, 0x1C, 0x1D,
-//            /*  x     y     z     */
-//            0x76, 0x6E, 0x52};
-//
-//    private static short decode_7seg(char chr) {
-//        int index = chr - '0';
-//        if (index < DIGITS.length && index > -1) {
-//            return DIGITS[chr - '0'];
-//        }
-//        return 0x00;
-//    }
 }

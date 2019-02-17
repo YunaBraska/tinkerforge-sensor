@@ -1,8 +1,8 @@
 package berlin.yuna.hackerschool;
 
-import berlin.yuna.tinkerforgesensor.model.Sensor;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.type.LedStatusType;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletColor;
@@ -10,20 +10,17 @@ import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
 
 import java.awt.Color;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_ADDITIONAL_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_CUSTOM;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_OFF;
-import static berlin.yuna.tinkerforgesensor.model.type.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_B;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_G;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_R;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_OFF;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED_ON;
 import static java.lang.String.format;
 import static java.util.Collections.reverse;
 
@@ -33,13 +30,13 @@ public class Example extends TinkerForgeUtil {
 
     public static void animateStatusLEDs(final SensorList<Sensor> sensorList) {
         status = status == LED_STATUS_ON ? LED_STATUS_OFF : LED_STATUS_ON;
-        List<Sensor> sortedList = sensorList.sort(sensor -> sensor.hasStatusLed);
+        List<Sensor> sortedList = sensorList.sort(sensor -> sensor.hasLedStatus());
         if (status == LED_STATUS_OFF) {
             reverse(sortedList);
         }
         for (Sensor sensor : sortedList) {
-            if (sensor.hasStatusLed && sensor.isBrick) {
-                sensor.led(status);
+            if (sensor.hasLedStatus() && sensor.isBrick()) {
+                sensor.ledStatus(status.bit);
                 sleep(128);
             }
         }
@@ -51,14 +48,14 @@ public class Example extends TinkerForgeUtil {
     }
 
     private void brightnessOnAtMotion(final Sensor sensor, final ValueType valueType, final SensorList<Sensor> sensorList) {
-        Sensor display = sensorList.first(BrickletSegmentDisplay4x7.class);
-        if (valueType.is(MOTION_DETECTED_ON)) {
-            sensor.ledStatusOn();
-            display.ledBrightness(7);
-        } else if (valueType.is(MOTION_DETECTED_OFF)) {
-            sensor.ledStatusOff();
-            display.ledBrightness(0);
-        }
+//        Sensor display = sensorList.first(BrickletSegmentDisplay4x7.class);
+//        if (valueType.is(MOTION_DETECTED)) {
+//            sensor.ledStatusOn();
+//            display.ledBrightness(7);
+//        } else if (valueType.is(MOTION_DETECTED)) {
+//            sensor.ledStatusOff();
+//            display.ledBrightness(0);
+//        }
     }
 
 //    private final SensorList<Sensor> sensorList = new SensorList<>();
@@ -73,7 +70,7 @@ public class Example extends TinkerForgeUtil {
 //        console("[%s] Running programs", loopList.size());
 //    }
 //
-//    private void onSensorEvent(final Sensor currentSensor, final ValueType valueType){
+//    private void sendEvent(final Sensor currentSensor, final ValueType valueType){
 //        Sensor display = sensorList.first(BrickletSegmentDisplay4x7.class);
 //
 //        if (valueType.is(MOTION_DETECTED_ON)) {
@@ -93,14 +90,14 @@ public class Example extends TinkerForgeUtil {
 //
 //    public void displayMoveMessage() {
 //        onStart();
-//        onSensorEvent();
+//        sendEvent();
 //    }
 
     //TODO: stop character to prevent StringIndexOutOfBoundsException: String index out of range: 70
     public static void displayMoveMessage(final SensorList<Sensor> sensorList, final long milliSeconds) {
         Sensor display = sensorList.first(BrickletLCD20x4.class);
         if (isPresent(display)) {
-            display.led(LED_ADDITIONAL_ON);
+            display.ledAdditionalOn();
             int displaySize = 20;
             String msg = "-= Welcome to HackerSchool =-";
             msg = letterUp(" ", displaySize) + msg;
@@ -160,7 +157,7 @@ public class Example extends TinkerForgeUtil {
             int r = random.nextInt(255);
             int g = random.nextInt(255);
             int b = random.nextInt(255);
-            sensor.led(LED_CUSTOM, (long) new Color(r, g, b).getRGB());
+            sensor.value((long) new Color(r, g, b).getRGB());
         }
     }
 
@@ -175,16 +172,18 @@ public class Example extends TinkerForgeUtil {
         StringBuilder lineHead = new StringBuilder();
         StringBuilder lineValue = new StringBuilder();
         for (ValueType valueType : values.keySet()) {
-            lineHead.append(format("%15s |", valueType));
+            lineHead.append(format("%" + (valueType.toString().length() + 1) + "s |", valueType));
         }
-        for (Long value : values.values()) {
-            lineValue.append(format("%15s |", value));
-        }
-        lineHead.append(format("%15s |", "Sensors"));
-        lineValue.append(format("%15s |", sensorList.size()));
 
-        lineHead.append(format("%15s |", "Loops"));
-        lineValue.append(format("%15s |", loops.size()));
+        Iterator<ValueType> typeIterator = values.keySet().iterator();
+        for (Long value : values.values()) {
+            lineValue.append(format("%" + (typeIterator.next().toString().length() + 1) + "s |", value));
+        }
+        lineHead.append(format("%9s |", "Sensors"));
+        lineValue.append(format("%9s |", sensorList.size()));
+
+        lineHead.append(format("%7s |", "Loops"));
+        lineValue.append(format("%7s |", loops.size()));
 
         console("\n" + lineHead.toString() + "\n" + lineValue.toString());
     }

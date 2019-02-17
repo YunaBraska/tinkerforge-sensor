@@ -1,27 +1,49 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorRegistration;
-import berlin.yuna.tinkerforgesensor.model.Sensor;
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.driver.Driver;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickletTemperature;
+import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY;
+import static berlin.yuna.tinkerforgesensor.generator.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
-public class Temperature extends Driver {
+/**
+ * Measures ambient temperature with 0.5°C accuracy
+ * <b>Values</b>
+ * TEMPERATURE[°C] = n / 100.0
+ */
+public class Temperature extends Sensor<BrickletTemperature> {
 
-    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList, final int period) throws TimeoutException, NotConnectedException {
-        BrickletTemperature device = (BrickletTemperature) sensor.device;
-        registration.sensitivity(100, TEMPERATURE);
+    public Temperature(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickletTemperature) device, parent, uid, false);
+    }
 
-        device.addTemperatureListener(value -> registration.sendEvent(consumerList, TEMPERATURE, sensor, (long) value));
+    @Override
+    protected Sensor<BrickletTemperature> initListener() {
+        try {
+            device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
+            device.setTemperatureCallbackPeriod(CALLBACK_PERIOD * 8);
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
 
-        device.setTemperatureCallbackPeriod(period);
+    @Override
+    public Sensor<BrickletTemperature> value(final Object value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTemperature> ledStatus(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTemperature> ledAdditional(final Integer value) {
+        return this;
     }
 }

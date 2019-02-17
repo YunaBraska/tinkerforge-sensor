@@ -15,7 +15,7 @@ It Removes the pain of sensor UIDs, sensor version, ports and provides a generic
 * Feel free for pull request as the wrapper classes are not so hard to implement, its just a mapping ;)
 
 #### Examples
-* Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/src/test/java/berlin/yuna/tinkerforgesensor/example)
+* Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/tinkerforgesensor/example)
 * Connecting with auto closeable [SensorListener](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/SensorListener.java)
 ```java
 try (SensorListener sensorListener = new SensorListener("host", 4223, "optionalPassword")) {

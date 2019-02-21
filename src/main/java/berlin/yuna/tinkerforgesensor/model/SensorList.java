@@ -7,6 +7,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.brick.Master;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Barometer;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.BarometerV2;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Default;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplaySegment;
@@ -19,6 +20,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.bricklet.IO16V2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightAmbient;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightAmbientV2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightAmbientV3;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightColor;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightUv;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.LightUvV2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.MotionDetector;
@@ -70,6 +72,10 @@ public class SensorList<T extends Sensor> extends SensorListBasic<T> {
     return sensor.isPresent() ? sensor : first(LightUv.class);
   }
 
+  public Sensor getLightColor() {
+    return first(LightColor.class);
+  }
+
   public Sensor getLightAmbient() {
     Sensor sensor = first(LightAmbientV3.class);
     sensor = sensor.isPresent() ? sensor : first(LightAmbientV2.class);
@@ -113,6 +119,10 @@ public class SensorList<T extends Sensor> extends SensorListBasic<T> {
 
   public Sensor getDC() {
     return first(DC.class);
+  }
+
+  public Sensor getButtonRGB() {
+    return first(ButtonRGB.class);
   }
 
   public Sensor getBarometer() {

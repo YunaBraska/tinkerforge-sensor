@@ -5,19 +5,20 @@ import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-public class SoundIntensity_DisplaySegment_Example {
+public class LightColor_to_ButtonRGB_Example {
 
     private static SensorList<Sensor> sensorList;
 
     public static void main(String[] args) {
         SensorListener sensorListener = Connection_Example.connect();
         sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
+        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
-    private static void onSensorEvent(final Long value, final ValueType type) {
-        if (type.isSoundIntensity()) {
-            sensorList.getDisplaySegment().value(value / 10 + "db");
+    private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
+        if (type.isColor()) {
+            sensor.ledAdditionalOn();
+            sensorList.getButtonRGB().value(value);
         }
     }
 }

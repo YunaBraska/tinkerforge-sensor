@@ -5,7 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-public class MotionDetection_Speaker_Example {
+public class MotionDetection_to_Speaker_Example {
 
     private static SensorList<Sensor> sensorList;
 

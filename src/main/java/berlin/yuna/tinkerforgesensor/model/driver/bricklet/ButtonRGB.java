@@ -1,31 +1,130 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-public class ButtonRGB {
+import berlin.yuna.tinkerforgesensor.model.Color;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import com.tinkerforge.BrickletRGBLEDButton;
+import com.tinkerforge.Device;
+import com.tinkerforge.NotConnectedException;
+import com.tinkerforge.TimeoutException;
 
-//    public static void register(final SensorRegistration registration, final Sensor sensor, final List<Consumer<SensorEvent>> consumerList) {
-//        BrickletRGBLEDButton device = (BrickletRGBLEDButton) sensor.device;
-//        registration.sensitivity(100, BUTTON);
-//        device.addButtonStateChangedListener(value -> {
-//            sendEvent( BUTTON, (long) value);
-//            sendEvent( (value == BUTTON_STATE_PRESSED) ? BUTTON_PRESSED : BUTTON_RELEASED, (long) value);
-//        });
-////            current.getChipTemperature()
-////            current.getColor()
-//        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
-//                value -> {
-//                    if (value ==LED_STATUS_ON.bit) {device.setStatusLEDConfig(LED_STATUS_ON.bit);}
-//                    else if (value ==LED_STATUS_HEARTBEAT.bit) {device.setStatusLEDConfig(LED_STATUS_HEARTBEAT.bit);}
-//                    else if (value ==LED_STATUS.bit) {device.setStatusLEDConfig(LED_STATUS.bit);}
-//                    else if (value ==LED_STATUS_OFF.bit) {device.setStatusLEDConfig(LED_STATUS_OFF.bit);}
-//                }, ignored -> { }, customValue -> {
-//                    if (customValue instanceof Number) {
-//                        Color color = new Color(((Number) customValue).intValue());
-//                        device.setColor(color.getRed(), color.getGreen(), color.getBlue());
-//                    } else {
-//                        device.setColor(0, 0, 0);
-//                    }
-//                }));
-//
-//        sensor.hasStatusLed = true;
-//    }
+import java.util.Arrays;
+import java.util.Collections;
+
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
+import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+
+/**
+ * Push button with built-in RGB LED
+ * BUTTON_PRESSED 1/0 pressed/released
+ */
+public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
+
+    boolean highContrast = true;
+
+    public ButtonRGB(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickletRGBLEDButton) device, parent, uid, true);
+    }
+
+    @Override
+    protected Sensor<BrickletRGBLEDButton> initListener() {
+        device.addButtonStateChangedListener(value -> sendEvent(BUTTON_PRESSED, value == 1 ? 0L : 1L));
+        return this;
+    }
+
+    /**
+     * @param value <br /> [{@link Color#getRGB()}] RGB value
+     *              <br /> [Number] RGB value {@link Color#getRGB()}
+     *              <br /> [Boolean] activate highContrast
+     * @return {@link Sensor}
+     */
+    @Override
+    public Sensor<BrickletRGBLEDButton> value(final Object value) {
+        try {
+            if (value instanceof Boolean) {
+                highContrast = (Boolean) value;
+            }
+            if (value instanceof Color) {
+                return value(((Color) value).getRGB());
+            }
+            if (value instanceof Number) {
+                Color color = new Color(((Number) value).intValue());
+                color = highContrast ? calculateHighContrast(color) : color;
+
+                device.setColor(color.getRed(), color.getGreen(), color.getBlue());
+            } else {
+                device.setColor(0, 0, 0);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+        }
+        return this;
+    }
+
+    private Color calculateHighContrast(final Color color) {
+        Color result = color;
+        int max = Collections.min(Arrays.asList(result.getRed(), result.getGreen(), result.getBlue()));
+        result = new Color(result.getRed() - max, result.getGreen() - max, result.getBlue() - max);
+
+        // +100% brightness
+        float[] hsb = Color.RGBtoHSB(result.getRed(), result.getGreen(), result.getBlue(), null);
+        result = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 0.5f * (1f + hsb[2])));
+        return result;
+    }
+
+    @Override
+    public Sensor<BrickletRGBLEDButton> ledStatus(final Integer value) {
+        try {
+            if (value == LED_STATUS_OFF.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
+            } else if (value == LED_STATUS_ON.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
+            } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
+            } else if (value == LED_STATUS.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS.bit);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletRGBLEDButton> ledAdditional(final Integer value) {
+        if (value == LED_ADDITIONAL_ON.bit) {
+            value(true);
+        } else if (value == LED_ADDITIONAL_OFF.bit) {
+            value(false);
+        }
+        return this;
+    }
+
+    @Override
+    protected Sensor<BrickletRGBLEDButton> flashLed() {
+        super.flashLed();
+        try {
+            ledAdditionalOff();
+            for (int color : Arrays.asList(
+                    Color.WHITE,
+                    Color.RED,
+                    Color.ORANGE,
+                    Color.YELLOW,
+                    Color.GREEN,
+                    Color.CYAN,
+                    Color.BLUE,
+                    Color.MAGENTA,
+                    Color.PINK,
+                    Color.BLACK
+            )) {
+                value(color);
+                Thread.sleep(64);
+            }
+            ledAdditionalOn();
+        } catch (Exception ignore) {
+        }
+        return this;
+    }
 }

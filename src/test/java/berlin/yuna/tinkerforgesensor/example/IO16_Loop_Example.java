@@ -4,11 +4,13 @@ import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
 
-import java.util.function.Supplier;
+import static berlin.yuna.tinkerforgesensor.example.Utils.loop;
+import static berlin.yuna.tinkerforgesensor.example.Utils.sleep;
 
 public class IO16_Loop_Example {
 
     private static SensorList<Sensor> sensorList;
+    private static boolean ledReverse;
 
     public static void main(String[] args) {
         SensorListener sensorListener = Connection_Example.connect();
@@ -33,7 +35,7 @@ public class IO16_Loop_Example {
         return true;
     }
 
-    private static boolean ledReverse;
+
     private static boolean knightRider_example() {
         ledReverse = !ledReverse;
         for (int i = 1; i < 9; i++) {
@@ -47,19 +49,5 @@ public class IO16_Loop_Example {
             sleep(32);
         }
         return true;
-    }
-
-    private static void loop(final Supplier supplier, final int times) {
-        for (int i = 0; i < times; i++) {
-            supplier.get();
-        }
-    }
-
-    private static void sleep(final long sleepMs) {
-        try {
-            Thread.sleep(sleepMs);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

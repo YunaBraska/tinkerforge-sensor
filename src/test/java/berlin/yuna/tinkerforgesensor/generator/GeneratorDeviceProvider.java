@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 
+import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
 import com.tinkerforge.DummyDevice;
 
 import java.io.File;

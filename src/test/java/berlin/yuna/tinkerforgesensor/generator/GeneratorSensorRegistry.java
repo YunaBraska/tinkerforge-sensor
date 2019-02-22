@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 
+import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.DeviceFactory;
 import com.squareup.javapoet.ClassName;
@@ -12,7 +13,6 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.tinkerforge.Device;
 
-import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -17,7 +17,7 @@ public class Utils {
     private static SensorList<Sensor> sensorList;
 
     public static void main(String[] args) {
-        SensorListener sensorListener = Connection_Example.connect();
+        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
 
         while (sensorList.isEmpty()) {

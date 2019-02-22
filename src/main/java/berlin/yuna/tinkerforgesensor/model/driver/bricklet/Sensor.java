@@ -1,6 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.generator.SensorRegistry;
+import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
 import berlin.yuna.tinkerforgesensor.model.RollingList;
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
@@ -18,9 +18,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-import static berlin.yuna.tinkerforgesensor.generator.SensorRegistry.CALLBACK_PERIOD;
-import static berlin.yuna.tinkerforgesensor.generator.SensorRegistry.getDevice;
-import static berlin.yuna.tinkerforgesensor.generator.SensorRegistry.getSensor;
+import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getDevice;
+import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getSensor;
 import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor.LedStatusType.LED_STATUS;
@@ -146,7 +146,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the sensor is present and the port refresh was successfully as the refresh needs that the {@link Device} is answering
      */
-    public synchronized boolean isConnected() {
+    public boolean isConnected() {
         try {
             return isPresent() && refreshPortE() != -1;
         } catch (TimeoutException | NotConnectedException e) {
@@ -289,7 +289,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return port starts at 0
      */
-    public synchronized int port() {
+    public int port() {
         return port > -1 ? port : refreshPort();
     }
 
@@ -299,7 +299,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return {@link Sensor<T>#port}
      */
-    public synchronized int refreshPort() {
+    public int refreshPort() {
         try {
             return refreshPortE();
         } catch (TimeoutException | NotConnectedException e) {
@@ -315,7 +315,7 @@ public abstract class Sensor<T extends Device> {
      * @throws TimeoutException      on timeout
      * @throws NotConnectedException on not connected
      */
-    public synchronized int refreshPortE() throws TimeoutException, NotConnectedException {
+    public int refreshPortE() throws TimeoutException, NotConnectedException {
         Device.Identity identity = device.getIdentity();
         if (identity.connectedUid.equals("0")) {
             isBrick = true;
@@ -337,7 +337,7 @@ public abstract class Sensor<T extends Device> {
      * @param value     value to send
      * @return {@link Sensor<T>#port}
      */
-    protected synchronized Sensor<T> sendEvent(final ValueType valueType, final Long value) {
+    protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
         RollingList<Long> timeSeries = values.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
         if (timeSeries.addAndCheckIfItsNewPeak(value)) {
             consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, value, valueType)));

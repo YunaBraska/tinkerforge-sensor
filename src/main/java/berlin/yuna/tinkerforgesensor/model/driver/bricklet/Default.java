@@ -1,6 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
-import berlin.yuna.tinkerforgesensor.generator.SensorRegistry;
+import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;

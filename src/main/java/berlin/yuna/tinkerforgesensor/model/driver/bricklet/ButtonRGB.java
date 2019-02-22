@@ -24,7 +24,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
  */
 public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 
-    boolean highContrast = true;
+    boolean highContrast = false;
 
     public ButtonRGB(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
         super((BrickletRGBLEDButton) device, parent, uid, true);
@@ -106,7 +106,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     protected Sensor<BrickletRGBLEDButton> flashLed() {
         super.flashLed();
         try {
-            ledAdditionalOff();
+            ledAdditionalOn();
             for (int color : Arrays.asList(
                     Color.WHITE,
                     Color.RED,
@@ -122,7 +122,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
                 value(color);
                 Thread.sleep(64);
             }
-            ledAdditionalOn();
+            ledAdditionalOff();
         } catch (Exception ignore) {
         }
         return this;

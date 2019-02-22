@@ -38,7 +38,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         try {
             if (value instanceof String) {
                 String morse = (String) value;
-                if (morse.startsWith("f")) {
+                if (morse.startsWith("f") || morse.startsWith("F")) {
                     int frequency_tmp = Integer.valueOf(morse.substring(1));
                     this.frequency = frequency_tmp < 7101 && frequency_tmp > 585 ? frequency_tmp : frequency;
                 } else {

@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 
-import berlin.yuna.tinkerforgesensor.Application;
+import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
 import org.junit.Test;
 import org.reflections.Reflections;
@@ -27,7 +27,7 @@ public class GeneratorTest {
     }
 
     private List<Class<? extends Sensor>> getSensorList() {
-        Reflections reflections = new Reflections(Application.class.getPackage().getName());
+        Reflections reflections = new Reflections(SensorRegistry.class.getPackage().getName());
         List<Class<? extends Sensor>> sensorList = new ArrayList<>(reflections.getSubTypesOf(Sensor.class));
         sensorList.sort(Comparator.comparing(Class::getSimpleName));
         return sensorList;

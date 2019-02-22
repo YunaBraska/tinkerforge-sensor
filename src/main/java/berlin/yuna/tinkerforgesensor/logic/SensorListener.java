@@ -2,14 +2,12 @@ package berlin.yuna.tinkerforgesensor.logic;
 
 import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.TimeoutExecutor;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
 import com.tinkerforge.TinkerforgeThread;
 
 import java.io.Closeable;
@@ -25,8 +23,6 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_ALREADY_
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_SEARCH;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PING;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
@@ -45,7 +41,7 @@ public class SensorListener implements Closeable {
     public IPConnection connection = new IPConnection();
 
     /**
-     * SensorList holds all connected {@link Sensor} {@link SensorListener#checkConnection()} managing that list
+     * SensorList holds all connected {@link Sensor} managing that list
      * This list is never empty as and contains {@link SensorList#getDefault()} as fallback
      */
     public final SensorList<Sensor> sensorList = new SensorList<>();
@@ -54,8 +50,6 @@ public class SensorListener implements Closeable {
      * List of {@link Consumer} for getting all {@link SensorEvent}
      */
     public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
-
-    private long deviceSearch = currentTimeMillis();
 
     private final String host;
     private final String password;
@@ -75,7 +69,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
      *
      * @param host for {@link SensorListener#connection}
      * @param port for {@link SensorListener#connection}
@@ -86,7 +80,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
      *
      * @param host                  for {@link SensorListener#connection}
      * @param port                  for {@link SensorListener#connection}
@@ -98,7 +92,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
      *
      * @param host     for {@link SensorListener#connection}
      * @param port     for {@link SensorListener#connection}
@@ -110,7 +104,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} with {@link SensorListener#checkConnection()}
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
      *
      * @param host                  for {@link SensorListener#connection}
      * @param port                  for {@link SensorListener#connection}
@@ -131,7 +125,7 @@ public class SensorListener implements Closeable {
      *
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
-    public synchronized void connect() throws NetworkConnectionException {
+    public void connect() throws NetworkConnectionException {
         connection = new IPConnection();
         connection.setAutoReconnect(true);
         connection.setTimeout(timeoutMs);
@@ -153,7 +147,7 @@ public class SensorListener implements Closeable {
             }
         }
 //        createLoop(connectionHandlerName, timeoutMs, run -> checkConnection());
-//        createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.getDefault(), System.currentTimeMillis(), PING));
+        createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.getDefault(), System.currentTimeMillis(), PING));
     }
 
     /**
@@ -171,7 +165,6 @@ public class SensorListener implements Closeable {
         loopEnd(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
-                preventDeviceSearch();
                 sensorList.clear();
                 connection.disconnect();
             } catch (Exception ignored) {
@@ -188,7 +181,6 @@ public class SensorListener implements Closeable {
                     for (TinkerforgeThread tinkerforgeThread : tinkerforgeThreads) {
                         tinkerforgeThread.join();
                     }
-                    preventDeviceSearch();
                 } while (!tinkerforgeThreads.isEmpty());
                 sensorList.clear();
             } catch (Exception ignored) {
@@ -197,59 +189,7 @@ public class SensorListener implements Closeable {
         });
     }
 
-    private synchronized void checkConnection() {
-        sensorList.waitForUnlock(timeoutMs);
-        if (sensorList.isEmpty()) {
-            deviceSearch();
-        } else if (deviceSearch + timeoutMs < currentTimeMillis()) {
-            for (Sensor sensor : sensorList) {
-                try {
-                    sensor.refreshPortE();
-                } catch (TimeoutException | NotConnectedException e) {
-                    sendEvent(sensor, 404, DEVICE_TIMEOUT);
-                    sensorList.remove(sensor);
-                    deviceSearch();
-                }
-            }
-        }
-    }
-
-    private void deviceSearch() {
-        if (deviceSearch + timeoutMs < currentTimeMillis()) {
-            try {
-                preventDeviceSearch();
-                sendEvent(sensorList.getDefault(), 1, DEVICE_SEARCH);
-                disconnect();
-                preventDeviceSearch();
-                connect();
-            } catch (NetworkConnectionException e) {
-                System.err.println(format("[ERROR] RECOVER [deviceSearch] [%s]", e.getClass().getSimpleName()));
-            } finally {
-                preventDeviceSearch();
-            }
-        }
-    }
-
-    private void stopThread(final Thread thread) {
-        TimeoutExecutor.execute(timeoutMs / 2, () -> {
-            try {
-                preventDeviceSearch();
-                thread.interrupt();
-                thread.join();
-            } catch (Exception ignore) {
-                return false;
-            } finally {
-                preventDeviceSearch();
-            }
-            return true;
-        });
-    }
-
-    private void preventDeviceSearch() {
-        deviceSearch = currentTimeMillis();
-    }
-
-    private synchronized void doPlugAndPlay(
+    private void doPlugAndPlay(
             final String uid,
             final String connectedUid,
             final char position,
@@ -306,7 +246,7 @@ public class SensorListener implements Closeable {
         }
     }
 
-    private synchronized void handleConnect(final short connectionEvent, boolean disconnectEvent) {
+    private void handleConnect(final short connectionEvent, boolean disconnectEvent) {
         if (disconnectEvent) {
             switch (connectionEvent) {
                 case IPConnection.DISCONNECT_REASON_REQUEST:
@@ -328,4 +268,54 @@ public class SensorListener implements Closeable {
             }
         }
     }
+
+
+//FIXME: old connection handler - can it be reactivated?
+//    private synchronized void checkConnection() {
+//        sensorList.waitForUnlock(timeoutMs);
+//        if (sensorList.isEmpty()) {
+//            deviceSearch();
+//        } else if (deviceSearch + timeoutMs < currentTimeMillis()) {
+//            for (Sensor sensor : sensorList) {
+//                try {
+//                    sensor.refreshPortE();
+//                } catch (TimeoutException | NotConnectedException e) {
+//                    sendEvent(sensor, 404, DEVICE_TIMEOUT);
+//                    sensorList.remove(sensor);
+//                    deviceSearch();
+//                }
+//            }
+//        }
+//    }
+
+//    private void deviceSearch() {
+//        if (deviceSearch + timeoutMs < currentTimeMillis()) {
+//            try {
+//                preventDeviceSearch();
+//                sendEvent(sensorList.getDefault(), 1, DEVICE_SEARCH);
+//                disconnect();
+//                preventDeviceSearch();
+//                connect();
+//            } catch (NetworkConnectionException e) {
+//                System.err.println(format("[ERROR] RECOVER [deviceSearch] [%s]", e.getClass().getSimpleName()));
+//            } finally {
+//                preventDeviceSearch();
+//            }
+//        }
+//    }
+//
+//    private void stopThread(final Thread thread) {
+//        TimeoutExecutor.execute(timeoutMs / 2, () -> {
+//            try {
+//                preventDeviceSearch();
+//                thread.interrupt();
+//                thread.join();
+//            } catch (Exception ignore) {
+//                return false;
+//            } finally {
+//                preventDeviceSearch();
+//            }
+//            return true;
+//        });
+//    }
 }

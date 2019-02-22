@@ -1,4 +1,4 @@
-package berlin.yuna.tinkerforgesensor.generator;
+package berlin.yuna.tinkerforgesensor.model;
 
 import berlin.yuna.tinkerforgesensor.model.driver.brick.DC;
 import berlin.yuna.tinkerforgesensor.model.driver.brick.IMU;
@@ -13,6 +13,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplaySegment;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DistanceIRV2;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DistanceUS;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Humidity;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.IO16;
@@ -45,6 +46,7 @@ import com.tinkerforge.BrickletBarometerV2;
 import com.tinkerforge.BrickletColor;
 import com.tinkerforge.BrickletDistanceIR;
 import com.tinkerforge.BrickletDistanceIRV2;
+import com.tinkerforge.BrickletDistanceUS;
 import com.tinkerforge.BrickletHumidity;
 import com.tinkerforge.BrickletHumidityV2;
 import com.tinkerforge.BrickletIO16;
@@ -106,6 +108,7 @@ public class SensorRegistry {
     registry.put(BrickletSegmentDisplay4x7.class, DisplaySegment::new);
     registry.put(BrickletDistanceIR.class, DistanceIR::new);
     registry.put(BrickletDistanceIRV2.class, DistanceIRV2::new);
+    registry.put(BrickletDistanceUS.class, DistanceUS::new);
     registry.put(BrickletHumidity.class, Humidity::new);
     registry.put(BrickletHumidityV2.class, HumidityV2::new);
     registry.put(BrickIMU.class, IMU::new);
@@ -142,6 +145,7 @@ public class SensorRegistry {
     registry.put(BrickletSegmentDisplay4x7.DEVICE_IDENTIFIER, BrickletSegmentDisplay4x7::new);
     registry.put(BrickletDistanceIR.DEVICE_IDENTIFIER, BrickletDistanceIR::new);
     registry.put(BrickletDistanceIRV2.DEVICE_IDENTIFIER, BrickletDistanceIRV2::new);
+    registry.put(BrickletDistanceUS.DEVICE_IDENTIFIER, BrickletDistanceUS::new);
     registry.put(BrickletHumidity.DEVICE_IDENTIFIER, BrickletHumidity::new);
     registry.put(BrickletHumidityV2.DEVICE_IDENTIFIER, BrickletHumidityV2::new);
     registry.put(BrickIMU.DEVICE_IDENTIFIER, BrickIMU::new);

@@ -2,8 +2,6 @@ package berlin.yuna.tinkerforgesensor.model;
 
 import java.io.Serializable;
 
-import static java.lang.String.format;
-
 public class Color implements Serializable {
 
     public final static int WHITE = new Color(255, 255, 255).getRGB();
@@ -52,7 +50,7 @@ public class Color implements Serializable {
      * @see #getRGBColorComponents
      * @see #getRGBComponents
      */
-    private float fvalue[] = null;
+    private float[] fvalue = null;
 
     /**
      * The alpha value as a <code>float</code> component.
@@ -76,72 +74,18 @@ public class Color implements Serializable {
     private static native void initIDs();
 
     /**
-     * Checks the color integer components supplied for validity.
-     * Throws an {@link IllegalArgumentException} if the value is out of
-     * range.
+     * Checks the color integer components supplied for validity
+     * and will set to min or max if its out of range
      *
-     * @param r the Red component
-     * @param g the Green component
-     * @param b the Blue component
+     * @param value to correct
      **/
-    private static void testColorValueRange(int r, int g, int b, int a) {
-        boolean rangeError = false;
-        String badComponentString = "";
-
-        if (a < 0 || a > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Alpha";
+    private static int correctRange(int value) {
+        if (value < 0) {
+            return 0;
+        } else if (value > 255) {
+            return 255;
         }
-        if (r < 0 || r > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Red";
-        }
-        if (g < 0 || g > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Green";
-        }
-        if (b < 0 || b > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Blue";
-        }
-        if (rangeError) {
-            throw new IllegalArgumentException(format("Color parameter outside of expected range [%s] r [%s] g [%s] b [%s] a [%s]", r, g, b, a, badComponentString));
-        }
-    }
-
-    /**
-     * Checks the color <code>float</code> components supplied for
-     * validity.
-     * Throws an <code>IllegalArgumentException</code> if the value is out
-     * of range.
-     *
-     * @param r the Red component
-     * @param g the Green component
-     * @param b the Blue component
-     **/
-    private static void testColorValueRange(float r, float g, float b, float a) {
-        boolean rangeError = false;
-        String badComponentString = "";
-        if (a < 0.0 || a > 1.0) {
-            rangeError = true;
-            badComponentString = badComponentString + " Alpha";
-        }
-        if (r < 0.0 || r > 1.0) {
-            rangeError = true;
-            badComponentString = badComponentString + " Red";
-        }
-        if (g < 0.0 || g > 1.0) {
-            rangeError = true;
-            badComponentString = badComponentString + " Green";
-        }
-        if (b < 0.0 || b > 1.0) {
-            rangeError = true;
-            badComponentString = badComponentString + " Blue";
-        }
-        if (rangeError == true) {
-            throw new IllegalArgumentException("Color parameter outside of expected range:"
-                    + badComponentString);
-        }
+        return value;
     }
 
     /**
@@ -164,7 +108,7 @@ public class Color implements Serializable {
      * @see #getRGB
      */
     public Color(int r, int g, int b) {
-        this(r, g, b, 255);
+        this(correctRange(r), correctRange(g), correctRange(b), 255);
     }
 
     /**
@@ -185,11 +129,14 @@ public class Color implements Serializable {
      * @see #getRGB
      */
     public Color(int r, int g, int b, int a) {
-        value = ((a & 0xFF) << 24) |
-                ((r & 0xFF) << 16) |
-                ((g & 0xFF) << 8) |
-                ((b & 0xFF));
-        testColorValueRange(r, g, b, a);
+        int cR = correctRange(r);
+        int cG = correctRange(g);
+        int cB = correctRange(b);
+        int cA = correctRange(a);
+        value = ((cA & 0xFF) << 24) |
+                ((cR & 0xFF) << 16) |
+                ((cG & 0xFF) << 8) |
+                ((cB & 0xFF));
     }
 
     /**
@@ -232,35 +179,6 @@ public class Color implements Serializable {
         } else {
             value = 0xff000000 | rgba;
         }
-    }
-
-    /**
-     * Creates an opaque sRGB color with the specified red, green, and blue
-     * values in the range (0.0 - 1.0).  Alpha is defaulted to 1.0.  The
-     * actual color used in rendering depends on finding the best
-     * match given the color space available for a particular output
-     * device.
-     *
-     * @param r the red component
-     * @param g the green component
-     * @param b the blue component
-     * @throws IllegalArgumentException if <code>r</code>, <code>g</code>
-     *                                  or <code>b</code> are outside of the range
-     *                                  0.0 to 1.0, inclusive
-     * @see #getRed
-     * @see #getGreen
-     * @see #getBlue
-     * @see #getRGB
-     */
-    public Color(float r, float g, float b) {
-        this((int) (r * 255 + 0.5), (int) (g * 255 + 0.5), (int) (b * 255 + 0.5));
-        testColorValueRange(r, g, b, 1.0f);
-        frgbvalue = new float[3];
-        frgbvalue[0] = r;
-        frgbvalue[1] = g;
-        frgbvalue[2] = b;
-        falpha = 1.0f;
-        fvalue = frgbvalue;
     }
 
     /**
@@ -322,7 +240,7 @@ public class Color implements Serializable {
      * @see #getRGB
      */
     public int getBlue() {
-        return (getRGB() >> 0) & 0xFF;
+        return (getRGB()) & 0xFF;
     }
 
     /**
@@ -561,8 +479,8 @@ public class Color implements Serializable {
      */
     public static Color getColor(String nm, int v) {
         Integer intval = Integer.getInteger(nm);
-        int i = (intval != null) ? intval.intValue() : v;
-        return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, (i >> 0) & 0xFF);
+        int i = (intval != null) ? intval : v;
+        return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, (i) & 0xFF);
     }
 
     /**
@@ -635,7 +553,7 @@ public class Color implements Serializable {
                     break;
             }
         }
-        return 0xff000000 | (r << 16) | (g << 8) | (b << 0);
+        return 0xff000000 | (r << 16) | (g << 8) | (b);
     }
 
     /**

@@ -87,7 +87,8 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     @Override
     public Sensor<BrickletSegmentDisplay4x7> ledAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
-            value(7);
+            brightness = 7;
+            value(lastText);
         } else if (value == LED_ADDITIONAL_OFF.bit) {
             value("");
         } else {

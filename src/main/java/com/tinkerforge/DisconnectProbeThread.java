@@ -23,7 +23,7 @@ public class DisconnectProbeThread extends TinkerforgeThread {
 
     void shutdown() {
         try {
-            queue.put(new Boolean(true));
+            queue.put(Boolean.TRUE);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

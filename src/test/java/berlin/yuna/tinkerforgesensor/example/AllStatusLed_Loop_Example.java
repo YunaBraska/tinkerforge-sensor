@@ -15,7 +15,7 @@ public class AllStatusLed_Loop_Example {
     private static boolean ledReverse;
 
     public static void main(String[] args) {
-        SensorListener sensorListener = Connection_Example.connect();
+        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
 
         loop(AllStatusLed_Loop_Example::knightRider_example, 5);

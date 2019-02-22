@@ -13,6 +13,7 @@ import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DisplaySegment;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DistanceIRV2;
+import berlin.yuna.tinkerforgesensor.model.driver.bricklet.DistanceUS;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Humidity;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.driver.bricklet.IO16;
@@ -98,6 +99,10 @@ public class SensorList<T extends Sensor> extends SensorListBasic<T> {
   public Sensor getHumidity() {
     Sensor sensor = first(HumidityV2.class);
     return sensor.isPresent() ? sensor : first(Humidity.class);
+  }
+
+  public Sensor getDistanceUS() {
+    return first(DistanceUS.class);
   }
 
   public Sensor getDistanceIR() {

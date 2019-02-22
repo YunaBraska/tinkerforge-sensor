@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.driver.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import com.tinkerforge.BrickletDistanceIR;
+import com.tinkerforge.BrickletDistanceUS;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
@@ -11,21 +11,21 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 
 /**
- * Measures distance up to 150cm with infrared light
+ * Measures distance between 2cm and 400cm with ultrasound
  * <b>Values</b>
  * <br />DISTANCE[cm] = n / 10.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_IR.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_US.html">Official doku</a>
  */
-public class DistanceIR extends Sensor<BrickletDistanceIR> {
+public class DistanceUS extends Sensor<BrickletDistanceUS> {
 
-    public DistanceIR(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletDistanceIR) device, parent, uid, false);
+    public DistanceUS(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
+        super((BrickletDistanceUS) device, parent, uid, false);
     }
 
     @Override
-    protected Sensor<BrickletDistanceIR> initListener() {
+    protected Sensor<BrickletDistanceUS> initListener() {
         try {
-            device.addDistanceListener(value -> sendEvent(DISTANCE, (long) value));
+            device.addDistanceListener(value -> sendEvent(DISTANCE, (long) value * 10));
             device.setDistanceCallbackPeriod(CALLBACK_PERIOD);
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -34,17 +34,17 @@ public class DistanceIR extends Sensor<BrickletDistanceIR> {
     }
 
     @Override
-    public Sensor<BrickletDistanceIR> value(final Object value) {
+    public Sensor<BrickletDistanceUS> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceIR> ledStatus(final Integer value) {
+    public Sensor<BrickletDistanceUS> ledStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceIR> ledAdditional(final Integer value) {
+    public Sensor<BrickletDistanceUS> ledAdditional(final Integer value) {
         return this;
     }
 }

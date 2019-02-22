@@ -28,24 +28,26 @@ public class TinkerForgeUtil {
     public static final ConcurrentHashMap<String, Loop> loops = new ConcurrentHashMap<>();
 
     /**
+     * waitProcessList processes which are waiting
+     */
+    private static final ConcurrentHashMap<String, Long> waitProcessList = new ConcurrentHashMap<>();
+    /**
      * default date formatter
      */
     protected static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
     protected static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     protected static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    private ConcurrentHashMap<String, Long> waitProcessList = new ConcurrentHashMap<>();
-
-    public boolean hasWaited(final long waitMs) {
+    public static boolean timePassed(final long waitMs) {
         StackTraceElement callerTrace = Thread.currentThread().getStackTrace()[2];
         String name = callerTrace.getClassName() + ":" + callerTrace.getMethodName() + ":" + callerTrace.getLineNumber();
-        return hasWaited(name, waitMs);
+        return timePassed(name, waitMs);
     }
 
-    public boolean hasWaited(final String referenceName, final long waitMs) {
-        Long lastTimeMs = waitProcessList.computeIfAbsent(referenceName, value -> System.currentTimeMillis());
+    public static boolean timePassed(final String timerName, final long waitMs) {
+        Long lastTimeMs = waitProcessList.computeIfAbsent(timerName, value -> System.currentTimeMillis());
         if ((lastTimeMs + waitMs) < System.currentTimeMillis()) {
-            waitProcessList.put(referenceName, System.currentTimeMillis());
+            waitProcessList.put(timerName, System.currentTimeMillis());
             return true;
         }
         return false;

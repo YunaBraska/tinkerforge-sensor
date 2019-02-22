@@ -19,7 +19,6 @@ import java.nio.ByteOrder;
 import java.security.SecureRandom;
 import java.util.Hashtable;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 public abstract class IPConnectionBase implements java.io.Closeable {
     private final static String BASE58 = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";

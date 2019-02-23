@@ -57,6 +57,8 @@ public abstract class Sensor<T extends Device> {
      * List of {@link Consumer} for getting all {@link Sensor<T>Event}
      */
     public final CopyOnWriteArrayList<Consumer<SensorEvent>> consumerList = new CopyOnWriteArrayList<>();
+
+    //TODO: move to config or sensorRegistry
     protected final int SENSOR_VALUE_LIMIT = 99;
 
     /**

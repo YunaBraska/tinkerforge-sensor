@@ -27,7 +27,7 @@ public class TinkerForgeUtil {
         return string == null || string.trim().equals("");
     }
 
-    protected static Loop loop(final String name) {
+    public static Loop loop(final String name) {
         return loops.get(name);
     }
 

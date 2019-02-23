@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.example;
 
-import berlin.yuna.tinkerforgesensor.model.type.Loop;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.type.Loop;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.DummyDevice;
 
@@ -25,14 +25,10 @@ import static java.util.Objects.requireNonNull;
 public class Helper {
 
     /**
-     * loop = list of subprograms
-     */
-    public static final ConcurrentHashMap<String, Loop> loops = new ConcurrentHashMap<>();
-
-    /**
      * waitProcessList processes which are waiting
      */
     private static final ConcurrentHashMap<String, Long> waitProcessList = new ConcurrentHashMap<>();
+
     /**
      * default date formatter
      */
@@ -112,18 +108,18 @@ public class Helper {
     }
 
     public static Loop loop(final String name) {
-        return loops.get(name);
+        return TinkerForgeUtil.loop(name);
     }
 
-    public Loop loop(final String name, final Consumer<Long> consumer) {
+    public static Loop loop(final String name, final Consumer<Long> consumer) {
         return loop(name, EACH_SECOND, consumer);
     }
 
-    public Loop loop(final String name, final TinkerForgeUtil.RefreshType refreshType, final Consumer<Long> consumer) {
+    public static Loop loop(final String name, final TinkerForgeUtil.RefreshType refreshType, final Consumer<Long> consumer) {
         return loop(name, refreshType.ms, consumer);
     }
 
-    public Loop loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
+    public static Loop loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
         return TinkerForgeUtil.createLoop(name, refreshMs, consumer);
     }
 

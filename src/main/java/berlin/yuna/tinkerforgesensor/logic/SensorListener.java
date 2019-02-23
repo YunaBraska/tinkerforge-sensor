@@ -1,8 +1,8 @@
 package berlin.yuna.tinkerforgesensor.logic;
 
-import berlin.yuna.tinkerforgesensor.model.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -18,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static berlin.yuna.tinkerforgesensor.model.TimeoutExecutor.execute;
+import static berlin.yuna.tinkerforgesensor.model.type.TimeoutExecutor.execute;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_ALREADY_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
@@ -31,8 +31,11 @@ import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
 import static java.lang.String.format;
-import static java.lang.System.currentTimeMillis;
 
+//TODO: sensor.type.is
+//TODO: value.type.is
+//TODO: sensorList.searchValue.is
+//TODO: sensorList.searchType.is
 public class SensorListener implements Closeable {
 
     /**

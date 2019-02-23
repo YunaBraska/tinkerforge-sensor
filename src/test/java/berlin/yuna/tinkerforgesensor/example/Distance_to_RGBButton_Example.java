@@ -1,9 +1,9 @@
 package berlin.yuna.tinkerforgesensor.example;
 
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.Color;
+import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
 public class Distance_to_RGBButton_Example {

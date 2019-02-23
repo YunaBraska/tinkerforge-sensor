@@ -2,10 +2,10 @@ package berlin.yuna.tinkerforgesensor.example;
 
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 
-import static berlin.yuna.tinkerforgesensor.example.Utils.loop;
-import static berlin.yuna.tinkerforgesensor.example.Utils.sleep;
+import static berlin.yuna.tinkerforgesensor.example.Helper.loop;
+import static berlin.yuna.tinkerforgesensor.example.Helper.sleep;
 
 public class IO16_Loop_Example {
 

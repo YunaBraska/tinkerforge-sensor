@@ -1,8 +1,9 @@
 package berlin.yuna.tinkerforgesensor.model;
 
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Default;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Default;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 
@@ -28,92 +29,6 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     public synchronized List<Sensor> sort(Predicate<? super T> predicate) {
         return stream().filter(predicate).sorted(comparingInt(Sensor::port)).collect(toList());
     }
-//
-//    public Sensor getSoundIntensity() {
-//        return first(SoundIntensity.class);
-//    }
-//
-//    public Sensor getTilt() {
-//        return first(Tilt.class);
-//    }
-//
-//    public Sensor getRotary() {
-//        return first(RotaryV2.class);
-//    }
-//
-//    public Sensor getSpeaker() {
-//        return first(Speaker.class);
-//    }
-//
-//    public Sensor getIO16() {
-//        Sensor sensor = first(IO16V2.class);
-//        return sensor.isPresent() ? sensor : first(IO16.class);
-//    }
-//
-//    public Sensor getAirQuality() {
-//        return first(AirQuality.class);
-//    }
-//
-//    public Sensor getBarometer() {
-//        Sensor sensor = first(BarometerV2.class);
-//        return sensor.isPresent() ? sensor : first(Barometer.class);
-//    }
-//
-//    public Sensor getButtonRGB() {
-//        return first(ButtonRGB.class);
-//    }
-//
-//    public Sensor getDisplayLcd20x4() {
-//        return first(DisplayLcd20x4.class);
-//    }
-//
-//    public Sensor getDisplaySegment() {
-//        return first(DisplaySegment.class);
-//    }
-//
-//    public Sensor getLightColor() {
-//        return first(LightColor.class);
-//    }
-//
-//    public Sensor getLightUv() {
-//        Sensor sensor = first(LightUvV2.class);
-//        return sensor.isPresent() ? sensor : first(LightUv.class);
-//    }
-//
-//    public Sensor getHumidity() {
-//        Sensor sensor = first(HumidityV2.class);
-//        return sensor.isPresent() ? sensor : first(Humidity.class);
-//    }
-//
-//    public Sensor getLightAmbient() {
-//        Sensor sensor = first(LightAmbientV3.class);
-//        sensor = sensor.isPresent() ? sensor : first(LightAmbientV2.class);
-//        return sensor.isPresent() ? sensor : first(LightAmbient.class);
-//    }
-//
-//    public Sensor getMotionDetector() {
-//        Sensor sensor = first(MotionDetectorV2.class);
-//        return sensor.isPresent() ? sensor : first(MotionDetector.class);
-//    }
-//
-//    public Sensor getSoundPressure() {
-//        return first(SoundPressure.class);
-//    }
-//
-//    public Sensor getTemperature() {
-//        Sensor sensor = first(TemperatureV2.class);
-//        return sensor.isPresent() ? sensor : first(Temperature.class);
-//    }
-//
-//    public Sensor getVoltageCurrent() {
-//        //TODO: VoltageCurrent
-//        return first(VoltageCurrentV2.class);
-//    }
-//
-//    public Sensor getDistanceIR() {
-//        Sensor sensor = first(DistanceIRV2.class);
-//        return sensor.isPresent() ? sensor : first(DistanceIR.class);
-//    }
 
     public synchronized Sensor first(final Class<?> sensorOrDevice) {
         List<Sensor> sensor = sensor(sensorOrDevice);

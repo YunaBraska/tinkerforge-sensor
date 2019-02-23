@@ -3,7 +3,7 @@ package berlin.yuna.tinkerforgesensor.generator;
 
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.SensorListBasic;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;

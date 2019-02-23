@@ -2,12 +2,11 @@ package berlin.yuna.tinkerforgesensor.example;
 
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.timePassed;
 
-public class Distance_to_SpeakerSonar_Example {
+public class Distance_to_SpeakerSonar_Example extends Helper {
 
     private static SensorList<Sensor> sensorList;
 

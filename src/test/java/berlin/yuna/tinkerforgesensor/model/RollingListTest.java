@@ -1,5 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model;
 
+import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import org.junit.Before;
 import org.junit.Test;
 

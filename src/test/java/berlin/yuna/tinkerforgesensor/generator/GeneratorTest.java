@@ -2,7 +2,7 @@ package berlin.yuna.tinkerforgesensor.generator;
 
 
 import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import org.junit.Test;
 import org.reflections.Reflections;
 

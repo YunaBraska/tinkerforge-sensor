@@ -1,17 +1,17 @@
 package berlin.yuna.hackerschool;
 
 import berlin.yuna.tinkerforgesensor.example.ConnectionAndPrintValues_Example;
+import berlin.yuna.tinkerforgesensor.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.driver.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 import static java.lang.String.format;
 
-public class HackerSchool_1 extends TinkerForgeUtil {
+public class HackerSchool_1 extends Helper {
 
     public static SensorList<Sensor> sensorList = new SensorList<>();
 

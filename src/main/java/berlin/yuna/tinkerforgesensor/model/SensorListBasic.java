@@ -1,17 +1,20 @@
 package berlin.yuna.tinkerforgesensor.model;
 
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Default;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Comparator.comparingInt;
@@ -31,32 +34,29 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized Sensor first(final Class<?> sensorOrDevice) {
-        List<Sensor> sensor = sensor(sensorOrDevice);
-        return sensor.isEmpty() ? getDefault(sensorOrDevice) : sensor.get(0);
+        return getSensorNumber(sensorOrDevice, 0);
     }
 
     public synchronized Sensor second(final Class<?> sensorOrDevice) {
-        List<Sensor> sensors = sensor(sensorOrDevice);
-        return sensors.size() > 1? sensor(sensorOrDevice).get(1) : getDefault(sensorOrDevice);
+        return getSensorNumber(sensorOrDevice, 1);
     }
 
     public synchronized Sensor third(final Class<?> sensorOrDevice) {
-        List<Sensor> sensors = sensor(sensorOrDevice);
-        return sensors.size() > 2? sensor(sensorOrDevice).get(2) : getDefault(sensorOrDevice);
+        return getSensorNumber(sensorOrDevice, 2);
     }
 
     public synchronized Sensor fourth(final Class<?> sensorOrDevice) {
-        List<Sensor> sensors = sensor(sensorOrDevice);
-        return sensors.size() > 3? sensor(sensorOrDevice).get(3) : getDefault(sensorOrDevice);
+        return getSensorNumber(sensorOrDevice, 3);
     }
 
-    public synchronized Sensor sensor(final Class<?> sensorOrDevice, final int index) {
-        return sensor(sensorOrDevice).get(index);
+    public synchronized Sensor getSensorNumber(final Class<?> sensorOrDevice, final int number) {
+        List<Sensor> sensors = getSensor(sensorOrDevice);
+        return sensors.size() > number ? getSensor(sensorOrDevice).get(number) : getDefault(sensorOrDevice);
     }
 
-    public synchronized List<Sensor> sensor(final Class<?> sensorOrDevice) {
+    public synchronized List<Sensor> getSensor(final Class<?> sensorOrDevice) {
         waitForUnlock(10101);
-        return stream().filter(sensor -> sensor.is(sensorOrDevice)).sorted(comparingInt(Sensor::port)).collect(toList());
+        return stream().filter(sensor -> sensor.isClassType(sensorOrDevice)).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
     public Double valueDecimal(final ValueType sensorValueType) {
@@ -68,8 +68,17 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return result == null ? null : result.doubleValue();
     }
 
+    public synchronized Long value(final ValueType valueType, final Sensor sensor, final Long fallback) {
+        Long result = values(valueType).get(sensor);
+        return result == null ? fallback : result;
+    }
+
     public synchronized Long value(final ValueType valueType) {
         return value(valueType, 0L);
+    }
+
+    public synchronized Long value(final ValueType valueType, final Sensor sensor) {
+        return value(valueType, sensor, null);
     }
 
     public synchronized Long value(final ValueType valueType, final Long fallback) {
@@ -90,7 +99,6 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
             if (sensorValues != null && !sensorValues.isEmpty()) {
                 result.put(sensor, sensorValues.getLast());
             }
-
         }
         return result;
     }

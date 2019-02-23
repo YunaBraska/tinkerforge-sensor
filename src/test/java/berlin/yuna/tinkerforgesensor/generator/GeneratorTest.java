@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.Character.toUpperCase;
+
 public class GeneratorTest {
 
     @Test
@@ -20,10 +22,10 @@ public class GeneratorTest {
         File targetDeviceProviderFile = new File(System.getProperty("user.dir"), "src/main/resources/META-INF/services/com.tinkerforge.DeviceProvider");
         File targetSourceDir = new File("src/main/java");
 
+        GeneratorEnumValueType.generate();
         GeneratorSensorRegistry.generate(sensorList).writeTo(targetSourceDir);
         GeneratorSensorList.generate(sensorList).writeTo(targetSourceDir);
         GeneratorDeviceProvider.generate(targetDeviceProviderFile);
-        GeneratorEnumValueType.generate();
     }
 
     private List<Class<? extends Sensor>> getSensorList() {
@@ -31,6 +33,20 @@ public class GeneratorTest {
         List<Class<? extends Sensor>> sensorList = new ArrayList<>(reflections.getSubTypesOf(Sensor.class));
         sensorList.sort(Comparator.comparing(Class::getSimpleName));
         return sensorList;
+    }
+
+    static String toHumanReadable(final Enum<?> anEnum, boolean startUpperCase) {
+        char[] chars = anEnum.toString().toLowerCase().toCharArray();
+        if (startUpperCase) {
+            chars[0] = toUpperCase(chars[0]);
+        }
+        for (int i = 1; i < chars.length; i++) {
+            char prev = chars[i - 1];
+            if (prev == '_') {
+                chars[i] = toUpperCase(chars[i]);
+            }
+        }
+        return new String(chars).replace("_", "");
     }
 
 }

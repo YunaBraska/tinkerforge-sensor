@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.toHumanReadable;
 import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
@@ -102,20 +103,6 @@ public class GeneratorEnumValueType {
         return Files.find(Paths.get(System.getProperty("user.dir")),
                 Integer.MAX_VALUE, (filePath, fileAttr) -> fileAttr.isRegularFile())
                 .filter(path -> path.toString().endsWith(format("%s/%s.java", packageName.replace(".", "/"), className))).collect(Collectors.toList()).get(0);
-    }
-
-    private static String toHumanReadable(final Enum<?> anEnum, boolean startUpperCase) {
-        char[] chars = anEnum.toString().toLowerCase().toCharArray();
-        if (startUpperCase) {
-            chars[0] = toUpperCase(chars[0]);
-        }
-        for (int i = 1; i < chars.length; i++) {
-            char prev = chars[i - 1];
-            if (prev == '_') {
-                chars[i] = toUpperCase(chars[i]);
-            }
-        }
-        return new String(chars).replace("_", "");
     }
 
     private static String firstLetterLow(final String input) {

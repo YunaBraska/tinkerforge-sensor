@@ -161,9 +161,14 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is a type of {@link Sensor<T>} or {@link Device}
      */
-    public boolean is(Class<?> sensorOrDevice) {
+    public boolean isClassType(Class<?> sensorOrDevice) {
         return (getClass() == sensorOrDevice || getType() == sensorOrDevice);
     }
+
+    public boolean is(Sensor<T> sensor) {
+      return sensor != null && sensor.uid.equals(uid);
+    }
+
 
     /**
      * For automation to know if its worth to call status led function

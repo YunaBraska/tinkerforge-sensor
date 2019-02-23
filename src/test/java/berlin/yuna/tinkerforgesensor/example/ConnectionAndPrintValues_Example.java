@@ -35,7 +35,7 @@ public class ConnectionAndPrintValues_Example extends Helper {
         }
         LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
         for (ValueType valueType : ValueType.values()) {
-            Long value = sensorList.value(valueType, null);
+            Long value = sensorList.value(valueType, (Long) null);
             if (value != null) {
                 values.put(valueType, value);
             }

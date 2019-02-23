@@ -4,19 +4,13 @@ package berlin.yuna.tinkerforgesensor.generator;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.SensorListBasic;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeSpec;
-import com.squareup.javapoet.TypeVariableName;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import com.squareup.javapoet.*;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.toHumanReadable;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
 public class GeneratorSensorList {
@@ -42,18 +36,44 @@ public class GeneratorSensorList {
             String packageName = sensorList.get(0).getPackage().getName();
             List<Class<? extends Sensor>> sensorVersions = getSensorVersions(sensorList, sensorName, packageName);
 
-            MethodSpec.Builder sensorMethod = MethodSpec.methodBuilder("get" + getBasicSensorName(sensorName))
+            MethodSpec.Builder method_getSensorXY = MethodSpec.methodBuilder("get" + getBasicSensorName(sensorName))
                     .addModifiers(PUBLIC)
                     .returns(Sensor.class);
-            sensorListClass.addMethod(generateMethodContent(sensorVersions, sensorMethod).build());
+            sensorListClass.addMethod(generateMethodContent(sensorVersions, method_getSensorXY).build());
+            sensorListClass.addMethod(method_getSensorNumber(sensor));
             //REMOVE SENSORS VARIANTS FROM LIST
             for (Class<? extends Sensor> sensorVersion : sensorVersions) {
                 sensorList.remove(sensorVersion);
             }
         }
 
+        //CREATE ENUM VALUES AND METHODS
+        for (ValueType valueType : ValueType.values()) {
+            sensorListClass.addMethod(method_getValue(valueType));
+        }
+
         //Path sourceFile = getSourceFile(packageName, className);
         return JavaFile.builder(SensorList.class.getPackage().getName(), sensorListClass.build()).build();
+    }
+
+    //TODO: version less sensor sensorXYNumber(n)
+    private static MethodSpec method_getSensorNumber(final Class<? extends Sensor> sensor) {
+        return MethodSpec.methodBuilder("getSensor" + sensor.getSimpleName())
+                .addModifiers(PUBLIC)
+                .returns(Sensor.class)
+                .addParameter(int.class, "number")
+                .addStatement("return getSensorNumber($T.class, number)", sensor)
+                .build();
+    }
+
+    private static MethodSpec method_getValue(final ValueType valueType) {
+        return MethodSpec.methodBuilder("getValue" + toHumanReadable(valueType, true))
+                .addModifiers(PUBLIC)
+                .returns(Long.class)
+                //.addStatement("$T<$T, $T> result = values($T)", HashMap.class, Sensor.class, Long.class, TypeVariableName.get(valueType.toString(), ValueType.class))
+                .addStatement("$T<$T, $T> result = values($T.$L)", HashMap.class, Sensor.class, Long.class, ValueType.class, valueType.name())
+                .addStatement("return result.isEmpty()? 0L : result.values().iterator().next()")
+                .build();
     }
 
     private static MethodSpec.Builder generateMethodContent(final List<Class<? extends Sensor>> sensorVersions, final MethodSpec.Builder methodBuilder) {

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Comparator.comparingInt;

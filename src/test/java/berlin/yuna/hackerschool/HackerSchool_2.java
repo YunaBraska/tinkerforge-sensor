@@ -4,6 +4,7 @@ import berlin.yuna.tinkerforgesensor.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.tinkerforgesensor.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 

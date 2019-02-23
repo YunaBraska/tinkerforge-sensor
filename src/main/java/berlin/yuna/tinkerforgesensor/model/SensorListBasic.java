@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Comparator.comparingInt;
@@ -36,15 +37,18 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized Sensor second(final Class<?> sensorOrDevice) {
-        return sensor(sensorOrDevice).get(1);
+        List<Sensor> sensors = sensor(sensorOrDevice);
+        return sensors.size() > 1? sensor(sensorOrDevice).get(1) : getDefault(sensorOrDevice);
     }
 
     public synchronized Sensor third(final Class<?> sensorOrDevice) {
-        return sensor(sensorOrDevice).get(2);
+        List<Sensor> sensors = sensor(sensorOrDevice);
+        return sensors.size() > 2? sensor(sensorOrDevice).get(2) : getDefault(sensorOrDevice);
     }
 
     public synchronized Sensor fourth(final Class<?> sensorOrDevice) {
-        return sensor(sensorOrDevice).get(3);
+        List<Sensor> sensors = sensor(sensorOrDevice);
+        return sensors.size() > 3? sensor(sensorOrDevice).get(3) : getDefault(sensorOrDevice);
     }
 
     public synchronized Sensor sensor(final Class<?> sensorOrDevice, final int index) {

@@ -70,7 +70,6 @@ public class GeneratorSensorList {
         return MethodSpec.methodBuilder("getValue" + toHumanReadable(valueType, true))
                 .addModifiers(PUBLIC)
                 .returns(Long.class)
-                //.addStatement("$T<$T, $T> result = values($T)", HashMap.class, Sensor.class, Long.class, TypeVariableName.get(valueType.toString(), ValueType.class))
                 .addStatement("$T<$T, $T> result = values($T.$L)", HashMap.class, Sensor.class, Long.class, ValueType.class, valueType.name())
                 .addStatement("return result.isEmpty()? 0L : result.values().iterator().next()")
                 .build();

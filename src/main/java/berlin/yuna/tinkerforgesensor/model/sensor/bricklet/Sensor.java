@@ -1,10 +1,10 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
-import berlin.yuna.tinkerforgesensor.model.type.RollingList;
-import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.RollingList;
+import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
@@ -161,12 +161,17 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is a type of {@link Sensor<T>} or {@link Device}
      */
-    public boolean isClassType(Class<?> sensorOrDevice) {
-        return (getClass() == sensorOrDevice || getType() == sensorOrDevice);
+    public boolean isClassType(Class<?>... sensorOrDevices) {
+        for (Class<?> sensorOrDevice : sensorOrDevices) {
+            if (getClass() == sensorOrDevice || getType() == sensorOrDevice) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean is(Sensor<T> sensor) {
-      return sensor != null && sensor.uid.equals(uid);
+        return sensor != null && sensor.uid.equals(uid);
     }
 
 

@@ -7,14 +7,12 @@ import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static java.util.Comparator.comparingInt;
@@ -33,30 +31,35 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return stream().filter(predicate).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
+    @Deprecated
     public synchronized Sensor first(final Class<?> sensorOrDevice) {
-        return getSensorNumber(sensorOrDevice, 0);
+        return getSensor(0, sensorOrDevice);
     }
 
+    @Deprecated
     public synchronized Sensor second(final Class<?> sensorOrDevice) {
-        return getSensorNumber(sensorOrDevice, 1);
+        return getSensor(1, sensorOrDevice);
     }
 
+    @Deprecated
     public synchronized Sensor third(final Class<?> sensorOrDevice) {
-        return getSensorNumber(sensorOrDevice, 2);
+        return getSensor(2, sensorOrDevice);
     }
 
+    @Deprecated
     public synchronized Sensor fourth(final Class<?> sensorOrDevice) {
-        return getSensorNumber(sensorOrDevice, 3);
+        return getSensor(3, sensorOrDevice);
     }
 
-    public synchronized Sensor getSensorNumber(final Class<?> sensorOrDevice, final int number) {
-        List<Sensor> sensors = getSensor(sensorOrDevice);
-        return sensors.size() > number ? getSensor(sensorOrDevice).get(number) : getDefault(sensorOrDevice);
+    //TODO: Deprecated: sensorOrDevices should be only sensor
+    public synchronized Sensor getSensor(final int number, final Class<?>... sensorOrDevices) {
+        List<Sensor> sensors = getSensor(sensorOrDevices);
+        return sensors.size() > number ? sensors.get(number) : getDefault(sensorOrDevices[0]);
     }
 
-    public synchronized List<Sensor> getSensor(final Class<?> sensorOrDevice) {
+    public synchronized List<Sensor> getSensor(final Class<?>... sensorOrDevices) {
         waitForUnlock(10101);
-        return stream().filter(sensor -> sensor.isClassType(sensorOrDevice)).sorted(comparingInt(Sensor::port)).collect(toList());
+        return stream().filter(sensor -> sensor.isClassType(sensorOrDevices)).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
     public Double valueDecimal(final ValueType sensorValueType) {

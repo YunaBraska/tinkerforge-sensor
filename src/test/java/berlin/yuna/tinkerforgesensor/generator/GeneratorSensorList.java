@@ -5,9 +5,18 @@ import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.SensorListBasic;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeVariableName;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.toHumanReadable;
@@ -32,15 +41,18 @@ public class GeneratorSensorList {
         //CREATE METHODS
         while (!sensorList.isEmpty()) {
             Class<? extends Sensor> sensor = sensorList.iterator().next();
-            String sensorName = sensor.getSimpleName();
-            String packageName = sensorList.get(0).getPackage().getName();
-            List<Class<? extends Sensor>> sensorVersions = getSensorVersions(sensorList, sensorName, packageName);
+            List<Class<? extends Sensor>> sensorVersions = getSensorVersions(sensor, sensorList);
 
-            MethodSpec.Builder method_getSensorXY = MethodSpec.methodBuilder("get" + getBasicSensorName(sensorName))
+            MethodSpec method_getSensorXY = MethodSpec.methodBuilder("get" + getBasicSensorName(sensor.getSimpleName()))
                     .addModifiers(PUBLIC)
-                    .returns(Sensor.class);
-            sensorListClass.addMethod(generateMethodContent(sensorVersions, method_getSensorXY).build());
-            sensorListClass.addMethod(method_getSensorNumber(sensor));
+                    .returns(Sensor.class).addStatement("return get$N(0)", getBasicSensorName(sensor.getSimpleName())).build();
+
+
+            sensorListClass.addMethod(method_getSensorXY);
+
+            sensorListClass.addMethod(method_getSensorXYNumber(sensor, sensorVersions));
+
+
             //REMOVE SENSORS VARIANTS FROM LIST
             for (Class<? extends Sensor> sensorVersion : sensorVersions) {
                 sensorList.remove(sensorVersion);
@@ -56,14 +68,20 @@ public class GeneratorSensorList {
         return JavaFile.builder(SensorList.class.getPackage().getName(), sensorListClass.build()).build();
     }
 
-    //TODO: version less sensor sensorXYNumber(n)
-    private static MethodSpec method_getSensorNumber(final Class<? extends Sensor> sensor) {
-        return MethodSpec.methodBuilder("getSensor" + sensor.getSimpleName())
+    private static MethodSpec method_getSensorXYNumber(final Class<? extends Sensor> sensor, final List<Class<? extends Sensor>> sensorVersions) {
+        MethodSpec.Builder method = MethodSpec.methodBuilder("get" + getBasicSensorName(sensor.getSimpleName()))
                 .addModifiers(PUBLIC)
                 .returns(Sensor.class)
-                .addParameter(int.class, "number")
-                .addStatement("return getSensorNumber($T.class, number)", sensor)
-                .build();
+                .addParameter(int.class, "number");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("return getSensor(number");
+        for (Class<? extends Sensor> sensorVersion : sensorVersions) {
+            sb.append(", $T.class");
+        }
+        sb.append(")");
+
+        return method.addStatement(sb.toString(), sensorVersions.toArray()).build();
     }
 
     private static MethodSpec method_getValue(final ValueType valueType) {
@@ -75,33 +93,9 @@ public class GeneratorSensorList {
                 .build();
     }
 
-    private static MethodSpec.Builder generateMethodContent(final List<Class<? extends Sensor>> sensorVersions, final MethodSpec.Builder methodBuilder) {
-        String superClassNameLow = firstLetterLow(SUPER_CLASS_NAME);
-        Iterator<Class<? extends Sensor>> versionIterator = sensorVersions.iterator();
-
-        if (sensorVersions.size() == 1) {
-            methodBuilder.addStatement("return first($T.class)", next(versionIterator));
-        } else {
-            methodBuilder.addStatement("$N $N = first($T.class)", SUPER_CLASS_NAME, superClassNameLow, next(versionIterator));
-            while (versionIterator.hasNext()) {
-                ClassName className = next(versionIterator);
-                if (versionIterator.hasNext()) {
-                    methodBuilder.addStatement("$N = $N.isPresent() ? $N : first($T.class)", superClassNameLow, superClassNameLow, superClassNameLow, className);
-                } else {
-                    methodBuilder.addStatement("return $N.isPresent() ? $N : first($T.class)", superClassNameLow, superClassNameLow, className);
-                }
-            }
-        }
-        return methodBuilder;
-    }
-
-    private static ClassName next(Iterator<Class<? extends Sensor>> versionIterator) {
-        Class<? extends Sensor> next = versionIterator.next();
-        return ClassName.get(next.getPackage().getName(), next.getSimpleName());
-    }
-
-    private static List<Class<? extends Sensor>> getSensorVersions(final List<Class<? extends Sensor>> sensorList, final String
-            className, final String packageName) {
+    private static List<Class<? extends Sensor>> getSensorVersions(Class<? extends Sensor> sensor, final List<Class<? extends Sensor>> sensorList) {
+        String className = sensor.getSimpleName();
+        String packageName = sensor.getPackage().getName();
         String name = getBasicSensorName(className);
         List<Class<? extends Sensor>> sensorVersionList = sensorList.stream()
                 .filter(sensorClass -> packageName.equals(sensorClass.getPackage().getName()))

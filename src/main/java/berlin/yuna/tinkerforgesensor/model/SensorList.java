@@ -42,196 +42,187 @@ import java.util.HashMap;
  */
 public class SensorList<T extends Sensor> extends SensorListBasic<T> {
   public Sensor getTilt() {
-    return first(Tilt.class);
+    return getTilt(0);
   }
 
-  public Sensor getSensorTilt(int number) {
-    return getSensorNumber(Tilt.class, number);
+  public Sensor getTilt(int number) {
+    return getSensor(number, Tilt.class);
   }
 
   public Sensor getTemperature() {
-    Sensor sensor = first(TemperatureV2.class);
-    return sensor.isPresent() ? sensor : first(Temperature.class);
+    return getTemperature(0);
   }
 
-  public Sensor getSensorTemperatureV2(int number) {
-    return getSensorNumber(TemperatureV2.class, number);
+  public Sensor getTemperature(int number) {
+    return getSensor(number, TemperatureV2.class, Temperature.class);
   }
 
   public Sensor getSpeaker() {
-    return first(Speaker.class);
+    return getSpeaker(0);
   }
 
-  public Sensor getSensorSpeaker(int number) {
-    return getSensorNumber(Speaker.class, number);
+  public Sensor getSpeaker(int number) {
+    return getSensor(number, Speaker.class);
   }
 
   public Sensor getSoundIntensity() {
-    return first(SoundIntensity.class);
+    return getSoundIntensity(0);
   }
 
-  public Sensor getSensorSoundIntensity(int number) {
-    return getSensorNumber(SoundIntensity.class, number);
+  public Sensor getSoundIntensity(int number) {
+    return getSensor(number, SoundIntensity.class);
   }
 
   public Sensor getRotary() {
-    return first(RotaryV2.class);
+    return getRotary(0);
   }
 
-  public Sensor getSensorRotaryV2(int number) {
-    return getSensorNumber(RotaryV2.class, number);
+  public Sensor getRotary(int number) {
+    return getSensor(number, RotaryV2.class);
   }
 
   public Sensor getMotionDetector() {
-    Sensor sensor = first(MotionDetectorV2.class);
-    return sensor.isPresent() ? sensor : first(MotionDetector.class);
+    return getMotionDetector(0);
   }
 
-  public Sensor getSensorMotionDetectorV2(int number) {
-    return getSensorNumber(MotionDetectorV2.class, number);
+  public Sensor getMotionDetector(int number) {
+    return getSensor(number, MotionDetectorV2.class, MotionDetector.class);
   }
 
   public Sensor getMaster() {
-    return first(Master.class);
+    return getMaster(0);
   }
 
-  public Sensor getSensorMaster(int number) {
-    return getSensorNumber(Master.class, number);
+  public Sensor getMaster(int number) {
+    return getSensor(number, Master.class);
   }
 
   public Sensor getLightUv() {
-    Sensor sensor = first(LightUvV2.class);
-    return sensor.isPresent() ? sensor : first(LightUv.class);
+    return getLightUv(0);
   }
 
-  public Sensor getSensorLightUvV2(int number) {
-    return getSensorNumber(LightUvV2.class, number);
+  public Sensor getLightUv(int number) {
+    return getSensor(number, LightUvV2.class, LightUv.class);
   }
 
   public Sensor getLightColor() {
-    return first(LightColor.class);
+    return getLightColor(0);
   }
 
-  public Sensor getSensorLightColor(int number) {
-    return getSensorNumber(LightColor.class, number);
+  public Sensor getLightColor(int number) {
+    return getSensor(number, LightColor.class);
   }
 
   public Sensor getLightAmbient() {
-    Sensor sensor = first(LightAmbientV3.class);
-    sensor = sensor.isPresent() ? sensor : first(LightAmbientV2.class);
-    return sensor.isPresent() ? sensor : first(LightAmbient.class);
+    return getLightAmbient(0);
   }
 
-  public Sensor getSensorLightAmbientV3(int number) {
-    return getSensorNumber(LightAmbientV3.class, number);
+  public Sensor getLightAmbient(int number) {
+    return getSensor(number, LightAmbientV3.class, LightAmbientV2.class, LightAmbient.class);
   }
 
   public Sensor getIO16() {
-    Sensor sensor = first(IO16V2.class);
-    return sensor.isPresent() ? sensor : first(IO16.class);
+    return getIO16(0);
   }
 
-  public Sensor getSensorIO16V2(int number) {
-    return getSensorNumber(IO16V2.class, number);
+  public Sensor getIO16(int number) {
+    return getSensor(number, IO16V2.class, IO16.class);
   }
 
   public Sensor getIMU2() {
-    return first(IMU2.class);
+    return getIMU2(0);
   }
 
-  public Sensor getSensorIMU2(int number) {
-    return getSensorNumber(IMU2.class, number);
+  public Sensor getIMU2(int number) {
+    return getSensor(number, IMU2.class);
   }
 
   public Sensor getIMU() {
-    return first(IMU.class);
+    return getIMU(0);
   }
 
-  public Sensor getSensorIMU(int number) {
-    return getSensorNumber(IMU.class, number);
+  public Sensor getIMU(int number) {
+    return getSensor(number, IMU.class);
   }
 
   public Sensor getHumidity() {
-    Sensor sensor = first(HumidityV2.class);
-    return sensor.isPresent() ? sensor : first(Humidity.class);
+    return getHumidity(0);
   }
 
-  public Sensor getSensorHumidityV2(int number) {
-    return getSensorNumber(HumidityV2.class, number);
+  public Sensor getHumidity(int number) {
+    return getSensor(number, HumidityV2.class, Humidity.class);
   }
 
   public Sensor getDistanceUS() {
-    return first(DistanceUS.class);
+    return getDistanceUS(0);
   }
 
-  public Sensor getSensorDistanceUS(int number) {
-    return getSensorNumber(DistanceUS.class, number);
+  public Sensor getDistanceUS(int number) {
+    return getSensor(number, DistanceUS.class);
   }
 
   public Sensor getDistanceIR() {
-    Sensor sensor = first(DistanceIRV2.class);
-    return sensor.isPresent() ? sensor : first(DistanceIR.class);
+    return getDistanceIR(0);
   }
 
-  public Sensor getSensorDistanceIRV2(int number) {
-    return getSensorNumber(DistanceIRV2.class, number);
+  public Sensor getDistanceIR(int number) {
+    return getSensor(number, DistanceIRV2.class, DistanceIR.class);
   }
 
   public Sensor getDisplaySegment() {
-    return first(DisplaySegment.class);
+    return getDisplaySegment(0);
   }
 
-  public Sensor getSensorDisplaySegment(int number) {
-    return getSensorNumber(DisplaySegment.class, number);
+  public Sensor getDisplaySegment(int number) {
+    return getSensor(number, DisplaySegment.class);
   }
 
   public Sensor getDisplayLcd20x4() {
-    return first(DisplayLcd20x4.class);
+    return getDisplayLcd20x4(0);
   }
 
-  public Sensor getSensorDisplayLcd20x4(int number) {
-    return getSensorNumber(DisplayLcd20x4.class, number);
+  public Sensor getDisplayLcd20x4(int number) {
+    return getSensor(number, DisplayLcd20x4.class);
   }
 
   public Sensor getDefault() {
-    return first(Default.class);
+    return getDefault(0);
   }
 
-  public Sensor getSensorDefault(int number) {
-    return getSensorNumber(Default.class, number);
+  public Sensor getDefault(int number) {
+    return getSensor(number, Default.class);
   }
 
   public Sensor getDC() {
-    return first(DC.class);
+    return getDC(0);
   }
 
-  public Sensor getSensorDC(int number) {
-    return getSensorNumber(DC.class, number);
+  public Sensor getDC(int number) {
+    return getSensor(number, DC.class);
   }
 
   public Sensor getButtonRGB() {
-    return first(ButtonRGB.class);
+    return getButtonRGB(0);
   }
 
-  public Sensor getSensorButtonRGB(int number) {
-    return getSensorNumber(ButtonRGB.class, number);
+  public Sensor getButtonRGB(int number) {
+    return getSensor(number, ButtonRGB.class);
   }
 
   public Sensor getBarometer() {
-    Sensor sensor = first(BarometerV2.class);
-    return sensor.isPresent() ? sensor : first(Barometer.class);
+    return getBarometer(0);
   }
 
-  public Sensor getSensorBarometerV2(int number) {
-    return getSensorNumber(BarometerV2.class, number);
+  public Sensor getBarometer(int number) {
+    return getSensor(number, BarometerV2.class, Barometer.class);
   }
 
   public Sensor getAirQuality() {
-    return first(AirQuality.class);
+    return getAirQuality(0);
   }
 
-  public Sensor getSensorAirQuality(int number) {
-    return getSensorNumber(AirQuality.class, number);
+  public Sensor getAirQuality(int number) {
+    return getSensor(number, AirQuality.class);
   }
 
   public Long getValueAll() {

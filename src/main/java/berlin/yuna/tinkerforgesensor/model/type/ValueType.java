@@ -53,11 +53,7 @@ public enum ValueType {
 
   SOUND_SPECTRUM_OFFSET(SOUND),
 
-  BEEP_TIME(SOUND),
-
-  BEEP_FREQUENCY(SOUND),
-
-  BEEP_WAIT(SOUND),
+  BEEP_ACTIVE(SOUND),
 
   SOUND_INTENSITY(SOUND),
 
@@ -383,28 +379,12 @@ public enum ValueType {
     return this.is(SOUND_SPECTRUM_OFFSET) || (this.parent != null && this.parent.contains(SOUND_SPECTRUM_OFFSET));
   }
 
-  public boolean isBeepTime() {
-    return this == BEEP_TIME;
+  public boolean isBeepActive() {
+    return this == BEEP_ACTIVE;
   }
 
-  public boolean containsBeepTime() {
-    return this.is(BEEP_TIME) || (this.parent != null && this.parent.contains(BEEP_TIME));
-  }
-
-  public boolean isBeepFrequency() {
-    return this == BEEP_FREQUENCY;
-  }
-
-  public boolean containsBeepFrequency() {
-    return this.is(BEEP_FREQUENCY) || (this.parent != null && this.parent.contains(BEEP_FREQUENCY));
-  }
-
-  public boolean isBeepWait() {
-    return this == BEEP_WAIT;
-  }
-
-  public boolean containsBeepWait() {
-    return this.is(BEEP_WAIT) || (this.parent != null && this.parent.contains(BEEP_WAIT));
+  public boolean containsBeepActive() {
+    return this.is(BEEP_ACTIVE) || (this.parent != null && this.parent.contains(BEEP_ACTIVE));
   }
 
   public boolean isSoundIntensity() {

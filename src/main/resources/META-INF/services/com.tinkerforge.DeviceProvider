@@ -14,11 +14,13 @@ com.tinkerforge.BrickletLCD20x4Provider
 com.tinkerforge.BrickletHumidityV2Provider
 com.tinkerforge.BrickletDistanceUSProvider
 com.tinkerforge.BrickletHumidityProvider
+com.tinkerforge.BrickletAccelerometerV2Provider
 com.tinkerforge.BrickletIO16Provider
 com.tinkerforge.BrickletIO16V2Provider
 com.tinkerforge.BrickMasterProvider
 com.tinkerforge.BrickletRGBLEDButtonProvider
 com.tinkerforge.BrickletDistanceIRProvider
+com.tinkerforge.BrickletAccelerometerProvider
 com.tinkerforge.BrickletBarometerProvider
 com.tinkerforge.BrickletAirQualityProvider
 com.tinkerforge.BrickletUVLightV2Provider

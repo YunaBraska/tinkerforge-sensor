@@ -6,9 +6,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_FREQUENCY;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_TIME;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_WAIT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
@@ -29,6 +27,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 
     @Override
     protected Sensor<BrickletPiezoSpeaker> initListener() {
+        device.addBeepFinishedListener(() -> sendEvent(BEEP_ACTIVE, 0L));
         return this;
     }
 
@@ -99,6 +98,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 
     private void morse(Object value) {
         try {
+            sendEvent(BEEP_ACTIVE, 1L);
             device.morseCode((String) value, frequency);
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -108,6 +108,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     private void beep(final int duration, final int frequency, final int wait) {
         try {
             if (duration > 0) {
+                sendEvent(BEEP_ACTIVE, 1L);
                 device.beep(duration, frequency);
                 waitForEnd(wait);
             }
@@ -130,7 +131,6 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         int result = this.duration;
         if (values.length > 0 && values[0] instanceof Number) {
             result = ((Number) values[0]).intValue();
-            sendEvent(BEEP_TIME, (long) result);
         }
         this.duration = result;
         return result;
@@ -141,7 +141,6 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         if (values.length > 1 && values[1] instanceof Number) {
             int frequency_tmp = ((Number) values[1]).intValue();
             result = frequency_tmp < 7101 && frequency_tmp > 585 ? frequency_tmp : frequency;
-            sendEvent(BEEP_FREQUENCY, (long) result);
         }
         this.frequency = result;
         return result;
@@ -159,7 +158,6 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
             result = (Boolean) values[1] ? duration : -1;
         }
         this.wait = result;
-        sendEvent(BEEP_WAIT, (long) result);
         return wait;
     }
 }

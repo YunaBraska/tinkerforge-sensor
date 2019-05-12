@@ -355,18 +355,8 @@ public class SensorList<T extends Sensor> extends SensorListBasic<T> {
     return result.isEmpty()? 0L : result.values().iterator().next();
   }
 
-  public Long getValueBeepTime() {
-    HashMap<Sensor, Long> result = values(ValueType.BEEP_TIME);
-    return result.isEmpty()? 0L : result.values().iterator().next();
-  }
-
-  public Long getValueBeepFrequency() {
-    HashMap<Sensor, Long> result = values(ValueType.BEEP_FREQUENCY);
-    return result.isEmpty()? 0L : result.values().iterator().next();
-  }
-
-  public Long getValueBeepWait() {
-    HashMap<Sensor, Long> result = values(ValueType.BEEP_WAIT);
+  public Long getValueBeepActive() {
+    HashMap<Sensor, Long> result = values(ValueType.BEEP_ACTIVE);
     return result.isEmpty()? 0L : result.values().iterator().next();
   }
 

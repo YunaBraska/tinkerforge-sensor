@@ -17,7 +17,7 @@ public class AmbientLight_to_DisplaySegment_Example {
 
     private static void onSensorEvent(final Long value, final ValueType type) {
         if (type.isLightLux()) {
-            sensorList.getDisplaySegment().value(value / 100 + "lx");
+            sensorList.getDisplaySegment().value(value / 100 + "LX");
         }
     }
 }

@@ -57,6 +57,7 @@ public class SensorListener implements Closeable {
     private final String host;
     private final String password;
     private final Integer port;
+    private long lastConnect = System.currentTimeMillis();
     private final int timeoutMs = 3000;
     private final boolean ignoreConnectionError;
     private final String connectionHandlerName = getClass().getSimpleName() + "_" + UUID.randomUUID();
@@ -153,6 +154,10 @@ public class SensorListener implements Closeable {
         createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.getDefault(), System.currentTimeMillis(), PING));
     }
 
+    public boolean isConnecting() {
+        return (lastConnect + (timeoutMs / 2)) > System.currentTimeMillis();
+    }
+
     /**
      * disconnects all {@link Sensor} from the given host see {@link SensorListener#close()}
      */
@@ -221,6 +226,7 @@ public class SensorListener implements Closeable {
     }
 
     private void initSensor(final String uid, final String connectedUid, final int deviceIdentifier, final ValueType enumerationType) throws DeviceNotSupportedException, NetworkConnectionException {
+        lastConnect = System.currentTimeMillis();
         Sensor sensor;
         sensor = Sensor.newInstance(deviceIdentifier, findParent(connectedUid), uid, connection);
         Optional<Sensor> previousSensor = sensorList.stream().filter(s -> s.equals(sensor)).findFirst();

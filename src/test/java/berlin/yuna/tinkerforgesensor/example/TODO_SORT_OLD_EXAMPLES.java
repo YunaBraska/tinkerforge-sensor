@@ -42,7 +42,7 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
     }
 
     public static void displayAlphabet(final SensorList<Sensor> sensorList, final long speedMs) {
-        Sensor display = sensorList.first(BrickletSegmentDisplay4x7.class);
+        Sensor display = sensorList.getDisplaySegment();
         if (display.isPresent()) {
             for (char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
                 display.value(Character.toString(alphabet));
@@ -53,7 +53,7 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
 
     public static void displayTimeoutMessage(final SensorList<Sensor> sensorList, final long timeoutMs) {
         try {
-            Sensor sensor = sensorList.first(BrickletLCD20x4.class);
+            Sensor sensor = sensorList.getDisplayLcd20x4();
             if (isPresent(sensor)) {
                 BrickletLCD20x4 device = (BrickletLCD20x4) sensor.device;
                 device.setDefaultText((short) 0, "|                  |");

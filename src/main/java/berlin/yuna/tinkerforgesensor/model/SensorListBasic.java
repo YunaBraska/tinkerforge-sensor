@@ -7,7 +7,6 @@ import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -29,26 +28,6 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
     public synchronized List<Sensor> sort(Predicate<? super T> predicate) {
         return stream().filter(predicate).sorted(comparingInt(Sensor::port)).collect(toList());
-    }
-
-    @Deprecated
-    public synchronized Sensor first(final Class<?> sensorOrDevice) {
-        return getSensor(0, sensorOrDevice);
-    }
-
-    @Deprecated
-    public synchronized Sensor second(final Class<?> sensorOrDevice) {
-        return getSensor(1, sensorOrDevice);
-    }
-
-    @Deprecated
-    public synchronized Sensor third(final Class<?> sensorOrDevice) {
-        return getSensor(2, sensorOrDevice);
-    }
-
-    @Deprecated
-    public synchronized Sensor fourth(final Class<?> sensorOrDevice) {
-        return getSensor(3, sensorOrDevice);
     }
 
     //TODO: Deprecated: sensorOrDevices should be only sensor

@@ -21,6 +21,9 @@ public class ConnectionAndPrintValues_Example extends Helper {
             SensorListener sensorListener = new SensorListener("localhost", 4223, true);
             sensorList = sensorListener.sensorList;
             sensorListener.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
+            while (sensorListener.isConnecting()){
+                sleep(128);
+            }
             return sensorListener;
         } catch (NetworkConnectionException e) {
             throw new RuntimeException(e);

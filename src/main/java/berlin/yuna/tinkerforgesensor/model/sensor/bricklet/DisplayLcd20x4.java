@@ -98,7 +98,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     }
 
     @Override
-    protected Sensor<BrickletLCD20x4> flashLed() {
+    public Sensor<BrickletLCD20x4> flashLed() {
         try {
             this.ledAdditionalOn();
             for (int i = 0; i < 7; i++) {

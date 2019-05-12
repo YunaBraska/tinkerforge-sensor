@@ -6,12 +6,18 @@ import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.EAC
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.POST_PROCESS;
 import static java.lang.System.currentTimeMillis;
 
-public class Loop extends AsyncRun {
+public class LoopOld implements Runnable {
 
+    private Thread thread;
+    private boolean running = false;
+
+    private final String name;
     private final long refreshMs;
+    private final Consumer<Long> consumer;
 
-    public Loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
-        super(name, consumer);
+    public LoopOld(final String name, final long refreshMs, final Consumer<Long> consumer) {
+        this.name = name;
+        this.consumer = consumer;
         this.refreshMs = refreshMs;
         this.start();
     }
@@ -51,6 +57,35 @@ public class Loop extends AsyncRun {
                 ticks = 0;
                 frames = 0;
             }
+        }
+    }
+
+    private synchronized void start() {
+        if (running)
+            return;
+        running = true;
+        thread = new Thread(this, name);
+        thread.start();
+    }
+
+    public synchronized void stop() {
+        Object result = TimeoutExecutor.execute(1000, () -> {
+            if (running) {
+                running = false;
+                thread.join();
+            }
+            return !running;
+        });
+        if (result instanceof Throwable) {
+            thread.interrupt();
+        }
+    }
+
+    private void sleep(final long milliSeconds) {
+        try {
+            Thread.sleep(milliSeconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

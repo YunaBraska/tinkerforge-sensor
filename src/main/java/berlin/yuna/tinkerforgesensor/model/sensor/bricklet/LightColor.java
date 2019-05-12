@@ -87,7 +87,7 @@ public class LightColor extends Sensor<BrickletColor> {
     }
 
     @Override
-    protected Sensor<BrickletColor> flashLed() {
+    public Sensor<BrickletColor> flashLed() {
         try {
             for (int i = 0; i < 7; i++) {
                 if (i % 2 == 0) {

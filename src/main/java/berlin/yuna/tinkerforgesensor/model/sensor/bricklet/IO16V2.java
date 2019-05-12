@@ -101,7 +101,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
     }
 
     @Override
-    protected Sensor<BrickletIO16V2> flashLed() {
+    public Sensor<BrickletIO16V2> flashLed() {
         try {
             ledAdditionalOff();
             for (int i = 1; i < 33; i++) {

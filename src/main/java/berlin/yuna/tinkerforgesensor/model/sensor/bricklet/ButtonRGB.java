@@ -103,7 +103,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     @Override
-    protected Sensor<BrickletRGBLEDButton> flashLed() {
+    public Sensor<BrickletRGBLEDButton> flashLed() {
         super.flashLed();
         try {
             ledAdditionalOn();

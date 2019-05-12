@@ -99,7 +99,7 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     }
 
     @Override
-    protected Sensor<BrickletSegmentDisplay4x7> flashLed() {
+    public Sensor<BrickletSegmentDisplay4x7> flashLed() {
         try {
             this.ledAdditionalOn();
             for (int i = 0; i < 9; i++) {

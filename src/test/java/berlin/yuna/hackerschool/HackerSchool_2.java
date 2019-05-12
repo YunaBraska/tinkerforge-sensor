@@ -17,7 +17,7 @@ public class HackerSchool_2 extends Helper {
     public static SensorList<Sensor> sensorList = new SensorList<>();
 
     private static int counter = 0;
-    private static int score = 4;
+
 
     //Start method initializer
     public static void main(String[] args) {
@@ -43,11 +43,10 @@ public class HackerSchool_2 extends Helper {
             Sensor buttonRGB_1 = sensorList.getButtonRGB(0);
             Sensor buttonRGB_2 = sensorList.getButtonRGB(1);
 
-            if(!start){
+            if (!start) {
                 //Reset buttons
                 sensorList.forEach(Sensor::ledStatusOff);
                 sensorList.stream().filter(s -> !s.is(display)).forEach(Sensor::ledAdditionalOff);
-                score = 4;
             }
             if (!start && sensorList.getValueRotary() == 1) {
                 program = 1;
@@ -156,86 +155,117 @@ public class HackerSchool_2 extends Helper {
         }
     }
 
-
-    static int farbe  = 1;
-    public static Color mYellow = new Color(255, 255, 0);
-    public static Color mOrange = new Color(255, 100, 0);
-    public static Color mRed = new Color(255, 0, 0);
-    public static Color mGreen = new Color(0, 255, 0);
-    public static Color mBlue = new Color(0, 255, 255);
-    public static Color mIndigo = new Color(0, 0, 255);
-    public static Color mPurple = new Color(255, 0, 255);
-    public static Color mBlack = new Color(0, 0, 0);
+    private static int score = -1;
+    private static boolean reactionNow = false;
 
     private static void program_reactionGame(final Sensor sensor, final Long value, final ValueType type) {
-        sensorList.getDisplaySegment().value("P" + score);
-        if (type.isButtonPressed() && value == 1 && farbe == 2) {
-            score = score + 1;
-            sensor.value(Color.GREEN);
-            farbe = 3;
-            sleep(500);
-        } else if(type.isButtonPressed() && value == 0) {
-            sensor.value(Color.BLUE);
-            farbe = 1;
+        Sensor displayLcd = sensorList.getDisplayLcd20x4();
+        Sensor displaySegment = sensorList.getDisplaySegment();
+        Sensor buttonRGB = sensorList.getButtonRGB();
+        Sensor speaker = sensorList.getSpeaker();
+
+        //SCORE VIEW
+        if (score > -1) {
+            displaySegment.value("P" + score);
+            displayLcd.value("Score: " + score + " ${space}");
         }
 
-        if (timePassed("yellow",new Random().nextInt(9000) + 1500)){
-            sensorList.getButtonRGB().value(Color.YELLOW);
-            farbe = 2;
+        //GAME END EVENTS
+        if (score == 0) {
+            score = -1;
+            speaker.value(778, 5000, false);
+            displayLcd.value("${1}${space}Game Over! ${space}");
+        } else if (score == 10) {
+            score = -1;
+            displayLcd.value("${1}${space}You Win!${space}");
+            loop("reaction_win", run -> {
+                speaker.flashLed();
+                buttonRGB.flashLed();
+            });
+        }
 
-        }
-        if (farbe == 2 && timePassed("yellow", 350)){
-            score = score - 1;
-            sensorList.getButtonRGB().value(Color.RED);
-            farbe = 4;
-        }
-        if (farbe == 4){
-            sleep(900);
-            sensorList.getButtonRGB().value(Color.BLUE);
-            farbe = 1;
-        }
-        if (score == 10){
-            for (int i = 0; i < 5; i++) {
-                sensorList.getButtonRGB().value(mGreen);
-                sleep(300);
-                sensorList.getButtonRGB().value(mBlack);
-                sleep(250);
+        //TIME BASED EVENTS
+        if (timePassed("reactionGame", 50)) {
+            //random yellow
+            if (timePassed("yellow", 1500 + new Random().nextInt(9000)) && !reactionNow && score > -1) {
+                sensorList.getButtonRGB().value(Color.YELLOW);
+                reactionNow = true;
+                displayLcd.value("${1}Do it now! ${space}");
+            } else if (reactionNow && timePassed("yellow", 600 + new Random().nextInt(1000))) {
+                //SCORE DOWN - didnt make it in time
+                reactionNow = false;
+                speaker.value(200, 5000, false);
+                buttonRGB.value(Color.RED);
+                displayLcd.value("${1}Missed it!${space}");
+                score = score - 1;
             }
-            sensorList.getButtonRGB().value(mBlack);
-            sleep(800);
-            sensorList.getButtonRGB().value(mOrange);
-            sleep(400);
-            sensorList.getButtonRGB().value(mOrange);
-            sleep(400);
-            sensorList.getButtonRGB().value(mYellow);
-            sleep(400);
-            sensorList.getButtonRGB().value(mGreen);
-            sleep(400);
-            sensorList.getButtonRGB().value(mBlue);
-            sleep(400);
-            sensorList.getButtonRGB().value(mIndigo);
-            sleep(400);
-            sensorList.getButtonRGB().value(mPurple);
-            sleep(900);
-            sensorList.getButtonRGB().value(mBlack);
-            sleep(1500);
-        }
-        if (score == 0){
-            for (int i = 0; i < 8; i++) {
-                sensorList.getButtonRGB().value(mBlack);
-                sleep(250);
-                sensorList.getButtonRGB().value(mRed);
-                sleep(300);
-            }
-            sensorList.getButtonRGB().value(mBlack);
-            sleep(1000);
         }
 
+        //BUTTON EVENTS
+        if (type.isButtonPressed() && value == 1L) {
+            if (sensor.is(sensorList.getRotary())) {
+                //RESET GAME
+                score = -1;
+                buttonRGB.ledStatusOn();
+                async("3-2-1-GO", run -> reactionGameStart());
+            } else if (reactionNow) {
+                //SCORE UP - made it in time
+                reactionNow = false;
+                score = score + 1;
+                speaker.value(200, 2000, false);
+                displayLcd.value("${1}Got it!${space}");
+                buttonRGB.value(Color.GREEN);
+            } else if (!reactionNow) {
+                //SCORE DOWN - accident press
+                score = score - 1;
+                buttonRGB.value(Color.RED);
+                speaker.value(200, 5000, false);
+                displayLcd.value("${1} Too early! ${space}");
+            }
+        }
 
     }
 
+    private static void reactionGameStart() {
+        Sensor displaySegment = sensorList.getDisplaySegment();
+        Sensor buttonRGB = sensorList.getButtonRGB();
+        Sensor displayLcd = sensorList.getDisplayLcd20x4();
+        Sensor speaker = sensorList.getSpeaker();
+
+        if (score == -1) {
+            score = -2;
+            loopStop("reaction_win");
+            displayLcd.value("${clear}");
+            buttonRGB.ledStatusOn();
+            displayLcd.ledStatusOn();
+            displayLcd.ledAdditionalOn();
+            displaySegment.value(3);
+            displayLcd.value("${space} 3 ${space}");
+            buttonRGB.value(Color.RED);
+            speaker.value(200, 3000, false);
+            sleep(1024);
+
+            displaySegment.value(2);
+            displayLcd.value("${space} 2 ${space}");
+            buttonRGB.value(Color.YELLOW);
+            speaker.value(200, 3000, false);
+            sleep(1024);
+
+            displaySegment.value(1);
+            displayLcd.value("${space} 1 ${space}");
+            buttonRGB.value(Color.GREEN);
+            speaker.value(200, 3000, false);
+            sleep(1024);
+            displaySegment.value("-GO-");
+            displayLcd.value("${space} -GO- ${space}");
+            speaker.value(512, 2000, false);
+            sleep(512);
+            score = 5;
+        }
+    }
 
     public static int counter2 = 0;
+
     private static void program_uhrsula(final Sensor sensor, final Long value, final ValueType type) {
         if (timePassed(1000)) {
             if (sensorList.getValueLightLux() > 2000) {
@@ -260,7 +290,7 @@ public class HackerSchool_2 extends Helper {
 
         if (blink == 1 && !isRunning) {
             isRunning = true;
-            loop("program", asd -> isRunning = program(orientation));
+            loop("beethoven", beethoven -> isRunning = beethoven());
         }
 
         if (type.isButtonPressed() && value == 1) {
@@ -270,9 +300,7 @@ public class HackerSchool_2 extends Helper {
         }
     }
 
-    private static boolean program(long orientation) {
-        System.out.println(orientation);
-
+    private static boolean beethoven() {
         for (int i = 600; i < 1200; i++) {
             sensorList.getSpeaker().value(i, i, false);
         }
@@ -318,7 +346,7 @@ public class HackerSchool_2 extends Helper {
         sensorList.getSpeaker().value(200, 1850 + sensorList.getValueOrientationRoll(), true);
         sensorList.getSpeaker().value(200, 2050 + sensorList.getValueOrientationRoll(), true);
         sensorList.getSpeaker().value(200, 2250 + sensorList.getValueOrientationRoll(), true);
-        loopEnd("program");
+        loopStop("beethoven");
         return false;
     }
 

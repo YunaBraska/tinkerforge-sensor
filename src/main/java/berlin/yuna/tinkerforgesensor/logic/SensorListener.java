@@ -26,7 +26,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNEC
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PING;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loopEnd;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.asyncStop;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
@@ -170,7 +170,7 @@ public class SensorListener implements Closeable {
      */
     @Override
     public void close() {
-        loopEnd(pingConnectionHandlerName, connectionHandlerName);
+        asyncStop(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
                 sensorList.clear();

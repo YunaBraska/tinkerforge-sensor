@@ -80,7 +80,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     }
 
     @Override
-    protected Sensor<BrickletPiezoSpeaker> flashLed() {
+    public Sensor<BrickletPiezoSpeaker> flashLed() {
 //        try {
         //FIXME: Broken sensor
 //            device.calibrate();

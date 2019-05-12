@@ -406,7 +406,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return {@link Sensor<T>}
      */
-    protected Sensor<T> flashLed() {
+    public Sensor<T> flashLed() {
         try {
             if (this.hasLedStatus()) {
                 for (int i = 0; i < 7; i++) {

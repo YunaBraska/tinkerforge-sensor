@@ -1,23 +1,22 @@
 package berlin.yuna.tinkerforgesensor.util;
 
-import berlin.yuna.tinkerforgesensor.model.type.Loop;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.type.Async;
+import berlin.yuna.tinkerforgesensor.model.type.Loop;
+import berlin.yuna.tinkerforgesensor.model.type.AsyncRun;
 import com.tinkerforge.DummyDevice;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.EACH_SECOND;
-import static java.lang.String.format;
-import static java.util.Arrays.copyOfRange;
-import static java.util.Objects.requireNonNull;
 
 public class TinkerForgeUtil {
 
     /**
      * loop = list of subprograms
      */
-    public static final ConcurrentHashMap<String, Loop> loops = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<String, AsyncRun> loops = new ConcurrentHashMap<>();
 
     /**
      * @param string to check on
@@ -27,35 +26,48 @@ public class TinkerForgeUtil {
         return string == null || string.trim().equals("");
     }
 
-    public static Loop loop(final String name) {
+    public static AsyncRun loop(final String name) {
         return loops.get(name);
     }
 
-    protected Loop loop(final String name, final Consumer<Long> consumer) {
+    protected AsyncRun loop(final String name, final Consumer<Long> consumer) {
         return loop(name, EACH_SECOND, consumer);
     }
 
-    protected Loop loop(final String name, final RefreshType refreshType, final Consumer<Long> consumer) {
+    protected AsyncRun loop(final String name, final RefreshType refreshType, final Consumer<Long> consumer) {
         return loop(name, refreshType.ms, consumer);
     }
 
-    protected Loop loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
+    protected AsyncRun loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
         return createLoop(name, refreshMs, consumer);
     }
 
-    public static Loop createLoop(final String name, final long refreshMs, final Consumer<Long> consumer) {
-        if (loops.containsKey(name)) {
-            loopEnd(name);
+    public static AsyncRun createAsync(final String name, final Consumer<Long> consumer) {
+        AsyncRun prevRun = loop(name);
+        if (prevRun != null && prevRun.isRunning()) {
+            return loop(name);
         }
+
+        Async loop = new Async(name, consumer);
+        loops.put(name, loop);
+        return loop;
+    }
+
+    public static AsyncRun createLoop(final String name, final long refreshMs, final Consumer<Long> consumer) {
+        AsyncRun prevRun = loop(name);
+        if (prevRun != null && prevRun.isRunning()) {
+            return loop(name);
+        }
+
         Loop loop = new Loop(name, refreshMs, consumer);
         loops.put(name, loop);
         return loop;
     }
 
-    public static boolean loopEnd(final String... names) {
+    public static boolean asyncStop(final String... names) {
         boolean success = true;
         for (String name : names) {
-            Loop loop = loops.get(name);
+            AsyncRun loop = loops.get(name);
             if (loop != null) {
                 loop.stop();
                 loops.remove(name);

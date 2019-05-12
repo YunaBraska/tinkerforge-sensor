@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.example;
 
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import berlin.yuna.tinkerforgesensor.model.type.Loop;
+import berlin.yuna.tinkerforgesensor.model.type.AsyncRun;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.DummyDevice;
 
@@ -107,31 +107,38 @@ public class Helper {
         System.err.println(dateTime() + " " + format(print[0].toString(), copyOfRange(print, 1, print.length)));
     }
 
-    public static Loop loop(final String name) {
+    public static AsyncRun loop(final String name) {
         return TinkerForgeUtil.loop(name);
     }
 
-    public static Loop loop(final String name, final Consumer<Long> consumer) {
+    public static AsyncRun loop(final String name, final Consumer<Long> consumer) {
         return loop(name, EACH_SECOND, consumer);
     }
 
-    public static Loop loop(final String name, final TinkerForgeUtil.RefreshType refreshType, final Consumer<Long> consumer) {
+    public static AsyncRun async(final String name, final Consumer<Long> consumer) {
+        return TinkerForgeUtil.createAsync(name, consumer);
+    }
+
+    public static AsyncRun loop(final String name, final TinkerForgeUtil.RefreshType refreshType, final Consumer<Long> consumer) {
         return loop(name, refreshType.ms, consumer);
     }
 
-    public static Loop loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
+    public static AsyncRun loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
         return TinkerForgeUtil.createLoop(name, refreshMs, consumer);
     }
 
-    public static boolean loopEnd(final String... names) {
-        return TinkerForgeUtil.loopEnd(names);
+    public static boolean loopStop(final String... names) {
+        return TinkerForgeUtil.asyncStop(names);
+    }
+
+    public static boolean asyncStop(final String... names) {
+        return TinkerForgeUtil.asyncStop(names);
     }
 
     public static void sleep(final long milliSeconds) {
         try {
             Thread.sleep(milliSeconds);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (InterruptedException ignored) {
         }
     }
 

@@ -88,7 +88,7 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
     }
 
     @Override
-    protected Sensor<BrickletMotionDetectorV2> flashLed() {
+    public Sensor<BrickletMotionDetectorV2> flashLed() {
         try {
             this.ledAdditionalOn();
             this.ledStatus(LED_STATUS_HEARTBEAT.bit);

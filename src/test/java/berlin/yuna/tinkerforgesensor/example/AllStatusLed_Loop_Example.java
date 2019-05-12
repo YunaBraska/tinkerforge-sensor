@@ -6,6 +6,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 
 import static berlin.yuna.tinkerforgesensor.example.Helper.loop;
 import static berlin.yuna.tinkerforgesensor.example.Helper.sleep;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
 
@@ -28,6 +30,7 @@ public class AllStatusLed_Loop_Example {
         for (Sensor sensor : sensorList) {
             if (sensor.hasLedStatus() && sensor.isBrick()) {
                 sensor.ledStatus(ledReverse ? LED_STATUS_ON.bit : LED_STATUS_OFF.bit);
+                sensor.ledAdditional(ledReverse ? LED_ADDITIONAL_ON.bit : LED_ADDITIONAL_OFF.bit);
                 sleep(128);
             }
         }

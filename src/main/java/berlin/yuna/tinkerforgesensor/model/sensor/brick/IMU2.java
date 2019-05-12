@@ -116,9 +116,9 @@ public class IMU2 extends Sensor<BrickIMUV2> {
     public Sensor<BrickIMUV2> ledAdditional(Integer value) {
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
-                device.enableStatusLED();
+                device.ledsOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
-                device.disableStatusLED();
+                device.ledsOff();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

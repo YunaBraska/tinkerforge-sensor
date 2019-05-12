@@ -200,6 +200,17 @@ public abstract class Sensor<T extends Device> {
     public abstract Sensor<T> value(final Object value);
 
     /**
+     * @param values some objects like a "howdy", "howdy2" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
+     * @return current {@link Sensor<T>}
+     */
+    public Sensor<T> value(final Object... values) {
+        for (Object value : values){
+            value(value);
+        }
+        return this;
+    }
+
+    /**
      * @param value some value for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
@@ -383,6 +394,7 @@ public abstract class Sensor<T extends Device> {
     public Class<? extends Device> getType() {
         return device.getClass();
     }
+
 
     /**
      * Flashing status led

@@ -16,9 +16,8 @@ public class HackerSchool_2 extends Helper {
 
     public static SensorList<Sensor> sensorList = new SensorList<>();
 
-    public static int buttonSwitch = 0;
-    public static int counter = 0;
-    public static int Punkte = 4;
+    private static int counter = 0;
+    private static int score = 4;
 
     //Start method initializer
     public static void main(String[] args) {
@@ -28,8 +27,8 @@ public class HackerSchool_2 extends Helper {
     }
 
 
-    static int program;
-    static boolean start;
+    private static int program;
+    private static boolean start;
 
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
 
@@ -40,39 +39,43 @@ public class HackerSchool_2 extends Helper {
         }
 
         if (timePassed(500)) {
+            Sensor display = sensorList.getDisplayLcd20x4();
+            Sensor buttonRGB_1 = sensorList.getButtonRGB(0);
+            Sensor buttonRGB_2 = sensorList.getButtonRGB(1);
+
             if(!start){
                 //Reset buttons
                 sensorList.forEach(Sensor::ledStatusOff);
-                sensorList.forEach(Sensor::ledAdditionalOff);
-                Punkte = 4;
+                sensorList.stream().filter(s -> !s.is(display)).forEach(Sensor::ledAdditionalOff);
+                score = 4;
             }
             if (!start && sensorList.getValueRotary() == 1) {
                 program = 1;
-                sensorList.getDisplayLcd20x4().value("${clear}");
-                sensorList.getDisplayLcd20x4().value("1. Programm: Wetterstation!");
-                sensorList.getDisplayLcd20x4().ledAdditionalOn();
-                sensorList.getButtonRGB(0).ledStatusOn();
-                sensorList.getButtonRGB(2).ledStatusOn();
+                display.value("${clear}");
+                display.value("1. Programm: Wetterstation!");
+                display.ledAdditionalOn();
+                buttonRGB_1.ledStatusOn();
+                buttonRGB_2.ledStatusOn();
                 sensorList.getLightAmbient().ledStatusOn();
                 sensorList.getAirQuality().ledStatusOn();
             } else if (!start && sensorList.getValueRotary() == 2) {
                 program = 2;
-                sensorList.getDisplayLcd20x4().value("${clear}");
-                sensorList.getDisplayLcd20x4().value("2. Program: Reaction Game!");
-                sensorList.getDisplayLcd20x4().ledAdditionalOn();
-                sensorList.getButtonRGB(0).ledStatusOn();
-                sensorList.getButtonRGB(2).ledStatusOn();
+                display.value("${clear}");
+                display.value("2. Program: Reaction Game!");
+                display.ledAdditionalOn();
+                buttonRGB_1.ledStatusOn();
+                buttonRGB_2.ledStatusOn();
             } else if (!start && sensorList.getValueRotary() == 3) {
                 program = 3;
-                sensorList.getDisplayLcd20x4().value("${clear}");
-                sensorList.getDisplayLcd20x4().value("3. Program: Uhrsula!");
-                sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                display.value("${clear}");
+                display.value("3. Program: Uhrsula!");
+                display.ledAdditionalOn();
                 sensorList.getLightAmbient().ledStatusOn();
             } else if (!start && sensorList.getValueRotary() == 4) {
                 program = 4;
-                sensorList.getDisplayLcd20x4().value("${clear}");
-                sensorList.getDisplayLcd20x4().value("4. Program: Beethoven!");
-                sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                display.value("${clear}");
+                display.value("4. Program: Beethoven!");
+                display.ledAdditionalOn();
             }
         }
 
@@ -96,7 +99,7 @@ public class HackerSchool_2 extends Helper {
             Sensor Knopf1 = sensorList.getButtonRGB(0);
             Sensor Knopf2 = sensorList.getButtonRGB(1);
             int light = sensorList.getValueLightLux().intValue();
-            int luftqualität = sensorList.getValueAirPressure().intValue();
+            int airQuality = sensorList.getValueAirPressure().intValue();
 
 
             if (sensor.is(Knopf1) && value == 1) {
@@ -108,7 +111,7 @@ public class HackerSchool_2 extends Helper {
                 sensorList.getDisplayLcd20x4().ledAdditionalOff();
                 counter = 0;
             } else if (Knopf1.value(BUTTON_PRESSED) == 1 && Knopf2.value(BUTTON_PRESSED) == 1) {
-                if (luftqualität < 1050000) {
+                if (airQuality < 1050000) {
                     Knopf2.value(Color.RED);
                     Knopf1.value(Color.RED);
                     sensorList.getDisplayLcd20x4().value("${clear}");
@@ -125,13 +128,11 @@ public class HackerSchool_2 extends Helper {
 
             } else if (sensor.is(Knopf1) && value == 1) {
                 if (light < 4000) {
-                    buttonSwitch = 1;
                     sensorList.getButtonRGB().value(Color.RED);
                     sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Es ist sehr dunkel! Mach doch L  ${space}");
+                    sensorList.getDisplayLcd20x4().value("Es ist sehr dunkel! \nMach doch Licht an ${space}");
                     sensorList.getDisplayLcd20x4().ledAdditionalOn();
                 } else {
-                    buttonSwitch = 0;
                     sensorList.getButtonRGB().value(new Color(0, light / 1500, 0));
                     sensorList.getDisplayLcd20x4().value("${clear}");
                     sensorList.getDisplayLcd20x4().value("Es ist Hell! ${space}");
@@ -167,9 +168,9 @@ public class HackerSchool_2 extends Helper {
     public static Color mBlack = new Color(0, 0, 0);
 
     private static void program_reactionGame(final Sensor sensor, final Long value, final ValueType type) {
-        sensorList.getDisplaySegment().value("P" + Punkte);
+        sensorList.getDisplaySegment().value("P" + score);
         if (type.isButtonPressed() && value == 1 && farbe == 2) {
-            Punkte = Punkte + 1;
+            score = score + 1;
             sensor.value(Color.GREEN);
             farbe = 3;
             sleep(500);
@@ -184,7 +185,7 @@ public class HackerSchool_2 extends Helper {
 
         }
         if (farbe == 2 && timePassed("yellow", 350)){
-            Punkte = Punkte - 1;
+            score = score - 1;
             sensorList.getButtonRGB().value(Color.RED);
             farbe = 4;
         }
@@ -193,7 +194,7 @@ public class HackerSchool_2 extends Helper {
             sensorList.getButtonRGB().value(Color.BLUE);
             farbe = 1;
         }
-        if (Punkte == 10){
+        if (score == 10){
             for (int i = 0; i < 5; i++) {
                 sensorList.getButtonRGB().value(mGreen);
                 sleep(300);
@@ -219,7 +220,7 @@ public class HackerSchool_2 extends Helper {
             sensorList.getButtonRGB().value(mBlack);
             sleep(1500);
         }
-        if (Punkte == 0){
+        if (score == 0){
             for (int i = 0; i < 8; i++) {
                 sensorList.getButtonRGB().value(mBlack);
                 sleep(250);
@@ -273,135 +274,50 @@ public class HackerSchool_2 extends Helper {
         System.out.println(orientation);
 
         for (int i = 600; i < 1200; i++) {
-            sensorList.getSpeaker().value("F" + i);
-            sensorList.getSpeaker().value(i);
+            sensorList.getSpeaker().value(i, i, false);
         }
-        sensorList.getSpeaker().value("F" + (2590 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(500);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (600 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (2590 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (600 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (700 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (600 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (2590 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (600 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (700 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(100);
-        sensorList.getSpeaker().value("F" + (586 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (650 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (850 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (1000 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (1200 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (1400 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (1600 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (1800 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(111);
-        sensorList.getSpeaker().value("F" + (2000 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(600);
-        sensorList.getSpeaker().value("F" + (587 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (587 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (1000 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (1000 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (800 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (800 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (587 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(555);
-        sleep(855);
-        sensorList.getSpeaker().value("F" + (1200 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (1200 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (675 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (675 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (1000 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (1000 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(350);
-        sleep(500);
-        sensorList.getSpeaker().value("F" + (586 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(555);
-        sleep(855);
-        sensorList.getSpeaker().value("F" + (586 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (650 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (850 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (1050 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (1250 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (1450 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (1650 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (1850 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (2050 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
-        sensorList.getSpeaker().value("F" + (2250 + sensorList.getValueOrientationRoll()));
-        sensorList.getSpeaker().value(200);
-        sleep(180);
+        sensorList.getSpeaker().value(500, 2590 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 600 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 2590 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 600 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 700 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 600 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 2590 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 600 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 700 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 586 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 650 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 850 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1000 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1200 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1400 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1600 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1800 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 2000 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 587 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 587 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1000 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1000 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 800 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 800 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(555, 587 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1200 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1200 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 675 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 675 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1000 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(350, 1000 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(555, 586 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 586 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 650 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 850 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 1050 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 1250 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 1450 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 1650 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 1850 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 2050 + sensorList.getValueOrientationRoll(), true);
+        sensorList.getSpeaker().value(200, 2250 + sensorList.getValueOrientationRoll(), true);
         loopEnd("program");
         return false;
     }

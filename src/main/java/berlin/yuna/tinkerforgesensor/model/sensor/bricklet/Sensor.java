@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getDevice;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getSensor;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
@@ -268,12 +269,16 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * led try to show {@link LedStatusType#LED_ADDITIONAL_ON} like the flash led of {@link com.tinkerforge.BrickletColor} which the sensor could process - else it just should ignore it
+     * led try to show {@link LedStatusType#LED_ADDITIONAL_HEARTBEAT} like the flash led of {@link com.tinkerforge.BrickletColor} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor<T>}
      */
     public Sensor<T> ledAdditionalOff() {
         return ledAdditional(LED_ADDITIONAL_OFF.bit);
+    }
+
+    public Sensor<T> ledAdditionalHeartbeat() {
+        return ledStatus(LED_ADDITIONAL_HEARTBEAT.bit);
     }
 
     /**
@@ -484,6 +489,7 @@ public abstract class Sensor<T extends Device> {
 
         LED_ADDITIONAL_OFF(0),
         LED_ADDITIONAL_ON(1),
+        LED_ADDITIONAL_HEARTBEAT(2),
 
         LED_CUSTOM(0);
 

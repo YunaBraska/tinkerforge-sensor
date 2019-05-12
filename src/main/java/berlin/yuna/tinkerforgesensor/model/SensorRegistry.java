@@ -4,6 +4,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.brick.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU2;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.Master;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Accelerometer;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AccelerometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.BarometerV2;
@@ -37,6 +39,8 @@ import com.tinkerforge.BrickDC;
 import com.tinkerforge.BrickIMU;
 import com.tinkerforge.BrickIMUV2;
 import com.tinkerforge.BrickMaster;
+import com.tinkerforge.BrickletAccelerometer;
+import com.tinkerforge.BrickletAccelerometerV2;
 import com.tinkerforge.BrickletAirQuality;
 import com.tinkerforge.BrickletAmbientLight;
 import com.tinkerforge.BrickletAmbientLightV2;
@@ -98,6 +102,8 @@ public class SensorRegistry {
 
   private static ConcurrentHashMap<Class<? extends Device>, Sensor.SensorFactory> initSensor() {
     ConcurrentHashMap<Class<? extends Device>, Sensor.SensorFactory> registry = new ConcurrentHashMap<>();
+    registry.put(BrickletAccelerometer.class, Accelerometer::new);
+    registry.put(BrickletAccelerometerV2.class, AccelerometerV2::new);
     registry.put(BrickletAirQuality.class, AirQuality::new);
     registry.put(BrickletBarometer.class, Barometer::new);
     registry.put(BrickletBarometerV2.class, BarometerV2::new);
@@ -135,6 +141,8 @@ public class SensorRegistry {
 
   private static ConcurrentHashMap<Integer, Sensor.DeviceFactory> initDevice() {
     ConcurrentHashMap<Integer, Sensor.DeviceFactory> registry = new ConcurrentHashMap<>();
+    registry.put(BrickletAccelerometer.DEVICE_IDENTIFIER, BrickletAccelerometer::new);
+    registry.put(BrickletAccelerometerV2.DEVICE_IDENTIFIER, BrickletAccelerometerV2::new);
     registry.put(BrickletAirQuality.DEVICE_IDENTIFIER, BrickletAirQuality::new);
     registry.put(BrickletBarometer.DEVICE_IDENTIFIER, BrickletBarometer::new);
     registry.put(BrickletBarometerV2.DEVICE_IDENTIFIER, BrickletBarometerV2::new);

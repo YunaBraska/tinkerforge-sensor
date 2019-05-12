@@ -4,6 +4,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.brick.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU2;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.Master;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Accelerometer;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AccelerometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.BarometerV2;
@@ -225,6 +227,14 @@ public class SensorList<T extends Sensor> extends SensorListBasic<T> {
     return getSensor(number, AirQuality.class);
   }
 
+  public Sensor getAccelerometer() {
+    return getAccelerometer(0);
+  }
+
+  public Sensor getAccelerometer(int number) {
+    return getSensor(number, AccelerometerV2.class, Accelerometer.class);
+  }
+
   public Long getValueAll() {
     HashMap<Sensor, Long> result = values(ValueType.ALL);
     return result.isEmpty()? 0L : result.values().iterator().next();
@@ -342,6 +352,21 @@ public class SensorList<T extends Sensor> extends SensorListBasic<T> {
 
   public Long getValueSoundSpectrumOffset() {
     HashMap<Sensor, Long> result = values(ValueType.SOUND_SPECTRUM_OFFSET);
+    return result.isEmpty()? 0L : result.values().iterator().next();
+  }
+
+  public Long getValueBeepTime() {
+    HashMap<Sensor, Long> result = values(ValueType.BEEP_TIME);
+    return result.isEmpty()? 0L : result.values().iterator().next();
+  }
+
+  public Long getValueBeepFrequency() {
+    HashMap<Sensor, Long> result = values(ValueType.BEEP_FREQUENCY);
+    return result.isEmpty()? 0L : result.values().iterator().next();
+  }
+
+  public Long getValueBeepWait() {
+    HashMap<Sensor, Long> result = values(ValueType.BEEP_WAIT);
     return result.isEmpty()? 0L : result.values().iterator().next();
   }
 

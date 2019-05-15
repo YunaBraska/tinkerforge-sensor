@@ -44,11 +44,11 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
             Integer input = normalizeValue(value);
             if (input != null) {
                 boolean output = input > -1;
-                input = output ? input : input * -1;
+                input = output ? input : (input * -1);
                 if (output) {
-                    device.setConfiguration(input, 'o', true);
+                    device.setConfiguration(input -1, 'o', true);
                 } else {
-                    device.setConfiguration(input, 'i', false);
+                    device.setConfiguration(input -1, 'i', false);
                 }
             }
         } catch (TimeoutException | NotConnectedException ignored) {

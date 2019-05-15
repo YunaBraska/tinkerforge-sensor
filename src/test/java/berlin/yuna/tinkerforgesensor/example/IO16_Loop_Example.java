@@ -20,8 +20,8 @@ public class IO16_Loop_Example {
             sleep(10);
         }
 
-        loop(IO16_Loop_Example::knightRider_example, 5);
-        loop(IO16_Loop_Example::loopOver16IO_example, 5);
+        loop(IO16_Loop_Example::knightRider_example, 10);
+        loop(IO16_Loop_Example::loopOver16IO_example, 10);
     }
 
     private static boolean loopOver16IO_example() {

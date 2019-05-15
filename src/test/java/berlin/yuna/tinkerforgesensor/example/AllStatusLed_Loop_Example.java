@@ -20,7 +20,7 @@ public class AllStatusLed_Loop_Example {
         SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
 
-        loop(AllStatusLed_Loop_Example::knightRider_example, 5);
+        loop(AllStatusLed_Loop_Example::knightRider_example, 15);
     }
 
 
@@ -28,7 +28,7 @@ public class AllStatusLed_Loop_Example {
         ledReverse = !ledReverse;
 
         for (Sensor sensor : sensorList) {
-            if (sensor.hasLedStatus() && sensor.isBrick()) {
+            if (sensor.hasLedStatus()) {
                 sensor.ledStatus(ledReverse ? LED_STATUS_ON.bit : LED_STATUS_OFF.bit);
                 sensor.ledAdditional(ledReverse ? LED_ADDITIONAL_ON.bit : LED_ADDITIONAL_OFF.bit);
                 sleep(128);

@@ -18,7 +18,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * 20x4 character alphanumeric display with blue backlight
  * <b>Values</b>
  * BUTTON_PRESSED 0/1
- * BUTTON [10, 20, 30, 40] Pressed
+ * BUTTON [10, 20, 30, 40] Released
  * BUTTON [11, 21, 31, 41] Pressed
  * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/LCD_20x4.html">Official doku</a>
  */

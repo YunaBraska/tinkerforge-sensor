@@ -24,6 +24,7 @@ import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getSensor;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -277,8 +278,22 @@ public abstract class Sensor<T extends Device> {
         return ledAdditional(LED_ADDITIONAL_OFF.bit);
     }
 
+    /**
+     * Additional led try to show {@link LedStatusType#LED_ADDITIONAL_HEARTBEAT} like the {@link com.tinkerforge.BrickletDualButtonV2} which the sensor could process - else it just should ignore it
+     *
+     * @return current {@link Sensor<T>}
+     */
     public Sensor<T> ledAdditionalHeartbeat() {
-        return ledStatus(LED_ADDITIONAL_HEARTBEAT.bit);
+        return ledAdditional(LED_ADDITIONAL_HEARTBEAT.bit);
+    }
+
+    /**
+     * Additional led try to show {@link LedStatusType#LED_ADDITIONAL_STATUS} like the {@link com.tinkerforge.BrickletDualButtonV2} which the sensor could process - else it just should ignore it
+     *
+     * @return current {@link Sensor<T>}
+     */
+    public Sensor<T> ledAdditionalStatus() {
+        return ledAdditional(LED_ADDITIONAL_STATUS.bit);
     }
 
     /**
@@ -490,6 +505,7 @@ public abstract class Sensor<T extends Device> {
         LED_ADDITIONAL_OFF(0),
         LED_ADDITIONAL_ON(1),
         LED_ADDITIONAL_HEARTBEAT(2),
+        LED_ADDITIONAL_STATUS(3),
 
         LED_CUSTOM(0);
 

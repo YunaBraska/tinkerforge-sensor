@@ -16,6 +16,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplaySegment;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DistanceUS;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DualButton;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.IO16;
@@ -153,6 +154,14 @@ public class SensorList<T extends Sensor> extends SensorListBasic<T> {
 
   public Sensor getHumidity(int number) {
     return getSensor(number, HumidityV2.class, Humidity.class);
+  }
+
+  public Sensor getDualButton() {
+    return getDualButton(0);
+  }
+
+  public Sensor getDualButton(int number) {
+    return getSensor(number, DualButton.class);
   }
 
   public Sensor getDistanceUS() {

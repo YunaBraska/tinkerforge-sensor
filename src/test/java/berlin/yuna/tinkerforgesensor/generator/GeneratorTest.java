@@ -23,8 +23,9 @@ public class GeneratorTest {
         File targetSourceDir = new File("src/main/java");
 
         GeneratorEnumValueType.generate();
-        GeneratorSensorRegistry.generate(sensorList).writeTo(targetSourceDir);
-        GeneratorSensorList.generate(sensorList).writeTo(targetSourceDir);
+        GeneratorSensorRegistry.generate(new ArrayList<>(sensorList)).writeTo(targetSourceDir);
+        GeneratorSensorList.generate(new ArrayList<>(sensorList)).writeTo(targetSourceDir);
+        GeneratorSensorHelper.generate(new ArrayList<>(sensorList) ).writeTo(targetSourceDir);
         GeneratorDeviceProvider.generate(targetDeviceProviderFile);
     }
 

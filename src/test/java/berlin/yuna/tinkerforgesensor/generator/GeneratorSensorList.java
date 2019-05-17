@@ -19,12 +19,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicSensorName;
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getSensorVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.toHumanReadable;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
 public class GeneratorSensorList {
-
-    private static final String SUPER_CLASS_NAME = Sensor.class.getSimpleName();
 
     public static JavaFile generate(final List<Class<? extends Sensor>> sensorList) {
         StackTraceElement trace = Thread.currentThread().getStackTrace()[1];
@@ -91,25 +91,5 @@ public class GeneratorSensorList {
                 .addStatement("$T<$T, $T> result = values($T.$L)", HashMap.class, Sensor.class, Long.class, ValueType.class, valueType.name())
                 .addStatement("return result.isEmpty()? 0L : result.values().iterator().next()")
                 .build();
-    }
-
-    private static List<Class<? extends Sensor>> getSensorVersions(Class<? extends Sensor> sensor, final List<Class<? extends Sensor>> sensorList) {
-        String className = sensor.getSimpleName();
-        String packageName = sensor.getPackage().getName();
-        String name = getBasicSensorName(className);
-        List<Class<? extends Sensor>> sensorVersionList = sensorList.stream()
-                .filter(sensorClass -> packageName.equals(sensorClass.getPackage().getName()))
-                .filter(sensorClass -> sensorClass.getSimpleName().startsWith(name))
-                .filter(sensorClass -> sensorClass.getSimpleName().length() < name.length() + 3).sorted(Comparator.comparing(Class::getSimpleName)).collect(Collectors.toList());
-        Collections.reverse(sensorVersionList);
-        return sensorVersionList;
-    }
-
-    private static String getBasicSensorName(final String className) {
-        return className.charAt(className.length() - 2) == 'V' ? className.substring(0, className.length() - 2) : className;
-    }
-
-    private static String firstLetterLow(final String input) {
-        return input.substring(0, 1).toLowerCase() + input.substring(1);
     }
 }

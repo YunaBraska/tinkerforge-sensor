@@ -6,6 +6,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import berlin.yuna.tinkerforgesensor.util.SensorTypeHelper;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
@@ -50,6 +51,7 @@ public abstract class Sensor<T extends Device> {
     public final T device;
     public final Sensor parent;
     public final ConcurrentHashMap<ValueType, RollingList<Long>> values = new ConcurrentHashMap<>();
+    public final SensorTypeHelper sensorTypeHelper;
 
     protected boolean isBrick;
     protected final boolean hasStatusLed;
@@ -133,6 +135,7 @@ public abstract class Sensor<T extends Device> {
         } catch (TimeoutException | NotConnectedException e) {
             throw new NetworkConnectionException(e);
         }
+        sensorTypeHelper = new SensorTypeHelper(this);
     }
 
     /**
@@ -172,10 +175,13 @@ public abstract class Sensor<T extends Device> {
         return false;
     }
 
-    public boolean is(Sensor<T> sensor) {
+    public boolean is(Sensor sensor) {
         return sensor != null && sensor.uid.equals(uid);
     }
 
+    public SensorTypeHelper type() {
+        return sensorTypeHelper;
+    }
 
     /**
      * For automation to know if its worth to call status led function

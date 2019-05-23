@@ -1,13 +1,10 @@
-package berlin.yuna.tinkerforgesensor.example;
+package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 
-import static berlin.yuna.tinkerforgesensor.example.Helper.loop;
-import static berlin.yuna.tinkerforgesensor.example.Helper.sleep;
-
-public class IO16_Loop_Example {
+public class IO16_Loop_Example extends Helper{
 
     private static SensorList<Sensor> sensorList;
     private static boolean ledReverse;

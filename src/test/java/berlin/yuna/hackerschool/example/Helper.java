@@ -1,4 +1,4 @@
-package berlin.yuna.tinkerforgesensor.example;
+package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.AsyncRun;
@@ -36,16 +36,22 @@ public class Helper {
     public static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
+    /**
+     * @return true if the last call at this lime has passed the time
+     */
     public static boolean timePassed(final long waitMs) {
         StackTraceElement callerTrace = Thread.currentThread().getStackTrace()[2];
         String name = callerTrace.getClassName() + ":" + callerTrace.getMethodName() + ":" + callerTrace.getLineNumber();
         return timePassed(name, waitMs);
     }
 
-    public static boolean timePassed(final String timerName, final long waitMs) {
-        Long lastTimeMs = waitProcessList.computeIfAbsent(timerName, value -> System.currentTimeMillis());
+    /**
+     * @return true if the last call with this label has passed the time
+     */
+    public static boolean timePassed(final String label, final long waitMs) {
+        Long lastTimeMs = waitProcessList.computeIfAbsent(label, value -> System.currentTimeMillis());
         if ((lastTimeMs + waitMs) < System.currentTimeMillis()) {
-            waitProcessList.put(timerName, System.currentTimeMillis());
+            waitProcessList.put(label, System.currentTimeMillis());
             return true;
         }
         return false;
@@ -179,7 +185,7 @@ public class Helper {
         return dateTimeFormat.format(new Date());
     }
 
-    static void loop(final Supplier supplier, final int times) {
+    public static void loop(final Supplier supplier, final int times) {
         for (int i = 0; i < times; i++) {
             supplier.get();
         }

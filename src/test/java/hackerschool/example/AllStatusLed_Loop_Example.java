@@ -1,17 +1,17 @@
-package berlin.yuna.tinkerforgesensor.example;
+package hackerschool.example;
 
+import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
+import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 
-import static berlin.yuna.tinkerforgesensor.example.Helper.loop;
-import static berlin.yuna.tinkerforgesensor.example.Helper.sleep;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
 
-public class AllStatusLed_Loop_Example {
+public class AllStatusLed_Loop_Example extends Helper {
 
     private static SensorList<Sensor> sensorList;
     private static boolean ledReverse;

@@ -1,28 +1,32 @@
-package berlin.yuna.hackerschool;
+package berlin.yuna.hackerschool.session_01_241118;
 
-import berlin.yuna.tinkerforgesensor.example.ConnectionAndPrintValues_Example;
-import berlin.yuna.tinkerforgesensor.example.Helper;
+import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 import static java.lang.String.format;
 
-public class HackerSchool_1 extends Helper {
+/**
+ * @author yourNames
+ */
+public class DrWeatherStation extends Helper {
 
     public static SensorList<Sensor> sensorList = new SensorList<>();
 
-    //Start method initializer
+    //START FUNCTION
     public static void main(String[] args) {
         SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> drWeatherStation(event.sensor, event.value, event.valueType));
+        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
-    private static void drWeatherStation(final Sensor sensor, final Long value, final ValueType type) {
+    //CODE FUNCTION
+    private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
         if (type.containsDeviceStatus()) {
             System.out.println(format("Sensor [%s] type [%s] value [%s]", sensor.name, type, value));
         }

@@ -1,4 +1,4 @@
-package berlin.yuna.tinkerforgesensor.example;
+package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
@@ -6,7 +6,6 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletLCD20x4;
-import com.tinkerforge.BrickletSegmentDisplay4x7;
 
 import java.awt.Color;
 import java.util.List;

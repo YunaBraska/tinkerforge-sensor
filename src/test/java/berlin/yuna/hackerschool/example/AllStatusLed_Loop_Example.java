@@ -1,7 +1,5 @@
-package hackerschool.example;
+package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
-import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.SensorListener;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;

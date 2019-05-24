@@ -23,44 +23,45 @@ public class Nathalie extends Helper {
 
     //VARIABLES
 
-    static int soundMax = 1;
+    private static long soundMax = 1;
 
     //CODE FUNCTION
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
 
+        //Get Sensor and Value
         Sensor io16 = sensorList.getIO16();
         long decibel = sensorList.getValueSoundIntensity() + 1;
 
+        //Dynamic max volume
         if (decibel > soundMax) {
-            soundMax = (int) decibel;
+            soundMax = decibel;
         }
 
+        //every 250 milliseconds - for readable display
+        if (timePassed(250)) {
+            sensorList.getDisplaySegment().value((decibel / 10) + "dB");
+        }
+
+        //every 50 milliseconds
+        if (timePassed(50)) {
+            int ledAnzahl = (int) (decibel / ((soundMax / 18) + 1));
+
+            //Switch LEDs on
+            for (int led = 1; led < ledAnzahl; led++) {
+                io16.value(led);
+            }
+
+            //Switch other LEDs off
+            for (int led = ledAnzahl; led < 16; led++) {
+                io16.value(-led);
+            }
+        }
+
+        //Fan temperature
         if (sensorList.getValueTemperature() > 2880) {
             io16.value(17);
         } else if (sensorList.getValueTemperature() < 2880) {
             io16.value(-17);
         }
-
-
-        if (timePassed(250)) {
-            sensorList.getDisplaySegment().value(decibel / 10);
-        }
-
-        if (timePassed(50)) {
-            int ledAnzahl = (int) (decibel / ((soundMax / 18) +1));
-
-            for (int led = 1; led < ledAnzahl; led++) {
-                io16.value(led);
-            }
-
-
-            for (int led = ledAnzahl; led < 16; led++) {
-                io16.value(-led);
-            }
-
-
-        }
-
-
     }
 }

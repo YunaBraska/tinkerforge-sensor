@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 
 public class GeneratorHelper {
 
-    public static List<Class<? extends Sensor>> getSensorVersions(Class<? extends Sensor> sensor, final List<Class<? extends Sensor>> sensorList) {
-        String className = sensor.getSimpleName();
-        String packageName = sensor.getPackage().getName();
-        String name = getBasicSensorName(className);
-        List<Class<? extends Sensor>> sensorVersionList = sensorList.stream()
+    public static List<Class<? extends Sensor>> getSensorVersions(final Class<? extends Sensor> sensor, final List<Class<? extends Sensor>> sensorList) {
+        final String className = sensor.getSimpleName();
+        final String packageName = sensor.getPackage().getName();
+        final String name = getBasicSensorName(className);
+        final List<Class<? extends Sensor>> sensorVersionList = sensorList.stream()
                 .filter(sensorClass -> packageName.equals(sensorClass.getPackage().getName()))
                 .filter(sensorClass -> sensorClass.getSimpleName().startsWith(name))
                 .filter(sensorClass -> sensorClass.getSimpleName().length() < name.length() + 3).sorted(Comparator.comparing(Class::getSimpleName)).collect(Collectors.toList());

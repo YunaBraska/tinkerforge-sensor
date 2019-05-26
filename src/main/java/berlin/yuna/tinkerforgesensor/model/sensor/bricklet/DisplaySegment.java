@@ -58,11 +58,11 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
                     colon = true;
                     preText = preText.replace(":", "");
                 }
-                StringBuilder text = new StringBuilder(preText);
+                final StringBuilder text = new StringBuilder(preText);
                 while (text.length() < 4) {
                     text.insert(0, ' ');
                 }
-                short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
+                final short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
                 device.setSegments(segments, brightness, colon);
                 lastText = text.toString();
             } else {

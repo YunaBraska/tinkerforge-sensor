@@ -66,7 +66,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
             } else {
                 text = String.valueOf(value);
             }
-            int y = 0;
+            final int y = 0;
             if (text != null && text.startsWith(DISPLAY_CLEAR)) {
                 device.clearDisplay();
                 text = text.substring(DISPLAY_CLEAR.length());
@@ -117,7 +117,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         if (text != null && !text.isEmpty()) {
             int y = posY;
             String leftOverText = "";
-            String[] lines = text.split(DISPLAY_SPLIT_LINE_REGEX);
+            final String[] lines = text.split(DISPLAY_SPLIT_LINE_REGEX);
             for (String line : lines) {
                 if (y > 3) {
                     break;
@@ -158,27 +158,27 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         if (text.contains(DISPLAY_DYNAMIC_SPACE)) {
             int spaceUps;
             while ((spaceUps = ("splitStart" + text + "splitEnd").split("\\$\\{space}").length - 1) > 0) {
-                int length = text.length() - ((DISPLAY_DYNAMIC_SPACE).length() * spaceUps);
+                final int length = text.length() - ((DISPLAY_DYNAMIC_SPACE).length() * spaceUps);
                 text = text.replaceFirst("\\$\\{space}", spaces((20 - length) / spaceUps));
             }
         }
         return text;
     }
 
-    private static String spaces(int number) {
-        StringBuilder stringBuilder = new StringBuilder();
+    private static String spaces(final int number) {
+        final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < number; i++) {
             stringBuilder.append(" ");
         }
         return stringBuilder.toString();
     }
 
-    private static String utf16ToKS0066U(String utf16) {
+    private static String utf16ToKS0066U(final String utf16) {
         StringBuilder ks0066u = new StringBuilder();
         char c;
 
         for (int i = 0; i < utf16.length(); i++) {
-            int codePoint = utf16.codePointAt(i);
+            final int codePoint = utf16.codePointAt(i);
 
             if (Character.isHighSurrogate(utf16.charAt(i))) {
                 // Skip low surrogate

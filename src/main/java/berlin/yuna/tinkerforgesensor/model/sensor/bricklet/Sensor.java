@@ -18,10 +18,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getDevice;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getSensor;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
@@ -36,6 +34,7 @@ import static java.lang.Character.getNumericValue;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
 
 //TODO: matthias@tinkerforge.com contact at first beta
 
@@ -48,6 +47,7 @@ public abstract class Sensor<T extends Device> {
 
     int port = -1;
     private Sensor parent;
+    public boolean isBrick;
 
     public final String uid;
     public final String name;
@@ -59,8 +59,7 @@ public abstract class Sensor<T extends Device> {
     private final String connectionUid;
     private final char position;
 
-    protected boolean isBrick;
-    protected static ConcurrentHashMap<Sensor, AtomicLong> lastRuns = new ConcurrentHashMap<>();
+    private long lastCall = currentTimeMillis();
 
     /**
      * List of {@link Consumer} for getting all {@link Sensor<T>Event}
@@ -198,6 +197,20 @@ public abstract class Sensor<T extends Device> {
      */
     public boolean isBrick() {
         return isBrick;
+    }
+
+    /**
+     * Same method as {@link Sensor#values} with limitation of 1 call per millisecond
+     *
+     * @param values some objects like a "howdy", 123, Color.GREEN which the sensor could process - else it just should ignore it
+     * @return current {@link Sensor<T>}
+     */
+    public synchronized Sensor<T> valueMs(final Object... values) {
+        if (lastCall + 1 > System.currentTimeMillis()) {
+            lastCall = System.currentTimeMillis();
+            value(values);
+        }
+        return this;
     }
 
     /**
@@ -446,25 +459,6 @@ public abstract class Sensor<T extends Device> {
         } catch (Exception ignore) {
         }
         return this;
-    }
-
-    /**
-     * TODO: FIXME: is this still needed?
-     * BetaMethod to slow down communication with the bricks and not overload them
-     *
-     * @param sensor used to identify which {@link Sensor} is waiting the threshold is taken from {@link SensorRegistry#CALLBACK_PERIOD}
-     */
-    protected void waitToNextRun(final Sensor sensor) {
-        final AtomicLong lastRun = lastRuns.computeIfAbsent(sensor, value -> new AtomicLong(System.currentTimeMillis() + (CALLBACK_PERIOD * 2)));
-        while ((lastRun.get() + CALLBACK_PERIOD) > System.currentTimeMillis()) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        lastRun.set(System.currentTimeMillis());
-        lastRuns.put(sensor, lastRun);
     }
 
     @Override

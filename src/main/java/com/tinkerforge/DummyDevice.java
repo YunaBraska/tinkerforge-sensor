@@ -26,7 +26,7 @@ public class DummyDevice extends Device {
     }
 
     private Identity prepareIdentity() {
-        Identity identity = new Identity();
+        final Identity identity = new Identity();
         identity.uid = UUID.randomUUID().toString();
         identity.connectedUid = UUID.randomUUID().toString();
         identity.position = '\n';

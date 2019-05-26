@@ -46,7 +46,7 @@ public class NetworkConnectionException extends Exception {
      *              unknown.)
      * @since 1.4
      */
-    public NetworkConnectionException(Throwable cause) {
+    public NetworkConnectionException(final Throwable cause) {
         super(cause);
     }
 }

@@ -16,8 +16,8 @@ import java.util.Random;
 public class ReactionGame extends Helper {
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
@@ -29,10 +29,10 @@ public class ReactionGame extends Helper {
 
     //CODE FUNCTION
     static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
-        Sensor displayLcd = sensorList.getDisplayLcd20x4();
-        Sensor displaySegment = sensorList.getDisplaySegment();
-        Sensor buttonRGB = sensorList.getButtonRGB();
-        Sensor speaker = sensorList.getSpeaker();
+        final Sensor displayLcd = sensorList.getDisplayLcd20x4();
+        final Sensor displaySegment = sensorList.getDisplaySegment();
+        final Sensor buttonRGB = sensorList.getButtonRGB();
+        final Sensor speaker = sensorList.getSpeaker();
 
         //SCORE VIEW
         if (score > -1) {
@@ -94,10 +94,10 @@ public class ReactionGame extends Helper {
     }
 
     private static void reactionGameStart() {
-        Sensor displaySegment = sensorList.getDisplaySegment();
-        Sensor buttonRGB = sensorList.getButtonRGB();
-        Sensor displayLcd = sensorList.getDisplayLcd20x4();
-        Sensor speaker = sensorList.getSpeaker();
+        final Sensor displaySegment = sensorList.getDisplaySegment();
+        final Sensor buttonRGB = sensorList.getButtonRGB();
+        final Sensor displayLcd = sensorList.getDisplayLcd20x4();
+        final Sensor speaker = sensorList.getSpeaker();
 
         if (score == -1) {
             score = -2;

@@ -40,17 +40,17 @@ public class Accelerometer extends Sensor<BrickletAccelerometer> {
     }
 
     @Override
-    public Sensor<BrickletAccelerometer> value(Object value) {
+    public Sensor<BrickletAccelerometer> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletAccelerometer> ledStatus(Integer value) {
+    public Sensor<BrickletAccelerometer> ledStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletAccelerometer> ledAdditional(Integer value) {
+    public Sensor<BrickletAccelerometer> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
                 device.ledOn();

@@ -15,8 +15,8 @@ public class Nathalie extends Helper {
     public static SensorList<Sensor> sensorList = new SensorList<>();
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
@@ -29,8 +29,8 @@ public class Nathalie extends Helper {
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
 
         //Get Sensor and Value
-        Sensor io16 = sensorList.getIO16();
-        long decibel = sensorList.getValueSoundIntensity() + 1;
+        final Sensor io16 = sensorList.getIO16();
+        final long decibel = sensorList.getValueSoundIntensity() + 1;
 
         //Dynamic max volume
         if (decibel > soundMax) {
@@ -44,7 +44,7 @@ public class Nathalie extends Helper {
 
         //every 50 milliseconds
         if (timePassed(50)) {
-            int ledAnzahl = (int) (decibel / ((soundMax / 18) + 1));
+            final int ledAnzahl = (int) (decibel / ((soundMax / 18) + 1));
 
             //Switch LEDs on
             for (int led = 1; led < ledAnzahl; led++) {

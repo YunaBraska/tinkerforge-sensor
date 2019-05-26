@@ -19,7 +19,7 @@ public abstract class AsyncRun implements Runnable {
     }
 
     public synchronized void stop() {
-        Object result = TimeoutExecutor.execute(1000, () -> {
+        final Object result = TimeoutExecutor.execute(1000, () -> {
             if (running) {
                 running = false;
                 thread.join();
@@ -47,7 +47,7 @@ public abstract class AsyncRun implements Runnable {
         try {
             Thread.sleep(milliSeconds);
         } catch (InterruptedException e) {
-            System.err.println(format("Interrupted [%s]" + name));
+            System.err.println(format("Interrupted [%s]", name));
         }
     }
 }

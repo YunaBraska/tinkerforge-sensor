@@ -79,7 +79,7 @@ public class Color implements Serializable {
      *
      * @param value to correct
      **/
-    private static int correctRange(int value) {
+    private static int correctRange(final int value) {
         if (value < 0) {
             return 0;
         } else if (value > 255) {
@@ -107,7 +107,7 @@ public class Color implements Serializable {
      * @see #getBlue
      * @see #getRGB
      */
-    public Color(int r, int g, int b) {
+    public Color(final int r, final int g, final int b) {
         this(correctRange(r), correctRange(g), correctRange(b), 255);
     }
 
@@ -128,11 +128,11 @@ public class Color implements Serializable {
      * @see #getAlpha
      * @see #getRGB
      */
-    public Color(int r, int g, int b, int a) {
-        int cR = correctRange(r);
-        int cG = correctRange(g);
-        int cB = correctRange(b);
-        int cA = correctRange(a);
+    public Color(final int r, final int g, final int b, final int a) {
+        final int cR = correctRange(r);
+        final int cG = correctRange(g);
+        final int cB = correctRange(b);
+        final int cA = correctRange(a);
         value = ((cA & 0xFF) << 24) |
                 ((cR & 0xFF) << 16) |
                 ((cG & 0xFF) << 8) |
@@ -153,7 +153,7 @@ public class Color implements Serializable {
      * @see #getBlue
      * @see #getRGB
      */
-    public Color(int rgb) {
+    public Color(final int rgb) {
         value = 0xff000000 | rgb;
     }
 
@@ -173,7 +173,7 @@ public class Color implements Serializable {
      * @see #getAlpha
      * @see #getRGB
      */
-    public Color(int rgba, boolean hasalpha) {
+    public Color(final int rgba, final boolean hasalpha) {
         if (hasalpha) {
             value = rgba;
         } else {
@@ -200,7 +200,7 @@ public class Color implements Serializable {
      * @see #getAlpha
      * @see #getRGB
      */
-    public Color(float r, float g, float b, float a) {
+    public Color(final float r, final float g, final float b, final float a) {
         this((int) (r * 255 + 0.5), (int) (g * 255 + 0.5), (int) (b * 255 + 0.5), (int) (a * 255 + 0.5));
         frgbvalue = new float[3];
         frgbvalue[0] = r;
@@ -294,14 +294,14 @@ public class Color implements Serializable {
         int r = getRed();
         int g = getGreen();
         int b = getBlue();
-        int alpha = getAlpha();
+        final int alpha = getAlpha();
 
         /* From 2D group:
          * 1. black.brighter() should return grey
          * 2. applying brighter to blue will always return blue, brighter
          * 3. non pure color (non zero rgb) will eventually return white
          */
-        int i = (int) (1.0 / (1.0 - FACTOR));
+        final int i = (int) (1.0 / (1.0 - FACTOR));
         if (r == 0 && g == 0 && b == 0) {
             return new Color(i, i, i, alpha);
         }
@@ -365,7 +365,7 @@ public class Color implements Serializable {
      * <code>false</code> otherwise.
      * @since JDK1.0
      */
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         return obj instanceof Color && ((Color) obj).getRGB() == this.getRGB();
     }
 
@@ -396,9 +396,9 @@ public class Color implements Serializable {
      * @see Integer#decode
      * @since JDK1.1
      */
-    public static Color decode(String nm) throws NumberFormatException {
-        Integer intval = Integer.decode(nm);
-        int i = intval.intValue();
+    public static Color decode(final String nm) throws NumberFormatException {
+        final Integer intval = Integer.decode(nm);
+        final int i = intval.intValue();
         return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF);
     }
 
@@ -421,7 +421,7 @@ public class Color implements Serializable {
      * @see Color#Color(int)
      * @since JDK1.0
      */
-    public static Color getColor(String nm) {
+    public static Color getColor(final String nm) {
         return getColor(nm, null);
     }
 
@@ -446,12 +446,12 @@ public class Color implements Serializable {
      * @see Color#Color(int)
      * @since JDK1.0
      */
-    public static Color getColor(String nm, Color v) {
-        Integer intval = Integer.getInteger(nm);
+    public static Color getColor(final String nm, final Color v) {
+        final Integer intval = Integer.getInteger(nm);
         if (intval == null) {
             return v;
         }
-        int i = intval.intValue();
+        final int i = intval.intValue();
         return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF);
     }
 
@@ -477,9 +477,9 @@ public class Color implements Serializable {
      * @see Color#Color(int)
      * @since JDK1.0
      */
-    public static Color getColor(String nm, int v) {
-        Integer intval = Integer.getInteger(nm);
-        int i = (intval != null) ? intval : v;
+    public static Color getColor(final String nm, final int v) {
+        final Integer intval = Integer.getInteger(nm);
+        final int i = (intval != null) ? intval : v;
         return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, (i) & 0xFF);
     }
 
@@ -510,16 +510,16 @@ public class Color implements Serializable {
      * @see Color#Color(int)
      * @since JDK1.0
      */
-    public static int HSBtoRGB(float hue, float saturation, float brightness) {
+    public static int HSBtoRGB(final float hue, final float saturation, final float brightness) {
         int r = 0, g = 0, b = 0;
         if (saturation == 0) {
             r = g = b = (int) (brightness * 255.0f + 0.5f);
         } else {
-            float h = (hue - (float) Math.floor(hue)) * 6.0f;
-            float f = h - (float) Math.floor(h);
-            float p = brightness * (1.0f - saturation);
-            float q = brightness * (1.0f - saturation * f);
-            float t = brightness * (1.0f - (saturation * (1.0f - f)));
+            final float h = (hue - (float) Math.floor(hue)) * 6.0f;
+            final float f = h - (float) Math.floor(h);
+            final float p = brightness * (1.0f - saturation);
+            final float q = brightness * (1.0f - saturation * f);
+            final float t = brightness * (1.0f - (saturation * (1.0f - f)));
             switch ((int) h) {
                 case 0:
                     r = (int) (brightness * 255.0f + 0.5f);
@@ -578,8 +578,10 @@ public class Color implements Serializable {
      * @see Color#Color(int)
      * @since JDK1.0
      */
-    public static float[] RGBtoHSB(int r, int g, int b, float[] hsbvals) {
-        float hue, saturation, brightness;
+    public static float[] RGBtoHSB(final int r, final int g, final int b, float[] hsbvals) {
+        float hue;
+        final float saturation;
+        final float brightness;
         if (hsbvals == null) {
             hsbvals = new float[3];
         }
@@ -596,9 +598,9 @@ public class Color implements Serializable {
         if (saturation == 0)
             hue = 0;
         else {
-            float redc = ((float) (cmax - r)) / ((float) (cmax - cmin));
-            float greenc = ((float) (cmax - g)) / ((float) (cmax - cmin));
-            float bluec = ((float) (cmax - b)) / ((float) (cmax - cmin));
+            final float redc = ((float) (cmax - r)) / ((float) (cmax - cmin));
+            final float greenc = ((float) (cmax - g)) / ((float) (cmax - cmin));
+            final float bluec = ((float) (cmax - b)) / ((float) (cmax - cmin));
             if (r == cmax)
                 hue = bluec - greenc;
             else if (g == cmax)
@@ -634,7 +636,7 @@ public class Color implements Serializable {
      * saturation, and brightness.
      * @since JDK1.0
      */
-    public static Color getHSBColor(float h, float s, float b) {
+    public static Color getHSBColor(final float h, final float s, final float b) {
         return new Color(HSBtoRGB(h, s, b));
     }
 
@@ -651,8 +653,8 @@ public class Color implements Serializable {
      *                  color and alpha components and returns
      * @return the RGBA components in a <code>float</code> array.
      */
-    public float[] getRGBComponents(float[] compArray) {
-        float[] f;
+    public float[] getRGBComponents(final float[] compArray) {
+        final float[] f;
         if (compArray == null) {
             f = new float[4];
         } else {
@@ -684,8 +686,8 @@ public class Color implements Serializable {
      *                  components and returns
      * @return the RGB components in a <code>float</code> array.
      */
-    public float[] getRGBColorComponents(float[] compArray) {
-        float[] f;
+    public float[] getRGBColorComponents(final float[] compArray) {
+        final float[] f;
         if (compArray == null) {
             f = new float[3];
         } else {
@@ -720,11 +722,11 @@ public class Color implements Serializable {
      * @return the color and alpha components in a <code>float</code>
      * array.
      */
-    public float[] getComponents(float[] compArray) {
+    public float[] getComponents(final float[] compArray) {
         if (fvalue == null)
             return getRGBComponents(compArray);
-        float[] f;
-        int n = fvalue.length;
+        final float[] f;
+        final int n = fvalue.length;
         if (compArray == null) {
             f = new float[n + 1];
         } else {
@@ -753,11 +755,11 @@ public class Color implements Serializable {
      *                  <code>ColorSpace</code> and returns
      * @return the color components in a <code>float</code> array.
      */
-    public float[] getColorComponents(float[] compArray) {
+    public float[] getColorComponents(final float[] compArray) {
         if (fvalue == null)
             return getRGBColorComponents(compArray);
-        float[] f;
-        int n = fvalue.length;
+        final float[] f;
+        final int n = fvalue.length;
         if (compArray == null) {
             f = new float[n];
         } else {

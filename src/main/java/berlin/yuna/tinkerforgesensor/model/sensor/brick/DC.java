@@ -39,12 +39,12 @@ public class DC extends Sensor<BrickDC> {
     }
 
     @Override
-    public Sensor<BrickDC> value(Object value) {
+    public Sensor<BrickDC> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickDC> ledStatus(Integer value) {
+    public Sensor<BrickDC> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.enableStatusLED();
@@ -58,7 +58,7 @@ public class DC extends Sensor<BrickDC> {
     }
 
     @Override
-    public Sensor<BrickDC> ledAdditional(Integer value) {
+    public Sensor<BrickDC> ledAdditional(final Integer value) {
         return this;
     }
 }

@@ -94,12 +94,12 @@ public class IMU2 extends Sensor<BrickIMUV2> {
     }
 
     @Override
-    public Sensor<BrickIMUV2> value(Object value) {
+    public Sensor<BrickIMUV2> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickIMUV2> ledStatus(Integer value) {
+    public Sensor<BrickIMUV2> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.enableStatusLED();
@@ -113,7 +113,7 @@ public class IMU2 extends Sensor<BrickIMUV2> {
     }
 
     @Override
-    public Sensor<BrickIMUV2> ledAdditional(Integer value) {
+    public Sensor<BrickIMUV2> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
                 device.ledsOn();

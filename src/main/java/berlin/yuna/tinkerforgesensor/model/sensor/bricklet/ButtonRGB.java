@@ -66,11 +66,11 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 
     private Color calculateHighContrast(final Color color) {
         Color result = color;
-        int max = Collections.min(Arrays.asList(result.getRed(), result.getGreen(), result.getBlue()));
+        final int max = Collections.min(Arrays.asList(result.getRed(), result.getGreen(), result.getBlue()));
         result = new Color(result.getRed() - max, result.getGreen() - max, result.getBlue() - max);
 
         // +100% brightness
-        float[] hsb = Color.RGBtoHSB(result.getRed(), result.getGreen(), result.getBlue(), null);
+        final float[] hsb = Color.RGBtoHSB(result.getRed(), result.getGreen(), result.getBlue(), null);
         result = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 0.5f * (1f + hsb[2])));
         return result;
     }

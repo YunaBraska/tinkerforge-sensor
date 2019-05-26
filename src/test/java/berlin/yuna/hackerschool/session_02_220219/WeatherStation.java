@@ -16,8 +16,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 public class WeatherStation extends Helper {
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
@@ -30,10 +30,10 @@ public class WeatherStation extends Helper {
     static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
 
         if (sensorList.getButtonRGB().isPresent()) {
-            Sensor Knopf1 = sensorList.getButtonRGB(0);
-            Sensor Knopf2 = sensorList.getButtonRGB(1);
-            int light = sensorList.getValueLightLux().intValue();
-            int airQuality = sensorList.getValueAirPressure().intValue();
+            final Sensor Knopf1 = sensorList.getButtonRGB(0);
+            final Sensor Knopf2 = sensorList.getButtonRGB(1);
+            final int light = sensorList.getValueLightLux().intValue();
+            final int airQuality = sensorList.getValueAirPressure().intValue();
 
 
             if (sensor.is(Knopf1) && value == 1) {
@@ -73,7 +73,7 @@ public class WeatherStation extends Helper {
                     sensorList.getDisplayLcd20x4().ledAdditionalOn();
                 }
             } else if (sensor.is(Knopf2) && value == 1) {
-                int temperatur = sensorList.getValueTemperature().intValue();
+                final int temperatur = sensorList.getValueTemperature().intValue();
 
                 if (temperatur > 2000) {
                     Knopf2.value(Color.GREEN);

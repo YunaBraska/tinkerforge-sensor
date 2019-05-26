@@ -58,12 +58,12 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     }
 
     @Override
-    public Sensor<BrickletDualButtonV2> value(Object value) {
+    public Sensor<BrickletDualButtonV2> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDualButtonV2> ledStatus(Integer value) {
+    public Sensor<BrickletDualButtonV2> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_OFF.bit) {
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
@@ -82,7 +82,7 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
 
     //TODO: set button 1 && button 2 different
     @Override
-    public Sensor<BrickletDualButtonV2> ledAdditional(Integer value) {
+    public Sensor<BrickletDualButtonV2> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_OFF.bit) {
                 device.setLEDState(3, 3);

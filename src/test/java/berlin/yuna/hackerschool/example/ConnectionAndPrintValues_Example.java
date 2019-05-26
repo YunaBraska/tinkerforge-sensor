@@ -18,7 +18,7 @@ public class ConnectionAndPrintValues_Example extends Helper {
 
     public static SensorListener connect() {
         try {
-            SensorListener sensorListener = new SensorListener("localhost", 4223, true);
+            final SensorListener sensorListener = new SensorListener("localhost", 4223, true);
             sensorList = sensorListener.sensorList;
             sensorListener.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
             while (sensorListener.isConnecting()){
@@ -36,20 +36,20 @@ public class ConnectionAndPrintValues_Example extends Helper {
         } else if (!timePassed(256)) {
             return;
         }
-        LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
+        final LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
         for (ValueType valueType : ValueType.values()) {
-            Long value = sensorList.value(valueType, (Long) null);
+            final Long value = sensorList.value(valueType, (Long) null);
             if (value != null) {
                 values.put(valueType, value);
             }
         }
-        StringBuilder lineHead = new StringBuilder();
-        StringBuilder lineValue = new StringBuilder();
+        final StringBuilder lineHead = new StringBuilder();
+        final StringBuilder lineValue = new StringBuilder();
         for (ValueType valueType : values.keySet()) {
             lineHead.append(format("%" + (valueType.toString().length() + 1) + "s |", valueType));
         }
 
-        Iterator<ValueType> typeIterator = values.keySet().iterator();
+        final Iterator<ValueType> typeIterator = values.keySet().iterator();
         for (Long value : values.values()) {
             lineValue.append(format("%" + (typeIterator.next().toString().length() + 1) + "s |", value));
         }

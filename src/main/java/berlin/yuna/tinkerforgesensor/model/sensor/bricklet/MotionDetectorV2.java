@@ -40,7 +40,7 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
     public Sensor<BrickletMotionDetectorV2> value(final Object value) {
         try {
             if (value instanceof Number) {
-                int input = ((Number) value).intValue();
+                final int input = ((Number) value).intValue();
                 if (input == 0) {
                     device.setIndicator(0, 0, 0);
                 } else if (input == 1) {

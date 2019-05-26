@@ -19,8 +19,8 @@ public class DrWeatherStation extends Helper {
     public static SensorList<Sensor> sensorList = new SensorList<>();
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
@@ -31,7 +31,7 @@ public class DrWeatherStation extends Helper {
             System.out.println(format("Sensor [%s] type [%s] value [%s]", sensor.name, type, value));
         }
 
-        Sensor display = sensorList.getDisplayLcd20x4();
+        final Sensor display = sensorList.getDisplayLcd20x4();
 
         display.ledAdditionalOn();
         if (type.isButtonPressed()) {

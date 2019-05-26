@@ -15,8 +15,8 @@ public class ApplicationStart extends Helper {
     public static SensorList<Sensor> sensorList = new SensorList<>();
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
@@ -36,9 +36,9 @@ public class ApplicationStart extends Helper {
         }
 
         if (timePassed(500)) {
-            Sensor display = sensorList.getDisplayLcd20x4();
-            Sensor buttonRGB_1 = sensorList.getButtonRGB(0);
-            Sensor buttonRGB_2 = sensorList.getButtonRGB(1);
+            final Sensor display = sensorList.getDisplayLcd20x4();
+            final Sensor buttonRGB_1 = sensorList.getButtonRGB(0);
+            final Sensor buttonRGB_2 = sensorList.getButtonRGB(1);
 
             if (!start) {
                 //Reset buttons

@@ -10,8 +10,8 @@ public class Distance_to_SpeakerSonar_Example extends Helper {
 
     private static SensorList<Sensor> sensorList;
 
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sonar();
 
@@ -19,7 +19,7 @@ public class Distance_to_SpeakerSonar_Example extends Helper {
 
     private static void sonar() {
         while (true) {
-            Long distance = sensorList.value(DISTANCE);
+            final Long distance = sensorList.value(DISTANCE);
             if (distance > 1 && distance < 250 && timePassed(32)) {
                 sensorList.getSpeaker().value(32);
             }

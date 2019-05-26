@@ -20,14 +20,14 @@ public class Loop extends AsyncRun {
     public void run() {
         long lastTime = System.nanoTime();
         final double numTicks = 60.0;
-        double nanoSeconds = 1000000000.0 / numTicks;
+        final double nanoSeconds = 1000000000.0 / numTicks;
         double delta = 0;
         int frames = 0;
         int ticks = 0;
         long time = currentTimeMillis();
 
         while (running) {
-            long currentTime = System.nanoTime();
+            final long currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / nanoSeconds;
             lastTime = currentTime;
 

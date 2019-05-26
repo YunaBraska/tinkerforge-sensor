@@ -50,18 +50,18 @@ public class RollingList<T> extends LinkedList<T> {
      */
     public boolean addAndCheckIfItsNewPeak(final T valueToCheck) {
         add(valueToCheck);
-        List<Long> lastPeaks = getLastPeaks();
+        final List<Long> lastPeaks = getLastPeaks();
         return lastPeaks.size() < 2 || (lastPeaks.contains(((Number) valueToCheck).longValue()) && !lastPeaks.get(lastPeaks.size() - 2).equals(valueToCheck));
     }
 
     public List<Long> getLastPeaks() {
-        List<Long> values = this.stream().map(value -> ((Number) value).longValue()).collect(toList());
+        final List<Long> values = this.stream().map(value -> ((Number) value).longValue()).collect(toList());
         List<Long> lastPeek = new ArrayList<>(values);
         List<Long> current = new ArrayList<>(values);
-        LongSummaryStatistics statistics = values.stream().mapToLong(value -> value).summaryStatistics();
-        double average = statistics.getAverage();
-        long max = statistics.getMax();
-        long min = statistics.getMin();
+        final LongSummaryStatistics statistics = values.stream().mapToLong(value -> value).summaryStatistics();
+        final double average = statistics.getAverage();
+        final long max = statistics.getMax();
+        final long min = statistics.getMin();
 
         for (int i = 0; i < 100; i++) {
             current = getLastPeaks((long) (100 - i), current, average);
@@ -74,9 +74,9 @@ public class RollingList<T> extends LinkedList<T> {
     }
 
     private List<Long> getLastPeaks(final long sensitivity, final List<Long> values, final double average) {
-        List<Long> lastPeek = new ArrayList<>();
+        final List<Long> lastPeek = new ArrayList<>();
         for (long value : values) {
-            double percentage = calcPercentage(average, value);
+            final double percentage = calcPercentage(average, value);
             if (percentage > (100 - sensitivity)) {
                 lastPeek.add(value);
             }

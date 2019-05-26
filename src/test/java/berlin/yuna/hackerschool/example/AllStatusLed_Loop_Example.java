@@ -14,8 +14,8 @@ public class AllStatusLed_Loop_Example extends Helper {
     private static SensorList<Sensor> sensorList;
     private static boolean ledReverse;
 
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
 
         loop(AllStatusLed_Loop_Example::knightRider_example, 15);

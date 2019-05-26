@@ -9,8 +9,8 @@ public class IO16_Loop_Example extends Helper{
     private static SensorList<Sensor> sensorList;
     private static boolean ledReverse;
 
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
 
         while (!sensorList.getIO16().isPresent()) {
@@ -22,7 +22,7 @@ public class IO16_Loop_Example extends Helper{
     }
 
     private static boolean loopOver16IO_example() {
-        Sensor io16 = sensorList.getIO16();
+        final Sensor io16 = sensorList.getIO16();
 
         io16.ledAdditionalOff();
         for (int i = 1; i < 17; i++) {
@@ -36,7 +36,7 @@ public class IO16_Loop_Example extends Helper{
     private static boolean knightRider_example() {
         ledReverse = !ledReverse;
         for (int i = 1; i < 9; i++) {
-            int index = ledReverse ? 9 - i : i;
+            final int index = ledReverse ? 9 - i : i;
             //Side turn all off
             sensorList.getIO16().ledAdditionalOff();
             //Side A

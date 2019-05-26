@@ -38,12 +38,12 @@ public class Master extends Sensor<BrickMaster> {
     }
 
     @Override
-    public Sensor<BrickMaster> value(Object value) {
+    public Sensor<BrickMaster> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickMaster> ledStatus(Integer value) {
+    public Sensor<BrickMaster> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.enableStatusLED();
@@ -57,7 +57,7 @@ public class Master extends Sensor<BrickMaster> {
     }
 
     @Override
-    public Sensor<BrickMaster> ledAdditional(Integer value) {
+    public Sensor<BrickMaster> ledAdditional(final Integer value) {
         try {
             if (device.isWifi2Present()) {
                 if (value == LED_ADDITIONAL_ON.bit) {

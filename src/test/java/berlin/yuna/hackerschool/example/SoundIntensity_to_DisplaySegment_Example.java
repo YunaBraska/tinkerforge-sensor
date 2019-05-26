@@ -9,8 +9,8 @@ public class SoundIntensity_to_DisplaySegment_Example {
 
     private static SensorList<Sensor> sensorList;
 
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
     }

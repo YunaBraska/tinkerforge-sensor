@@ -18,9 +18,9 @@ public class GeneratorTest {
 
     @Test
     public void generate() throws IOException {
-        List<Class<? extends Sensor>> sensorList = getSensorList();
-        File targetDeviceProviderFile = new File(System.getProperty("user.dir"), "src/main/resources/META-INF/services/com.tinkerforge.DeviceProvider");
-        File targetSourceDir = new File("src/main/java");
+        final List<Class<? extends Sensor>> sensorList = getSensorList();
+        final File targetDeviceProviderFile = new File(System.getProperty("user.dir"), "src/main/resources/META-INF/services/com.tinkerforge.DeviceProvider");
+        final File targetSourceDir = new File("src/main/java");
 
         GeneratorEnumValueType.generate();
         GeneratorSensorRegistry.generate(new ArrayList<>(sensorList)).writeTo(targetSourceDir);
@@ -30,19 +30,19 @@ public class GeneratorTest {
     }
 
     private List<Class<? extends Sensor>> getSensorList() {
-        Reflections reflections = new Reflections(SensorRegistry.class.getPackage().getName());
-        List<Class<? extends Sensor>> sensorList = new ArrayList<>(reflections.getSubTypesOf(Sensor.class));
+        final Reflections reflections = new Reflections(SensorRegistry.class.getPackage().getName());
+        final List<Class<? extends Sensor>> sensorList = new ArrayList<>(reflections.getSubTypesOf(Sensor.class));
         sensorList.sort(Comparator.comparing(Class::getSimpleName));
         return sensorList;
     }
 
-    static String toHumanReadable(final Enum<?> anEnum, boolean startUpperCase) {
-        char[] chars = anEnum.toString().toLowerCase().toCharArray();
+    static String toHumanReadable(final Enum<?> anEnum, final boolean startUpperCase) {
+        final char[] chars = anEnum.toString().toLowerCase().toCharArray();
         if (startUpperCase) {
             chars[0] = toUpperCase(chars[0]);
         }
         for (int i = 1; i < chars.length; i++) {
-            char prev = chars[i - 1];
+            final char prev = chars[i - 1];
             if (prev == '_') {
                 chars[i] = toUpperCase(chars[i]);
             }

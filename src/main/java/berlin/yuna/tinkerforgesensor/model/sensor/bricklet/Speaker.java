@@ -45,9 +45,9 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     @Override
     public Sensor<BrickletPiezoSpeaker> value(final Object... values) {
         if (values != null) {
-            int duration = getDuration(values);
-            int wait = getWait(values, duration);
-            int frequency = getFrequency(values);
+            final int duration = getDuration(values);
+            final int wait = getWait(values, duration);
+            final int frequency = getFrequency(values);
 
             if (values.length > 0 && values[0] instanceof String) {
                 morse(values[0]);
@@ -95,7 +95,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         return this;
     }
 
-    private void morse(Object value) {
+    private void morse(final Object value) {
         try {
             sendEvent(BEEP_ACTIVE, 1L);
             device.morseCode((String) value, frequency);
@@ -138,7 +138,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     private int getFrequency(final Object[] values) {
         int result = this.frequency;
         if (values.length > 1 && values[1] instanceof Number) {
-            int frequency_tmp = ((Number) values[1]).intValue();
+            final int frequency_tmp = ((Number) values[1]).intValue();
             result = frequency_tmp < 7101 && frequency_tmp > 585 ? frequency_tmp : frequency;
         }
         this.frequency = result;

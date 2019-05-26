@@ -46,12 +46,12 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> value(Object value) {
+    public Sensor<BrickletAirQuality> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletAirQuality> ledStatus(Integer value) {
+    public Sensor<BrickletAirQuality> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_OFF.bit) {
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
@@ -69,7 +69,7 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> ledAdditional(Integer value) {
+    public Sensor<BrickletAirQuality> ledAdditional(final Integer value) {
         return this;
     }
 }

@@ -46,7 +46,7 @@ public class DeviceNotSupportedException extends Exception {
      *              unknown.)
      * @since 1.4
      */
-    public DeviceNotSupportedException(Throwable cause) {
+    public DeviceNotSupportedException(final Throwable cause) {
         super(cause);
     }
 }

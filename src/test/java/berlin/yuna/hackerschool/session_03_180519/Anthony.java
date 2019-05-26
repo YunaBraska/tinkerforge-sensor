@@ -16,24 +16,24 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 public class Anthony extends Helper {
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
+    public static void main(final String[] args) {
+        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
         sensorList = sensorListener.sensorList;
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //VARIABLES
     public static SensorList<Sensor> sensorList = new SensorList<>();
-    private static int counter = 0;
+    private static final int counter = 0;
     private static int programm = 0;
     private static boolean programIsRunning = false;
 
     //CODE FUNCTION
     static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
-        Sensor Knopf1 = sensorList.getButtonRGB(0);
-        Sensor Knopf2 = sensorList.getButtonRGB(1);
-        Sensor Knopf3 = sensorList.getButtonRGB(2);
-        Sensor display = sensorList.getDisplayLcd20x4();
+        final Sensor Knopf1 = sensorList.getButtonRGB(0);
+        final Sensor Knopf2 = sensorList.getButtonRGB(1);
+        final Sensor Knopf3 = sensorList.getButtonRGB(2);
+        final Sensor display = sensorList.getDisplayLcd20x4();
 
         if (sensorList.getButtonRGB().isPresent()) {
             if (programm == 0 && timePassed(200)) {
@@ -73,7 +73,7 @@ public class Anthony extends Helper {
             programm = 0;
         }
 
-        long distace = sensorList.getValueDistance();
+        final long distace = sensorList.getValueDistance();
         if (programm == 3 && timePassed(distace)) {
 
             Knopf1.value(Color.BLACK);
@@ -102,7 +102,7 @@ public class Anthony extends Helper {
 
 
         if (programm == 1) {
-            Luftqualität(sensor, value);
+            airQuality(sensor, value);
             DisplayLuftdruck();
             DisplayTemperatur(sensor, value);
         }
@@ -110,19 +110,19 @@ public class Anthony extends Helper {
     }
 
 
-    static void Luftqualität(final Sensor sensor, final Long value) {
+    static void airQuality(final Sensor sensor, final Long value) {
 
-        Sensor Knopf2 = sensorList.getButtonRGB(1);
-        Sensor Knopf1 = sensorList.getButtonRGB(0);
+        final Sensor Knopf2 = sensorList.getButtonRGB(1);
+        final Sensor Knopf1 = sensorList.getButtonRGB(0);
         if (sensorList.getButtonRGB().isPresent()) {
 
-            int airQuality = sensorList.getValueAirPressure().intValue();
+            final int airQuality = sensorList.getValueAirPressure().intValue();
 
 
             if (sensor.is(Knopf1) && value == 1) {
                 if (airQuality < 1050000) {
                     sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Die Luftqualität istschlecht! Bitte     ein Fenster  öffnen.");
+                    sensorList.getDisplayLcd20x4().value("Die airQuality istschlecht! Bitte     ein Fenster  öffnen.");
                     sensorList.getDisplayLcd20x4().ledAdditionalOn();
                     sensorList.getSpeaker().value(300);
                     sleep(500);
@@ -134,7 +134,7 @@ public class Anthony extends Helper {
                 } else {
                     Knopf1.value(Color.GREEN);
                     sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Die Luftqualität istakzeptabel.");
+                    sensorList.getDisplayLcd20x4().value("Die airQuality istakzeptabel.");
                     sensorList.getDisplayLcd20x4().ledAdditionalOn();
 
                 }
@@ -144,16 +144,16 @@ public class Anthony extends Helper {
 
     static void DisplayLuftdruck() {
 
-        Sensor Knopf2 = sensorList.getButtonRGB(1);
-        Sensor Knopf1 = sensorList.getButtonRGB(0);
-        Sensor Knopf3 = sensorList.getButtonRGB(2);
+        final Sensor Knopf2 = sensorList.getButtonRGB(1);
+        final Sensor Knopf1 = sensorList.getButtonRGB(0);
+        final Sensor Knopf3 = sensorList.getButtonRGB(2);
         if (sensorList.getButtonRGB().isPresent()) {
 
 
             if (Knopf3.value(BUTTON_PRESSED) == 1) {
 
                 Knopf3.value(Color.CYAN);
-                int luftdruck = sensorList.getValueAirPressure().intValue();
+                final int luftdruck = sensorList.getValueAirPressure().intValue();
                 sensorList.getDisplayLcd20x4().value("${clear}");
                 sensorList.getDisplayLcd20x4().value("Der Luftdruck       beträgt " + (luftdruck / 1000000) + "BAR, das entspricht " + (luftdruck / 1000) + " mbar.");
                 sensorList.getDisplayLcd20x4().ledAdditionalOn();
@@ -162,11 +162,11 @@ public class Anthony extends Helper {
     }
 
     static void DisplayTemperatur(final Sensor sensor, final Long value) {
-        Sensor Knopf2 = sensorList.getButtonRGB(1);
+        final Sensor Knopf2 = sensorList.getButtonRGB(1);
         if (sensorList.getButtonRGB().isPresent()) {
 
             if (sensor.is(Knopf2) && value == 1) {
-                int temperatur = sensorList.getValueTemperature().intValue();
+                final int temperatur = sensorList.getValueTemperature().intValue();
 
                 if (temperatur > 2000) {
                     Knopf2.value(Color.GREEN);
@@ -184,7 +184,7 @@ public class Anthony extends Helper {
     }
 
     static void BlinkenKnopf1() {
-        Sensor Knopf1 = sensorList.getButtonRGB(0);
+        final Sensor Knopf1 = sensorList.getButtonRGB(0);
 
         Knopf1.value(Color.RED);
         sleep(500);

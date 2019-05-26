@@ -32,12 +32,12 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> value(Object value) {
+    public Sensor<BrickletMotionDetector> value(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> ledStatus(Integer value) {
+    public Sensor<BrickletMotionDetector> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
@@ -52,7 +52,7 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> ledAdditional(Integer value) {
+    public Sensor<BrickletMotionDetector> ledAdditional(final Integer value) {
         return this;
     }
 }

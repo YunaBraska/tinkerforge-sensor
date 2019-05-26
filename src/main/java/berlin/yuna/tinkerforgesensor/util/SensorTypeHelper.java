@@ -45,7 +45,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Tilt;
 public class SensorTypeHelper {
   public final Sensor sensor;
 
-  public SensorTypeHelper(Sensor sensor) {
+  public SensorTypeHelper(final Sensor sensor) {
     this.sensor = sensor;
   }
 

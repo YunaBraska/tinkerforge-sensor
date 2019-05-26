@@ -183,7 +183,7 @@ public enum ValueType {
 
   public final ValueType parent;
 
-  ValueType(ValueType parent) {
+  ValueType(final ValueType parent) {
     this.parent = parent;
   }
 
@@ -891,11 +891,11 @@ public enum ValueType {
     return this.is(ROTARY) || (this.parent != null && this.parent.contains(ROTARY));
   }
 
-  public boolean is(ValueType valueType) {
+  public boolean is(final ValueType valueType) {
     return this == valueType;
   }
 
-  public boolean contains(ValueType valueType) {
+  public boolean contains(final ValueType valueType) {
     return this.is(valueType) || (this.parent != null && this.parent.contains(valueType));
   }
 }

@@ -8,17 +8,13 @@ import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeVariableName;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicSensorName;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getSensorVersions;

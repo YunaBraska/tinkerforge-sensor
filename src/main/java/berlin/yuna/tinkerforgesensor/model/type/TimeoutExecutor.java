@@ -12,9 +12,9 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class TimeoutExecutor {
 
     public static Object execute(final long timeoutMs, final Callable<Object> method) {
-        ExecutorService executor = Executors.newCachedThreadPool();
+        final ExecutorService executor = Executors.newCachedThreadPool();
 
-        Future<Object> future = executor.submit(method);
+        final Future<Object> future = executor.submit(method);
         try {
             return future.get(timeoutMs, MILLISECONDS);
         } catch (TimeoutException | ExecutionException | InterruptedException exception) {

@@ -12,7 +12,7 @@ public class TinkerforgeThread extends Thread {
         return stop;
     }
 
-    public boolean setStop(boolean stop) {
+    public boolean setStop(final boolean stop) {
         System.out.println("Stop [" + stop + "] [" + getName() + "]");
         this.stop = stop;
         return stop;

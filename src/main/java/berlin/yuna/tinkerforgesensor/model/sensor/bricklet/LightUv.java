@@ -18,8 +18,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
  */
 public class LightUv extends Sensor<BrickletUVLight> {
 
-    public LightUv(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletUVLight) device, parent, uid, false);
+    public LightUv(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletUVLight) device, uid, false);
     }
 
     @Override

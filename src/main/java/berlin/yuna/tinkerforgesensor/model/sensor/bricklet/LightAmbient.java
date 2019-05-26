@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
  */
 public class LightAmbient extends Sensor<BrickletAmbientLight> {
 
-    public LightAmbient(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletAmbientLight) device, parent, uid, false);
+    public LightAmbient(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletAmbientLight) device, uid, false);
     }
 
     @Override

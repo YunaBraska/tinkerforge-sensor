@@ -26,8 +26,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  */
 public class BarometerV2 extends Sensor<BrickletBarometerV2> {
 
-    public BarometerV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletBarometerV2) device, parent, uid, true);
+    public BarometerV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletBarometerV2) device, uid, true);
     }
 
     @Override

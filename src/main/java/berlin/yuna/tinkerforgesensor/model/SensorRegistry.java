@@ -86,15 +86,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SensorRegistry {
   public static final long CALLBACK_PERIOD = 64;
 
-  private static ConcurrentHashMap<Class<? extends Device>, Sensor.SensorFactory> sensorMap = initSensor();
+  private static final ConcurrentHashMap<Class<? extends Device>, Sensor.SensorFactory> sensorMap = initSensor();
 
-  private static ConcurrentHashMap<Integer, Sensor.DeviceFactory> deviceMap = initDevice();
+  private static final ConcurrentHashMap<Integer, Sensor.DeviceFactory> deviceMap = initDevice();
 
   public static Sensor.SensorFactory getSensor(final Class<? extends Device> device) {
     return sensorMap.get(device);
   }
 
-  public static Sensor.DeviceFactory getDevice(Integer deviceIdentifier) {
+  public static Sensor.DeviceFactory getDevice(final Integer deviceIdentifier) {
     return deviceMap.get(deviceIdentifier);
   }
 
@@ -103,7 +103,7 @@ public class SensorRegistry {
   }
 
   private static ConcurrentHashMap<Class<? extends Device>, Sensor.SensorFactory> initSensor() {
-    ConcurrentHashMap<Class<? extends Device>, Sensor.SensorFactory> registry = new ConcurrentHashMap<>();
+    final ConcurrentHashMap<Class<? extends Device>, Sensor.SensorFactory> registry = new ConcurrentHashMap<>();
     registry.put(BrickletAccelerometer.class, Accelerometer::new);
     registry.put(BrickletAccelerometerV2.class, AccelerometerV2::new);
     registry.put(BrickletAirQuality.class, AirQuality::new);
@@ -143,7 +143,7 @@ public class SensorRegistry {
   }
 
   private static ConcurrentHashMap<Integer, Sensor.DeviceFactory> initDevice() {
-    ConcurrentHashMap<Integer, Sensor.DeviceFactory> registry = new ConcurrentHashMap<>();
+    final ConcurrentHashMap<Integer, Sensor.DeviceFactory> registry = new ConcurrentHashMap<>();
     registry.put(BrickletAccelerometer.DEVICE_IDENTIFIER, BrickletAccelerometer::new);
     registry.put(BrickletAccelerometerV2.DEVICE_IDENTIFIER, BrickletAccelerometerV2::new);
     registry.put(BrickletAirQuality.DEVICE_IDENTIFIER, BrickletAirQuality::new);

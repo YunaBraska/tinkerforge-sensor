@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE;
 
 public class DC extends Sensor<BrickDC> {
 
-    public DC(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickDC) device, parent, uid, true);
+    public DC(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickDC) device, uid, true);
     }
 
     @Override

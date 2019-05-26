@@ -32,8 +32,8 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     public static final String DISPLAY_DYNAMIC_SPACE = "${space}";
     private static final String DISPLAY_SPLIT_LINE_REGEX = "(\\n|(<br\\s*/*>))";
 
-    public DisplayLcd20x4(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletLCD20x4) device, parent, uid, false);
+    public DisplayLcd20x4(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletLCD20x4) device, uid, false);
     }
 
     @Override

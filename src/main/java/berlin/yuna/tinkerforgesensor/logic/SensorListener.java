@@ -1,10 +1,10 @@
 package berlin.yuna.tinkerforgesensor.logic;
 
-import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
@@ -24,9 +24,10 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTE
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PING;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.asyncStop;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createAsync;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.asyncStop;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
@@ -73,7 +74,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread}
      *
      * @param host for {@link SensorListener#connection}
      * @param port for {@link SensorListener#connection}
@@ -84,7 +85,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread}
      *
      * @param host                  for {@link SensorListener#connection}
      * @param port                  for {@link SensorListener#connection}
@@ -96,7 +97,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread}
      *
      * @param host     for {@link SensorListener#connection}
      * @param port     for {@link SensorListener#connection}
@@ -108,7 +109,7 @@ public class SensorListener implements Closeable {
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread} 
+     * Auto connects and auto {@link Closeable} {@link SensorListener#close()} {@link Sensor}s and manages the {@link SensorListener#sensorList} by creating {@link Thread}
      *
      * @param host                  for {@link SensorListener#connection}
      * @param port                  for {@link SensorListener#connection}
@@ -137,7 +138,7 @@ public class SensorListener implements Closeable {
         connection.addConnectedListener(event -> handleConnect(event, false));
         sensorList.clear();
         if (host != null) {
-            Object result = execute(timeoutMs, () -> {
+            final Object result = execute(timeoutMs, () -> {
                 if (!isEmpty(password)) {
                     connection.authenticate(password);
                 }
@@ -206,47 +207,38 @@ public class SensorListener implements Closeable {
             final int deviceIdentifier,
             final short enumerationType
     ) {
+        switch (enumerationType) {
+            case ENUMERATION_TYPE_AVAILABLE:
+                createAsync("Connect_" + uid, run -> initSensor(uid, deviceIdentifier, DEVICE_CONNECTED));
+                break;
+            case ENUMERATION_TYPE_CONNECTED:
+                createAsync("Connect_" + uid, run -> initSensor(uid, deviceIdentifier, DEVICE_RECONNECTED));
+                break;
+            case ENUMERATION_TYPE_DISCONNECTED:
+                final Sensor sensor = sensorList.stream().filter(entity -> entity.uid.equals(uid)).findFirst().orElse(null);
+                sendEvent(sensor, 2L, DEVICE_DISCONNECTED);
+                sensorList.remove(sensor);
+                break;
+        }
+    }
+
+    private void initSensor(final String uid, final int deviceIdentifier, final ValueType enumerationType) {
+        lastConnect = System.currentTimeMillis();
         try {
-            switch (enumerationType) {
-                case ENUMERATION_TYPE_AVAILABLE:
-                    initSensor(uid, connectedUid, deviceIdentifier, DEVICE_CONNECTED);
-                    break;
-                case ENUMERATION_TYPE_CONNECTED:
-                    initSensor(uid, connectedUid, deviceIdentifier, DEVICE_RECONNECTED);
-                    break;
-                case ENUMERATION_TYPE_DISCONNECTED:
-                    Sensor sensor = sensorList.stream().filter(entity -> entity.uid.equals(uid)).findFirst().orElse(null);
-                    sendEvent(sensor, 2L, DEVICE_DISCONNECTED);
-                    sensorList.remove(sensor);
-                    break;
+            final Sensor sensor = Sensor.newInstance(deviceIdentifier, uid, connection);
+            final Optional<Sensor> previousSensor = sensorList.stream().filter(s -> s.equals(sensor)).findFirst();
+            if (previousSensor.isPresent() && previousSensor.get().isConnected()) {
+                sendEvent(sensor, 42L, DEVICE_ALREADY_CONNECTED);
+            } else {
+                sensor.flashLed();
+                sensorList.add(sensor);
+                sensorList.linkParent(sensor);
+                sendEvent(sensor, 42L, enumerationType);
+                sensor.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
             }
         } catch (DeviceNotSupportedException | NetworkConnectionException e) {
-            System.err.println(format("doPlugAndPlay [ERROR] [%s]", e.getMessage()));
+            System.err.println(format("doPlugAndPlay [ERROR] uid [%s] [%s]", uid, e.getMessage()));
         }
-    }
-
-    private void initSensor(final String uid, final String connectedUid, final int deviceIdentifier, final ValueType enumerationType) throws DeviceNotSupportedException, NetworkConnectionException {
-        lastConnect = System.currentTimeMillis();
-        Sensor sensor;
-        sensor = Sensor.newInstance(deviceIdentifier, findParent(connectedUid), uid, connection);
-        Optional<Sensor> previousSensor = sensorList.stream().filter(s -> s.equals(sensor)).findFirst();
-        if (previousSensor.isPresent() && previousSensor.get().isConnected()) {
-            sendEvent(sensor, 42L, DEVICE_ALREADY_CONNECTED);
-        } else {
-            sensorList.add(sensor);
-            sendEvent(sensor, 42L, enumerationType);
-            sensor.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
-        }
-    }
-
-    private Sensor findParent(final String connectedUid) {
-        Sensor parent = null;
-        for (Sensor sensor : sensorList) {
-            if (sensor.uid.equals(connectedUid)) {
-                parent = sensor;
-            }
-        }
-        return parent;
     }
 
     private void sendEvent(final Sensor sensor, final long value, final ValueType valueType) {
@@ -255,7 +247,7 @@ public class SensorListener implements Closeable {
         }
     }
 
-    private void handleConnect(final short connectionEvent, boolean disconnectEvent) {
+    private void handleConnect(final short connectionEvent, final boolean disconnectEvent) {
         if (disconnectEvent) {
             switch (connectionEvent) {
                 case IPConnection.DISCONNECT_REASON_REQUEST:

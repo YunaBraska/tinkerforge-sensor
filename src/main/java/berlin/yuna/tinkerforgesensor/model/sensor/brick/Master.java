@@ -22,8 +22,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE_USB;
  */
 public class Master extends Sensor<BrickMaster> {
 
-    public Master(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickMaster) device, parent, uid, true);
+    public Master(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickMaster) device, uid, true);
     }
 
     @Override

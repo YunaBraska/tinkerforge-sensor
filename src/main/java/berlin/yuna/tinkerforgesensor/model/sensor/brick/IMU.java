@@ -32,8 +32,8 @@ public class IMU extends Sensor<BrickIMU> {
     /**
      * Full fledged AHRS with 9 degrees of freedom
      */
-    public IMU(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickIMU) device, parent, uid, true);
+    public IMU(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickIMU) device, uid, true);
     }
 
     @Override

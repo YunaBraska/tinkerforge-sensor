@@ -18,8 +18,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
  */
 public class Humidity extends Sensor<BrickletHumidity> {
 
-    public Humidity(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletHumidity) device, parent, uid, false);
+    public Humidity(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletHumidity) device, uid, false);
     }
 
     @Override

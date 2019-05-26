@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  */
 public class Temperature extends Sensor<BrickletTemperature> {
 
-    public Temperature(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletTemperature) device, parent, uid, false);
+    public Temperature(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletTemperature) device, uid, false);
     }
 
     @Override

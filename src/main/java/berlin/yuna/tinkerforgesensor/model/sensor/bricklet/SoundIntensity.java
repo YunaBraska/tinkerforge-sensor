@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY
  */
 public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 
-    public SoundIntensity(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletSoundIntensity) device, parent, uid, true);
+    public SoundIntensity(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletSoundIntensity) device, uid, true);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
     }
 
     @Override
-    public Sensor<BrickletSoundIntensity> ledAdditional(Integer value) {
+    public Sensor<BrickletSoundIntensity> ledAdditional(final Integer value) {
         return this;
     }
 }

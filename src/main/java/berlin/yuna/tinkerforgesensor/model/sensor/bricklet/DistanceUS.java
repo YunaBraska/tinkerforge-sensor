@@ -18,8 +18,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
  */
 public class DistanceUS extends Sensor<BrickletDistanceUS> {
 
-    public DistanceUS(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletDistanceUS) device, parent, uid, false);
+    public DistanceUS(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletDistanceUS) device, uid, false);
     }
 
     @Override

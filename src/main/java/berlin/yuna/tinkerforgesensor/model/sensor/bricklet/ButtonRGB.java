@@ -26,8 +26,8 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 
     boolean highContrast = false;
 
-    public ButtonRGB(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletRGBLEDButton) device, parent, uid, true);
+    public ButtonRGB(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletRGBLEDButton) device, uid, true);
     }
 
     @Override

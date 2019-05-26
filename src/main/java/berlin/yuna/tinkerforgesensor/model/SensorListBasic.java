@@ -7,6 +7,7 @@ import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,13 +27,13 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return stream().sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
-    public synchronized List<Sensor> sort(Predicate<? super T> predicate) {
+    public synchronized List<Sensor> sort(final Predicate<? super T> predicate) {
         return stream().filter(predicate).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
     //TODO: Deprecated: sensorOrDevices should be only sensor
     public synchronized Sensor getSensor(final int number, final Class<?>... sensorOrDevices) {
-        List<Sensor> sensors = getSensor(sensorOrDevices);
+        final List<Sensor> sensors = getSensor(sensorOrDevices);
         return sensors.size() > number ? sensors.get(number) : getDefault(sensorOrDevices[0]);
     }
 
@@ -46,12 +47,12 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public Double valueDecimal(final ValueType sensorValueType, final Long fallback) {
-        Long result = value(sensorValueType, fallback);
+        final Long result = value(sensorValueType, fallback);
         return result == null ? null : result.doubleValue();
     }
 
     public synchronized Long value(final ValueType valueType, final Sensor sensor, final Long fallback) {
-        Long result = values(valueType).get(sensor);
+        final Long result = values(valueType).get(sensor);
         return result == null ? fallback : result;
     }
 
@@ -65,7 +66,7 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
     public synchronized Long value(final ValueType valueType, final Long fallback) {
         for (Sensor sensor : this) {
-            RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
+            final RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
                 return sensorValues.getLast();
             }
@@ -75,9 +76,9 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized HashMap<Sensor, Long> values(final ValueType valueType) {
-        HashMap<Sensor, Long> result = new HashMap<>();
+        final HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
-            RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
+            final RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
                 result.put(sensor, sensorValues.getLast());
             }
@@ -86,9 +87,9 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized HashMap<Sensor, Long> min(final ValueType valueType) {
-        HashMap<Sensor, Long> result = new HashMap<>();
+        final HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
-            RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
+            final RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
                 result.put(sensor, sensorValues.stream().mapToLong(value -> value).summaryStatistics().getMin());
             }
@@ -98,9 +99,9 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized HashMap<Sensor, Long> max(final ValueType valueType) {
-        HashMap<Sensor, Long> result = new HashMap<>();
+        final HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
-            RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
+            final RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
                 result.put(sensor, sensorValues.stream().mapToLong(value -> value).summaryStatistics().getMax());
             }
@@ -110,9 +111,9 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized HashMap<Sensor, Long> average(final ValueType valueType) {
-        HashMap<Sensor, Long> result = new HashMap<>();
+        final HashMap<Sensor, Long> result = new HashMap<>();
         for (Sensor sensor : this) {
-            RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
+            final RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
                 result.put(sensor, new Double(sensorValues.stream().mapToLong(value -> value).summaryStatistics().getAverage()).longValue());
             }
@@ -136,7 +137,7 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return (SensorList<T>) this;
     }
 
-    public synchronized boolean lock(long waitForUnlock) throws InterruptedException {
+    public synchronized boolean lock(final long waitForUnlock) throws InterruptedException {
         return lock.tryLock(waitForUnlock, MILLISECONDS);
     }
 
@@ -146,7 +147,7 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
         }
     }
 
-    public synchronized void waitForUnlock(long waitForUnlock) {
+    public synchronized void waitForUnlock(final long waitForUnlock) {
         try {
             lock(waitForUnlock);
         } catch (IllegalMonitorStateException | InterruptedException e) {
@@ -156,8 +157,8 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
         }
     }
 
-    public synchronized boolean add(T t) {
-        int i = indexOf(t);
+    public synchronized boolean add(final T t) {
+        final int i = indexOf(t);
         if (i > -1) {
             add(i, t);
             return true;
@@ -167,6 +168,29 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
     public Sensor getDefault() {
         return getDefault(DummyDevice.class);
+    }
+
+    public synchronized List<T> copyList() {
+        return new ArrayList<>(this);
+    }
+
+    /**
+     * Relink set parent for all sensors connected to this parent;
+     */
+    public synchronized void linkParent(final Sensor parent) {
+        forEach(sensor -> sensor.linkParent(parent));
+    }
+
+    /**
+     * Relink all sensor parents;
+     */
+    public synchronized void relinkParents() {
+        final List<T> parentList = copyList();
+        for (Sensor sensor : this) {
+            for (Sensor parent : parentList) {
+                sensor.linkParent(parent);
+            }
+        }
     }
 
     private Sensor getDefault(final Class<?> sensorOrDevice) {

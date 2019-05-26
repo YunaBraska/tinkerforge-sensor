@@ -34,8 +34,8 @@ public class LightColor extends Sensor<BrickletColor> {
 
     private BrickletColor.Config config;
 
-    public LightColor(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletColor) device, parent, uid, false);
+    public LightColor(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletColor) device, uid, false);
     }
 
     @Override

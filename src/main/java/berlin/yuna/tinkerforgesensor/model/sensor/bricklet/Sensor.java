@@ -13,6 +13,8 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -44,17 +46,20 @@ import static java.lang.String.format;
  */
 public abstract class Sensor<T extends Device> {
 
-    public int port = -1;
+    int port = -1;
+    private Sensor parent;
 
     public final String uid;
     public final String name;
     public final T device;
-    public final Sensor parent;
     public final ConcurrentHashMap<ValueType, RollingList<Long>> values = new ConcurrentHashMap<>();
     public final SensorTypeHelper sensorTypeHelper;
 
+    private final boolean hasStatusLed;
+    private final String connectionUid;
+    private final char position;
+
     protected boolean isBrick;
-    protected final boolean hasStatusLed;
     protected static ConcurrentHashMap<Sensor, AtomicLong> lastRuns = new ConcurrentHashMap<>();
 
     /**
@@ -78,12 +83,11 @@ public abstract class Sensor<T extends Device> {
      * Creates new {@link Sensor}
      *
      * @param device {@link Device} to wrap with {@link Sensor}
-     * @param parent optional parent {@link Sensor} to calculate the port/sensor order
      * @param uid    for unique identifier
      * @return {@link Sensor}
      */
-    public static Sensor<? extends Device> newInstance(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        return getSensor(device.getClass()).newInstance(device, parent, uid);
+    public static Sensor<? extends Device> newInstance(final Device device, final String uid) throws NetworkConnectionException {
+        return getSensor(device.getClass()).newInstance(device, uid);
 
     }
 
@@ -91,46 +95,45 @@ public abstract class Sensor<T extends Device> {
      * Creates new {@link Sensor}
      *
      * @param deviceIdentifier {@link Device} identifier
-     * @param parent           optional parent {@link Sensor} to calculate the port/sensor order
      * @param uid              for unique identifier like {@link com.tinkerforge.BrickletBarometerV2#DEVICE_IDENTIFIER}
      * @param connection       {@link IPConnection} for {@link Device}
      * @return {@link Sensor}
      */
-    public static Sensor<? extends Device> newInstance(final Integer deviceIdentifier, final Sensor parent, final String uid, final IPConnection connection) throws DeviceNotSupportedException, NetworkConnectionException {
-        DeviceFactory deviceFactory = getDevice(deviceIdentifier);
+    public static Sensor<? extends Device> newInstance(final Integer deviceIdentifier, final String uid, final IPConnection connection) throws DeviceNotSupportedException, NetworkConnectionException {
+        final DeviceFactory deviceFactory = getDevice(deviceIdentifier);
         if (deviceFactory == null) {
             throw new DeviceNotSupportedException(format("Device [%s] uid [%s] is not supported yet", deviceIdentifier, uid));
         }
-        return newInstance(deviceFactory.newInstance(uid, connection), parent, uid).flashLed();
+        return newInstance(deviceFactory.newInstance(uid, connection), uid);
     }
 
     /**
      * Constructor
      *
      * @param device connected original {@link Device}
-     * @param parent optional for calculating ({@link Sensor<T>#refreshPortE()}) the sensor position/order as {@link Sensor<T>#port}
      * @param uid    cached uid of {@link Device#getIdentity()}
      */
-    public Sensor(final T device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        this(device, parent, uid, false);
+    public Sensor(final T device, final String uid) throws NetworkConnectionException {
+        this(device, uid, false);
     }
 
     /**
      * Constructor
      *
      * @param device       connected original {@link Device}
-     * @param parent       optional for calculating ({@link Sensor<T>#refreshPortE()}) the sensor position/order as {@link Sensor<T>#port}
      * @param uid          cached uid of {@link Device#getIdentity()}
      * @param hasStatusLed for automation to know if its worth to call status led function e.g. {@link Sensor<T>#ledStatusOn()}, {@link Sensor<T>#ledStatusOff()}, {@link Sensor<T>#ledStatusHeartbeat()}, {@link Sensor<T>#ledStatus()}
      */
-    protected Sensor(final T device, final Sensor parent, final String uid, final boolean hasStatusLed) throws NetworkConnectionException {
+    protected Sensor(final T device, final String uid, final boolean hasStatusLed) throws NetworkConnectionException {
         this.uid = uid;
         this.name = device.getClass().getSimpleName();
         this.device = device;
-        this.parent = parent;
         this.hasStatusLed = hasStatusLed;
-        port();
         try {
+            final Device.Identity identity = device.getIdentity();
+            this.connectionUid = identity.connectedUid;
+            this.position = identity.position;
+            initPort();
             initListener();
         } catch (TimeoutException | NotConnectedException e) {
             throw new NetworkConnectionException(e);
@@ -149,16 +152,12 @@ public abstract class Sensor<T extends Device> {
 
     /**
      * This method should not be called to often as this slows down the sensors
-     * Checks if the sensor is {@link Sensor#isPresent()} and checks the connection by {@link Sensor#refreshPortE()}
+     * Checks if the sensor is {@link Sensor#isPresent()} and checks the connection by {@link Sensor#port}
      *
      * @return true if the sensor is present and the port refresh was successfully as the refresh needs that the {@link Device} is answering
      */
     public boolean isConnected() {
-        try {
-            return isPresent() && refreshPortE() != -1;
-        } catch (TimeoutException | NotConnectedException e) {
-            return false;
-        }
+        return isPresent() && port != -1;
     }
 
     /**
@@ -166,7 +165,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is a type of {@link Sensor<T>} or {@link Device}
      */
-    public boolean isClassType(Class<?>... sensorOrDevices) {
+    public boolean isClassType(final Class<?>... sensorOrDevices) {
         for (Class<?> sensorOrDevice : sensorOrDevices) {
             if (getClass() == sensorOrDevice || getType() == sensorOrDevice) {
                 return true;
@@ -175,7 +174,7 @@ public abstract class Sensor<T extends Device> {
         return false;
     }
 
-    public boolean is(Sensor sensor) {
+    public boolean is(final Sensor sensor) {
         return sensor != null && sensor.uid.equals(uid);
     }
 
@@ -212,7 +211,7 @@ public abstract class Sensor<T extends Device> {
      * @return current {@link Sensor<T>}
      */
     public Sensor<T> value(final Object... values) {
-        for (Object value : values){
+        for (Object value : values) {
             value(value);
         }
         return this;
@@ -329,7 +328,7 @@ public abstract class Sensor<T extends Device> {
      * @return value from sensor of type {@link ValueType} or fallback if no value with {@link ValueType} were found
      */
     public Long value(final ValueType valueType, final Long fallback) {
-        RollingList<Long> valueList = values.get(valueType);
+        final RollingList<Long> valueList = values.get(valueType);
         return valueList == null || valueList.isEmpty() || valueList.getLast() == null ? fallback : valueList.getLast();
     }
 
@@ -339,44 +338,48 @@ public abstract class Sensor<T extends Device> {
      * @return port starts at 0
      */
     public int port() {
-        return port > -1 ? port : refreshPort();
+        return port;
     }
 
     /**
      * Refreshes/Searches the {@link Sensor<T>#port} by calculating from parent {@link Sensor<T>#refreshPortE()}
      * Should not be called to often to not interrupt the sensors
-     *
-     * @return {@link Sensor<T>#port}
      */
-    public int refreshPort() {
-        try {
-            return refreshPortE();
-        } catch (TimeoutException | NotConnectedException e) {
-            return port;
-        }
-    }
-
-    /**
-     * Refreshes/Searches the {@link Sensor<T>#port} by calculating from parent {@link Sensor<T>#refreshPortE()}
-     * Should not be called to often to not interrupt the sensors
-     *
-     * @return {@link Sensor<T>#port}
-     * @throws TimeoutException      on timeout
-     * @throws NotConnectedException on not connected
-     */
-    public int refreshPortE() throws TimeoutException, NotConnectedException {
-        Device.Identity identity = device.getIdentity();
-        if (identity.connectedUid.equals("0")) {
+    private void initPort() {
+        if ("0".equals(connectionUid)) {
             isBrick = true;
             port = 10;
-        } else if (isDigit(identity.position)) {
+        } else if (isDigit(position)) {
             isBrick = true;
-            port = (getNumericValue(identity.position) + 1) * 10;
+            port = (getNumericValue(position) + 1) * 10;
         } else {
             isBrick = false;
-            port = (((int) toLowerCase(identity.position)) - 96) + (parent == null ? 0 : parent.port());
+            port = (((int) toLowerCase(position)) - 96) + (parent == null ? 0 : parent.port);
         }
-        return port;
+    }
+
+
+    /**
+     * Relink parent and sets port if given Sensor were the parent
+     *
+     * @param sensorList of possible parents
+     */
+    public void linkParents(final List<Sensor> sensorList) {
+        for (Sensor sensorCopy : new ArrayList<>(sensorList)) {
+            linkParent(sensorCopy);
+        }
+    }
+
+    /**
+     * Relink parent and sets port if given Sensor were the parent
+     *
+     * @param sensor to link as parent
+     */
+    public void linkParent(final Sensor sensor) {
+        if (sensor.uid.equals(connectionUid)) {
+            parent = sensor;
+            initPort();
+        }
     }
 
     /**
@@ -387,7 +390,7 @@ public abstract class Sensor<T extends Device> {
      * @return {@link Sensor<T>#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
-        RollingList<Long> timeSeries = values.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
+        final RollingList<Long> timeSeries = values.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
         if (timeSeries.addAndCheckIfItsNewPeak(value)) {
             consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, value, valueType)));
         }
@@ -401,7 +404,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is connected with class type of {@link Device}
      */
-    protected boolean isDevice(Class<? extends Device> device) {
+    protected boolean isDevice(final Class<? extends Device> device) {
         return this.device.getClass() == device;
     }
 
@@ -410,7 +413,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is a type of {@link Sensor<T>}
      */
-    protected boolean isSensor(Class<? extends Sensor> sensor) {
+    protected boolean isSensor(final Class<? extends Sensor> sensor) {
         return this.getClass() == sensor;
     }
 
@@ -452,7 +455,7 @@ public abstract class Sensor<T extends Device> {
      * @param sensor used to identify which {@link Sensor} is waiting the threshold is taken from {@link SensorRegistry#CALLBACK_PERIOD}
      */
     protected void waitToNextRun(final Sensor sensor) {
-        AtomicLong lastRun = lastRuns.computeIfAbsent(sensor, value -> new AtomicLong(System.currentTimeMillis() + (CALLBACK_PERIOD * 2)));
+        final AtomicLong lastRun = lastRuns.computeIfAbsent(sensor, value -> new AtomicLong(System.currentTimeMillis() + (CALLBACK_PERIOD * 2)));
         while ((lastRun.get() + CALLBACK_PERIOD) > System.currentTimeMillis()) {
             try {
                 Thread.sleep(10);
@@ -465,10 +468,10 @@ public abstract class Sensor<T extends Device> {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Sensor sensor = (Sensor) o;
+        final Sensor sensor = (Sensor) o;
         return Objects.equals(uid, sensor.uid);
     }
 
@@ -486,11 +489,11 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * This is needed for the {@link SensorRegistry} to instantiate {@link Sensor#newInstance(Device, Sensor, String)} new {@link Sensor}
+     * This is needed for the {@link SensorRegistry} to instantiate {@link Sensor#newInstance(Integer, String, IPConnection)} new {@link Sensor}
      */
     @FunctionalInterface
     public interface SensorFactory {
-        Sensor<? extends Device> newInstance(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException;
+        Sensor<? extends Device> newInstance(final Device device, final String uid) throws NetworkConnectionException;
     }
 
     @FunctionalInterface
@@ -517,7 +520,7 @@ public abstract class Sensor<T extends Device> {
 
         public final int bit;
 
-        LedStatusType(int bit) {
+        LedStatusType(final int bit) {
             this.bit = bit;
         }
     }

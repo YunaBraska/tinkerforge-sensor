@@ -46,8 +46,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
  */
 public class IMU2 extends Sensor<BrickIMUV2> {
 
-    public IMU2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickIMUV2) device, parent, uid, true);
+    public IMU2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickIMUV2) device, uid, true);
     }
 
     @Override

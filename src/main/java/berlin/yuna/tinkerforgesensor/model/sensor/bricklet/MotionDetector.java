@@ -20,8 +20,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED
  */
 public class MotionDetector extends Sensor<BrickletMotionDetector> {
 
-    public MotionDetector(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletMotionDetector) device, parent, uid, true);
+    public MotionDetector(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletMotionDetector) device, uid, true);
     }
 
     @Override

@@ -32,8 +32,8 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     private int buttonL;
     private int buttonR;
 
-    public DualButton(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletDualButtonV2) device, parent, uid, true);
+    public DualButton(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletDualButtonV2) device, uid, true);
     }
 
     @Override

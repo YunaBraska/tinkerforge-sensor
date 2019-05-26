@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
  */
 public class Tilt extends Sensor<BrickletTilt> {
 
-    public Tilt(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletTilt) device, parent, uid, false);
+    public Tilt(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletTilt) device, uid, false);
     }
 
     @Override

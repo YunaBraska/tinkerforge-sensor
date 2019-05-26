@@ -20,8 +20,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  */
 public class Barometer extends Sensor<BrickletBarometer> {
 
-    public Barometer(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletBarometer) device, parent, uid, false);
+    public Barometer(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletBarometer) device, uid, false);
     }
 
     @Override

@@ -24,8 +24,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  */
 public class Accelerometer extends Sensor<BrickletAccelerometer> {
 
-    public Accelerometer(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletAccelerometer) device, parent, uid, false);
+    public Accelerometer(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletAccelerometer) device, uid, false);
     }
 
     @Override

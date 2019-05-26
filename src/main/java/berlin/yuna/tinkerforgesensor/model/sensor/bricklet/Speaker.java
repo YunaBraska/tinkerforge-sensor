@@ -21,8 +21,8 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     private int duration = 200;
     private int wait = duration;
 
-    public Speaker(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletPiezoSpeaker) device, parent, uid, false);
+    public Speaker(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletPiezoSpeaker) device, uid, false);
     }
 
     @Override
@@ -64,7 +64,6 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
      *              <br /> Frequency = number with prefix "f" [min 585 - max 7100]
      * @return {@link Sensor}
      */
-    @Override
     public Sensor<BrickletPiezoSpeaker> value(final Object value) {
         return value(value, frequency);
     }

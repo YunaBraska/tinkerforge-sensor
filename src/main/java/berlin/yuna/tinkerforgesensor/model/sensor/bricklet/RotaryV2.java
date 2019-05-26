@@ -23,8 +23,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
  */
 public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
 
-    public RotaryV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletRotaryEncoderV2) device, parent, uid, true);
+    public RotaryV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletRotaryEncoderV2) device, uid, true);
     }
 
     @Override

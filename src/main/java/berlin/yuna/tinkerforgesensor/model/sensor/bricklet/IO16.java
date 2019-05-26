@@ -16,8 +16,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  */
 public class IO16 extends Sensor<BrickletIO16> {
 
-    public IO16(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletIO16) device, parent, uid, false);
+    public IO16(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletIO16) device, uid, false);
     }
 
     @Override

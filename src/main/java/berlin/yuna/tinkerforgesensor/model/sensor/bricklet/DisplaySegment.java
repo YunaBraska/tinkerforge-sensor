@@ -29,8 +29,8 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     public static DateTimeFormatter DATE_TIME_FORMAT = ofPattern("HH:mm");
 
 
-    public DisplaySegment(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletSegmentDisplay4x7) device, parent, uid, false);
+    public DisplaySegment(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletSegmentDisplay4x7) device, uid, false);
     }
 
     @Override

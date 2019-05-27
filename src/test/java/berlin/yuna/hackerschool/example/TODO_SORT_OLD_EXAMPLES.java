@@ -23,7 +23,7 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
 
     public static void animateStatusLEDs(final SensorList<Sensor> sensorList) {
         status = status == LED_STATUS_ON ? LED_STATUS_OFF : LED_STATUS_ON;
-        final List<Sensor> sortedList = sensorList.sort(Sensor::hasLedStatus);
+        final List<Sensor> sortedList = sensorList.filter(Sensor::hasLedStatus);
         if (status == LED_STATUS_OFF) {
             reverse(sortedList);
         }

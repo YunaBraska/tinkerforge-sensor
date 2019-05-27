@@ -21,8 +21,10 @@ public class Nathalie extends Helper {
         sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
-    //VARIABLES
+    //sensorList.getSensorXy().getValueXy()
+    //TODO: sensorList.getValueXy()
 
+    //VARIABLES
     private static long soundMax = 1;
 
     //CODE FUNCTION

@@ -8,6 +8,7 @@ import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.DummyDevice;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -23,12 +24,9 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
     private final ReentrantLock lock = new ReentrantLock();
 
-    public synchronized List<Sensor> sort() {
-        return stream().sorted(comparingInt(Sensor::port)).collect(toList());
-    }
 
-    public synchronized List<Sensor> sort(final Predicate<? super T> predicate) {
-        return stream().filter(predicate).sorted(comparingInt(Sensor::port)).collect(toList());
+    public synchronized List<Sensor> filter(final Predicate<? super T> predicate) {
+        return stream().filter(predicate).collect(toList());
     }
 
     //TODO: Deprecated: sensorOrDevices should be only sensor
@@ -115,7 +113,8 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
         for (Sensor sensor : this) {
             final RollingList<Long> sensorValues = (RollingList<Long>) sensor.values.get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
-                result.put(sensor, new Double(sensorValues.stream().mapToLong(value -> value).summaryStatistics().getAverage()).longValue());
+                result.put(sensor,
+                           new Double(sensorValues.stream().mapToLong(value -> value).summaryStatistics().getAverage()).longValue());
             }
 
         }
@@ -179,6 +178,7 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
      */
     public synchronized void linkParent(final Sensor parent) {
         forEach(sensor -> sensor.linkParent(parent));
+        this.sort(Comparator.comparingInt(Sensor::port));
     }
 
     /**
@@ -191,6 +191,7 @@ public class SensorListBasic<T extends Sensor> extends CopyOnWriteArrayList<T> {
                 sensor.linkParent(parent);
             }
         }
+        this.sort(Comparator.comparingInt(Sensor::port));
     }
 
     private Sensor getDefault(final Class<?> sensorOrDevice) {

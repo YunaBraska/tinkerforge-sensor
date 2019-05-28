@@ -303,8 +303,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         if (Thread.currentThread() != callbackThreadTmp) {
             try {
                 callbackThreadTmp.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -416,7 +415,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
      * the IP Connection will try to reconnect to the previously given
      * host and port, if the connection is lost.
      * <p>
-     * Default value is *true*.
+     * Default send is *true*.
      */
     public void setAutoReconnect(final boolean autoReconnect) {
         this.autoReconnect = autoReconnect;
@@ -731,7 +730,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
             final int column = BASE58.indexOf(encoded.charAt(i));
 
             if (column < 0) {
-                throw new IllegalArgumentException("Invalid Base58 value: " + encoded);
+                throw new IllegalArgumentException("Invalid Base58 send: " + encoded);
             }
 
             value += column * columnMultiplier;

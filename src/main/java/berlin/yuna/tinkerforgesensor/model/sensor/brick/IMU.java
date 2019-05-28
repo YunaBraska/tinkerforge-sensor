@@ -66,7 +66,7 @@ public class IMU extends Sensor<BrickIMU> {
     }
 
     @Override
-    public Sensor<BrickIMU> value(final Object value) {
+    public Sensor<BrickIMU> send(final Object value) {
         return this;
     }
 

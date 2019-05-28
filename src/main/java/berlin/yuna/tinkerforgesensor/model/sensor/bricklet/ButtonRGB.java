@@ -37,19 +37,19 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     /**
-     * @param value <br /> [{@link Color#getRGB()}] RGB value
-     *              <br /> [Number] RGB value {@link Color#getRGB()}
+     * @param value <br /> [{@link Color#getRGB()}] RGB send
+     *              <br /> [Number] RGB send {@link Color#getRGB()}
      *              <br /> [Boolean] activate highContrast
      * @return {@link Sensor}
      */
     @Override
-    public Sensor<BrickletRGBLEDButton> value(final Object value) {
+    public Sensor<BrickletRGBLEDButton> send(final Object value) {
         try {
             if (value instanceof Boolean) {
                 highContrast = (Boolean) value;
             }
             if (value instanceof Color) {
-                return value(((Color) value).getRGB());
+                return send(((Color) value).getRGB());
             }
             if (value instanceof Number) {
                 Color color = new Color(((Number) value).intValue());
@@ -95,9 +95,9 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     @Override
     public Sensor<BrickletRGBLEDButton> ledAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
-            value(true);
+            send(true);
         } else if (value == LED_ADDITIONAL_OFF.bit) {
-            value(false);
+            send(false);
         }
         return this;
     }
@@ -119,7 +119,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
                     Color.PINK,
                     Color.BLACK
             )) {
-                value(color);
+                send(color);
                 Thread.sleep(64);
             }
             ledAdditionalOff();

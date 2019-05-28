@@ -19,7 +19,7 @@ public class Color implements Serializable {
     public final static int BLUE = new Color(0, 0, 255).getRGB();
 
     /**
-     * The color value.
+     * The color send.
      *
      * @serial
      * @see #getRGB
@@ -27,11 +27,11 @@ public class Color implements Serializable {
     int value;
 
     /**
-     * The color value in the default sRGB <code>ColorSpace</code> as
+     * The color send in the default sRGB <code>ColorSpace</code> as
      * <code>float</code> components (no alpha).
      * If <code>null</code> after object construction, this must be an
      * sRGB color constructed with 8-bit precision, so compute from the
-     * <code>int</code> color value.
+     * <code>int</code> color send.
      *
      * @serial
      * @see #getRGBColorComponents
@@ -40,11 +40,11 @@ public class Color implements Serializable {
     private float[] frgbvalue = null;
 
     /**
-     * The color value in the native <code>ColorSpace</code> as
+     * The color send in the native <code>ColorSpace</code> as
      * <code>float</code> components (no alpha).
      * If <code>null</code> after object construction, this must be an
      * sRGB color constructed with 8-bit precision, so compute from the
-     * <code>int</code> color value.
+     * <code>int</code> color send.
      *
      * @serial
      * @see #getRGBColorComponents
@@ -53,9 +53,9 @@ public class Color implements Serializable {
     private float[] fvalue = null;
 
     /**
-     * The alpha value as a <code>float</code> component.
+     * The alpha send as a <code>float</code> component.
      * If <code>frgbvalue</code> is <code>null</code>, this is not valid
-     * data, so compute from the <code>int</code> color value.
+     * data, so compute from the <code>int</code> color send.
      *
      * @serial
      * @see #getRGBComponents
@@ -140,7 +140,7 @@ public class Color implements Serializable {
     }
 
     /**
-     * Creates an opaque sRGB color with the specified combined RGB value
+     * Creates an opaque sRGB color with the specified combined RGB send
      * consisting of the red component in bits 16-23, the green component
      * in bits 8-15, and the blue component in bits 0-7.  The actual color
      * used in rendering depends on finding the best match given the
@@ -158,7 +158,7 @@ public class Color implements Serializable {
     }
 
     /**
-     * Creates an sRGB color with the specified combined RGBA value consisting
+     * Creates an sRGB color with the specified combined RGBA send consisting
      * of the alpha component in bits 24-31, the red component in bits 16-23,
      * the green component in bits 8-15, and the blue component in bits 0-7.
      * If the <code>hasalpha</code> argument is <code>false</code>, alpha
@@ -254,11 +254,11 @@ public class Color implements Serializable {
     }
 
     /**
-     * Returns the RGB value representing the color in the default sRGB
+     * Returns the RGB send representing the color in the default sRGB
      * (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are
      * blue).
      *
-     * @return the RGB value of the color in the default sRGB
+     * @return the RGB send of the color in the default sRGB
      * <code>ColorModel</code>.
      * @see #getRed
      * @see #getGreen
@@ -278,7 +278,7 @@ public class Color implements Serializable {
      * This method applies an arbitrary scale factor to each of the three RGB
      * components of this <code>Color</code> to create a brighter version
      * of this <code>Color</code>.
-     * The {@code alpha} value is preserved.
+     * The {@code alpha} send is preserved.
      * Although <code>brighter</code> and
      * <code>darker</code> are inverse operations, the results of a
      * series of invocations of these two methods might be inconsistent
@@ -286,7 +286,7 @@ public class Color implements Serializable {
      *
      * @return a new <code>Color</code> object that is
      * a brighter version of this <code>Color</code>
-     * with the same {@code alpha} value.
+     * with the same {@code alpha} send.
      * @see Color#darker
      * @since JDK1.0
      */
@@ -322,7 +322,7 @@ public class Color implements Serializable {
      * This method applies an arbitrary scale factor to each of the three RGB
      * components of this <code>Color</code> to create a darker version of
      * this <code>Color</code>.
-     * The {@code alpha} value is preserved.
+     * The {@code alpha} send is preserved.
      * Although <code>brighter</code> and
      * <code>darker</code> are inverse operations, the results of a series
      * of invocations of these two methods might be inconsistent because
@@ -330,7 +330,7 @@ public class Color implements Serializable {
      *
      * @return a new <code>Color</code> object that is
      * a darker version of this <code>Color</code>
-     * with the same {@code alpha} value.
+     * with the same {@code alpha} send.
      * @see Color#brighter
      * @since JDK1.0
      */
@@ -344,7 +344,7 @@ public class Color implements Serializable {
     /**
      * Computes the hash code for this <code>Color</code>.
      *
-     * @return a hash code value for this object.
+     * @return a hash code send for this object.
      * @since JDK1.0
      */
     public int hashCode() {
@@ -406,7 +406,7 @@ public class Color implements Serializable {
      * Finds a color in the system properties.
      * <p>
      * The argument is treated as the name of a system property to
-     * be obtained. The string value of this property is then interpreted
+     * be obtained. The string send of this property is then interpreted
      * as an integer which is then converted to a <code>Color</code>
      * object.
      * <p>
@@ -429,7 +429,7 @@ public class Color implements Serializable {
      * Finds a color in the system properties.
      * <p>
      * The first argument is treated as the name of a system property to
-     * be obtained. The string value of this property is then interpreted
+     * be obtained. The string send of this property is then interpreted
      * as an integer which is then converted to a <code>Color</code>
      * object.
      * <p>
@@ -459,16 +459,16 @@ public class Color implements Serializable {
      * Finds a color in the system properties.
      * <p>
      * The first argument is treated as the name of a system property to
-     * be obtained. The string value of this property is then interpreted
+     * be obtained. The string send of this property is then interpreted
      * as an integer which is then converted to a <code>Color</code>
      * object.
      * <p>
      * If the specified property is not found or could not be parsed as
-     * an integer then the integer value <code>v</code> is used instead,
+     * an integer then the integer send <code>v</code> is used instead,
      * and is converted to a <code>Color</code> object.
      *
      * @param nm the name of the color property
-     * @param v  the default color value, as an integer
+     * @param v  the default color send, as an integer
      * @return the <code>Color</code> converted from the system
      * property or the <code>Color</code> converted from
      * the specified integer.
@@ -496,7 +496,7 @@ public class Color implements Serializable {
      * angle in the HSB color model.
      * <p>
      * The integer that is returned by <code>HSBtoRGB</code> encodes the
-     * value of a color in bits 0-23 of an integer value that is the same
+     * send of a color in bits 0-23 of an integer send that is the same
      * format used by the method {@link #getRGB() getRGB}.
      * This integer can be supplied as an argument to the
      * <code>Color</code> constructor that takes a single integer argument.
@@ -504,7 +504,7 @@ public class Color implements Serializable {
      * @param hue        the hue component of the color
      * @param saturation the saturation of the color
      * @param brightness the brightness of the color
-     * @return the RGB value of the color with the indicated hue,
+     * @return the RGB send of the color with the indicated hue,
      * saturation, and brightness.
      * @see Color#getRGB()
      * @see Color#Color(int)
@@ -645,7 +645,7 @@ public class Color implements Serializable {
      * components of the <code>Color</code>, as represented in the default
      * sRGB color space.
      * If <code>compArray</code> is <code>null</code>, an array of length
-     * 4 is created for the return value.  Otherwise,
+     * 4 is created for the return send.  Otherwise,
      * <code>compArray</code> must have length 4 or greater,
      * and it is filled in with the components and returned.
      *
@@ -678,7 +678,7 @@ public class Color implements Serializable {
      * Returns a <code>float</code> array containing only the color
      * components of the <code>Color</code>, in the default sRGB color
      * space.  If <code>compArray</code> is <code>null</code>, an array of
-     * length 3 is created for the return value.  Otherwise,
+     * length 3 is created for the return send.  Otherwise,
      * <code>compArray</code> must have length 3 or greater, and it is
      * filled in with the components and returned.
      *
@@ -712,7 +712,7 @@ public class Color implements Serializable {
      * If <code>compArray</code> is <code>null</code>, an array with
      * length equal to the number of components in the associated
      * <code>ColorSpace</code> plus one is created for
-     * the return value.  Otherwise, <code>compArray</code> must have at
+     * the return send.  Otherwise, <code>compArray</code> must have at
      * least this length and it is filled in with the components and
      * returned.
      *
@@ -746,7 +746,7 @@ public class Color implements Serializable {
      * If <code>compArray</code> is <code>null</code>, an array with
      * length equal to the number of components in the associated
      * <code>ColorSpace</code> is created for
-     * the return value.  Otherwise, <code>compArray</code> must have at
+     * the return send.  Otherwise, <code>compArray</code> must have at
      * least this length and it is filled in with the components and
      * returned.
      *

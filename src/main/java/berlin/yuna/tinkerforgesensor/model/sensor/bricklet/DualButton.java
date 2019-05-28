@@ -58,7 +58,7 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     }
 
     @Override
-    public Sensor<BrickletDualButtonV2> value(final Object value) {
+    public Sensor<BrickletDualButtonV2> send(final Object value) {
         return this;
     }
 

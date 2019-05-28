@@ -37,7 +37,7 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
     }
 
     @Override
-    public Sensor<BrickletMotionDetectorV2> value(final Object value) {
+    public Sensor<BrickletMotionDetectorV2> send(final Object value) {
         try {
             if (value instanceof Number) {
                 final int input = ((Number) value).intValue();
@@ -83,7 +83,7 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
 
     @Override
     public Sensor<BrickletMotionDetectorV2> ledAdditional(final Integer value) {
-        value(value);
+        send(value);
         return this;
     }
 
@@ -93,7 +93,7 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
             this.ledAdditionalOn();
             this.ledStatus(LED_STATUS_HEARTBEAT.bit);
             for (int i = 0; i < 8; i++) {
-                value(i);
+                send(i);
                 Thread.sleep(128);
             }
             this.ledAdditionalOff();

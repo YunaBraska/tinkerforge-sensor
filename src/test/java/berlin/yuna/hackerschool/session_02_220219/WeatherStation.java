@@ -1,7 +1,6 @@
 package berlin.yuna.hackerschool.session_02_220219;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -17,23 +16,22 @@ public class WeatherStation extends Helper {
 
     //START FUNCTION
     public static void main(final String[] args) {
-        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+        tinkerForge = ConnectionAndPrintValues_Example.connect();
+        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //VARIABLES
-    public static SensorList<Sensor> sensorList = new SensorList<>();
+    public static TinkerForge tinkerForge;
     private static int counter = 0;
 
     //CODE FUNCTION
     static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
 
-        if (sensorList.getButtonRGB().isPresent()) {
-            final Sensor Knopf1 = sensorList.getButtonRGB(0);
-            final Sensor Knopf2 = sensorList.getButtonRGB(1);
-            final int light = sensorList.getValueLightLux().intValue();
-            final int airQuality = sensorList.getValueAirPressure().intValue();
+        if (tinkerForge.sensors().buttonRGB().isPresent()) {
+            final Sensor Knopf1 = tinkerForge.sensors().buttonRGB(0);
+            final Sensor Knopf2 = tinkerForge.sensors().buttonRGB(1);
+            final int light = tinkerForge.values().lightLux().intValue();
+            final int airQuality = tinkerForge.values().airPressure().intValue();
 
 
             if (sensor.is(Knopf1) && value == 1) {
@@ -41,50 +39,50 @@ public class WeatherStation extends Helper {
             }
 
             if (counter == 2) {
-                sensorList.getDisplayLcd20x4().value("Display: OFF, zum   Einschalten beliebige  Taste betätigen.");
-                sensorList.getDisplayLcd20x4().ledAdditionalOff();
+                tinkerForge.sensors().displayLcd20x4().send("Display: OFF, zum   Einschalten beliebige  Taste betätigen.");
+                tinkerForge.sensors().displayLcd20x4().ledAdditionalOff();
                 counter = 0;
-            } else if (Knopf1.value(BUTTON_PRESSED) == 1 && Knopf2.value(BUTTON_PRESSED) == 1) {
+            } else if (Knopf1.send(BUTTON_PRESSED) == 1 && Knopf2.send(BUTTON_PRESSED) == 1) {
                 if (airQuality < 1050000) {
-                    Knopf2.value(Color.RED);
-                    Knopf1.value(Color.RED);
-                    sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Die Luftqualität istschlecht! Bite      ein Fenster  öffnen.");
-                    sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                    Knopf2.send(Color.RED);
+                    Knopf1.send(Color.RED);
+                    tinkerForge.sensors().displayLcd20x4().send("${clear}");
+                    tinkerForge.sensors().displayLcd20x4().send("Die Luftqualität istschlecht! Bite      ein Fenster  öffnen.");
+                    tinkerForge.sensors().displayLcd20x4().ledAdditionalOn();
                 } else {
-                    Knopf2.value(Color.GREEN);
-                    Knopf1.value(Color.GREEN);
-                    sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Die Luftqualität istakzeptabel.");
-                    sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                    Knopf2.send(Color.GREEN);
+                    Knopf1.send(Color.GREEN);
+                    tinkerForge.sensors().displayLcd20x4().send("${clear}");
+                    tinkerForge.sensors().displayLcd20x4().send("Die Luftqualität istakzeptabel.");
+                    tinkerForge.sensors().displayLcd20x4().ledAdditionalOn();
 
                 }
 
             } else if (sensor.is(Knopf1) && value == 1) {
                 if (light < 4000) {
-                    sensorList.getButtonRGB().value(Color.RED);
-                    sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Es ist sehr dunkel! \nMach doch Licht an ${space}");
-                    sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                    tinkerForge.sensors().buttonRGB().send(Color.RED);
+                    tinkerForge.sensors().displayLcd20x4().send("${clear}");
+                    tinkerForge.sensors().displayLcd20x4().send("Es ist sehr dunkel! \nMach doch Licht an ${space}");
+                    tinkerForge.sensors().displayLcd20x4().ledAdditionalOn();
                 } else {
-                    sensorList.getButtonRGB().value(new Color(0, light / 1500, 0));
-                    sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Es ist Hell! ${space}");
-                    sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                    tinkerForge.sensors().buttonRGB().send(new Color(0, light / 1500, 0));
+                    tinkerForge.sensors().displayLcd20x4().send("${clear}");
+                    tinkerForge.sensors().displayLcd20x4().send("Es ist Hell! ${space}");
+                    tinkerForge.sensors().displayLcd20x4().ledAdditionalOn();
                 }
             } else if (sensor.is(Knopf2) && value == 1) {
-                final int temperatur = sensorList.getValueTemperature().intValue();
+                final int temperatur = tinkerForge.values().temperature().intValue();
 
                 if (temperatur > 2000) {
-                    Knopf2.value(Color.GREEN);
-                    sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Die Temperatur ist  Gut! Sie beträgt " + (temperatur / 100) + "°C");
-                    sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                    Knopf2.send(Color.GREEN);
+                    tinkerForge.sensors().displayLcd20x4().send("${clear}");
+                    tinkerForge.sensors().displayLcd20x4().send("Die Temperatur ist  Gut! Sie beträgt " + (temperatur / 100) + "°C");
+                    tinkerForge.sensors().displayLcd20x4().ledAdditionalOn();
                 } else {
-                    Knopf2.value(Color.RED);
-                    sensorList.getDisplayLcd20x4().value("${clear}");
-                    sensorList.getDisplayLcd20x4().value("Bitte Temperatur erhöhen, man könnte sich erkälten denn die Temperatur beträgt" + (temperatur / 100) + " °C ");
-                    sensorList.getDisplayLcd20x4().ledAdditionalOn();
+                    Knopf2.send(Color.RED);
+                    tinkerForge.sensors().displayLcd20x4().send("${clear}");
+                    tinkerForge.sensors().displayLcd20x4().send("Bitte Temperatur erhöhen, man könnte sich erkälten denn die Temperatur beträgt" + (temperatur / 100) + " °C ");
+                    tinkerForge.sensors().displayLcd20x4().ledAdditionalOn();
                 }
             }
         }

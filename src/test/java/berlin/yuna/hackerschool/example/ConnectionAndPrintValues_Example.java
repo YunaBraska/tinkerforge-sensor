@@ -1,9 +1,7 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
+import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
@@ -14,17 +12,16 @@ import static java.lang.String.format;
 
 public class ConnectionAndPrintValues_Example extends Helper {
 
-    private static SensorList<Sensor> sensorList;
+    private static TinkerForge tinkerForge;
 
-    public static SensorListener connect() {
+    public static TinkerForge connect() {
         try {
-            final SensorListener sensorListener = new SensorListener("localhost", 4223, true);
-            sensorList = sensorListener.sensorList;
-            sensorListener.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
-            while (sensorListener.isConnecting()){
+            tinkerForge = new TinkerForge("localhost", 4223, true);
+            tinkerForge.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
+            while (tinkerForge.isConnecting()){
                 sleep(128);
             }
-            return sensorListener;
+            return tinkerForge;
         } catch (NetworkConnectionException e) {
             throw new RuntimeException(e);
         }
@@ -32,13 +29,13 @@ public class ConnectionAndPrintValues_Example extends Helper {
 
     private static void printAllValues(final SensorEvent sensorEvent) {
         if (sensorEvent.valueType.containsDeviceStatus()) {
-            System.out.println(format("Sensor [%s] type [%s] value [%s]", sensorEvent.sensor.name, sensorEvent.valueType, sensorEvent.value));
+            System.out.println(format("Sensor [%s] type [%s] send [%s]", sensorEvent.sensor.name, sensorEvent.valueType, sensorEvent.value));
         } else if (!timePassed(256)) {
             return;
         }
         final LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
         for (ValueType valueType : ValueType.values()) {
-            final Long value = sensorList.value(valueType, (Long) null);
+            final Long value = tinkerForge.values().get(valueType, null);
             if (value != null) {
                 values.put(valueType, value);
             }
@@ -54,7 +51,7 @@ public class ConnectionAndPrintValues_Example extends Helper {
             lineValue.append(format("%" + (typeIterator.next().toString().length() + 1) + "s |", value));
         }
         lineHead.append(format("%9s |", "Sensors"));
-        lineValue.append(format("%9s |", sensorList.size()));
+        lineValue.append(format("%9s |", tinkerForge.sensors().size()));
 
         System.out.println("\n" + lineHead.toString() + "\n" + lineValue.toString());
     }

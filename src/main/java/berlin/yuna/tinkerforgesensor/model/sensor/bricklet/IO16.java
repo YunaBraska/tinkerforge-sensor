@@ -35,7 +35,7 @@ public class IO16 extends Sensor<BrickletIO16> {
      * Todo: [2000] = 5V output
      */
     @Override
-    public Sensor<BrickletIO16> value(final Object value) {
+    public Sensor<BrickletIO16> send(final Object value) {
         try {
             Integer input = normalizeValue(value);
             if (input != null) {
@@ -80,7 +80,7 @@ public class IO16 extends Sensor<BrickletIO16> {
                 device.setPortConfiguration('a', (short) 255, 'i', false);
                 device.setPortConfiguration('b', (short) 255, 'i', false);
             } else {
-                value(value - 2);
+                send(value - 2);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -93,7 +93,7 @@ public class IO16 extends Sensor<BrickletIO16> {
         try {
             ledAdditionalOff();
             for (int i = 1; i < 33; i++) {
-                this.value(i < 17 ? i : (i - 16) * -1);
+                this.send(i < 17 ? i : (i - 16) * -1);
                 Thread.sleep(32);
             }
         } catch (Exception ignore) {

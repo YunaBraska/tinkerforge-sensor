@@ -6,7 +6,7 @@ public class SoundPressure {
 //        BrickletSoundPressureLevel device = (BrickletSoundPressureLevel) sensor.device;
 //        registration.sensitivity(50, SOUND);
 //
-//        device.addDecibelListener(value -> sendEvent( SOUND_DECIBEL, (long) value));
+//        device.addDecibelListener(send -> sendEvent( SOUND_DECIBEL, (long) send));
 //        device.addSpectrumLowLevelListener((spectrumLength, spectrumChunkOffset, spectrumChunkData) ->
 //        {
 //            sendEvent( SOUND_SPECTRUM_LENGTH, (long) spectrumLength);
@@ -16,11 +16,11 @@ public class SoundPressure {
 //
 //        sensor.hasStatusLed = true;
 //        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(
-//                value -> {
-//                    if (value == LED_STATUS_ON.bit) {device.setStatusLEDConfig(LED_STATUS_ON.bit);}
-//                    else if (value ==LED_STATUS_HEARTBEAT.bit) {device.setStatusLEDConfig(LED_STATUS_HEARTBEAT.bit);}
-//                    else if (value ==LED_STATUS.bit) {device.setStatusLEDConfig(LED_STATUS.bit);}
-//                    else if (value ==LED_STATUS_OFF.bit) {device.setStatusLEDConfig(LED_STATUS_OFF.bit);}
+//                send -> {
+//                    if (send == LED_STATUS_ON.bit) {device.setStatusLEDConfig(LED_STATUS_ON.bit);}
+//                    else if (send ==LED_STATUS_HEARTBEAT.bit) {device.setStatusLEDConfig(LED_STATUS_HEARTBEAT.bit);}
+//                    else if (send ==LED_STATUS.bit) {device.setStatusLEDConfig(LED_STATUS.bit);}
+//                    else if (send ==LED_STATUS_OFF.bit) {device.setStatusLEDConfig(LED_STATUS_OFF.bit);}
 //                },
 //                ignore -> { }, ignore -> { }));
 //

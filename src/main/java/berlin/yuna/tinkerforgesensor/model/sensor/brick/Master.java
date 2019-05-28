@@ -38,7 +38,7 @@ public class Master extends Sensor<BrickMaster> {
     }
 
     @Override
-    public Sensor<BrickMaster> value(final Object value) {
+    public Sensor<BrickMaster> send(final Object value) {
         return this;
     }
 

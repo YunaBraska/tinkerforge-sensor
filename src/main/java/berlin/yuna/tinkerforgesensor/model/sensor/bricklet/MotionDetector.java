@@ -32,7 +32,7 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> value(final Object value) {
+    public Sensor<BrickletMotionDetector> send(final Object value) {
         return this;
     }
 

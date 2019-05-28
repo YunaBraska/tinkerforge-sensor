@@ -46,7 +46,7 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> value(final Object value) {
+    public Sensor<BrickletAirQuality> send(final Object value) {
         return this;
     }
 

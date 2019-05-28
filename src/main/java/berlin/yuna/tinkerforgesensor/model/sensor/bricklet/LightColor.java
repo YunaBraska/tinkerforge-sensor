@@ -20,7 +20,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_TEMPERATU
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * Measures color (RGB value), illuminance and color temperature
+ * Measures color (RGB send), illuminance and color temperature
  * <b>Values</b>
  * <br />COLOR[{@link Color}] = n
  * <br />COLOR_R[red] = n
@@ -62,7 +62,7 @@ public class LightColor extends Sensor<BrickletColor> {
     }
 
     @Override
-    public Sensor<BrickletColor> value(final Object value) {
+    public Sensor<BrickletColor> send(final Object value) {
         //TODO: set config && accept config
         return this;
     }

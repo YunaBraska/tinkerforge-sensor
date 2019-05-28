@@ -33,7 +33,7 @@ public class Tilt extends Sensor<BrickletTilt> {
     }
 
     @Override
-    public Sensor<BrickletTilt> value(final Object value) {
+    public Sensor<BrickletTilt> send(final Object value) {
         return this;
     }
 

@@ -19,19 +19,18 @@ From putting sensors together up to programming the logic/behavior.
 
 ### Examples
 ```java
-private static SensorList<Sensor> sensorList;
+private static TinkerForge tinkerForge;
 
     //INIT CONNECTION
     public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
+        TinkerForge tinkerForge = ConnectionAndPrintValues_Example.connect();
+        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
     }
 
     //CODE
     private static void onSensorEvent(final Long value, final ValueType type) {
         if (type.isSoundIntensity()) {
-            sensorList.getDisplaySegment().value(value / 10 + "db");
+            tinkerForge.sensors().displaySegment().value(value / 10 + "db");
         }
     }
 

@@ -39,7 +39,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
      * Todo: [2000] = 5V output
      */
     @Override
-    public Sensor<BrickletIO16V2> value(final Object value) {
+    public Sensor<BrickletIO16V2> send(final Object value) {
         try {
             Integer input = normalizeValue(value);
             if (input != null) {
@@ -88,14 +88,14 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
     public Sensor<BrickletIO16V2> ledAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
             for (int i = 0; i < 17; i++) {
-                value(i);
+                send(i);
             }
         } else if (value == LED_ADDITIONAL_OFF.bit) {
             for (int i = 0; i < 17; i++) {
-                value(i * -1);
+                send(i * -1);
             }
         } else {
-            value(value - 2);
+            send(value - 2);
         }
         return this;
     }
@@ -105,7 +105,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
         try {
             ledAdditionalOff();
             for (int i = 1; i < 33; i++) {
-                this.value(i < 17 ? i : (i - 16) * -1);
+                this.send(i < 17 ? i : (i - 16) * -1);
                 Thread.sleep(32);
             }
         } catch (Exception ignore) {

@@ -43,7 +43,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
      * @return {@link Sensor}
      */
     @Override
-    public Sensor<BrickletPiezoSpeaker> value(final Object... values) {
+    public Sensor<BrickletPiezoSpeaker> send(final Object... values) {
         if (values != null) {
             final int duration = getDuration(values);
             final int wait = getWait(values, duration);
@@ -64,8 +64,8 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
      *              <br /> Frequency = number with prefix "f" [min 585 - max 7100]
      * @return {@link Sensor}
      */
-    public Sensor<BrickletPiezoSpeaker> value(final Object value) {
-        return value(value, frequency);
+    public Sensor<BrickletPiezoSpeaker> send(final Object value) {
+        return send(value, frequency);
     }
 
     @Override
@@ -84,11 +84,11 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         //FIXME: Broken sensor
 //            device.calibrate();
         for (int i = 585; i < 2000; i++) {
-//            value("f" + i);
-            value(i, i, false);
+//            send("f" + i);
+            send(i, i, false);
         }
-        value(0, 2000, false);
-        value("...");
+        send(0, 2000, false);
+        send("...");
 //        } catch (TimeoutException | NotConnectedException ignored) {
 //            sendEvent(DEVICE_TIMEOUT, 404L);
 //        }

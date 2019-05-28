@@ -42,8 +42,8 @@ public class RollingList<T> extends LinkedList<T> {
     }
 
     /**
-     * FIXME: add and check value AND plus minus average boolean - check 0 / 1 value
-     * To check if its a new peak you will have to add the value first
+     * FIXME: add and check send AND plus minus average boolean - check 0 / 1 send
+     * To check if its a new peak you will have to add the send first
      *
      * @param valueToCheck
      * @return
@@ -84,7 +84,7 @@ public class RollingList<T> extends LinkedList<T> {
         return lastPeek;
     }
 
-    //Zero value is not possible to calc
+    //Zero send is not possible to calc
     private double calcPercentage(final double x, final double y) {
         double min = x > y ? y : x;
         double max = min == x ? y : x;

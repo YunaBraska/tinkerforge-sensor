@@ -38,7 +38,7 @@ public class Barometer extends Sensor<BrickletBarometer> {
     }
 
     @Override
-    public Sensor<BrickletBarometer> value(final Object value) {
+    public Sensor<BrickletBarometer> send(final Object value) {
         return this;
     }
 

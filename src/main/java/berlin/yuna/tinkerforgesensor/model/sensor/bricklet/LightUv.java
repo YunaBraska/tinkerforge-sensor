@@ -34,7 +34,7 @@ public class LightUv extends Sensor<BrickletUVLight> {
     }
 
     @Override
-    public Sensor<BrickletUVLight> value(final Object value) {
+    public Sensor<BrickletUVLight> send(final Object value) {
         return this;
     }
 

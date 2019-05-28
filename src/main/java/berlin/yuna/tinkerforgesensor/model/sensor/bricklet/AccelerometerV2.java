@@ -47,7 +47,7 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
     }
 
     @Override
-    public Sensor<BrickletAccelerometerV2> value(final Object value) {
+    public Sensor<BrickletAccelerometerV2> send(final Object value) {
         return this;
     }
 

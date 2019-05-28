@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
+import berlin.yuna.tinkerforgesensor.model.builder.Values;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
@@ -34,7 +35,8 @@ import static java.lang.Character.getNumericValue;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
-import static java.lang.System.currentTimeMillis;
+import static java.lang.System.nanoTime;
+import static java.util.Collections.singletonList;
 
 //TODO: matthias@tinkerforge.com contact at first beta
 
@@ -52,14 +54,14 @@ public abstract class Sensor<T extends Device> {
     public final String uid;
     public final String name;
     public final T device;
-    public final ConcurrentHashMap<ValueType, RollingList<Long>> values = new ConcurrentHashMap<>();
     public final SensorTypeHelper sensorTypeHelper;
 
     private final boolean hasStatusLed;
     private final String connectionUid;
     private final char position;
+    private final ConcurrentHashMap<ValueType, RollingList<Long>> valueMap = new ConcurrentHashMap<>();
 
-    private long lastCall = currentTimeMillis();
+    private long lastCall = nanoTime();
 
     /**
      * List of {@link Consumer} for getting all {@link Sensor<T>Event}
@@ -87,7 +89,6 @@ public abstract class Sensor<T extends Device> {
      */
     public static Sensor<? extends Device> newInstance(final Device device, final String uid) throws NetworkConnectionException {
         return getSensor(device.getClass()).newInstance(device, uid);
-
     }
 
     /**
@@ -164,6 +165,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is a type of {@link Sensor<T>} or {@link Device}
      */
+    @SuppressWarnings("unchecked")
     public boolean isClassType(final Class<?>... sensorOrDevices) {
         for (Class<?> sensorOrDevice : sensorOrDevices) {
             if (getClass() == sensorOrDevice || getType() == sensorOrDevice) {
@@ -200,15 +202,18 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Same method as {@link Sensor#values} with limitation of 1 call per millisecond
+     * Same method as {@link Sensor#valueMap} with limitation of 1 call per millisecond
      *
-     * @param values some objects like a "howdy", 123, Color.GREEN which the sensor could process - else it just should ignore it
+     * @param limitPerSec sets message limit per seconds (hast to be > 0 and < 1000000000) else default method {@link Sensor#send(Object...)} will be called
+     * @param values      some objects like a "howdy", 123, Color.GREEN which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
-    public synchronized Sensor<T> valueMs(final Object... values) {
-        if (lastCall + 1 > System.currentTimeMillis()) {
-            lastCall = System.currentTimeMillis();
-            value(values);
+    public synchronized Sensor<T> sendLimit(final long limitPerSec, final Object... values) {
+        if (limitPerSec < 1 || limitPerSec > 1000000000) {
+            send(values);
+        } else if (lastCall + (1000000000 / limitPerSec) < nanoTime()) {
+            lastCall = nanoTime();
+            send(values);
         }
         return this;
     }
@@ -217,27 +222,35 @@ public abstract class Sensor<T extends Device> {
      * @param value some object like a "howdy" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
-    public abstract Sensor<T> value(final Object value);
+    public abstract Sensor<T> send(final Object value);
 
     /**
      * @param values some objects like a "howdy", "howdy2" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> value(final Object... values) {
+    public Sensor<T> send(final Object... values) {
         for (Object value : values) {
-            value(value);
+            send(value);
         }
         return this;
     }
 
+    public Values values() {
+        return new Values(singletonList(this));
+    }
+
+    public ConcurrentHashMap<ValueType, RollingList<Long>> valueMap() {
+        return valueMap;
+    }
+
     /**
-     * @param value some value for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
+     * @param value some send for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
     public abstract Sensor<T> ledStatus(final Integer value);
 
     /**
-     * @param value some value additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
+     * @param value some send additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
     public abstract Sensor<T> ledAdditional(final Integer value);
@@ -324,24 +337,24 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Gets the value of {@link ValueType}
+     * Gets the send of {@link ValueType}
      *
      * @param valueType to get from {@link Sensor<T>#values}
-     * @return value from sensor of type {@link ValueType} or 0L if not found
+     * @return send from sensor of type {@link ValueType} or 0L if not found
      */
-    public Long value(final ValueType valueType) {
-        return value(valueType, 0L);
+    public Long send(final ValueType valueType) {
+        return send(valueType, 0L);
     }
 
     /**
-     * Gets the value of {@link ValueType}
+     * Gets the send of {@link ValueType}
      *
      * @param valueType to get from {@link Sensor<T>#values}
-     * @param fallback  will return this if no value with {@link ValueType} were found
-     * @return value from sensor of type {@link ValueType} or fallback if no value with {@link ValueType} were found
+     * @param fallback  will return this if no send with {@link ValueType} were found
+     * @return send from sensor of type {@link ValueType} or fallback if no send with {@link ValueType} were found
      */
-    public Long value(final ValueType valueType, final Long fallback) {
-        final RollingList<Long> valueList = values.get(valueType);
+    public Long send(final ValueType valueType, final Long fallback) {
+        final RollingList<Long> valueList = valueMap.get(valueType);
         return valueList == null || valueList.isEmpty() || valueList.getLast() == null ? fallback : valueList.getLast();
     }
 
@@ -396,14 +409,14 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from value if the event should be send
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
      *
-     * @param valueType type of value to send
-     * @param value     value to send
+     * @param valueType type of send to send
+     * @param value     send to send
      * @return {@link Sensor<T>#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
-        final RollingList<Long> timeSeries = values.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
+        final RollingList<Long> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
         if (timeSeries.addAndCheckIfItsNewPeak(value)) {
             consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, value, valueType)));
         }

@@ -29,7 +29,7 @@ public class Default extends Sensor<DummyDevice> {
     }
 
     @Override
-    public Sensor<DummyDevice> value(final Object value) {
+    public Sensor<DummyDevice> send(final Object value) {
         if (sensorImitate == BarometerV2.class) {
             //TODO
         }

@@ -38,7 +38,7 @@ public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
     }
 
     @Override
-    public Sensor<BrickletDistanceIRV2> value(final Object value) {
+    public Sensor<BrickletDistanceIRV2> send(final Object value) {
         return this;
     }
 

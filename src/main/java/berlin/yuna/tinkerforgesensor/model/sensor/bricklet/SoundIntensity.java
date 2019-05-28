@@ -33,7 +33,7 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
     }
 
     @Override
-    public Sensor<BrickletSoundIntensity> value(final Object value) {
+    public Sensor<BrickletSoundIntensity> send(final Object value) {
         return this;
     }
 

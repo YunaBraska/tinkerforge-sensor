@@ -37,7 +37,7 @@ public class LightAmbientV3 extends Sensor<BrickletAmbientLightV3> {
     }
 
     @Override
-    public Sensor<BrickletAmbientLightV3> value(final Object value) {
+    public Sensor<BrickletAmbientLightV3> send(final Object value) {
         return this;
     }
 

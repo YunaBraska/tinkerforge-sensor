@@ -33,7 +33,7 @@ public class TemperatureV2 extends Sensor<BrickletTemperatureV2> {
     }
 
     @Override
-    public Sensor<BrickletTemperatureV2> value(final Object value) {
+    public Sensor<BrickletTemperatureV2> send(final Object value) {
         return this;
     }
 

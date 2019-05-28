@@ -1,23 +1,20 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
 public class SoundIntensity_to_DisplaySegment_Example {
 
-    private static SensorList<Sensor> sensorList;
+    private static TinkerForge tinkerForge;
 
     public static void main(final String[] args) {
-        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
+        tinkerForge = ConnectionAndPrintValues_Example.connect();
+        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {
         if (type.isSoundIntensity()) {
-            sensorList.getDisplaySegment().value(value / 10 + "db");
+            tinkerForge.sensors().displaySegment().send(value / 10 + "db");
         }
     }
 }

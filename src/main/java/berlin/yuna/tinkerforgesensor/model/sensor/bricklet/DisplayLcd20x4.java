@@ -58,7 +58,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
      * @return {@link Sensor}
      */
     @Override
-    public Sensor<BrickletLCD20x4> value(final Object value) {
+    public Sensor<BrickletLCD20x4> send(final Object value) {
         try {
             String text;
             if (value instanceof String) {
@@ -102,11 +102,11 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         try {
             this.ledAdditionalOn();
             for (int i = 0; i < 7; i++) {
-                value(DISPLAY_LINE_TWO + DISPLAY_DYNAMIC_SPACE + "HOWDY [" + i + "]" + DISPLAY_DYNAMIC_SPACE);
-                value(DISPLAY_LINE_THREE + DISPLAY_DYNAMIC_SPACE + UUID.randomUUID() + DISPLAY_DYNAMIC_SPACE);
+                send(DISPLAY_LINE_TWO + DISPLAY_DYNAMIC_SPACE + "HOWDY [" + i + "]" + DISPLAY_DYNAMIC_SPACE);
+                send(DISPLAY_LINE_THREE + DISPLAY_DYNAMIC_SPACE + UUID.randomUUID() + DISPLAY_DYNAMIC_SPACE);
                 Thread.sleep(128);
             }
-            value(DISPLAY_CLEAR);
+            send(DISPLAY_CLEAR);
             this.ledAdditionalOff();
         } catch (Exception ignore) {
         }

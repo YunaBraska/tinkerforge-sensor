@@ -1,5 +1,6 @@
 package berlin.yuna.hackerschool.example;
 
+import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType;
@@ -21,6 +22,12 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
 
     private static LedStatusType status = LED_STATUS_ON;
 
+    private static TinkerForge tinkerForge;
+
+    public static void main(final String[] args) {
+        tinkerForge = ConnectionAndPrintValues_Example.connect();
+    }
+
     public static void animateStatusLEDs(final SensorList<Sensor> sensorList) {
         status = status == LED_STATUS_ON ? LED_STATUS_OFF : LED_STATUS_ON;
         final List<Sensor> sortedList = sensorList.filter(Sensor::hasLedStatus);
@@ -36,10 +43,10 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
     }
 
     public static void displayAlphabet(final SensorList<Sensor> sensorList, final long speedMs) {
-        final Sensor display = sensorList.getDisplaySegment();
+        final Sensor display = tinkerForge.sensors().displaySegment();
         if (display.isPresent()) {
             for (char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
-                display.value(Character.toString(alphabet));
+                display.send(Character.toString(alphabet));
                 sleep(speedMs);
             }
         }
@@ -47,7 +54,7 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
 
     public static void displayTimeoutMessage(final SensorList<Sensor> sensorList, final long timeoutMs) {
         try {
-            final Sensor sensor = sensorList.getDisplayLcd20x4();
+            final Sensor sensor = tinkerForge.sensors().displayLcd20x4();
             if (isPresent(sensor)) {
                 final BrickletLCD20x4 device = (BrickletLCD20x4) sensor.device;
                 device.setDefaultText((short) 0, "|                  |");
@@ -68,7 +75,7 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
             final int r = random.nextInt(255);
             final int g = random.nextInt(255);
             final int b = random.nextInt(255);
-            sensor.value((long) new Color(r, g, b).getRGB());
+            sensor.send((long) new Color(r, g, b).getRGB());
         }
     }
 }

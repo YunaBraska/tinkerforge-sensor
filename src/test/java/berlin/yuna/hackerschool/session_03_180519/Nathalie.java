@@ -2,27 +2,27 @@ package berlin.yuna.hackerschool.session_03_180519;
 
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+
+import java.util.Random;
 
 /**
  * @author Nathalie
  */
 public class Nathalie extends Helper {
 
-    public static SensorList<Sensor> sensorList = new SensorList<>();
+    private static TinkerForge tinkerForge;
 
     //START FUNCTION
     public static void main(final String[] args) {
-        final SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+        tinkerForge = ConnectionAndPrintValues_Example.connect();
+        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
-    //sensorList.getSensorXy().getValueXy()
-    //TODO: sensorList.getValueXy()
+    //TODO: implement limit callback per second
 
     //VARIABLES
     private static long soundMax = 1;
@@ -30,9 +30,26 @@ public class Nathalie extends Helper {
     //CODE FUNCTION
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
 
+        final int[] colors = new int[]{Color.WHITE,
+                Color.RED,
+                Color.ORANGE,
+                Color.YELLOW,
+                Color.GREEN,
+                Color.CYAN,
+                Color.BLUE,
+                Color.MAGENTA,
+                Color.PINK,
+                Color.BLACK};
+
+        //TODO: check refresh Limit
+        final int color = colors[new Random().nextInt(colors.length)];
+        tinkerForge.sensors().buttonRGB(1).sendLimit(10, color);
+        tinkerForge.sensors().buttonRGB(0).sendLimit(1, color);
+        tinkerForge.sensors().displaySegment().sendLimit(2, tinkerForge.sensors().accelerometer().send(ValueType.ACCELERATION_Y));
+
         //Get Sensor and Value
-        final Sensor io16 = sensorList.getIO16();
-        final long decibel = sensorList.getValueSoundIntensity() + 1;
+        final Sensor io16 = tinkerForge.sensors().iO16();
+        final long decibel = tinkerForge.values().soundIntensity() + 1;
 
         //Dynamic max volume
         if (decibel > soundMax) {
@@ -41,7 +58,7 @@ public class Nathalie extends Helper {
 
         //every 250 milliseconds - for readable display
         if (timePassed(250)) {
-            sensorList.getDisplaySegment().value((decibel / 10) + "dB");
+            //tinkerForge.sensors().displaySegment().send((decibel / 10) + "dB");
         }
 
         //every 50 milliseconds
@@ -50,20 +67,20 @@ public class Nathalie extends Helper {
 
             //Switch LEDs on
             for (int led = 1; led < ledAnzahl; led++) {
-                io16.value(led);
+                io16.send(led);
             }
 
             //Switch other LEDs off
             for (int led = ledAnzahl; led < 16; led++) {
-                io16.value(-led);
+                io16.send(-led);
             }
         }
 
         //Fan temperature
-        if (sensorList.getValueTemperature() > 2880) {
-            io16.value(17);
-        } else if (sensorList.getValueTemperature() < 2880) {
-            io16.value(-17);
+        if (tinkerForge.values().temperature() > 2880) {
+            io16.send(17);
+        } else if (tinkerForge.values().temperature() < 2880) {
+            io16.send(-17);
         }
     }
 }

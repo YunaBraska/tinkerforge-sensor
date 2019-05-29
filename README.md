@@ -97,7 +97,7 @@ private void onSensorEvent(final Sensor currentSensor, final ValueType valueType
 * wrapped by Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
 * handles input and sends [SensorEvent](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/SensorEvent.java)
 * Auto closeable [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java) with addable event consumer
-* Returns a returns List of Sensors [Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java)
+* Returns List of Sensors [Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java)
 * Supported devices [Bricks](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/brick) and [Bricklets](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet)
 * Feel free for pull request as the wrapper classes are not so hard to implement, its just a mapping ;)
 

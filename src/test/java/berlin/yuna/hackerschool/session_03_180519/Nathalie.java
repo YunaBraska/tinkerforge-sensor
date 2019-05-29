@@ -4,10 +4,8 @@ import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import berlin.yuna.tinkerforgesensor.model.type.Color;
+import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-
-import java.util.Random;
 
 /**
  * @author Nathalie
@@ -30,23 +28,6 @@ public class Nathalie extends Helper {
     //CODE FUNCTION
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
 
-        final int[] colors = new int[]{Color.WHITE,
-                Color.RED,
-                Color.ORANGE,
-                Color.YELLOW,
-                Color.GREEN,
-                Color.CYAN,
-                Color.BLUE,
-                Color.MAGENTA,
-                Color.PINK,
-                Color.BLACK};
-
-        //TODO: check refresh Limit
-        final int color = colors[new Random().nextInt(colors.length)];
-        stack.sensors().buttonRGB(1).sendLimit(10, color);
-        stack.sensors().buttonRGB(0).sendLimit(1, color);
-        stack.sensors().displaySegment().sendLimit(2, stack.sensors().accelerometer().send(ValueType.ACCELERATION_Y));
-
         //Get Sensor and Value
         final Sensor io16 = stack.sensors().iO16();
         final long decibel = stack.values().soundIntensity() + 1;
@@ -58,7 +39,7 @@ public class Nathalie extends Helper {
 
         //every 250 milliseconds - for readable display
         if (timePassed(250)) {
-            //stack.sensors().displaySegment().send((decibel / 10) + "dB");
+            stack.sensors().displaySegment().send((decibel / 10) + "dB");
         }
 
         //every 50 milliseconds

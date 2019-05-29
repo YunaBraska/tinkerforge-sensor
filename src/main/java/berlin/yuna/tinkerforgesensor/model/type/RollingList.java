@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.type;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.LongSummaryStatistics;
@@ -19,6 +20,11 @@ public class RollingList<T> extends LinkedList<T> {
      */
     public RollingList(final int capacity) {
         this.capacity = capacity;
+    }
+
+    public RollingList(final Collection<? extends T> collection) {
+        super(collection);
+        this.capacity = collection.size();
     }
 
     public RollingList<T> add(final T... values) {

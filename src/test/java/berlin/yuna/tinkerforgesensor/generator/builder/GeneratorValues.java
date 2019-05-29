@@ -23,6 +23,8 @@ import java.util.LongSummaryStatistics;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.toHumanReadable;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_CHUNK;
 import static com.squareup.javapoet.WildcardTypeName.subtypeOf;
 import static java.util.Arrays.asList;
 import static javax.lang.model.element.Modifier.FINAL;
@@ -52,7 +54,6 @@ public class GeneratorValues {
         resultClass.addMethod(constructor_collection());
         resultClass.addMethod(constructor_array());
 
-
         //CREATE METHODS
         final MethodSpec method_getMap = method_getMap();
         final MethodSpec method_getMapMin = method_getMapMin();
@@ -75,6 +76,9 @@ public class GeneratorValues {
         final MethodSpec method_getSum = method_get(method_getFb_Sum, "_Sum");
         resultClass.addMethods(asList(method_get, method_getMin, method_getMax, method_getAvg, method_getSum));
 
+        final MethodSpec method_getList = method_getList();
+        resultClass.addMethods(asList(method_getValueType(SOUND_SPECTRUM, method_getList), method_getValueType(SOUND_SPECTRUM_CHUNK, method_getList), method_getList));
+
         //GENERATE METHODS
         for (ValueType valueType : ValueType.values()) {
             resultClass.addMethod(method_valueXy(valueType, "", method_get));
@@ -86,6 +90,28 @@ public class GeneratorValues {
 
         //Path sourceFile = getSourceFile(packageName, className);
         return JavaFile.builder(generateClass.getPackage().getName(), resultClass.build()).build();
+    }
+
+    private static MethodSpec method_getValueType(final ValueType valueType, final MethodSpec parent) {
+        return MethodSpec.methodBuilder("list" + toHumanReadable(valueType, true))
+                .addModifiers(PUBLIC)
+                .addStatement("return $N($T.$L)", parent.name, ValueType.class, valueType)
+                .returns(ParameterizedTypeName.get(RollingList.class, Long.class))
+                .build();
+    }
+
+    private static MethodSpec method_getList() {
+        return MethodSpec.methodBuilder("getList")
+                .addModifiers(PUBLIC)
+                .addParameter(ValueType.class, "valueType", FINAL)
+                .addCode("for (Sensor sensor : this) {\n")
+                .addCode("  if (sensor.valueMap().containsKey(valueType)) {\n")
+                .addCode("    return (RollingList<Long>) sensor.valueMap().get(valueType);\n")
+                .addCode("  }\n")
+                .addCode("}\n")
+                .addCode("return new RollingList<>(0);\n")
+                .returns(ParameterizedTypeName.get(RollingList.class, Long.class))
+                .build();
     }
 
     private static MethodSpec method_valueXy(final ValueType valueType, final String suffix, final MethodSpec parentMethod) {

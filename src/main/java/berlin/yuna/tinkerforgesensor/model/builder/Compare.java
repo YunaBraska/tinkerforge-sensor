@@ -32,6 +32,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.MotionDetectorV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.RotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundIntensity;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundPressure;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Speaker;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Temperature;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.TemperatureV2;
@@ -148,6 +149,10 @@ public class Compare {
 
     public boolean isSoundIntensity() {
         return is(SoundIntensity.class);
+    }
+
+    public boolean isSoundPressure() {
+        return is(SoundPressure.class);
     }
 
     public boolean isSpeaker() {

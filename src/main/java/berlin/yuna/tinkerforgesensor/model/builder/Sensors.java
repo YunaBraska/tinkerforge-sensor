@@ -33,6 +33,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.MotionDetectorV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.RotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundIntensity;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundPressure;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Speaker;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Temperature;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.TemperatureV2;
@@ -80,6 +81,14 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public Sensor speaker(final int number) {
         return getSensor(number, Speaker.class);
+    }
+
+    public Sensor soundPressure() {
+        return soundPressure(0);
+    }
+
+    public Sensor soundPressure(final int number) {
+        return getSensor(number, SoundPressure.class);
     }
 
     public Sensor soundIntensity() {

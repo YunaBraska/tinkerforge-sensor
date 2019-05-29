@@ -49,9 +49,13 @@ public enum ValueType {
 
     SOUND(ALL),
 
-    SOUND_SPECTRUM_LENGTH(SOUND),
+    SOUND_SPECTRUM(SOUND),
+
+    SOUND_SPECTRUM_CHUNK(SOUND),
 
     SOUND_SPECTRUM_OFFSET(SOUND),
+
+    SOUND_SPECTRUM_LENGTH(SOUND),
 
     BEEP_ACTIVE(SOUND),
 
@@ -363,12 +367,20 @@ public enum ValueType {
         return this.is(SOUND) || (this.parent != null && this.parent.contains(SOUND));
     }
 
-    public boolean isSoundSpectrumLength() {
-        return this == SOUND_SPECTRUM_LENGTH;
+    public boolean isSoundSpectrum() {
+        return this == SOUND_SPECTRUM;
     }
 
-    public boolean containsSoundSpectrumLength() {
-        return this.is(SOUND_SPECTRUM_LENGTH) || (this.parent != null && this.parent.contains(SOUND_SPECTRUM_LENGTH));
+    public boolean containsSoundSpectrum() {
+        return this.is(SOUND_SPECTRUM) || (this.parent != null && this.parent.contains(SOUND_SPECTRUM));
+    }
+
+    public boolean isSoundSpectrumChunk() {
+        return this == SOUND_SPECTRUM_CHUNK;
+    }
+
+    public boolean containsSoundSpectrumChunk() {
+        return this.is(SOUND_SPECTRUM_CHUNK) || (this.parent != null && this.parent.contains(SOUND_SPECTRUM_CHUNK));
     }
 
     public boolean isSoundSpectrumOffset() {
@@ -377,6 +389,14 @@ public enum ValueType {
 
     public boolean containsSoundSpectrumOffset() {
         return this.is(SOUND_SPECTRUM_OFFSET) || (this.parent != null && this.parent.contains(SOUND_SPECTRUM_OFFSET));
+    }
+
+    public boolean isSoundSpectrumLength() {
+        return this == SOUND_SPECTRUM_LENGTH;
+    }
+
+    public boolean containsSoundSpectrumLength() {
+        return this.is(SOUND_SPECTRUM_LENGTH) || (this.parent != null && this.parent.contains(SOUND_SPECTRUM_LENGTH));
     }
 
     public boolean isBeepActive() {

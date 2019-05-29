@@ -125,6 +125,23 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return get_Sum(valueType, new LongSummaryStatistics());
     }
 
+    public RollingList<Long> listSoundSpectrum() {
+        return getList(ValueType.SOUND_SPECTRUM);
+    }
+
+    public RollingList<Long> listSoundSpectrumChunk() {
+        return getList(ValueType.SOUND_SPECTRUM_CHUNK);
+    }
+
+    public RollingList<Long> getList(final ValueType valueType) {
+        for (Sensor sensor : this) {
+            if (sensor.valueMap().containsKey(valueType)) {
+                return (RollingList<Long>) sensor.valueMap().get(valueType);
+            }
+        }
+        return new RollingList<>(0);
+    }
+
     public Long all() {
         return get(ValueType.ALL);
     }
@@ -565,24 +582,44 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return get_Sum(ValueType.SOUND);
     }
 
-    public Long soundSpectrumLength() {
-        return get(ValueType.SOUND_SPECTRUM_LENGTH);
+    public Long soundSpectrum() {
+        return get(ValueType.SOUND_SPECTRUM);
     }
 
-    public Long soundSpectrumLength_Min() {
-        return get_Min(ValueType.SOUND_SPECTRUM_LENGTH);
+    public Long soundSpectrum_Min() {
+        return get_Min(ValueType.SOUND_SPECTRUM);
     }
 
-    public Long soundSpectrumLength_Max() {
-        return get_Max(ValueType.SOUND_SPECTRUM_LENGTH);
+    public Long soundSpectrum_Max() {
+        return get_Max(ValueType.SOUND_SPECTRUM);
     }
 
-    public Long soundSpectrumLength_Avg() {
-        return get_Avg(ValueType.SOUND_SPECTRUM_LENGTH);
+    public Long soundSpectrum_Avg() {
+        return get_Avg(ValueType.SOUND_SPECTRUM);
     }
 
-    public LongSummaryStatistics soundSpectrumLength_Sum() {
-        return get_Sum(ValueType.SOUND_SPECTRUM_LENGTH);
+    public LongSummaryStatistics soundSpectrum_Sum() {
+        return get_Sum(ValueType.SOUND_SPECTRUM);
+    }
+
+    public Long soundSpectrumChunk() {
+        return get(ValueType.SOUND_SPECTRUM_CHUNK);
+    }
+
+    public Long soundSpectrumChunk_Min() {
+        return get_Min(ValueType.SOUND_SPECTRUM_CHUNK);
+    }
+
+    public Long soundSpectrumChunk_Max() {
+        return get_Max(ValueType.SOUND_SPECTRUM_CHUNK);
+    }
+
+    public Long soundSpectrumChunk_Avg() {
+        return get_Avg(ValueType.SOUND_SPECTRUM_CHUNK);
+    }
+
+    public LongSummaryStatistics soundSpectrumChunk_Sum() {
+        return get_Sum(ValueType.SOUND_SPECTRUM_CHUNK);
     }
 
     public Long soundSpectrumOffset() {
@@ -603,6 +640,26 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
 
     public LongSummaryStatistics soundSpectrumOffset_Sum() {
         return get_Sum(ValueType.SOUND_SPECTRUM_OFFSET);
+    }
+
+    public Long soundSpectrumLength() {
+        return get(ValueType.SOUND_SPECTRUM_LENGTH);
+    }
+
+    public Long soundSpectrumLength_Min() {
+        return get_Min(ValueType.SOUND_SPECTRUM_LENGTH);
+    }
+
+    public Long soundSpectrumLength_Max() {
+        return get_Max(ValueType.SOUND_SPECTRUM_LENGTH);
+    }
+
+    public Long soundSpectrumLength_Avg() {
+        return get_Avg(ValueType.SOUND_SPECTRUM_LENGTH);
+    }
+
+    public LongSummaryStatistics soundSpectrumLength_Sum() {
+        return get_Sum(ValueType.SOUND_SPECTRUM_LENGTH);
     }
 
     public Long beepActive() {

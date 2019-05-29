@@ -27,12 +27,8 @@ public class LightAmbientV3 extends Sensor<BrickletAmbientLightV3> {
 
     @Override
     protected Sensor<BrickletAmbientLightV3> initListener() {
-        try {
-            device.addIlluminanceListener(value -> sendEvent(LIGHT_LUX, value));
-            device.setIlluminanceCallbackConfiguration(CALLBACK_PERIOD, false, 'x', 0, 0);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addIlluminanceListener(value -> sendEvent(LIGHT_LUX, value));
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 

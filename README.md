@@ -53,7 +53,7 @@ final Sensor distanceIR = stack.sensors().distanceIR();
 distanceIR.isPort(); //returns stack-order-number (higher stack/port = higher number)
 distanceIR.isBrick(); //returns false 'DistanceIR' is a Bricklet
 distanceIR.isHasLedStatus(); //returns true if the sensor has a status LED
-distanceIR.isPresent(); //true if a distanceIR sensor is connected
+distanceIR.isPresent(); //true if a sensor is connected
 distanceIR.ledStatusOn(); //Switch status LED on (On/Off/Heartbeat/Status)
 distanceIR.ledAdditionalOn(); //Switch other LEDs on - can be Display-backLight, color-FlashLight, IMU-orientation-LEDs,... (On/Off/Heartbeat/Status)
 distanceIR.refreshLimit(6); //sets the refresh value rate per seconds - e.g. for power issues

@@ -24,25 +24,20 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  */
 public class HumidityV2 extends Sensor<BrickletHumidityV2> {
 
-    public HumidityV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletHumidityV2) device, parent, uid, true);
+    public HumidityV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletHumidityV2) device, uid, true);
     }
 
     @Override
     protected Sensor<BrickletHumidityV2> initListener() {
-        try {
-            device.addHumidityListener(value -> sendEvent(HUMIDITY, (long) value));
-            device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-            device.setTemperatureCallbackConfiguration(CALLBACK_PERIOD * 8, false, 'x', 0, 0);
-            device.setHumidityCallbackConfiguration(CALLBACK_PERIOD * 8, false, 'x', 0, 0);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addHumidityListener(value -> sendEvent(HUMIDITY, (long) value));
+        device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
+        refreshPeriod(CALLBACK_PERIOD * 8);
         return this;
     }
 
     @Override
-    public Sensor<BrickletHumidityV2> value(final Object value) {
+    public Sensor<BrickletHumidityV2> send(final Object value) {
         return this;
     }
 
@@ -65,6 +60,24 @@ public class HumidityV2 extends Sensor<BrickletHumidityV2> {
 
     @Override
     public Sensor<BrickletHumidityV2> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletHumidityV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setTemperatureCallbackConfiguration(0, true, 'x', 0, 0);
+                device.setHumidityCallbackConfiguration(0, true, 'x', 0, 0);
+                sendEvent(HUMIDITY, (long) device.getHumidity());
+                sendEvent(TEMPERATURE, (long) device.getTemperature());
+            } else {
+                device.setTemperatureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setHumidityCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

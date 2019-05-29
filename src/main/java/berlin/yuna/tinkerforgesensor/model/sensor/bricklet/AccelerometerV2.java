@@ -6,7 +6,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
@@ -29,13 +28,13 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  */
 public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
 
-    public AccelerometerV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletAccelerometerV2) device, parent, uid, true);
+    public AccelerometerV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletAccelerometerV2) device, uid, true);
     }
 
     @Override
-    protected Sensor<BrickletAccelerometerV2> initListener() throws TimeoutException, NotConnectedException {
-        device.setAccelerationCallbackConfiguration(CALLBACK_PERIOD, false);
+    protected Sensor<BrickletAccelerometerV2> initListener() {
+        refreshPeriod(-1);
         device.addAccelerationListener((x, y, z) -> {
             sendEvent(ACCELERATION_X, (long) x);
             sendEvent(ACCELERATION_Y, (long) y);
@@ -47,12 +46,12 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
     }
 
     @Override
-    public Sensor<BrickletAccelerometerV2> value(Object value) {
+    public Sensor<BrickletAccelerometerV2> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletAccelerometerV2> ledStatus(Integer value) {
+    public Sensor<BrickletAccelerometerV2> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_OFF.bit) {
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
@@ -70,7 +69,7 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
     }
 
     @Override
-    public Sensor<BrickletAccelerometerV2> ledAdditional(Integer value) {
+    public Sensor<BrickletAccelerometerV2> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
                 device.setInfoLEDConfig((short) LED_STATUS_OFF.bit);
@@ -78,6 +77,24 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
                 device.setInfoLEDConfig((short) LED_STATUS_ON.bit);
             } else if (value == LED_ADDITIONAL_HEARTBEAT.bit) {
                 device.setInfoLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletAccelerometerV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAccelerationCallbackConfiguration(1000, true);
+                final BrickletAccelerometerV2.Acceleration acceleration = device.getAcceleration();
+                sendEvent(ACCELERATION_X, (long) acceleration.x);
+                sendEvent(ACCELERATION_Y, (long) acceleration.y);
+                sendEvent(ACCELERATION_Z, (long) acceleration.z);
+            } else {
+                device.setAccelerationCallbackConfiguration(milliseconds, false);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

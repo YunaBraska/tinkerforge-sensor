@@ -10,8 +10,8 @@ public class CallbackThread extends TinkerforgeThread {
     Object mutex = new Object();
     boolean packetDispatchAllowed = false;
 
-    CallbackThread(IPConnectionBase ipcon,
-                   LinkedBlockingQueue<IPConnectionBase.CallbackQueueObject> callbackQueue) {
+    CallbackThread(final IPConnectionBase ipcon,
+                   final LinkedBlockingQueue<IPConnectionBase.CallbackQueueObject> callbackQueue) {
         super("Callback-Processor");
 
 //        setDaemon(true);
@@ -20,7 +20,7 @@ public class CallbackThread extends TinkerforgeThread {
 //        this.setUncaughtExceptionHandler(new CallbackThreadRestarter(ipcon));
     }
 
-    void setPacketDispatchAllowed(boolean allowed) {
+    void setPacketDispatchAllowed(final boolean allowed) {
         if (allowed) {
             packetDispatchAllowed = true;
         } else {
@@ -37,7 +37,7 @@ public class CallbackThread extends TinkerforgeThread {
         }
     }
 
-    void dispatchMeta(IPConnectionBase.CallbackQueueObject cqo) {
+    void dispatchMeta(final IPConnectionBase.CallbackQueueObject cqo) {
         switch (cqo.functionID) {
             case IPConnectionBase.CALLBACK_CONNECTED:
                 ipcon.callConnectedListeners(cqo.parameter);
@@ -108,47 +108,47 @@ public class CallbackThread extends TinkerforgeThread {
         }
     }
 
-    void dispatchPacket(IPConnectionBase.CallbackQueueObject cqo) {
-        byte functionID = IPConnectionBase.getFunctionIDFromData(cqo.packet);
+    void dispatchPacket(final IPConnectionBase.CallbackQueueObject cqo) {
+        final byte functionID = IPConnectionBase.getFunctionIDFromData(cqo.packet);
 
         if (functionID == IPConnectionBase.CALLBACK_ENUMERATE) {
             if (ipcon.hasEnumerateListeners()) {
-                int length = IPConnectionBase.getLengthFromData(cqo.packet);
-                ByteBuffer bb = ByteBuffer.wrap(cqo.packet, 8, length - 8);
+                final int length = IPConnectionBase.getLengthFromData(cqo.packet);
+                final ByteBuffer bb = ByteBuffer.wrap(cqo.packet, 8, length - 8);
                 bb.order(ByteOrder.LITTLE_ENDIAN);
                 String uid_str = "";
                 for (int i = 0; i < 8; i++) {
-                    char c = (char) bb.get();
+                    final char c = (char) bb.get();
                     if (c != '\0') {
                         uid_str += c;
                     }
                 }
                 String connectedUid_str = "";
                 for (int i = 0; i < 8; i++) {
-                    char c = (char) bb.get();
+                    final char c = (char) bb.get();
                     if (c != '\0') {
                         connectedUid_str += c;
                     }
                 }
-                char position = (char) bb.get();
-                short[] hardwareVersion = new short[3];
+                final char position = (char) bb.get();
+                final short[] hardwareVersion = new short[3];
                 hardwareVersion[0] = IPConnectionBase.unsignedByte(bb.get());
                 hardwareVersion[1] = IPConnectionBase.unsignedByte(bb.get());
                 hardwareVersion[2] = IPConnectionBase.unsignedByte(bb.get());
-                short[] firmwareVersion = new short[3];
+                final short[] firmwareVersion = new short[3];
                 firmwareVersion[0] = IPConnectionBase.unsignedByte(bb.get());
                 firmwareVersion[1] = IPConnectionBase.unsignedByte(bb.get());
                 firmwareVersion[2] = IPConnectionBase.unsignedByte(bb.get());
-                int deviceIdentifier = IPConnectionBase.unsignedShort(bb.getShort());
-                short enumerationType = IPConnectionBase.unsignedByte(bb.get());
+                final int deviceIdentifier = IPConnectionBase.unsignedShort(bb.getShort());
+                final short enumerationType = IPConnectionBase.unsignedByte(bb.get());
 
                 ipcon.callEnumerateListeners(uid_str, connectedUid_str, position,
                         hardwareVersion, firmwareVersion,
                         deviceIdentifier, enumerationType);
             }
         } else {
-            long uid = IPConnectionBase.getUIDFromData(cqo.packet);
-            Device device = ipcon.devices.get(uid);
+            final long uid = IPConnectionBase.getUIDFromData(cqo.packet);
+            final Device device = ipcon.devices.get(uid);
 
             ipcon.callDeviceListener(device, functionID, cqo.packet);
         }

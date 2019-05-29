@@ -11,6 +11,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStat
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 
@@ -22,23 +23,19 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
  */
 public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
 
-    public DistanceIRV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletDistanceIRV2) device, parent, uid, true);
+    public DistanceIRV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletDistanceIRV2) device, uid, true);
     }
 
     @Override
     protected Sensor<BrickletDistanceIRV2> initListener() {
-        try {
-            device.addDistanceListener(value -> sendEvent(DISTANCE, (long) value));
-            device.setDistanceCallbackConfiguration(CALLBACK_PERIOD, false, 'x', 0, 0);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addDistanceListener(value -> sendEvent(DISTANCE, (long) value));
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceIRV2> value(final Object value) {
+    public Sensor<BrickletDistanceIRV2> send(final Object value) {
         return this;
     }
 
@@ -62,6 +59,21 @@ public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
 
     @Override
     public Sensor<BrickletDistanceIRV2> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletDistanceIRV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setDistanceCallbackConfiguration(0, true, 'x', 0, 0);
+                sendEvent(ALTITUDE, (long) device.getDistance());
+            } else {
+                device.setDistanceCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

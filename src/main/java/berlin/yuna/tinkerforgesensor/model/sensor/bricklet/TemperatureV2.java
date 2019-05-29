@@ -6,7 +6,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
@@ -17,23 +16,19 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  */
 public class TemperatureV2 extends Sensor<BrickletTemperatureV2> {
 
-    public TemperatureV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletTemperatureV2) device, parent, uid, true);
+    public TemperatureV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletTemperatureV2) device, uid, true);
     }
 
     @Override
     protected Sensor<BrickletTemperatureV2> initListener() {
-        try {
-            device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-            device.setTemperatureCallbackConfiguration(CALLBACK_PERIOD * 8, false, 'x', 0, 0);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
+        refreshPeriod(-1);
         return this;
     }
 
     @Override
-    public Sensor<BrickletTemperatureV2> value(final Object value) {
+    public Sensor<BrickletTemperatureV2> send(final Object value) {
         return this;
     }
 
@@ -44,6 +39,21 @@ public class TemperatureV2 extends Sensor<BrickletTemperatureV2> {
 
     @Override
     public Sensor<BrickletTemperatureV2> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTemperatureV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setTemperatureCallbackConfiguration(0, true, 'x', 0, 0);
+                sendEvent(TEMPERATURE, (long) device.getTemperature());
+            } else {
+                device.setTemperatureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

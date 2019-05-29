@@ -8,7 +8,7 @@ public class SensorEvent {
     public final Long value;
     public final ValueType valueType;
 
-    public SensorEvent(Sensor sensor, Long value, ValueType valueType) {
+    public SensorEvent(final Sensor sensor, final Long value, final ValueType valueType) {
         this.sensor = sensor;
         this.value = value;
         this.valueType = valueType;

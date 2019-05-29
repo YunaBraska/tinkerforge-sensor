@@ -29,8 +29,8 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     public static DateTimeFormatter DATE_TIME_FORMAT = ofPattern("HH:mm");
 
 
-    public DisplaySegment(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletSegmentDisplay4x7) device, parent, uid, false);
+    public DisplaySegment(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletSegmentDisplay4x7) device, uid, false);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
      * @return {@link Sensor}
      */
     @Override
-    public Sensor<BrickletSegmentDisplay4x7> value(final Object value) {
+    public Sensor<BrickletSegmentDisplay4x7> send(final Object value) {
         try {
             if (value instanceof DateTimeFormatter) {
                 DATE_TIME_FORMAT = (DateTimeFormatter) value;
             } else if (value instanceof TemporalAccessor) {
-                value(DATE_TIME_FORMAT.format((TemporalAccessor) value));
+                send(DATE_TIME_FORMAT.format((TemporalAccessor) value));
             } else if (value instanceof String) {
                 String preText = value.toString().trim();
                 boolean colon = false;
@@ -58,15 +58,15 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
                     colon = true;
                     preText = preText.replace(":", "");
                 }
-                StringBuilder text = new StringBuilder(preText);
+                final StringBuilder text = new StringBuilder(preText);
                 while (text.length() < 4) {
                     text.insert(0, ' ');
                 }
-                short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
+                final short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
                 device.setSegments(segments, brightness, colon);
                 lastText = text.toString();
             } else {
-                value(String.valueOf(value));
+                send(String.valueOf(value));
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -88,12 +88,12 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     public Sensor<BrickletSegmentDisplay4x7> ledAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
             brightness = 7;
-            value(lastText);
+            send(lastText);
         } else if (value == LED_ADDITIONAL_OFF.bit) {
-            value("");
+            send("");
         } else {
             brightness = (short) (value.shortValue() - 2);
-            value(lastText);
+            send(lastText);
         }
         return this;
     }
@@ -104,7 +104,7 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
             this.ledAdditionalOn();
             for (int i = 0; i < 9; i++) {
                 ledAdditional(i);
-                value(LocalDateTime.now());
+                send(LocalDateTime.now());
                 Thread.sleep(128);
             }
             this.ledAdditionalOff();
@@ -269,5 +269,10 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
             }
             return 0;
         }
+    }
+
+    @Override
+    public Sensor<BrickletSegmentDisplay4x7> refreshPeriod(final int milliseconds) {
+        return this;
     }
 }

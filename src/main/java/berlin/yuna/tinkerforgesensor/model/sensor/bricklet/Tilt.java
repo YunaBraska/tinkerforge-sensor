@@ -7,6 +7,7 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
 
 /**
@@ -17,23 +18,19 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
  */
 public class Tilt extends Sensor<BrickletTilt> {
 
-    public Tilt(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletTilt) device, parent, uid, false);
+    public Tilt(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletTilt) device, uid, false);
     }
 
     @Override
     protected Sensor<BrickletTilt> initListener() {
-        try {
-            device.addTiltStateListener(value -> sendEvent(TILT, (long) value));
-            device.enableTiltStateCallback();
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addTiltStateListener(value -> sendEvent(TILT, (long) value));
+        refreshPeriod(69);
         return this;
     }
 
     @Override
-    public Sensor<BrickletTilt> value(final Object value) {
+    public Sensor<BrickletTilt> send(final Object value) {
         return this;
     }
 
@@ -44,6 +41,21 @@ public class Tilt extends Sensor<BrickletTilt> {
 
     @Override
     public Sensor<BrickletTilt> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTilt> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.disableTiltStateCallback();
+                sendEvent(TEMPERATURE, (long) (device.getTiltState()));
+            } else {
+                device.enableTiltStateCallback();
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

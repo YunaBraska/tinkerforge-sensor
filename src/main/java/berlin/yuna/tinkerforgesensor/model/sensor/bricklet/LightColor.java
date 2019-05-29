@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
-import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.Color;
 import com.tinkerforge.BrickletColor;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -20,7 +20,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_TEMPERATU
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * Measures color (RGB value), illuminance and color temperature
+ * Measures color (RGB send), illuminance and color temperature
  * <b>Values</b>
  * <br />COLOR[{@link Color}] = n
  * <br />COLOR_R[red] = n
@@ -34,35 +34,21 @@ public class LightColor extends Sensor<BrickletColor> {
 
     private BrickletColor.Config config;
 
-    public LightColor(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletColor) device, parent, uid, false);
+    public LightColor(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletColor) device, uid, false);
     }
 
     @Override
     protected Sensor<BrickletColor> initListener() {
-        try {
-            config = device.getConfig();
-            device.addColorListener((r, g, b, c) -> {
-                sendEvent(COLOR, (long) new Color(r / 256, g / 256, b / 256).getRGB());
-                sendEvent(COLOR_R, (long) r / 256);
-                sendEvent(COLOR_G, (long) g / 256);
-                sendEvent(COLOR_B, (long) b / 256);
-                sendEvent(COLOR_C, (long) c / 256);
-            });
-            device.addIlluminanceListener(value -> sendEvent(COLOR_LUX, value * 700 / config.gain / config.integrationTime));
-            device.addColorTemperatureListener(value -> sendEvent(COLOR_TEMPERATURE, (long) value));
-
-            device.setIlluminanceCallbackPeriod(CALLBACK_PERIOD);
-            device.setColorCallbackPeriod(CALLBACK_PERIOD);
-            device.setColorTemperatureCallbackPeriod(CALLBACK_PERIOD);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addColorListener(this::sendEvent);
+        device.addIlluminanceListener(value -> sendEvent(COLOR_LUX, value * 700 / config.gain / config.integrationTime));
+        device.addColorTemperatureListener(value -> sendEvent(COLOR_TEMPERATURE, (long) value));
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
     @Override
-    public Sensor<BrickletColor> value(final Object value) {
+    public Sensor<BrickletColor> send(final Object value) {
         //TODO: set config && accept config
         return this;
     }
@@ -101,5 +87,39 @@ public class LightColor extends Sensor<BrickletColor> {
         } catch (Exception ignore) {
         }
         return this;
+    }
+
+    @Override
+    public Sensor<BrickletColor> refreshPeriod(final int milliseconds) {
+        try {
+            config = device.getConfig();
+
+            if (milliseconds < 1) {
+                device.setColorCallbackPeriod(0);
+                device.setIlluminanceCallbackPeriod(0);
+                device.setColorTemperatureCallbackPeriod(0);
+
+                final BrickletColor.Color color = device.getColor();
+                sendEvent(color.r, color.g, color.b, color.c);
+                sendEvent(COLOR_LUX, device.getIlluminance() * 700 / config.gain / config.integrationTime);
+                sendEvent(COLOR_TEMPERATURE, (long) device.getColorTemperature());
+
+            } else {
+                device.setColorCallbackPeriod(milliseconds);
+                device.setIlluminanceCallbackPeriod(milliseconds);
+                device.setColorTemperatureCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    private void sendEvent(final int r, final int g, final int b, final long c) {
+        sendEvent(COLOR, (long) new Color(r / 256, g / 256, b / 256).getRGB());
+        sendEvent(COLOR_R, (long) r / 256);
+        sendEvent(COLOR_G, (long) g / 256);
+        sendEvent(COLOR_B, (long) b / 256);
+        sendEvent(COLOR_C, c / 256);
     }
 }

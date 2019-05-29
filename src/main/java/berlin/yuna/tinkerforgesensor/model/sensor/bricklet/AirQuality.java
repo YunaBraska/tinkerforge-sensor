@@ -28,13 +28,13 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  */
 public class AirQuality extends Sensor<BrickletAirQuality> {
 
-    public AirQuality(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletAirQuality) device, parent, uid, true);
+    public AirQuality(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletAirQuality) device, uid, true);
     }
 
     @Override
-    protected Sensor<BrickletAirQuality> initListener() throws TimeoutException, NotConnectedException {
-        device.setAllValuesCallbackConfiguration(CALLBACK_PERIOD * 8, false);
+    protected Sensor<BrickletAirQuality> initListener() {
+        refreshPeriod(CALLBACK_PERIOD * 8);
         device.addAllValuesListener((iaqIndex, iaqIndexAccuracy, temperature, humidity, airPressure) ->
         {
             sendEvent(IAQ_INDEX, (long) iaqIndex);
@@ -46,12 +46,12 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> value(Object value) {
+    public Sensor<BrickletAirQuality> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletAirQuality> ledStatus(Integer value) {
+    public Sensor<BrickletAirQuality> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_OFF.bit) {
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
@@ -69,7 +69,26 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> ledAdditional(Integer value) {
+    public Sensor<BrickletAirQuality> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletAirQuality> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAllValuesCallbackConfiguration(0, true);
+                final BrickletAirQuality.AllValues allValues = device.getAllValues();
+                sendEvent(IAQ_INDEX, (long) allValues.iaqIndex);
+                sendEvent(TEMPERATURE, (long) allValues.temperature);
+                sendEvent(HUMIDITY, (long) allValues.humidity);
+                sendEvent(AIR_PRESSURE, (long) allValues.airPressure);
+            } else {
+                device.setAllValuesCallbackConfiguration(milliseconds, false);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

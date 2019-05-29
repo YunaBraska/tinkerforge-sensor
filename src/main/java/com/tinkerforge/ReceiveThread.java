@@ -3,7 +3,7 @@ package com.tinkerforge;
 public class ReceiveThread extends TinkerforgeThread {
     IPConnectionBase ipcon = null;
 
-    ReceiveThread(IPConnectionBase ipcon) {
+    ReceiveThread(final IPConnectionBase ipcon) {
         super("Brickd-Receiver");
 
 //        setDaemon(true);
@@ -12,9 +12,9 @@ public class ReceiveThread extends TinkerforgeThread {
 
     @Override
     public void run() {
-        byte[] pendingData = new byte[8192];
+        final byte[] pendingData = new byte[8192];
         int pendingLength = 0;
-        long socketID = ipcon.socketID;
+        final long socketID = ipcon.socketID;
 
         while (!stop && ipcon.receiveFlag) {
             int length;
@@ -61,7 +61,7 @@ public class ReceiveThread extends TinkerforgeThread {
                     break;
                 }
 
-                byte[] packet = new byte[length];
+                final byte[] packet = new byte[length];
 
                 System.arraycopy(pendingData, 0, packet, 0, length);
                 System.arraycopy(pendingData, length, pendingData, 0, pendingLength - length);

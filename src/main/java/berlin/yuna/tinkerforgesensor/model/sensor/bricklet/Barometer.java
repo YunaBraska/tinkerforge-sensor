@@ -20,25 +20,20 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  */
 public class Barometer extends Sensor<BrickletBarometer> {
 
-    public Barometer(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletBarometer) device, parent, uid, false);
+    public Barometer(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletBarometer) device, uid, false);
     }
 
     @Override
     protected Sensor<BrickletBarometer> initListener() {
-        try {
-            device.addAltitudeListener(value -> sendEvent(ALTITUDE, (long) value * 10));
-            device.addAirPressureListener(value -> sendEvent(AIR_PRESSURE, (long) value));
-            device.setAltitudeCallbackPeriod(CALLBACK_PERIOD * 8);
-            device.setAirPressureCallbackPeriod(CALLBACK_PERIOD * 8);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        refreshPeriod(CALLBACK_PERIOD * 8);
+        device.addAltitudeListener(value -> sendEvent(ALTITUDE, (long) value * 10));
+        device.addAirPressureListener(value -> sendEvent(AIR_PRESSURE, (long) value));
         return this;
     }
 
     @Override
-    public Sensor<BrickletBarometer> value(final Object value) {
+    public Sensor<BrickletBarometer> send(final Object value) {
         return this;
     }
 
@@ -49,6 +44,24 @@ public class Barometer extends Sensor<BrickletBarometer> {
 
     @Override
     public Sensor<BrickletBarometer> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletBarometer> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAltitudeCallbackPeriod(0);
+                device.setAirPressureCallbackPeriod(0);
+                sendEvent(ALTITUDE, (long) device.getAltitude() * 10);
+                sendEvent(AIR_PRESSURE, (long) device.getAirPressure());
+            } else {
+                device.setAltitudeCallbackPeriod(milliseconds);
+                device.setAirPressureCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

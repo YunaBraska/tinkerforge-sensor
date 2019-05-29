@@ -3,12 +3,12 @@ package com.tinkerforge;
 public class CallbackThreadRestarter implements Thread.UncaughtExceptionHandler {
     IPConnectionBase ipcon = null;
 
-    CallbackThreadRestarter(IPConnectionBase ipcon) {
+    CallbackThreadRestarter(final IPConnectionBase ipcon) {
         this.ipcon = ipcon;
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable exception) {
+    public void uncaughtException(final Thread thread, final Throwable exception) {
         System.err.print("Exception in thread \"" + thread.getName() + "\" ");
         exception.printStackTrace();
 

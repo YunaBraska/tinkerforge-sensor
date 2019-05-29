@@ -1,7 +1,6 @@
 package berlin.yuna.hackerschool.session_02_220219;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
@@ -12,13 +11,12 @@ import berlin.yuna.hackerschool.example.Helper;
  */
 public class ApplicationStart extends Helper {
 
-    public static SensorList<Sensor> sensorList = new SensorList<>();
+    private static Stack stack;
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+    public static void main(final String[] args) {
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //VARIABLES
@@ -30,62 +28,62 @@ public class ApplicationStart extends Helper {
 
         if (type.isRotary()) {
             start = false;
-        } else if (type.isButtonPressed() && sensor.is(sensorList.getRotary())) {
+        } else if (type.isButtonPressed() && sensor.compare().isRotary()) {
             start = true;
             asyncStop("beethoven");
         }
 
         if (timePassed(500)) {
-            Sensor display = sensorList.getDisplayLcd20x4();
-            Sensor buttonRGB_1 = sensorList.getButtonRGB(0);
-            Sensor buttonRGB_2 = sensorList.getButtonRGB(1);
+            final Sensor display = stack.sensors().displayLcd20x4();
+            final Sensor buttonRGB_1 = stack.sensors().buttonRGB(0);
+            final Sensor buttonRGB_2 = stack.sensors().buttonRGB(1);
 
             if (!start) {
                 //Reset buttons
-                sensorList.forEach(Sensor::ledStatusOff);
-                sensorList.stream().filter(s -> !s.is(display)).forEach(Sensor::ledAdditionalOff);
+                stack.sensors().forEach(Sensor::ledStatusOff);
+                stack.sensors().stream().filter(s -> !s.compare().isDisplayLcd20x4()).forEach(Sensor::ledAdditionalOff);
             }
-            if (!start && sensorList.getValueRotary() == 1) {
+            if (!start && stack.values().rotary() == 1) {
                 program = 1;
-                display.value("${clear}");
-                display.value("1. Programm: Wetterstation!");
+                display.send("${clear}");
+                display.send("1. Programm: Wetterstation!");
                 display.ledAdditionalOn();
                 buttonRGB_1.ledStatusOn();
                 buttonRGB_2.ledStatusOn();
-                sensorList.getLightAmbient().ledStatusOn();
-                sensorList.getAirQuality().ledStatusOn();
-            } else if (!start && sensorList.getValueRotary() == 2) {
+                stack.sensors().lightAmbient().ledStatusOn();
+                stack.sensors().airQuality().ledStatusOn();
+            } else if (!start && stack.values().rotary() == 2) {
                 program = 2;
-                display.value("${clear}");
-                display.value("2. Program: Reaction Game!");
+                display.send("${clear}");
+                display.send("2. Program: Reaction Game!");
                 display.ledAdditionalOn();
                 buttonRGB_1.ledStatusOn();
                 buttonRGB_2.ledStatusOn();
-            } else if (!start && sensorList.getValueRotary() == 3) {
+            } else if (!start && stack.values().rotary() == 3) {
                 program = 3;
-                display.value("${clear}");
-                display.value("3. Program: Uhrsula!");
+                display.send("${clear}");
+                display.send("3. Program: Uhrsula!");
                 display.ledAdditionalOn();
-                sensorList.getLightAmbient().ledStatusOn();
-            } else if (!start && sensorList.getValueRotary() == 4) {
+                stack.sensors().lightAmbient().ledStatusOn();
+            } else if (!start && stack.values().rotary() == 4) {
                 program = 4;
-                display.value("${clear}");
-                display.value("4. Program: Beethoven!");
+                display.send("${clear}");
+                display.send("4. Program: Beethoven!");
                 display.ledAdditionalOn();
             }
         }
 
         if (start && program == 1) {
-            WeatherStation.sensorList = sensorList;
+            WeatherStation.stack = stack;
             WeatherStation.onSensorEvent(sensor, value, type);
         } else if (start && program == 2) {
-            ReactionGame.sensorList = sensorList;
+            ReactionGame.stack = stack;
             ReactionGame.onSensorEvent(sensor, value, type);
         } else if (start && program == 3) {
-            Uhrsula.sensorList = sensorList;
+            Uhrsula.stack = stack;
             Uhrsula.onSensorEvent(sensor, value, type);
         } else if (start && program == 4) {
-            Beethoven.sensorList = sensorList;
+            Beethoven.stack = stack;
             Beethoven.onSensorEvent(sensor, value, type);
         }
     }

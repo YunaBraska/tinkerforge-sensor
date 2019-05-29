@@ -17,23 +17,19 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY
  */
 public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 
-    public SoundIntensity(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletSoundIntensity) device, parent, uid, true);
+    public SoundIntensity(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletSoundIntensity) device, uid, true);
     }
 
     @Override
     protected Sensor<BrickletSoundIntensity> initListener() {
-        try {
-            device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) value));
-            device.setIntensityCallbackPeriod(3);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) value));
+        refreshPeriod(-1);
         return this;
     }
 
     @Override
-    public Sensor<BrickletSoundIntensity> value(final Object value) {
+    public Sensor<BrickletSoundIntensity> send(final Object value) {
         return this;
     }
 
@@ -43,7 +39,22 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
     }
 
     @Override
-    public Sensor<BrickletSoundIntensity> ledAdditional(Integer value) {
+    public Sensor<BrickletSoundIntensity> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletSoundIntensity> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setIntensityCallbackPeriod(0);
+                sendEvent(SOUND_INTENSITY, (long) device.getIntensity());
+            } else {
+                device.setIntensityCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

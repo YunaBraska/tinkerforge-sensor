@@ -1,24 +1,22 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
 public class SoundIntensity_to_IO16_Example {
 
     private static long dynamicMaxVolume = 0;
-    private static SensorList<Sensor> sensorList;
+    private static Stack stack;
 
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
+    public static void main(final String[] args) {
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {
         if (type.isSoundIntensity()) {
-            Sensor io16 = sensorList.getIO16();
+            final Sensor io16 = stack.sensors().iO16();
 
             //Dynamic max Volume
             if (value > dynamicMaxVolume) {
@@ -28,12 +26,12 @@ public class SoundIntensity_to_IO16_Example {
             }
 
             //Turn off all lights
-            io16.value(false);
+            io16.send(false);
 
             //Turn on LEDs (max 16)
-            long port = ((16 * value) / dynamicMaxVolume);
+            final long port = ((16 * value) / dynamicMaxVolume);
             for (int i = 0; i < port; i++) {
-                io16.value(i);
+                io16.send(i);
             }
         }
     }

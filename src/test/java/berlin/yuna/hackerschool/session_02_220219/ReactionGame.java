@@ -1,7 +1,6 @@
 package berlin.yuna.hackerschool.session_02_220219;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -16,38 +15,37 @@ import java.util.Random;
 public class ReactionGame extends Helper {
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+    public static void main(final String[] args) {
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //VARIABLES
-    public static SensorList<Sensor> sensorList = new SensorList<>();
+    public static Stack stack;
     private static int score = -1;
     private static boolean reactionNow = false;
 
     //CODE FUNCTION
     static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
-        Sensor displayLcd = sensorList.getDisplayLcd20x4();
-        Sensor displaySegment = sensorList.getDisplaySegment();
-        Sensor buttonRGB = sensorList.getButtonRGB();
-        Sensor speaker = sensorList.getSpeaker();
+        final Sensor displayLcd = stack.sensors().displayLcd20x4();
+        final Sensor displaySegment = stack.sensors().displaySegment();
+        final Sensor buttonRGB = stack.sensors().buttonRGB();
+        final Sensor speaker = stack.sensors().speaker();
 
         //SCORE VIEW
         if (score > -1) {
-            displaySegment.value("P" + score);
-            displayLcd.value("Score: " + score + " ${space}");
+            displaySegment.send("P" + score);
+            displayLcd.send("Score: " + score + " ${space}");
         }
 
         //GAME END EVENTS
         if (score == 0) {
             score = -1;
-            speaker.value(778, 5000, false);
-            displayLcd.value("${1}${space}Game Over! ${space}");
+            speaker.send(778, 5000, false);
+            displayLcd.send("${1}${space}Game Over! ${space}");
         } else if (score == 10) {
             score = -1;
-            displayLcd.value("${1}${space}You Win!${space}");
+            displayLcd.send("${1}${space}You Win!${space}");
             async("reaction_win_speaker", run -> speaker.flashLed());
             async("reaction_win_led", run -> buttonRGB.flashLed());
         }
@@ -56,22 +54,22 @@ public class ReactionGame extends Helper {
         if (timePassed("reactionGame", 50)) {
             //random yellow
             if (timePassed("yellow", 1500 + new Random().nextInt(9000)) && !reactionNow && score > -1) {
-                sensorList.getButtonRGB().value(Color.YELLOW);
+                stack.sensors().buttonRGB().send(Color.YELLOW);
                 reactionNow = true;
-                displayLcd.value("${1}Do it now! ${space}");
+                displayLcd.send("${1}Do it now! ${space}");
             } else if (reactionNow && timePassed("yellow", 600 + new Random().nextInt(1000))) {
                 //SCORE DOWN - didnt make it in time
                 reactionNow = false;
-                speaker.value(200, 5000, false);
-                buttonRGB.value(Color.RED);
-                displayLcd.value("${1}Missed it!${space}");
+                speaker.send(200, 5000, false);
+                buttonRGB.send(Color.RED);
+                displayLcd.send("${1}Missed it!${space}");
                 score = score - 1;
             }
         }
 
         //BUTTON EVENTS
         if (type.isButtonPressed() && value == 1L) {
-            if (sensor.is(sensorList.getRotary())) {
+            if (sensor.compare().isRotary()) {
                 //RESET GAME
                 score = -1;
                 buttonRGB.ledStatusOn();
@@ -80,52 +78,52 @@ public class ReactionGame extends Helper {
                 //SCORE UP - made it in time
                 reactionNow = false;
                 score = score + 1;
-                speaker.value(200, 2000, false);
-                displayLcd.value("${1}Got it!${space}");
-                buttonRGB.value(Color.GREEN);
+                speaker.send(200, 2000, false);
+                displayLcd.send("${1}Got it!${space}");
+                buttonRGB.send(Color.GREEN);
             } else if (!reactionNow) {
                 //SCORE DOWN - accident press
                 score = score - 1;
-                buttonRGB.value(Color.RED);
-                speaker.value(200, 5000, false);
-                displayLcd.value("${1} Too early! ${space}");
+                buttonRGB.send(Color.RED);
+                speaker.send(200, 5000, false);
+                displayLcd.send("${1} Too early! ${space}");
             }
         }
     }
 
     private static void reactionGameStart() {
-        Sensor displaySegment = sensorList.getDisplaySegment();
-        Sensor buttonRGB = sensorList.getButtonRGB();
-        Sensor displayLcd = sensorList.getDisplayLcd20x4();
-        Sensor speaker = sensorList.getSpeaker();
+        final Sensor displaySegment = stack.sensors().displaySegment();
+        final Sensor buttonRGB = stack.sensors().buttonRGB();
+        final Sensor displayLcd = stack.sensors().displayLcd20x4();
+        final Sensor speaker = stack.sensors().speaker();
 
         if (score == -1) {
             score = -2;
             loopStop("reaction_win");
-            displayLcd.value("${clear}");
+            displayLcd.send("${clear}");
             buttonRGB.ledStatusOn();
             displayLcd.ledStatusOn();
             displayLcd.ledAdditionalOn();
-            displaySegment.value(3);
-            displayLcd.value("${space} 3 ${space}");
-            buttonRGB.value(Color.RED);
-            speaker.value(200, 3000, false);
+            displaySegment.send(3);
+            displayLcd.send("${space} 3 ${space}");
+            buttonRGB.send(Color.RED);
+            speaker.send(200, 3000, false);
             sleep(1024);
 
-            displaySegment.value(2);
-            displayLcd.value("${space} 2 ${space}");
-            buttonRGB.value(Color.YELLOW);
-            speaker.value(200, 3000, false);
+            displaySegment.send(2);
+            displayLcd.send("${space} 2 ${space}");
+            buttonRGB.send(Color.YELLOW);
+            speaker.send(200, 3000, false);
             sleep(1024);
 
-            displaySegment.value(1);
-            displayLcd.value("${space} 1 ${space}");
-            buttonRGB.value(Color.GREEN);
-            speaker.value(200, 3000, false);
+            displaySegment.send(1);
+            displayLcd.send("${space} 1 ${space}");
+            buttonRGB.send(Color.GREEN);
+            speaker.send(200, 3000, false);
             sleep(1024);
-            displaySegment.value("-GO-");
-            displayLcd.value("${space} -GO- ${space}");
-            speaker.value(512, 2000, false);
+            displaySegment.send("-GO-");
+            displayLcd.send("${space} -GO- ${space}");
+            speaker.send(512, 2000, false);
             sleep(512);
             score = 5;
         }

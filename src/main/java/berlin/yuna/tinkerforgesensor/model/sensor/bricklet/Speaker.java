@@ -21,8 +21,8 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     private int duration = 200;
     private int wait = duration;
 
-    public Speaker(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletPiezoSpeaker) device, parent, uid, false);
+    public Speaker(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletPiezoSpeaker) device, uid, false);
     }
 
     @Override
@@ -43,11 +43,11 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
      * @return {@link Sensor}
      */
     @Override
-    public Sensor<BrickletPiezoSpeaker> value(final Object... values) {
+    public Sensor<BrickletPiezoSpeaker> send(final Object... values) {
         if (values != null) {
-            int duration = getDuration(values);
-            int wait = getWait(values, duration);
-            int frequency = getFrequency(values);
+            final int duration = getDuration(values);
+            final int wait = getWait(values, duration);
+            final int frequency = getFrequency(values);
 
             if (values.length > 0 && values[0] instanceof String) {
                 morse(values[0]);
@@ -64,9 +64,8 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
      *              <br /> Frequency = number with prefix "f" [min 585 - max 7100]
      * @return {@link Sensor}
      */
-    @Override
-    public Sensor<BrickletPiezoSpeaker> value(final Object value) {
-        return value(value, frequency);
+    public Sensor<BrickletPiezoSpeaker> send(final Object value) {
+        return send(value, frequency);
     }
 
     @Override
@@ -81,22 +80,21 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 
     @Override
     public Sensor<BrickletPiezoSpeaker> flashLed() {
-//        try {
-        //FIXME: Broken sensor
-//            device.calibrate();
         for (int i = 585; i < 2000; i++) {
-//            value("f" + i);
-            value(i, i, false);
+            send(i, i, false);
         }
-        value(0, 2000, false);
-        value("...");
-//        } catch (TimeoutException | NotConnectedException ignored) {
-//            sendEvent(DEVICE_TIMEOUT, 404L);
-//        }
+        send(0, 2000, false);
+        send("...");
         return this;
     }
 
-    private void morse(Object value) {
+
+    @Override
+    public Sensor<BrickletPiezoSpeaker> refreshPeriod(final int milliseconds) {
+        return this;
+    }
+
+    private void morse(final Object value) {
         try {
             sendEvent(BEEP_ACTIVE, 1L);
             device.morseCode((String) value, frequency);
@@ -139,7 +137,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     private int getFrequency(final Object[] values) {
         int result = this.frequency;
         if (values.length > 1 && values[1] instanceof Number) {
-            int frequency_tmp = ((Number) values[1]).intValue();
+            final int frequency_tmp = ((Number) values[1]).intValue();
             result = frequency_tmp < 7101 && frequency_tmp > 585 ? frequency_tmp : frequency;
         }
         this.frequency = result;

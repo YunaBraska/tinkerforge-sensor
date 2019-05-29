@@ -26,27 +26,21 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  */
 public class BarometerV2 extends Sensor<BrickletBarometerV2> {
 
-    public BarometerV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletBarometerV2) device, parent, uid, true);
+    public BarometerV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletBarometerV2) device, uid, true);
     }
 
     @Override
     protected Sensor<BrickletBarometerV2> initListener() {
-        try {
-            device.addAltitudeListener(value -> sendEvent(ALTITUDE, (long) value));
-            device.addAirPressureListener(value -> sendEvent(AIR_PRESSURE, (long) value));
-            device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-            device.setAltitudeCallbackConfiguration(CALLBACK_PERIOD * 8, false, 'x', 0, 0);
-            device.setAirPressureCallbackConfiguration(CALLBACK_PERIOD * 8, false, 'x', 0, 0);
-            device.setTemperatureCallbackConfiguration(CALLBACK_PERIOD * 8, false, 'x', 0, 0);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addAltitudeListener(value -> sendEvent(ALTITUDE, (long) value));
+        device.addAirPressureListener(value -> sendEvent(AIR_PRESSURE, (long) value));
+        device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
+        refreshPeriod(-1);
         return this;
     }
 
     @Override
-    public Sensor<BrickletBarometerV2> value(final Object value) {
+    public Sensor<BrickletBarometerV2> send(final Object value) {
         return this;
     }
 
@@ -69,7 +63,29 @@ public class BarometerV2 extends Sensor<BrickletBarometerV2> {
     }
 
     @Override
-    public Sensor<BrickletBarometerV2> ledAdditional(Integer value) {
+    public Sensor<BrickletBarometerV2> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletBarometerV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAltitudeCallbackConfiguration(0, true, 'x', 0, 0);
+                device.setAirPressureCallbackConfiguration(0, true, 'x', 0, 0);
+                device.setTemperatureCallbackConfiguration(0, true, 'x', 0, 0);
+
+                sendEvent(ALTITUDE, (long) device.getAltitude());
+                sendEvent(AIR_PRESSURE, (long) device.getAirPressure());
+                sendEvent(TEMPERATURE, (long) device.getTemperature());
+            } else {
+                device.setAltitudeCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setAirPressureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setTemperatureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

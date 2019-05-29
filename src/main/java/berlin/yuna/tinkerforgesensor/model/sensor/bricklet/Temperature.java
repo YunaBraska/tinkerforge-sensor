@@ -17,23 +17,19 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  */
 public class Temperature extends Sensor<BrickletTemperature> {
 
-    public Temperature(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletTemperature) device, parent, uid, false);
+    public Temperature(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletTemperature) device, uid, false);
     }
 
     @Override
     protected Sensor<BrickletTemperature> initListener() {
-        try {
-            device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-            device.setTemperatureCallbackPeriod(CALLBACK_PERIOD * 8);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
+        refreshPeriod(CALLBACK_PERIOD * 8);
         return this;
     }
 
     @Override
-    public Sensor<BrickletTemperature> value(final Object value) {
+    public Sensor<BrickletTemperature> send(final Object value) {
         return this;
     }
 
@@ -44,6 +40,21 @@ public class Temperature extends Sensor<BrickletTemperature> {
 
     @Override
     public Sensor<BrickletTemperature> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTemperature> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setTemperatureCallbackPeriod(0);
+                sendEvent(TEMPERATURE, (long) (device.getTemperature()));
+            } else {
+                device.setTemperatureCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

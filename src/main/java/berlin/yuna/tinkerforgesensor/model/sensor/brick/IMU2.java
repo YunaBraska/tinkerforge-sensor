@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.brick;
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickIMUV2;
 import com.tinkerforge.Device;
@@ -46,14 +46,12 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
  */
 public class IMU2 extends Sensor<BrickIMUV2> {
 
-    public IMU2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickIMUV2) device, parent, uid, true);
+    public IMU2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickIMUV2) device, uid, true);
     }
 
     @Override
-    protected Sensor<BrickIMUV2> initListener() throws TimeoutException, NotConnectedException {
-        device.setAllDataPeriod(CALLBACK_PERIOD);
-        device.setOrientationPeriod(CALLBACK_PERIOD);
+    protected Sensor<BrickIMUV2> initListener() {
         device.addAllDataListener((acceleration, magneticField, angularVelocity, eulerAngle, quaternion, linearAcceleration, gravityVector, temperature, calibrationStatus) ->
                 {
                     sendEvent(ACCELERATION_X, (long) acceleration[0]);
@@ -90,16 +88,17 @@ public class IMU2 extends Sensor<BrickIMUV2> {
                     sendEvent(ValueType.IMU, 2L);
                 }
         );
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
     @Override
-    public Sensor<BrickIMUV2> value(Object value) {
+    public Sensor<BrickIMUV2> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickIMUV2> ledStatus(Integer value) {
+    public Sensor<BrickIMUV2> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.enableStatusLED();
@@ -113,12 +112,28 @@ public class IMU2 extends Sensor<BrickIMUV2> {
     }
 
     @Override
-    public Sensor<BrickIMUV2> ledAdditional(Integer value) {
+    public Sensor<BrickIMUV2> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
                 device.ledsOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
                 device.ledsOff();
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickIMUV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAllDataPeriod(0);
+                device.setOrientationPeriod(0);
+            } else {
+                device.setAllDataPeriod(milliseconds);
+                device.setOrientationPeriod(milliseconds);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

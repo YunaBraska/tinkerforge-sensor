@@ -1,5 +1,6 @@
 package berlin.yuna.hackerschool.example;
 
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType;
@@ -21,9 +22,15 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
 
     private static LedStatusType status = LED_STATUS_ON;
 
+    private static Stack stack;
+
+    public static void main(final String[] args) {
+        stack = ConnectionAndPrintValues_Example.connect();
+    }
+
     public static void animateStatusLEDs(final SensorList<Sensor> sensorList) {
         status = status == LED_STATUS_ON ? LED_STATUS_OFF : LED_STATUS_ON;
-        List<Sensor> sortedList = sensorList.sort(sensor -> sensor.hasLedStatus());
+        final List<Sensor> sortedList = sensorList.filter(Sensor::hasLedStatus);
         if (status == LED_STATUS_OFF) {
             reverse(sortedList);
         }
@@ -35,16 +42,11 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
         }
     }
 
-    public static void refreshBrickPorts(final SensorList<Sensor> sensorList, final long milliSeconds) {
-        sensorList.forEach(Sensor::refreshPort);
-        sleep(milliSeconds);
-    }
-
     public static void displayAlphabet(final SensorList<Sensor> sensorList, final long speedMs) {
-        Sensor display = sensorList.getDisplaySegment();
+        final Sensor display = stack.sensors().displaySegment();
         if (display.isPresent()) {
             for (char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
-                display.value(Character.toString(alphabet));
+                display.send(Character.toString(alphabet));
                 sleep(speedMs);
             }
         }
@@ -52,9 +54,9 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
 
     public static void displayTimeoutMessage(final SensorList<Sensor> sensorList, final long timeoutMs) {
         try {
-            Sensor sensor = sensorList.getDisplayLcd20x4();
+            final Sensor sensor = stack.sensors().displayLcd20x4();
             if (isPresent(sensor)) {
-                BrickletLCD20x4 device = (BrickletLCD20x4) sensor.device;
+                final BrickletLCD20x4 device = (BrickletLCD20x4) sensor.device;
                 device.setDefaultText((short) 0, "|                  |");
                 device.setDefaultText((short) 1, "|   HackerSchool   |");
                 device.setDefaultText((short) 2, "|  Ready to serve  |");
@@ -67,13 +69,13 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
         }
     }
 
-    public static void RgbButtonChangeColorOnPress(Sensor sensor, ValueType valueType) {
+    public static void RgbButtonChangeColorOnPress(final Sensor sensor, final ValueType valueType) {
         if (valueType.is(BUTTON_PRESSED)) {
-            Random random = new Random();
-            int r = random.nextInt(255);
-            int g = random.nextInt(255);
-            int b = random.nextInt(255);
-            sensor.value((long) new Color(r, g, b).getRGB());
+            final Random random = new Random();
+            final int r = random.nextInt(255);
+            final int g = random.nextInt(255);
+            final int b = random.nextInt(255);
+            sensor.send((long) new Color(r, g, b).getRGB());
         }
     }
 }

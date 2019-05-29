@@ -16,8 +16,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  */
 public class IO16 extends Sensor<BrickletIO16> {
 
-    public IO16(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletIO16) device, parent, uid, false);
+    public IO16(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletIO16) device, uid, false);
     }
 
     @Override
@@ -35,13 +35,13 @@ public class IO16 extends Sensor<BrickletIO16> {
      * Todo: [2000] = 5V output
      */
     @Override
-    public Sensor<BrickletIO16> value(final Object value) {
+    public Sensor<BrickletIO16> send(final Object value) {
         try {
             Integer input = normalizeValue(value);
             if (input != null) {
-                boolean output = input > -1;
+                final boolean output = input > -1;
                 input = output ? input : input * -1;
-                char block;
+                final char block;
                 if (input > 8) {
                     block = 'b';
                     input = input - 8;
@@ -71,7 +71,7 @@ public class IO16 extends Sensor<BrickletIO16> {
      * Todo: [2000] = 5V output
      */
     @Override
-    public Sensor<BrickletIO16> ledAdditional(Integer value) {
+    public Sensor<BrickletIO16> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
                 device.setPortConfiguration('a', (short) 255, 'o', true);
@@ -80,7 +80,7 @@ public class IO16 extends Sensor<BrickletIO16> {
                 device.setPortConfiguration('a', (short) 255, 'i', false);
                 device.setPortConfiguration('b', (short) 255, 'i', false);
             } else {
-                value(value - 2);
+                send(value - 2);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -93,7 +93,7 @@ public class IO16 extends Sensor<BrickletIO16> {
         try {
             ledAdditionalOff();
             for (int i = 1; i < 33; i++) {
-                this.value(i < 17 ? i : (i - 16) * -1);
+                this.send(i < 17 ? i : (i - 16) * -1);
                 Thread.sleep(32);
             }
         } catch (Exception ignore) {
@@ -101,8 +101,13 @@ public class IO16 extends Sensor<BrickletIO16> {
         return this;
     }
 
+    @Override
+    public Sensor<BrickletIO16> refreshPeriod(final int milliseconds) {
+        return this;
+    }
+
     //TODO move to Utils
-    private int getPotential(int n) {
+    private int getPotential(final int n) {
         if (n == 1) {
             return 1;
         }

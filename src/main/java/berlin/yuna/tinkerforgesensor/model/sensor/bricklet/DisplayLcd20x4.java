@@ -32,8 +32,8 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     public static final String DISPLAY_DYNAMIC_SPACE = "${space}";
     private static final String DISPLAY_SPLIT_LINE_REGEX = "(\\n|(<br\\s*/*>))";
 
-    public DisplayLcd20x4(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletLCD20x4) device, parent, uid, false);
+    public DisplayLcd20x4(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletLCD20x4) device, uid, false);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
      * @return {@link Sensor}
      */
     @Override
-    public Sensor<BrickletLCD20x4> value(final Object value) {
+    public Sensor<BrickletLCD20x4> send(final Object value) {
         try {
             String text;
             if (value instanceof String) {
@@ -66,7 +66,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
             } else {
                 text = String.valueOf(value);
             }
-            int y = 0;
+            final int y = 0;
             if (text != null && text.startsWith(DISPLAY_CLEAR)) {
                 device.clearDisplay();
                 text = text.substring(DISPLAY_CLEAR.length());
@@ -102,11 +102,11 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         try {
             this.ledAdditionalOn();
             for (int i = 0; i < 7; i++) {
-                value(DISPLAY_LINE_TWO + DISPLAY_DYNAMIC_SPACE + "HOWDY [" + i + "]" + DISPLAY_DYNAMIC_SPACE);
-                value(DISPLAY_LINE_THREE + DISPLAY_DYNAMIC_SPACE + UUID.randomUUID() + DISPLAY_DYNAMIC_SPACE);
+                send(DISPLAY_LINE_TWO + DISPLAY_DYNAMIC_SPACE + "HOWDY [" + i + "]" + DISPLAY_DYNAMIC_SPACE);
+                send(DISPLAY_LINE_THREE + DISPLAY_DYNAMIC_SPACE + UUID.randomUUID() + DISPLAY_DYNAMIC_SPACE);
                 Thread.sleep(128);
             }
-            value(DISPLAY_CLEAR);
+            send(DISPLAY_CLEAR);
             this.ledAdditionalOff();
         } catch (Exception ignore) {
         }
@@ -117,7 +117,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         if (text != null && !text.isEmpty()) {
             int y = posY;
             String leftOverText = "";
-            String[] lines = text.split(DISPLAY_SPLIT_LINE_REGEX);
+            final String[] lines = text.split(DISPLAY_SPLIT_LINE_REGEX);
             for (String line : lines) {
                 if (y > 3) {
                     break;
@@ -158,27 +158,27 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         if (text.contains(DISPLAY_DYNAMIC_SPACE)) {
             int spaceUps;
             while ((spaceUps = ("splitStart" + text + "splitEnd").split("\\$\\{space}").length - 1) > 0) {
-                int length = text.length() - ((DISPLAY_DYNAMIC_SPACE).length() * spaceUps);
+                final int length = text.length() - ((DISPLAY_DYNAMIC_SPACE).length() * spaceUps);
                 text = text.replaceFirst("\\$\\{space}", spaces((20 - length) / spaceUps));
             }
         }
         return text;
     }
 
-    private static String spaces(int number) {
-        StringBuilder stringBuilder = new StringBuilder();
+    private static String spaces(final int number) {
+        final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < number; i++) {
             stringBuilder.append(" ");
         }
         return stringBuilder.toString();
     }
 
-    private static String utf16ToKS0066U(String utf16) {
+    private static String utf16ToKS0066U(final String utf16) {
         StringBuilder ks0066u = new StringBuilder();
         char c;
 
         for (int i = 0; i < utf16.length(); i++) {
-            int codePoint = utf16.codePointAt(i);
+            final int codePoint = utf16.codePointAt(i);
 
             if (Character.isHighSurrogate(utf16.charAt(i))) {
                 // Skip low surrogate
@@ -286,5 +286,10 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         }
 
         return ks0066u.toString();
+    }
+
+    @Override
+    public Sensor<BrickletLCD20x4> refreshPeriod(final int milliseconds) {
+        return this;
     }
 }

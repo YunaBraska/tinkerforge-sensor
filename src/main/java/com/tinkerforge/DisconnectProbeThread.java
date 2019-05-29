@@ -13,7 +13,7 @@ public class DisconnectProbeThread extends TinkerforgeThread {
     final static byte FUNCTION_DISCONNECT_PROBE = (byte) 128;
     final static int DISCONNECT_PROBE_INTERVAL = 5000;
 
-    DisconnectProbeThread(IPConnectionBase ipcon) {
+    DisconnectProbeThread(final IPConnectionBase ipcon) {
         super("Disconnect-Prober");
 
 //        setDaemon(true);

@@ -1,9 +1,7 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
@@ -14,17 +12,16 @@ import static java.lang.String.format;
 
 public class ConnectionAndPrintValues_Example extends Helper {
 
-    private static SensorList<Sensor> sensorList;
+    private static Stack stack;
 
-    public static SensorListener connect() {
+    public static Stack connect() {
         try {
-            SensorListener sensorListener = new SensorListener("localhost", 4223, true);
-            sensorList = sensorListener.sensorList;
-            sensorListener.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
-            while (sensorListener.isConnecting()){
+            stack = new Stack("localhost", 4223, true);
+            stack.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
+            while (stack.isConnecting()){
                 sleep(128);
             }
-            return sensorListener;
+            return stack;
         } catch (NetworkConnectionException e) {
             throw new RuntimeException(e);
         }
@@ -32,29 +29,29 @@ public class ConnectionAndPrintValues_Example extends Helper {
 
     private static void printAllValues(final SensorEvent sensorEvent) {
         if (sensorEvent.valueType.containsDeviceStatus()) {
-            System.out.println(format("Sensor [%s] type [%s] value [%s]", sensorEvent.sensor.name, sensorEvent.valueType, sensorEvent.value));
+            System.out.println(format("Sensor [%s] type [%s] send [%s]", sensorEvent.sensor.name, sensorEvent.valueType, sensorEvent.value));
         } else if (!timePassed(256)) {
             return;
         }
-        LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
+        final LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
         for (ValueType valueType : ValueType.values()) {
-            Long value = sensorList.value(valueType, (Long) null);
+            final Long value = stack.values().get(valueType, null);
             if (value != null) {
                 values.put(valueType, value);
             }
         }
-        StringBuilder lineHead = new StringBuilder();
-        StringBuilder lineValue = new StringBuilder();
+        final StringBuilder lineHead = new StringBuilder();
+        final StringBuilder lineValue = new StringBuilder();
         for (ValueType valueType : values.keySet()) {
             lineHead.append(format("%" + (valueType.toString().length() + 1) + "s |", valueType));
         }
 
-        Iterator<ValueType> typeIterator = values.keySet().iterator();
+        final Iterator<ValueType> typeIterator = values.keySet().iterator();
         for (Long value : values.values()) {
             lineValue.append(format("%" + (typeIterator.next().toString().length() + 1) + "s |", value));
         }
         lineHead.append(format("%9s |", "Sensors"));
-        lineValue.append(format("%9s |", sensorList.size()));
+        lineValue.append(format("%9s |", stack.sensors().size()));
 
         System.out.println("\n" + lineHead.toString() + "\n" + lineValue.toString());
     }

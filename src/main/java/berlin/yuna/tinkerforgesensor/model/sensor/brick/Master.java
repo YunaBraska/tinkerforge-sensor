@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.brick;
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -22,28 +22,26 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE_USB;
  */
 public class Master extends Sensor<BrickMaster> {
 
-    public Master(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickMaster) device, parent, uid, true);
+    public Master(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickMaster) device, uid, true);
     }
 
     @Override
-    protected Sensor<BrickMaster> initListener() throws TimeoutException, NotConnectedException {
+    protected Sensor<BrickMaster> initListener() {
         device.addStackCurrentListener(value -> sendEvent(CURRENT, (long) value));
         device.addStackVoltageListener(value -> sendEvent(VOLTAGE, (long) value));
         device.addUSBVoltageListener(value -> sendEvent(VOLTAGE_USB, (long) value));
-        device.setStackCurrentCallbackPeriod(CALLBACK_PERIOD * 8);
-        device.setStackVoltageCallbackPeriod(CALLBACK_PERIOD * 8);
-        device.setUSBVoltageCallbackPeriod(CALLBACK_PERIOD * 8);
+        refreshPeriod(1000);
         return this;
     }
 
     @Override
-    public Sensor<BrickMaster> value(Object value) {
+    public Sensor<BrickMaster> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickMaster> ledStatus(Integer value) {
+    public Sensor<BrickMaster> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.enableStatusLED();
@@ -57,7 +55,7 @@ public class Master extends Sensor<BrickMaster> {
     }
 
     @Override
-    public Sensor<BrickMaster> ledAdditional(Integer value) {
+    public Sensor<BrickMaster> ledAdditional(final Integer value) {
         try {
             if (device.isWifi2Present()) {
                 if (value == LED_ADDITIONAL_ON.bit) {
@@ -65,6 +63,27 @@ public class Master extends Sensor<BrickMaster> {
                 } else if (value == LED_ADDITIONAL_OFF.bit) {
                     device.disableWifi2StatusLED();
                 }
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickMaster> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setStackCurrentCallbackPeriod(0);
+                device.setStackVoltageCallbackPeriod(0);
+                device.setUSBVoltageCallbackPeriod(0);
+                sendEvent(CURRENT, (long) device.getStackCurrent());
+                sendEvent(VOLTAGE, (long) device.getStackVoltage());
+                sendEvent(VOLTAGE_USB, (long) device.getUSBVoltage());
+            } else {
+                device.setStackCurrentCallbackPeriod(milliseconds);
+                device.setStackVoltageCallbackPeriod(milliseconds);
+                device.setUSBVoltageCallbackPeriod(milliseconds);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

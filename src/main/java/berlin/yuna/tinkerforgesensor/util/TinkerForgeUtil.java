@@ -22,7 +22,7 @@ public class TinkerForgeUtil {
      * @param string to check on
      * @return true if string is null or empty otherwise false
      */
-    public static boolean isEmpty(String string) {
+    public static boolean isEmpty(final String string) {
         return string == null || string.trim().equals("");
     }
 
@@ -43,23 +43,23 @@ public class TinkerForgeUtil {
     }
 
     public static AsyncRun createAsync(final String name, final Consumer<Long> consumer) {
-        AsyncRun prevRun = loop(name);
+        final AsyncRun prevRun = loop(name);
         if (prevRun != null && prevRun.isRunning()) {
             return loop(name);
         }
 
-        Async loop = new Async(name, consumer);
+        final Async loop = new Async(name, consumer);
         loops.put(name, loop);
         return loop;
     }
 
     public static AsyncRun createLoop(final String name, final long refreshMs, final Consumer<Long> consumer) {
-        AsyncRun prevRun = loop(name);
+        final AsyncRun prevRun = loop(name);
         if (prevRun != null && prevRun.isRunning()) {
             return loop(name);
         }
 
-        Loop loop = new Loop(name, refreshMs, consumer);
+        final Loop loop = new Loop(name, refreshMs, consumer);
         loops.put(name, loop);
         return loop;
     }
@@ -67,7 +67,7 @@ public class TinkerForgeUtil {
     public static boolean asyncStop(final String... names) {
         boolean success = true;
         for (String name : names) {
-            AsyncRun loop = loops.get(name);
+            final AsyncRun loop = loops.get(name);
             if (loop != null) {
                 loop.stop();
                 loops.remove(name);
@@ -95,7 +95,7 @@ public class TinkerForgeUtil {
 
         public final long ms;
 
-        RefreshType(long ms) {
+        RefreshType(final long ms) {
             this.ms = ms;
         }
     }

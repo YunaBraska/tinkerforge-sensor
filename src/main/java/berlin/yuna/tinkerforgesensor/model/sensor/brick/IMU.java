@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.brick;
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickIMU;
 import com.tinkerforge.Device;
@@ -19,6 +19,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ACCELERATION_Z;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ANGULAR_VELOCITY_X;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ANGULAR_VELOCITY_Y;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ANGULAR_VELOCITY_Z;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURRENT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_X;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Y;
@@ -26,20 +27,20 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Z;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_HEADING;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_PITCH;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_ROLL;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE_USB;
 
 public class IMU extends Sensor<BrickIMU> {
 
     /**
      * Full fledged AHRS with 9 degrees of freedom
      */
-    public IMU(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickIMU) device, parent, uid, true);
+    public IMU(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickIMU) device, uid, true);
     }
 
     @Override
-    protected Sensor<BrickIMU> initListener() throws TimeoutException, NotConnectedException {
-        device.setAllDataPeriod(CALLBACK_PERIOD);
-        device.setOrientationPeriod(CALLBACK_PERIOD);
+    protected Sensor<BrickIMU> initListener() {
         device.addAllDataListener((accX, accY, accZ, magX, magY, magZ, angX, angY, angZ, temperature) ->
                 {
                     sendEvent(ACCELERATION_X, (long) accX);
@@ -62,16 +63,17 @@ public class IMU extends Sensor<BrickIMU> {
                     sendEvent(ValueType.IMU, 1L);
                 }
         );
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
     @Override
-    public Sensor<BrickIMU> value(Object value) {
+    public Sensor<BrickIMU> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickIMU> ledStatus(Integer value) {
+    public Sensor<BrickIMU> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.enableStatusLED();
@@ -85,12 +87,28 @@ public class IMU extends Sensor<BrickIMU> {
     }
 
     @Override
-    public Sensor<BrickIMU> ledAdditional(Integer value) {
+    public Sensor<BrickIMU> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
                 device.enableStatusLED();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
                 device.disableStatusLED();
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickIMU> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAllDataPeriod(0);
+                device.setOrientationPeriod(0);
+            } else {
+                device.setAllDataPeriod(milliseconds);
+                device.setOrientationPeriod(milliseconds);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

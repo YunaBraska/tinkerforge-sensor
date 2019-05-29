@@ -26,27 +26,21 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UVB;
  */
 public class LightUvV2 extends Sensor<BrickletUVLightV2> {
 
-    public LightUvV2(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletUVLightV2) device, parent, uid, true);
+    public LightUvV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletUVLightV2) device, uid, true);
     }
 
     @Override
     protected Sensor<BrickletUVLightV2> initListener() {
-        try {
-            device.addUVIListener(value -> sendEvent(LIGHT_UV, (long) value));
-            device.addUVAListener(value -> sendEvent(LIGHT_UVA, (long) value));
-            device.addUVBListener(value -> sendEvent(LIGHT_UVB, (long) value));
-            device.setUVACallbackConfiguration(CALLBACK_PERIOD, false, 'x', 0, 0);
-            device.setUVBCallbackConfiguration(CALLBACK_PERIOD, false, 'x', 0, 0);
-            device.setUVICallbackConfiguration(CALLBACK_PERIOD, false, 'x', 0, 0);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addUVIListener(value -> sendEvent(LIGHT_UV, (long) value));
+        device.addUVAListener(value -> sendEvent(LIGHT_UVA, (long) value));
+        device.addUVBListener(value -> sendEvent(LIGHT_UVB, (long) value));
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
     @Override
-    public Sensor<BrickletUVLightV2> value(final Object value) {
+    public Sensor<BrickletUVLightV2> send(final Object value) {
         return this;
     }
 
@@ -69,6 +63,27 @@ public class LightUvV2 extends Sensor<BrickletUVLightV2> {
 
     @Override
     public Sensor<BrickletUVLightV2> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletUVLightV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setUVACallbackConfiguration(0, true, 'x', 0, 0);
+                device.setUVBCallbackConfiguration(0, true, 'x', 0, 0);
+                device.setUVICallbackConfiguration(0, true, 'x', 0, 0);
+                sendEvent(LIGHT_UV, (long) device.getUVI());
+                sendEvent(LIGHT_UVA, (long) device.getUVA());
+                sendEvent(LIGHT_UVB, (long) device.getUVB());
+            } else {
+                device.setUVACallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setUVBCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setUVICallbackConfiguration(milliseconds, false, 'x', 0, 0);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

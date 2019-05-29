@@ -20,24 +20,25 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED
  */
 public class MotionDetector extends Sensor<BrickletMotionDetector> {
 
-    public MotionDetector(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletMotionDetector) device, parent, uid, true);
+    public MotionDetector(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletMotionDetector) device, uid, true);
     }
 
     @Override
     protected Sensor<BrickletMotionDetector> initListener() {
         device.addMotionDetectedListener(() -> sendEvent(MOTION_DETECTED, 1L));
         device.addDetectionCycleEndedListener(() -> sendEvent(MOTION_DETECTED, 0L));
+        refreshPeriod(-1);
         return this;
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> value(Object value) {
+    public Sensor<BrickletMotionDetector> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> ledStatus(Integer value) {
+    public Sensor<BrickletMotionDetector> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
@@ -52,7 +53,12 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> ledAdditional(Integer value) {
+    public Sensor<BrickletMotionDetector> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletMotionDetector> refreshPeriod(final int milliseconds) {
         return this;
     }
 }

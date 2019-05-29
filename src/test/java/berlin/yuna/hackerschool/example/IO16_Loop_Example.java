@@ -1,19 +1,17 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 
 public class IO16_Loop_Example extends Helper{
 
-    private static SensorList<Sensor> sensorList;
+    private static Stack stack;
     private static boolean ledReverse;
 
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
+    public static void main(final String[] args) {
+        stack = ConnectionAndPrintValues_Example.connect();
 
-        while (!sensorList.getIO16().isPresent()) {
+        while (!stack.sensors().iO16().isPresent()) {
             sleep(10);
         }
 
@@ -22,11 +20,11 @@ public class IO16_Loop_Example extends Helper{
     }
 
     private static boolean loopOver16IO_example() {
-        Sensor io16 = sensorList.getIO16();
+        final Sensor io16 = stack.sensors().iO16();
 
         io16.ledAdditionalOff();
         for (int i = 1; i < 17; i++) {
-            io16.value(i);
+            io16.send(i);
             sleep(32);
         }
         return true;
@@ -36,13 +34,13 @@ public class IO16_Loop_Example extends Helper{
     private static boolean knightRider_example() {
         ledReverse = !ledReverse;
         for (int i = 1; i < 9; i++) {
-            int index = ledReverse ? 9 - i : i;
+            final int index = ledReverse ? 9 - i : i;
             //Side turn all off
-            sensorList.getIO16().ledAdditionalOff();
+            stack.sensors().iO16().ledAdditionalOff();
             //Side A
-            sensorList.getIO16().value(index);
+            stack.sensors().iO16().send(index);
             //Side B
-            sensorList.getIO16().value(index + 8);
+            stack.sensors().iO16().send(index + 8);
             sleep(32);
         }
         return true;

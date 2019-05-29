@@ -1,25 +1,26 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
+import berlin.yuna.tinkerforgesensor.model.builder.Compare;
+import berlin.yuna.tinkerforgesensor.model.builder.Values;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import berlin.yuna.tinkerforgesensor.util.SensorTypeHelper;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getDevice;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getSensor;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
@@ -34,6 +35,8 @@ import static java.lang.Character.getNumericValue;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
+import static java.lang.System.nanoTime;
+import static java.util.Collections.singletonList;
 
 //TODO: matthias@tinkerforge.com contact at first beta
 
@@ -44,18 +47,20 @@ import static java.lang.String.format;
  */
 public abstract class Sensor<T extends Device> {
 
-    public int port = -1;
+    int port = -1;
+    private Sensor parent;
+    public boolean isBrick;
 
     public final String uid;
     public final String name;
     public final T device;
-    public final Sensor parent;
-    public final ConcurrentHashMap<ValueType, RollingList<Long>> values = new ConcurrentHashMap<>();
-    public final SensorTypeHelper sensorTypeHelper;
 
-    protected boolean isBrick;
-    protected final boolean hasStatusLed;
-    protected static ConcurrentHashMap<Sensor, AtomicLong> lastRuns = new ConcurrentHashMap<>();
+    private final boolean hasStatusLed;
+    private final String connectionUid;
+    private final char position;
+    private final ConcurrentHashMap<ValueType, RollingList<Long>> valueMap = new ConcurrentHashMap<>();
+
+    private long lastCall = nanoTime();
 
     /**
      * List of {@link Consumer} for getting all {@link Sensor<T>Event}
@@ -78,64 +83,60 @@ public abstract class Sensor<T extends Device> {
      * Creates new {@link Sensor}
      *
      * @param device {@link Device} to wrap with {@link Sensor}
-     * @param parent optional parent {@link Sensor} to calculate the port/sensor order
      * @param uid    for unique identifier
      * @return {@link Sensor}
      */
-    public static Sensor<? extends Device> newInstance(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        return getSensor(device.getClass()).newInstance(device, parent, uid);
-
+    public static Sensor<? extends Device> newInstance(final Device device, final String uid) throws NetworkConnectionException {
+        return getSensor(device.getClass()).newInstance(device, uid);
     }
 
     /**
      * Creates new {@link Sensor}
      *
      * @param deviceIdentifier {@link Device} identifier
-     * @param parent           optional parent {@link Sensor} to calculate the port/sensor order
      * @param uid              for unique identifier like {@link com.tinkerforge.BrickletBarometerV2#DEVICE_IDENTIFIER}
      * @param connection       {@link IPConnection} for {@link Device}
      * @return {@link Sensor}
      */
-    public static Sensor<? extends Device> newInstance(final Integer deviceIdentifier, final Sensor parent, final String uid, final IPConnection connection) throws DeviceNotSupportedException, NetworkConnectionException {
-        DeviceFactory deviceFactory = getDevice(deviceIdentifier);
+    public static Sensor<? extends Device> newInstance(final Integer deviceIdentifier, final String uid, final IPConnection connection) throws DeviceNotSupportedException, NetworkConnectionException {
+        final DeviceFactory deviceFactory = getDevice(deviceIdentifier);
         if (deviceFactory == null) {
             throw new DeviceNotSupportedException(format("Device [%s] uid [%s] is not supported yet", deviceIdentifier, uid));
         }
-        return newInstance(deviceFactory.newInstance(uid, connection), parent, uid).flashLed();
+        return newInstance(deviceFactory.newInstance(uid, connection), uid);
     }
 
     /**
      * Constructor
      *
      * @param device connected original {@link Device}
-     * @param parent optional for calculating ({@link Sensor<T>#refreshPortE()}) the sensor position/order as {@link Sensor<T>#port}
      * @param uid    cached uid of {@link Device#getIdentity()}
      */
-    public Sensor(final T device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        this(device, parent, uid, false);
+    public Sensor(final T device, final String uid) throws NetworkConnectionException {
+        this(device, uid, false);
     }
 
     /**
      * Constructor
      *
      * @param device       connected original {@link Device}
-     * @param parent       optional for calculating ({@link Sensor<T>#refreshPortE()}) the sensor position/order as {@link Sensor<T>#port}
      * @param uid          cached uid of {@link Device#getIdentity()}
      * @param hasStatusLed for automation to know if its worth to call status led function e.g. {@link Sensor<T>#ledStatusOn()}, {@link Sensor<T>#ledStatusOff()}, {@link Sensor<T>#ledStatusHeartbeat()}, {@link Sensor<T>#ledStatus()}
      */
-    protected Sensor(final T device, final Sensor parent, final String uid, final boolean hasStatusLed) throws NetworkConnectionException {
+    protected Sensor(final T device, final String uid, final boolean hasStatusLed) throws NetworkConnectionException {
         this.uid = uid;
         this.name = device.getClass().getSimpleName();
         this.device = device;
-        this.parent = parent;
         this.hasStatusLed = hasStatusLed;
-        port();
         try {
+            final Device.Identity identity = device.getIdentity();
+            this.connectionUid = identity.connectedUid;
+            this.position = identity.position;
+            initPort();
             initListener();
         } catch (TimeoutException | NotConnectedException e) {
             throw new NetworkConnectionException(e);
         }
-        sensorTypeHelper = new SensorTypeHelper(this);
     }
 
     /**
@@ -149,38 +150,19 @@ public abstract class Sensor<T extends Device> {
 
     /**
      * This method should not be called to often as this slows down the sensors
-     * Checks if the sensor is {@link Sensor#isPresent()} and checks the connection by {@link Sensor#refreshPortE()}
+     * Checks if the sensor is {@link Sensor#isPresent()} and checks the connection by {@link Sensor#port}
      *
      * @return true if the sensor is present and the port refresh was successfully as the refresh needs that the {@link Device} is answering
      */
     public boolean isConnected() {
-        try {
-            return isPresent() && refreshPortE() != -1;
-        } catch (TimeoutException | NotConnectedException e) {
-            return false;
-        }
+        return isPresent() && port != -1;
     }
 
     /**
-     * Compares the sensor with {@link Sensor<T>} or {@link Device}
-     *
-     * @return true if the is a type of {@link Sensor<T>} or {@link Device}
+     * @return {@link Compare} with predefined compare methods
      */
-    public boolean isClassType(Class<?>... sensorOrDevices) {
-        for (Class<?> sensorOrDevice : sensorOrDevices) {
-            if (getClass() == sensorOrDevice || getType() == sensorOrDevice) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean is(Sensor sensor) {
-        return sensor != null && sensor.uid.equals(uid);
-    }
-
-    public SensorTypeHelper type() {
-        return sensorTypeHelper;
+    public Compare compare() {
+        return new Compare(this);
     }
 
     /**
@@ -202,30 +184,77 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * @param value some object like a "howdy" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
+     * Same method as {@link Sensor#valueMap} with limitation of 1 call per millisecond
+     *
+     * @param limitPerSec sets message limit per seconds (hast to be > 0 and < 1000000000) else default method {@link Sensor#send(Object...)} will be called
+     * @param values      some objects like a "howdy", 123, Color.GREEN which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
-    public abstract Sensor<T> value(final Object value);
-
-    /**
-     * @param values some objects like a "howdy", "howdy2" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
-     */
-    public Sensor<T> value(final Object... values) {
-        for (Object value : values){
-            value(value);
+    public synchronized Sensor<T> sendLimit(final long limitPerSec, final Object... values) {
+        if (limitPerSec < 1 || limitPerSec > 1000000000) {
+            send(values);
+        } else if (lastCall + (1000000000 / limitPerSec) < nanoTime()) {
+            lastCall = nanoTime();
+            send(values);
         }
         return this;
     }
 
     /**
-     * @param value some value for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
+     * @param value some object like a "howdy" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
+     * @return current {@link Sensor<T>}
+     */
+    public abstract Sensor<T> send(final Object value);
+
+    /**
+     * Sets the refresh rate for the sensor values (e.g. for power issues)
+     *
+     * @param perSec hast to be in range of 0 to 1000 (0 = listen only on changes)
+     *               <br /> Some old {@link com.tinkerforge.Device} does't have the option 0 and will fall back to period callback
+     * @return current {@link Sensor<T>}
+     */
+    public synchronized Sensor<T> refreshLimit(final int perSec) {
+        if (perSec > 0 && perSec <= 1000) {
+            refreshPeriod(1000 / perSec);
+        }
+        return this;
+    }
+
+    /**
+     * Sets the refresh period directly to the {@link com.tinkerforge.Device} - its safer to use the method {@link Sensor#refreshLimit(int)}
+     *
+     * @param milliseconds callBack period
+     * @return current {@link Sensor<T>}
+     */
+    public abstract Sensor<T> refreshPeriod(final int milliseconds);
+
+    /**
+     * @param values some objects like a "howdy", "howdy2" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
+     * @return current {@link Sensor<T>}
+     */
+    public Sensor<T> send(final Object... values) {
+        for (Object value : values) {
+            send(value);
+        }
+        return this;
+    }
+
+    public Values values() {
+        return new Values(singletonList(this));
+    }
+
+    public ConcurrentHashMap<ValueType, RollingList<Long>> valueMap() {
+        return valueMap;
+    }
+
+    /**
+     * @param value some send for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
     public abstract Sensor<T> ledStatus(final Integer value);
 
     /**
-     * @param value some value additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
+     * @param value some send additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
     public abstract Sensor<T> ledAdditional(final Integer value);
@@ -312,24 +341,24 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Gets the value of {@link ValueType}
+     * Gets the send of {@link ValueType}
      *
      * @param valueType to get from {@link Sensor<T>#values}
-     * @return value from sensor of type {@link ValueType} or 0L if not found
+     * @return send from sensor of type {@link ValueType} or 0L if not found
      */
-    public Long value(final ValueType valueType) {
-        return value(valueType, 0L);
+    public Long send(final ValueType valueType) {
+        return send(valueType, 0L);
     }
 
     /**
-     * Gets the value of {@link ValueType}
+     * Gets the send of {@link ValueType}
      *
      * @param valueType to get from {@link Sensor<T>#values}
-     * @param fallback  will return this if no value with {@link ValueType} were found
-     * @return value from sensor of type {@link ValueType} or fallback if no value with {@link ValueType} were found
+     * @param fallback  will return this if no send with {@link ValueType} were found
+     * @return send from sensor of type {@link ValueType} or fallback if no send with {@link ValueType} were found
      */
-    public Long value(final ValueType valueType, final Long fallback) {
-        RollingList<Long> valueList = values.get(valueType);
+    public Long send(final ValueType valueType, final Long fallback) {
+        final RollingList<Long> valueList = valueMap.get(valueType);
         return valueList == null || valueList.isEmpty() || valueList.getLast() == null ? fallback : valueList.getLast();
     }
 
@@ -339,55 +368,59 @@ public abstract class Sensor<T extends Device> {
      * @return port starts at 0
      */
     public int port() {
-        return port > -1 ? port : refreshPort();
-    }
-
-    /**
-     * Refreshes/Searches the {@link Sensor<T>#port} by calculating from parent {@link Sensor<T>#refreshPortE()}
-     * Should not be called to often to not interrupt the sensors
-     *
-     * @return {@link Sensor<T>#port}
-     */
-    public int refreshPort() {
-        try {
-            return refreshPortE();
-        } catch (TimeoutException | NotConnectedException e) {
-            return port;
-        }
-    }
-
-    /**
-     * Refreshes/Searches the {@link Sensor<T>#port} by calculating from parent {@link Sensor<T>#refreshPortE()}
-     * Should not be called to often to not interrupt the sensors
-     *
-     * @return {@link Sensor<T>#port}
-     * @throws TimeoutException      on timeout
-     * @throws NotConnectedException on not connected
-     */
-    public int refreshPortE() throws TimeoutException, NotConnectedException {
-        Device.Identity identity = device.getIdentity();
-        if (identity.connectedUid.equals("0")) {
-            isBrick = true;
-            port = 10;
-        } else if (isDigit(identity.position)) {
-            isBrick = true;
-            port = (getNumericValue(identity.position) + 1) * 10;
-        } else {
-            isBrick = false;
-            port = (((int) toLowerCase(identity.position)) - 96) + (parent == null ? 0 : parent.port());
-        }
         return port;
     }
 
     /**
-     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from value if the event should be send
+     * Refreshes/Searches the {@link Sensor<T>#port} by calculating from parent {@link Sensor<T>#refreshPortE()}
+     * Should not be called to often to not interrupt the sensors
+     */
+    private void initPort() {
+        if ("0".equals(connectionUid)) {
+            isBrick = true;
+            port = 10;
+        } else if (isDigit(position)) {
+            isBrick = true;
+            port = (getNumericValue(position) + 1) * 10;
+        } else {
+            isBrick = false;
+            port = (((int) toLowerCase(position)) - 96) + (parent == null ? 0 : parent.port);
+        }
+    }
+
+
+    /**
+     * Relink parent and sets port if given Sensor were the parent
      *
-     * @param valueType type of value to send
-     * @param value     value to send
+     * @param sensorList of possible parents
+     */
+    public void linkParents(final List<Sensor> sensorList) {
+        for (Sensor sensorCopy : new ArrayList<>(sensorList)) {
+            linkParent(sensorCopy);
+        }
+    }
+
+    /**
+     * Relink parent and sets port if given Sensor were the parent
+     *
+     * @param sensor to link as parent
+     */
+    public void linkParent(final Sensor sensor) {
+        if (sensor.uid.equals(connectionUid)) {
+            parent = sensor;
+            initPort();
+        }
+    }
+
+    /**
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     *
+     * @param valueType type of send to send
+     * @param value     send to send
      * @return {@link Sensor<T>#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
-        RollingList<Long> timeSeries = values.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
+        final RollingList<Long> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
         if (timeSeries.addAndCheckIfItsNewPeak(value)) {
             consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, value, valueType)));
         }
@@ -401,7 +434,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is connected with class type of {@link Device}
      */
-    protected boolean isDevice(Class<? extends Device> device) {
+    protected boolean isDevice(final Class<? extends Device> device) {
         return this.device.getClass() == device;
     }
 
@@ -410,7 +443,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @return true if the is a type of {@link Sensor<T>}
      */
-    protected boolean isSensor(Class<? extends Sensor> sensor) {
+    protected boolean isSensor(final Class<? extends Sensor> sensor) {
         return this.getClass() == sensor;
     }
 
@@ -445,30 +478,11 @@ public abstract class Sensor<T extends Device> {
         return this;
     }
 
-    /**
-     * TODO: FIXME: is this still needed?
-     * BetaMethod to slow down communication with the bricks and not overload them
-     *
-     * @param sensor used to identify which {@link Sensor} is waiting the threshold is taken from {@link SensorRegistry#CALLBACK_PERIOD}
-     */
-    protected void waitToNextRun(final Sensor sensor) {
-        AtomicLong lastRun = lastRuns.computeIfAbsent(sensor, value -> new AtomicLong(System.currentTimeMillis() + (CALLBACK_PERIOD * 2)));
-        while ((lastRun.get() + CALLBACK_PERIOD) > System.currentTimeMillis()) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        lastRun.set(System.currentTimeMillis());
-        lastRuns.put(sensor, lastRun);
-    }
-
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Sensor sensor = (Sensor) o;
+        final Sensor sensor = (Sensor) o;
         return Objects.equals(uid, sensor.uid);
     }
 
@@ -486,11 +500,11 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * This is needed for the {@link SensorRegistry} to instantiate {@link Sensor#newInstance(Device, Sensor, String)} new {@link Sensor}
+     * This is needed for the {@link SensorRegistry} to instantiate {@link Sensor#newInstance(Integer, String, IPConnection)} new {@link Sensor}
      */
     @FunctionalInterface
     public interface SensorFactory {
-        Sensor<? extends Device> newInstance(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException;
+        Sensor<? extends Device> newInstance(final Device device, final String uid) throws NetworkConnectionException;
     }
 
     @FunctionalInterface
@@ -517,7 +531,7 @@ public abstract class Sensor<T extends Device> {
 
         public final int bit;
 
-        LedStatusType(int bit) {
+        LedStatusType(final int bit) {
             this.bit = bit;
         }
     }

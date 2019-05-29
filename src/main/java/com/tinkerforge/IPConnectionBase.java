@@ -69,10 +69,10 @@ public abstract class IPConnectionBase implements java.io.Closeable {
 
     private final static int SEQUENCE_NUMBER_POS = 4;
     private int nextSequenceNumber = 0; // protected by sequenceNumberMutex
-    private Object sequenceNumberMutex = new Object();
+    private final Object sequenceNumberMutex = new Object();
 
     private long nextAuthenticationNonce = 0; // protected by authenticationMutex
-    private Object authenticationMutex = new Object(); // protects authentication handshake
+    private final Object authenticationMutex = new Object(); // protects authentication handshake
 
     boolean receiveFlag = false;
 
@@ -95,8 +95,8 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         final long socketID;
         final byte[] packet;
 
-        public CallbackQueueObject(int kind, byte functionID, short parameter,
-                                   long socketID, byte[] packet) {
+        public CallbackQueueObject(final int kind, final byte functionID, final short parameter,
+                                   final long socketID, final byte[] packet) {
             this.kind = kind;
             this.functionID = functionID;
             this.parameter = parameter;
@@ -124,7 +124,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
      * there is no Brick Daemon or WIFI/Ethernet Extension listening at the
      * given host and port.
      */
-    public void connect(String host, int port) throws NetworkException, AlreadyConnectedException {
+    public void connect(final String host, final int port) throws NetworkException, AlreadyConnectedException {
         NetworkException exception = null;
         CallbackThread callbackThreadTmp = null;
         LinkedBlockingQueue<CallbackQueueObject> callbackQueueTmp = null;
@@ -170,14 +170,14 @@ public abstract class IPConnectionBase implements java.io.Closeable {
     }
 
     // NOTE: Assumes that socket is null and socketMutex is locked
-    void connectUnlocked(boolean isAutoReconnect) throws NetworkException {
+    void connectUnlocked(final boolean isAutoReconnect) throws NetworkException {
         if (callbackThread == null) {
             callbackQueue = new LinkedBlockingQueue<CallbackQueueObject>();
             callbackThread = new CallbackThread(this, callbackQueue);
             callbackThread.start();
         }
 
-        Socket tmpSocket;
+        final Socket tmpSocket;
 
         try {
             tmpSocket = new Socket(host, port);
@@ -191,8 +191,8 @@ public abstract class IPConnectionBase implements java.io.Closeable {
             throw new NetworkException("Could not enable TCP-No-Delay socket option: " + e.getMessage(), e);
         }
 
-        InputStream tmpIn;
-        OutputStream tmpOut;
+        final InputStream tmpIn;
+        final OutputStream tmpOut;
 
         try {
             tmpIn = tmpSocket.getInputStream();
@@ -303,8 +303,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         if (Thread.currentThread() != callbackThreadTmp) {
             try {
                 callbackThreadTmp.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -349,19 +348,19 @@ public abstract class IPConnectionBase implements java.io.Closeable {
      * For more information about authentication see
      * http://www.tinkerforge.com/en/doc/Tutorials/Tutorial_Authentication/Tutorial.html
      */
-    public void authenticate(String secret) throws TimeoutException, NotConnectedException, CryptoException {
+    public void authenticate(final String secret) throws TimeoutException, NotConnectedException, CryptoException {
         synchronized (authenticationMutex) {
             if (nextAuthenticationNonce == 0) {
-                byte[] seed = new SecureRandom().generateSeed(4);
-                ByteBuffer bb = ByteBuffer.wrap(seed, 0, 4);
+                final byte[] seed = new SecureRandom().generateSeed(4);
+                final ByteBuffer bb = ByteBuffer.wrap(seed, 0, 4);
 
                 bb.order(ByteOrder.LITTLE_ENDIAN);
                 nextAuthenticationNonce = bb.getInt();
             }
 
-            byte[] serverNonce = brickd.getAuthenticationNonce();
-            byte[] clientNonce;
-            ByteBuffer bb = ByteBuffer.allocate(4);
+            final byte[] serverNonce = brickd.getAuthenticationNonce();
+            final byte[] clientNonce;
+            final ByteBuffer bb = ByteBuffer.allocate(4);
 
             bb.order(ByteOrder.LITTLE_ENDIAN);
             bb.putInt((int) nextAuthenticationNonce);
@@ -369,15 +368,15 @@ public abstract class IPConnectionBase implements java.io.Closeable {
             clientNonce = bb.array();
             nextAuthenticationNonce = (nextAuthenticationNonce + 1) % ((long) 1 << 32);
 
-            byte[] data = new byte[serverNonce.length + clientNonce.length];
+            final byte[] data = new byte[serverNonce.length + clientNonce.length];
 
             System.arraycopy(serverNonce, 0, data, 0, serverNonce.length);
             System.arraycopy(clientNonce, 0, data, serverNonce.length, clientNonce.length);
 
-            byte[] digest;
+            final byte[] digest;
 
             try {
-                Mac mac = Mac.getInstance("HmacSHA1");
+                final Mac mac = Mac.getInstance("HmacSHA1");
 
                 mac.init(new SecretKeySpec(secret.getBytes(), "HmacSHA1"));
 
@@ -416,9 +415,9 @@ public abstract class IPConnectionBase implements java.io.Closeable {
      * the IP Connection will try to reconnect to the previously given
      * host and port, if the connection is lost.
      * <p>
-     * Default value is *true*.
+     * Default send is *true*.
      */
-    public void setAutoReconnect(boolean autoReconnect) {
+    public void setAutoReconnect(final boolean autoReconnect) {
         this.autoReconnect = autoReconnect;
 
         if (!autoReconnect) {
@@ -439,7 +438,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
      * <p>
      * Default timeout is 2500.
      */
-    public void setTimeout(int timeout) {
+    public void setTimeout(final int timeout) {
         if (timeout < 0) {
             throw new IllegalArgumentException("Timeout cannot be negative");
         }
@@ -459,7 +458,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
      * callback.
      */
     public void enumerate() throws NotConnectedException {
-        ByteBuffer request = createRequestPacket((byte) 8, FUNCTION_ENUMERATE, null);
+        final ByteBuffer request = createRequestPacket((byte) 8, FUNCTION_ENUMERATE, null);
 
         sendRequest(request.array());
     }
@@ -489,9 +488,9 @@ public abstract class IPConnectionBase implements java.io.Closeable {
 
     protected abstract void callDeviceListener(Device device, byte functionID, byte[] packet);
 
-    void handleResponse(byte[] packet) {
-        byte functionID = getFunctionIDFromData(packet);
-        short sequenceNumber = unsignedByte(getSequenceNumberFromData(packet));
+    void handleResponse(final byte[] packet) {
+        final byte functionID = getFunctionIDFromData(packet);
+        final short sequenceNumber = unsignedByte(getSequenceNumberFromData(packet));
 
         disconnectProbeFlag = false;
 
@@ -500,14 +499,14 @@ public abstract class IPConnectionBase implements java.io.Closeable {
             return;
         }
 
-        long uid = getUIDFromData(packet);
+        final long uid = getUIDFromData(packet);
 
         if (!devices.containsKey(uid)) {
             // Message for an unknown device, ignoring it
             return;
         }
 
-        Device device = devices.get(uid);
+        final Device device = devices.get(uid);
 
         if (sequenceNumber == 0) {
             if (device.callbacks[functionID] != null) {
@@ -537,7 +536,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
     }
 
     // NOTE: Assumes that socketMutex is locked, if disconnectImmediately is true
-    void handleDisconnectByPeer(short disconnectReason, long socketID, boolean disconnectImmediately) {
+    void handleDisconnectByPeer(final short disconnectReason, final long socketID, final boolean disconnectImmediately) {
         autoReconnectAllowed = true;
 
         if (disconnectImmediately) {
@@ -583,37 +582,37 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         socket = null;
     }
 
-    static long getUIDFromData(byte[] data) {
+    static long getUIDFromData(final byte[] data) {
         return (long) (data[0] & 0xFF) | ((long) (data[1] & 0xFF) << 8) |
                 ((long) (data[2] & 0xFF) << 16) | ((long) (data[3] & 0xFF) << 24);
     }
 
-    static byte getLengthFromData(byte[] data) {
+    static byte getLengthFromData(final byte[] data) {
         return data[4];
     }
 
-    static byte getFunctionIDFromData(byte[] data) {
+    static byte getFunctionIDFromData(final byte[] data) {
         return data[5];
     }
 
-    static byte getSequenceNumberFromData(byte[] data) {
+    static byte getSequenceNumberFromData(final byte[] data) {
         return (byte) ((((int) data[6]) >> 4) & 0x0F);
     }
 
-    static boolean getResponseExpectedFromData(byte[] data) {
+    static boolean getResponseExpectedFromData(final byte[] data) {
         return ((((int) data[6]) >> 3) & 0x01) == 0x01;
     }
 
-    static byte getErrorCodeFromData(byte[] data) {
+    static byte getErrorCodeFromData(final byte[] data) {
         return (byte) ((((int) data[7]) >> 6) & 0x03);
     }
 
-    static String string(ByteBuffer buffer, int length) {
-        StringBuilder builder = new StringBuilder(length);
+    static String string(final ByteBuffer buffer, final int length) {
+        final StringBuilder builder = new StringBuilder(length);
         int i = 0;
 
         while (i < length) {
-            char c = (char) buffer.get();
+            final char c = (char) buffer.get();
             ++i;
 
             if (c == 0) {
@@ -631,19 +630,19 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         return builder.toString();
     }
 
-    static short unsignedByte(byte data) {
+    static short unsignedByte(final byte data) {
         return (short) ((short) data & 0xFF);
     }
 
-    static int unsignedShort(short data) {
+    static int unsignedShort(final short data) {
         return (int) data & 0xFFFF;
     }
 
-    static long unsignedInt(int data) {
+    static long unsignedInt(final int data) {
         return (long) data & 0xFFFFFFFFL;
     }
 
-    void sendRequest(byte[] request) throws NotConnectedException {
+    void sendRequest(final byte[] request) throws NotConnectedException {
         synchronized (socketMutex) {
             if (getConnectionState() != CONNECTION_STATE_CONNECTED) {
                 throw new NotConnectedException();
@@ -664,7 +663,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         }
     }
 
-    private void handleEnumerate(byte[] packet) {
+    private void handleEnumerate(final byte[] packet) {
         if (hasEnumerateListeners()) {
             try {
                 callbackQueue.put(new CallbackQueueObject(QUEUE_PACKET, (byte) 0,
@@ -677,16 +676,16 @@ public abstract class IPConnectionBase implements java.io.Closeable {
 
     byte getNextSequenceNumber() {
         synchronized (sequenceNumberMutex) {
-            int sequenceNumber = nextSequenceNumber + 1;
+            final int sequenceNumber = nextSequenceNumber + 1;
             nextSequenceNumber = sequenceNumber % 15;
             return (byte) sequenceNumber;
         }
     }
 
-    ByteBuffer createRequestPacket(byte length, byte functionID, Device device) {
+    ByteBuffer createRequestPacket(final byte length, final byte functionID, final Device device) {
         int uid = BROADCAST_UID;
         byte options = 0;
-        byte flags = 0;
+        final byte flags = 0;
 
         if (device != null) {
             uid = (int) device.uid;
@@ -698,7 +697,7 @@ public abstract class IPConnectionBase implements java.io.Closeable {
 
         options |= getNextSequenceNumber() << SEQUENCE_NUMBER_POS;
 
-        ByteBuffer packet = ByteBuffer.allocate(length);
+        final ByteBuffer packet = ByteBuffer.allocate(length);
 
         packet.order(ByteOrder.LITTLE_ENDIAN);
         packet.putInt(uid);
@@ -714,8 +713,8 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         String encoded = "";
 
         while (value >= 58) {
-            long div = value / 58;
-            int mod = (int) (value % 58);
+            final long div = value / 58;
+            final int mod = (int) (value % 58);
             encoded = BASE58.charAt(mod) + encoded;
             value = div;
         }
@@ -723,15 +722,15 @@ public abstract class IPConnectionBase implements java.io.Closeable {
         return BASE58.charAt((int) value) + encoded;
     }
 
-    static long base58Decode(String encoded) {
+    static long base58Decode(final String encoded) {
         long value = 0;
         long columnMultiplier = 1;
 
         for (int i = encoded.length() - 1; i >= 0; i--) {
-            int column = BASE58.indexOf(encoded.charAt(i));
+            final int column = BASE58.indexOf(encoded.charAt(i));
 
             if (column < 0) {
-                throw new IllegalArgumentException("Invalid Base58 value: " + encoded);
+                throw new IllegalArgumentException("Invalid Base58 send: " + encoded);
             }
 
             value += column * columnMultiplier;

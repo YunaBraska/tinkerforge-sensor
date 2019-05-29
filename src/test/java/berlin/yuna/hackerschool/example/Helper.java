@@ -40,8 +40,8 @@ public class Helper {
      * @return true if the last call at this lime has passed the time
      */
     public static boolean timePassed(final long waitMs) {
-        StackTraceElement callerTrace = Thread.currentThread().getStackTrace()[2];
-        String name = callerTrace.getClassName() + ":" + callerTrace.getMethodName() + ":" + callerTrace.getLineNumber();
+        final StackTraceElement callerTrace = Thread.currentThread().getStackTrace()[2];
+        final String name = callerTrace.getClassName() + ":" + callerTrace.getMethodName() + ":" + callerTrace.getLineNumber();
         return timePassed(name, waitMs);
     }
 
@@ -49,7 +49,7 @@ public class Helper {
      * @return true if the last call with this label has passed the time
      */
     public static boolean timePassed(final String label, final long waitMs) {
-        Long lastTimeMs = waitProcessList.computeIfAbsent(label, value -> System.currentTimeMillis());
+        final Long lastTimeMs = waitProcessList.computeIfAbsent(label, value -> System.currentTimeMillis());
         if ((lastTimeMs + waitMs) < System.currentTimeMillis()) {
             waitProcessList.put(label, System.currentTimeMillis());
             return true;
@@ -61,7 +61,7 @@ public class Helper {
      * @param string to check on
      * @return true if string is null or empty otherwise false
      */
-    public static boolean isEmpty(String string) {
+    public static boolean isEmpty(final String string) {
         return string == null || string.trim().equals("");
     }
 
@@ -152,21 +152,21 @@ public class Helper {
         return !(sensor.device instanceof DummyDevice);
     }
 
-    public static double roundUp(double value) {
+    public static double roundUp(final double value) {
         return roundUp(value, 2);
     }
 
-    public static double roundUp(double value, int decimals) {
+    public static double roundUp(double value, final int decimals) {
         if (decimals < 0) throw new IllegalArgumentException();
 
-        long factor = (long) Math.pow(10, decimals);
+        final long factor = (long) Math.pow(10, decimals);
         value = value * factor;
-        long tmp = Math.round(value);
+        final long tmp = Math.round(value);
         return (double) tmp / factor;
     }
 
-    public static String letterUp(final String chr, int number) {
-        StringBuilder stringBuilder = new StringBuilder();
+    public static String letterUp(final String chr, final int number) {
+        final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < number; i++) {
             stringBuilder.append(chr);
         }

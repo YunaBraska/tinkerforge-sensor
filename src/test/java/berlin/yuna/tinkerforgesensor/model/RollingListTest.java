@@ -22,7 +22,7 @@ public class RollingListTest {
 
     @Test
     public void rollingList_withGetPeaks_shouldHaveTheRightPeaks() {
-        List<Long> lastPeaks = rollingList.getLastPeaks();
+        final List<Long> lastPeaks = rollingList.getLastPeaks();
 
         if (lastPeaks.size() != 6) {
             throw new RuntimeException(format("Expected rollingList size is [%s] but was [%s]", 6, lastPeaks.size()));
@@ -61,7 +61,7 @@ public class RollingListTest {
 
     @Test
     public void value_withEmptyTimeSeries_shouldBeNewPeak() {
-        long value = 16L;
+        final long value = 16L;
         rollingList.clear();
         if (!rollingList.addAndCheckIfItsNewPeak(value)) {
             throw new RuntimeException(format("Expected newPeak [%s] is [%s] but was [%s]", value, false, true));
@@ -70,7 +70,7 @@ public class RollingListTest {
 
     @Test
     public void value_shouldBeNewPeak() {
-        long value = -16L;
+        final long value = -16L;
         if (!rollingList.addAndCheckIfItsNewPeak(value)) {
             throw new RuntimeException(format("Expected newPeak [%s] is [%s] but was [%s]", value, false, true));
         }
@@ -78,7 +78,7 @@ public class RollingListTest {
 
     @Test
     public void value_withSameAsLastAddedValue_shouldNotBePeak() {
-        long value = rollingList.getLast();
+        final long value = rollingList.getLast();
         if (rollingList.addAndCheckIfItsNewPeak(value)) {
             throw new RuntimeException(format("Expected newPeak [%s] is [%s] but was [%s]", value, true, false));
         }

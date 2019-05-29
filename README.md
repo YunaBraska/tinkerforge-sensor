@@ -1,35 +1,79 @@
 Tinkerforge Sensor Library
 ------------------
-#### [BETA] 90% done - testing this on hackerSchool / kids sessions
 
 This library simplifies Tinkerforge's sensor API.
-It Removes the pain of sensor UIDs, sensor version, ports and provides a generic API for every sensor.
-
-#### How it works
-* TinkerForge original [Device](https://www.tinkerforge.com/en/doc/Software/Device_Identifier.html)
-* wrapped by Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
-* handles input and sends [SensorEvent](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/SensorEvent.java)
-* Auto closeable [SensorListener](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/SensorListener.java) with addable event consumer
-* Returns a returns a [SensorList](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/SensorList.java)
-* Supported devices [Bricks](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/brick) and [Bricklets](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet)
-* Feel free for pull request as the wrapper classes are not so hard to implement, its just a mapping ;)
+It Removes the pain of sensor UIDs, sensor versions, ports and provides a generic API for every sensor.
 
 #### Examples
-* Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/tinkerforgesensor/example)
-* Connecting with auto closeable [SensorListener](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/SensorListener.java)
+* Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/example)
+* Connecting with auto closeable [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java)
 ```java
-try (SensorListener sensorListener = new SensorListener("host", 4223, "optionalPassword")) {
+try (Stack stack = new Stack("host", 4223, "optionalPassword")) {
     //Getting [SensorList]
-    SensorList<Sensor> sensorList = sensorListener.sensorList;
+    Sensors sensors = stack.sensors;
     //Add listener on any sensor and event getting the [SensorEvent]s
-    sensorListener.sensorEventConsumerList.add(ths::onSensorEvent);
+    tinkerForge.sensorEventConsumerList.add(ths::onSensorEvent);
 }
+```
+
+* Example getting display from [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java).[Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java) and send text
+```java
+final Sensor display = stack.sensors().displaySegment();
+display.send("GIRL");
+display.sendLimit(2, "YOU"); //Sends only two messages in a second (useful for loops)
+```
+
+* Example getting multiple buttonRGB from [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java).[Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java) <- (The order comes from the connected port in the stack - higher port/stack = higher orderNumber)
+```java
+final Sensor button_01 = stack.sensors()..buttonRGB(0);
+final Sensor button_02 = stack.sensors()..buttonRGB(1);
+final Sensor button_03 = stack.sensors()..buttonRGB(2);
+display.send(Color.MAGENTA);
+```
+
+* [Compare](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Compare.java) a [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+```java
+final Sensor display = stack.sensors().displaySegment();
+display.compare().is(display); //returns true - UID is the same
+display.compare().is(DisplaySegment.class); //returns true - ClassType is the same
+display.compare().isDisplaySegment(); //returns true - obviously
+display.compare().isLightAmbient(); //returns false - obviously
+```
+
+* Example getting [Values](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Values.java) from stack
+```java
+stack.values().temperature();
+stack.values().temperature_Min();
+stack.values().temperature_Max();
+stack.values().temperature_Avg();
+```
+
+* Example getting [Values](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Values.java) of specific [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+```java
+final Sensor distanceIR = stack.sensors().distanceIR();
+distanceIR.values().distance();
+distanceIR.values().distance_Min(); //This is only a measure of a short time;
+distanceIR.values().distance_Max(); //This is only a measure of a short time;
+distanceIR.values().distance_Avg(); //This is only a measure of a short time;
+```
+
+* Example other [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java) functions - all functions are safe to use and does not produce any user exceptions even if a Sensor were never connected 
+```java
+final Sensor distanceIR = stack.sensors().distanceIR();
+distanceIR.isPort(); //returns stack-order-number (higher stack/port = higher number)
+distanceIR.isBrick(); //returns false 'DistanceIR' is a Bricklet
+distanceIR.isHasLedStatus(); //returns true if the sensor has a status LED
+distanceIR.isPresent(); //true if a distanceIR sensor is connected
+distanceIR.ledStatusOn(); //Switch status LED on (On/Off/Heartbeat/Status)
+distanceIR.ledAdditionalOn(); //Switch other LEDs on - can be Display-backLight, color-FlashLight, IMU-orientation-LEDs,... (On/Off/Heartbeat/Status)
+distanceIR.refreshLimit(6); //sets the refresh value rate per seconds - e.g. for power issues
+// [...]
 ```
 
 * event example
 ```java
 private void onSensorEvent(final Sensor currentSensor, final ValueType valueType) {
-    Sensor display = sensorList.getSegmentDisplay);
+    Sensor display = stack.sensors().getSegmentDisplay();
     
     if (valueType.isMotionDetected() and value == 1L) {
         console("Motion detected");
@@ -48,22 +92,23 @@ private void onSensorEvent(final Sensor currentSensor, final ValueType valueType
 }
 ```
 
+#### How it works
+* TinkerForge original [Device](https://www.tinkerforge.com/en/doc/Software/Device_Identifier.html)
+* wrapped by Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+* handles input and sends [SensorEvent](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/SensorEvent.java)
+* Auto closeable [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java) with addable event consumer
+* Returns a returns List of Sensors [Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java)
+* Supported devices [Bricks](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/brick) and [Bricklets](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet)
+* Feel free for pull request as the wrapper classes are not so hard to implement, its just a mapping ;)
+
+
 #### TODO
+- [ ] 16IO manage also input
 - [ ] Thread does not shutdown and keeps program alive :(
-- [ ] Make testable
 - [ ] Spring integration
 
 * Sensors
-- [ ] Add more sensors
-- [ ] Autodetect TinkerForge sensor list changes
 - [ ] Get Additional Sensor information like "ChipTemperature"
-- [ ] Simple Color class without AWT and with predefined colorValues
-
-* Sensor Display 20x4
-- [ ] Center String ${center}
-
-* SensorListener/Registration
-- [ ] Stop a loop/program/thread by name
 
 * Connections
 - [ ] Tinkerforge Auto-reconnect is not working properly - reconnected devices are getting timeouts

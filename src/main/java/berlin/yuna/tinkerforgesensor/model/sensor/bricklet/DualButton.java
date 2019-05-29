@@ -32,38 +32,26 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     private int buttonL;
     private int buttonR;
 
-    public DualButton(final Device device, final Sensor parent, final String uid) throws NetworkConnectionException {
-        super((BrickletDualButtonV2) device, parent, uid, true);
+    public DualButton(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletDualButtonV2) device, uid, true);
     }
 
     @Override
-    protected Sensor<BrickletDualButtonV2> initListener() throws TimeoutException, NotConnectedException {
-        device.setStateChangedCallbackConfiguration(true);
-        buttonL = device.getButtonState().buttonL;
-        buttonR = device.getButtonState().buttonR;
+    protected Sensor<BrickletDualButtonV2> initListener() {
         device.addStateChangedListener((buttonL, buttonR, ledL, ledR) -> {
-            if (this.buttonL != buttonL) {
-                this.buttonL = buttonL;
-                sendEvent(BUTTON_PRESSED, buttonL == 1 ? 0L : 1L);
-                sendEvent(BUTTON, buttonL == 1 ? 10L : 11L);
-            }
-
-            if (this.buttonR != buttonR) {
-                this.buttonR = buttonR;
-                sendEvent(BUTTON_PRESSED, buttonR == 1 ? 0L : 1L);
-                sendEvent(BUTTON, buttonR == 1 ? 20L : 21L);
-            }
+            sendEvent(buttonL, buttonR);
         });
+        refreshPeriod(69);
         return this;
     }
 
     @Override
-    public Sensor<BrickletDualButtonV2> value(Object value) {
+    public Sensor<BrickletDualButtonV2> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDualButtonV2> ledStatus(Integer value) {
+    public Sensor<BrickletDualButtonV2> ledStatus(final Integer value) {
         try {
             if (value == LED_STATUS_OFF.bit) {
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
@@ -82,7 +70,7 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
 
     //TODO: set button 1 && button 2 different
     @Override
-    public Sensor<BrickletDualButtonV2> ledAdditional(Integer value) {
+    public Sensor<BrickletDualButtonV2> ledAdditional(final Integer value) {
         try {
             if (value == LED_ADDITIONAL_OFF.bit) {
                 device.setLEDState(3, 3);
@@ -116,5 +104,37 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
         } catch (Exception ignore) {
         }
         return this;
+    }
+
+    @Override
+    public Sensor<BrickletDualButtonV2> refreshPeriod(final int milliseconds) {
+        try {
+            buttonL = device.getButtonState().buttonL;
+            buttonR = device.getButtonState().buttonR;
+            sendEvent(buttonL, buttonR);
+
+            if (milliseconds < 1) {
+                device.setStateChangedCallbackConfiguration(false);
+            } else {
+                device.setStateChangedCallbackConfiguration(true);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    private void sendEvent(final int buttonL, final int buttonR) {
+        if (this.buttonL != buttonL) {
+            this.buttonL = buttonL;
+            sendEvent(BUTTON_PRESSED, buttonL == 1 ? 0L : 1L);
+            sendEvent(BUTTON, buttonL == 1 ? 10L : 11L);
+        }
+
+        if (this.buttonR != buttonR) {
+            this.buttonR = buttonR;
+            sendEvent(BUTTON_PRESSED, buttonR == 1 ? 0L : 1L);
+            sendEvent(BUTTON, buttonR == 1 ? 20L : 21L);
+        }
     }
 }

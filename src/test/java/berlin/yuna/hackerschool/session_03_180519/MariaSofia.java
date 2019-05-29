@@ -1,7 +1,6 @@
 package berlin.yuna.hackerschool.session_03_180519;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorListener;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
@@ -12,13 +11,12 @@ import berlin.yuna.hackerschool.example.Helper;
  */
 public class MariaSofia extends Helper {
 
-    public static SensorList<Sensor> sensorList = new SensorList<>();
+    private static Stack stack;
 
     //START FUNCTION
-    public static void main(String[] args) {
-        SensorListener sensorListener = ConnectionAndPrintValues_Example.connect();
-        sensorList = sensorListener.sensorList;
-        sensorListener.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+    public static void main(final String[] args) {
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //VARIABLES
@@ -33,9 +31,9 @@ public class MariaSofia extends Helper {
         //Bewegungsmelder
 
         //if (type.isMotionDetected() == true && ){
-            //sensorList.getIO16().ledAdditionalOn();
+            //stack.sensors().iO16().ledAdditionalOn();
             //for(int i = 0; i < 16; i++) {
-                //value.(i);
+                //send.(i);
 
            // }
 
@@ -47,39 +45,37 @@ public class MariaSofia extends Helper {
 
 
         }
-        if (switchbeep && timePassed(10) && sensorList.getValueRotary() > 0) {
-            sensorList.getSpeaker().value(50, sensorList.getValueRotary() * 500);
-
+        if (switchbeep && timePassed(10) && stack.values().rotary() > 0) {
+            stack.sensors().speaker().send(50, stack.values().rotary() * 500);
         }
 
 
 
         //Licht
         if (switchbeep == false && type.isSoundIntensity() && value > 1100) {
-            sensorList.getIO16().ledAdditionalOn();
+            stack.sensors().iO16().ledAdditionalOn();
         }
         if (type.isSoundIntensity() && value > 1100 && !running) {
             running = true;
 
 
             async("girlYouCanDuIt", run -> {
-                sensorList.getDisplaySegment().value("GIRL");
+                stack.sensors().displaySegment().send("GIRL");
                 sleep(1000);
-                sensorList.getDisplaySegment().value("YOU");
+                stack.sensors().displaySegment().send("YOU");
                 sleep(1000);
-                sensorList.getDisplaySegment().value("CAN");
+                stack.sensors().displaySegment().send("CAN");
                 sleep(1000);
-                sensorList.getDisplaySegment().value("DO");
+                stack.sensors().displaySegment().send("DO");
                 sleep(1000);
-                sensorList.getDisplaySegment().value("IT");
+                stack.sensors().displaySegment().send("IT");
                 sleep(1000);
-                //sensorList.getIO16().value();
                 running = false;
             });
         } else if (type.isSoundIntensity() && value < 1100) {
-            sensorList.getIO16().ledAdditionalOff();
+            stack.sensors().iO16().ledAdditionalOff();
 
-            //sensorList.getIO16().value();
+            //tinkerForge.sensors().iO16().send();
         }
 
 

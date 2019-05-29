@@ -35,7 +35,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
 
     public synchronized List<Sensor> getSensor(final Class<?>... sensorOrDevices) {
         waitForUnlock(10101);
-        return stream().filter(sensor -> sensor.isClassType(sensorOrDevices)).sorted(comparingInt(Sensor::port)).collect(toList());
+        return stream().filter(sensor -> sensor.compare().is(sensorOrDevices)).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
     public Double valueDecimal(final ValueType sensorValueType) {

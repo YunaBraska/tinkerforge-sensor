@@ -80,18 +80,17 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 
     @Override
     public Sensor<BrickletPiezoSpeaker> flashLed() {
-//        try {
-        //FIXME: Broken sensor
-//            device.calibrate();
         for (int i = 585; i < 2000; i++) {
-//            send("f" + i);
             send(i, i, false);
         }
         send(0, 2000, false);
         send("...");
-//        } catch (TimeoutException | NotConnectedException ignored) {
-//            sendEvent(DEVICE_TIMEOUT, 404L);
-//        }
+        return this;
+    }
+
+
+    @Override
+    public Sensor<BrickletPiezoSpeaker> refreshPeriod(final int milliseconds) {
         return this;
     }
 

@@ -35,7 +35,7 @@ import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
 import static java.lang.String.format;
 
-public class TinkerForge implements Closeable {
+public class Stack implements Closeable {
 
     /**
      * IPConnection connection of the {@link Sensor} and for enumerating available {@link Sensor}
@@ -66,55 +66,55 @@ public class TinkerForge implements Closeable {
      *
      * @throws NetworkConnectionException should never happen
      */
-    public TinkerForge() throws NetworkConnectionException {
+    public Stack() throws NetworkConnectionException {
         this(null, null, null);
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link TinkerForge#close()} {@link Sensor}s and manages the {@link TinkerForge#sensorList} by creating {@link Thread}
+     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host for {@link TinkerForge#connection}
-     * @param port for {@link TinkerForge#connection}
+     * @param host for {@link Stack#connection}
+     * @param port for {@link Stack#connection}
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
-    public TinkerForge(final String host, final Integer port) throws NetworkConnectionException {
+    public Stack(final String host, final Integer port) throws NetworkConnectionException {
         this(host, port, null, false);
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link TinkerForge#close()} {@link Sensor}s and manages the {@link TinkerForge#sensorList} by creating {@link Thread}
+     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host                  for {@link TinkerForge#connection}
-     * @param port                  for {@link TinkerForge#connection}
+     * @param host                  for {@link Stack#connection}
+     * @param port                  for {@link Stack#connection}
      * @param ignoreConnectionError ignores any {@link NetworkConnectionException} and tries to auto reconnect
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
-    public TinkerForge(final String host, final Integer port, final boolean ignoreConnectionError) throws NetworkConnectionException {
+    public Stack(final String host, final Integer port, final boolean ignoreConnectionError) throws NetworkConnectionException {
         this(host, port, null, ignoreConnectionError);
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link TinkerForge#close()} {@link Sensor}s and manages the {@link TinkerForge#sensorList} by creating {@link Thread}
+     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host     for {@link TinkerForge#connection}
-     * @param port     for {@link TinkerForge#connection}
-     * @param password for {@link TinkerForge#connection}
+     * @param host     for {@link Stack#connection}
+     * @param port     for {@link Stack#connection}
+     * @param password for {@link Stack#connection}
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
-    public TinkerForge(final String host, final Integer port, final String password) throws NetworkConnectionException {
+    public Stack(final String host, final Integer port, final String password) throws NetworkConnectionException {
         this(host, port, password, false);
     }
 
     /**
-     * Auto connects and auto {@link Closeable} {@link TinkerForge#close()} {@link Sensor}s and manages the {@link TinkerForge#sensorList} by creating {@link Thread}
+     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host                  for {@link TinkerForge#connection}
-     * @param port                  for {@link TinkerForge#connection}
-     * @param password              for {@link TinkerForge#connection}
+     * @param host                  for {@link Stack#connection}
+     * @param port                  for {@link Stack#connection}
+     * @param password              for {@link Stack#connection}
      * @param ignoreConnectionError ignores any {@link NetworkConnectionException} and tries to auto reconnect
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
-    public TinkerForge(final String host, final Integer port, final String password, final boolean ignoreConnectionError) throws NetworkConnectionException {
+    public Stack(final String host, final Integer port, final String password, final boolean ignoreConnectionError) throws NetworkConnectionException {
         this.host = host;
         this.password = password;
         this.port = port;
@@ -123,7 +123,7 @@ public class TinkerForge implements Closeable {
     }
 
     /**
-     * connects to given host - this method will be called from {@link TinkerForge} constructor
+     * connects to given host - this method will be called from {@link Stack} constructor
      *
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
@@ -157,14 +157,14 @@ public class TinkerForge implements Closeable {
     }
 
     /**
-     * disconnects all {@link Sensor} from the given host see {@link TinkerForge#close()}
+     * disconnects all {@link Sensor} from the given host see {@link Stack#close()}
      */
     public synchronized void disconnect() {
         close();
     }
 
     /**
-     * disconnects all {@link Sensor} from the given host and removes the sensors from {@link TinkerForge#sensorList}
+     * disconnects all {@link Sensor} from the given host and removes the sensors from {@link Stack#sensorList}
      */
     @Override
     public void close() {
@@ -178,7 +178,7 @@ public class TinkerForge implements Closeable {
             return true;
         });
 
-        execute(timeoutMs + 256, () -> {
+        execute(1000, () -> {
             try {
                 List<TinkerforgeThread> tinkerforgeThreads;
                 do {

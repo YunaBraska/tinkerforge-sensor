@@ -101,6 +101,11 @@ public class IO16 extends Sensor<BrickletIO16> {
         return this;
     }
 
+    @Override
+    public Sensor<BrickletIO16> refreshPeriod(final int milliseconds) {
+        return this;
+    }
+
     //TODO move to Utils
     private int getPotential(final int n) {
         if (n == 1) {

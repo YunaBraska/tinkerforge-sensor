@@ -33,8 +33,8 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    protected Sensor<BrickletAirQuality> initListener() throws TimeoutException, NotConnectedException {
-        device.setAllValuesCallbackConfiguration(CALLBACK_PERIOD * 8, false);
+    protected Sensor<BrickletAirQuality> initListener() {
+        refreshPeriod(CALLBACK_PERIOD * 8);
         device.addAllValuesListener((iaqIndex, iaqIndexAccuracy, temperature, humidity, airPressure) ->
         {
             sendEvent(IAQ_INDEX, (long) iaqIndex);
@@ -70,6 +70,25 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
 
     @Override
     public Sensor<BrickletAirQuality> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletAirQuality> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAllValuesCallbackConfiguration(0, true);
+                final BrickletAirQuality.AllValues allValues = device.getAllValues();
+                sendEvent(IAQ_INDEX, (long) allValues.iaqIndex);
+                sendEvent(TEMPERATURE, (long) allValues.temperature);
+                sendEvent(HUMIDITY, (long) allValues.humidity);
+                sendEvent(AIR_PRESSURE, (long) allValues.airPressure);
+            } else {
+                device.setAllValuesCallbackConfiguration(milliseconds, false);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

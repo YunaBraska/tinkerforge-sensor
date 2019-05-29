@@ -37,23 +37,11 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     }
 
     @Override
-    protected Sensor<BrickletDualButtonV2> initListener() throws TimeoutException, NotConnectedException {
-        device.setStateChangedCallbackConfiguration(true);
-        buttonL = device.getButtonState().buttonL;
-        buttonR = device.getButtonState().buttonR;
+    protected Sensor<BrickletDualButtonV2> initListener() {
         device.addStateChangedListener((buttonL, buttonR, ledL, ledR) -> {
-            if (this.buttonL != buttonL) {
-                this.buttonL = buttonL;
-                sendEvent(BUTTON_PRESSED, buttonL == 1 ? 0L : 1L);
-                sendEvent(BUTTON, buttonL == 1 ? 10L : 11L);
-            }
-
-            if (this.buttonR != buttonR) {
-                this.buttonR = buttonR;
-                sendEvent(BUTTON_PRESSED, buttonR == 1 ? 0L : 1L);
-                sendEvent(BUTTON, buttonR == 1 ? 20L : 21L);
-            }
+            sendEvent(buttonL, buttonR);
         });
+        refreshPeriod(69);
         return this;
     }
 
@@ -116,5 +104,37 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
         } catch (Exception ignore) {
         }
         return this;
+    }
+
+    @Override
+    public Sensor<BrickletDualButtonV2> refreshPeriod(final int milliseconds) {
+        try {
+            buttonL = device.getButtonState().buttonL;
+            buttonR = device.getButtonState().buttonR;
+            sendEvent(buttonL, buttonR);
+
+            if (milliseconds < 1) {
+                device.setStateChangedCallbackConfiguration(false);
+            } else {
+                device.setStateChangedCallbackConfiguration(true);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    private void sendEvent(final int buttonL, final int buttonR) {
+        if (this.buttonL != buttonL) {
+            this.buttonL = buttonL;
+            sendEvent(BUTTON_PRESSED, buttonL == 1 ? 0L : 1L);
+            sendEvent(BUTTON, buttonL == 1 ? 10L : 11L);
+        }
+
+        if (this.buttonR != buttonR) {
+            this.buttonR = buttonR;
+            sendEvent(BUTTON_PRESSED, buttonR == 1 ? 0L : 1L);
+            sendEvent(BUTTON, buttonR == 1 ? 20L : 21L);
+        }
     }
 }

@@ -251,7 +251,7 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
     }
 
     private synchronized List<Sensor> getSensor(final Class... sensorClasses) {
-        return stream().filter(sensor -> sensor.isClassType(sensorClasses)).sorted(java.util.Comparator.comparingInt(Sensor::port)).collect(java.util.stream.Collectors.toList());
+        return stream().filter(sensor -> sensor.compare().is(sensorClasses)).sorted(java.util.Comparator.comparingInt(Sensor::port)).collect(java.util.stream.Collectors.toList());
     }
 
     private synchronized Sensor getSensor(final int number, final Class... sensorClasses) {

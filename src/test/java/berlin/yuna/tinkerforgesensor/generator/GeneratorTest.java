@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 
+import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorCompare;
 import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorSensors;
 import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorValues;
 import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
@@ -34,12 +35,14 @@ public class GeneratorTest {
         final File targetDeviceProviderFile = new File(System.getProperty("user.dir"), "src/main/resources/META-INF/services/com.tinkerforge.DeviceProvider");
         final File targetParentDir = new File("src/main/java");
 
-        GeneratorEnumValueType.generate();
-        GeneratorSensorRegistry.generate(new ArrayList<>(sensorList)).writeTo(targetParentDir);
-        GeneratorSensorHelper.generate(new ArrayList<>(sensorList)).writeTo(targetParentDir);
+        //Must be in order
+        writeJavaFile(GeneratorEnumValueType.generate(), targetParentDir);
+        writeJavaFile(GeneratorSensorRegistry.generate(sensorList), targetParentDir);
+        //Deprecated...
         GeneratorDeviceProvider.generate(targetDeviceProviderFile);
 
         //builder
+        writeJavaFile(GeneratorCompare.generate(sensorList), targetParentDir);
         writeJavaFile(GeneratorSensors.generate(sensorList), targetParentDir);
         writeJavaFile(GeneratorValues.generate(sensorList), targetParentDir);
 

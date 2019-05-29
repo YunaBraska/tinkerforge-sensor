@@ -287,4 +287,9 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
         return ks0066u.toString();
     }
+
+    @Override
+    public Sensor<BrickletLCD20x4> refreshPeriod(final int milliseconds) {
+        return this;
+    }
 }

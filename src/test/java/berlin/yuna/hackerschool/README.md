@@ -23,14 +23,14 @@ private static TinkerForge tinkerForge;
 
     //INIT CONNECTION
     public static void main(String[] args) {
-        TinkerForge tinkerForge = ConnectionAndPrintValues_Example.connect();
-        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
+        Stack stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
     }
 
     //CODE
     private static void onSensorEvent(final Long value, final ValueType type) {
         if (type.isSoundIntensity()) {
-            tinkerForge.sensors().displaySegment().value(value / 10 + "db");
+            stack.sensors().displaySegment().value(value / 10 + "db");
         }
     }
 

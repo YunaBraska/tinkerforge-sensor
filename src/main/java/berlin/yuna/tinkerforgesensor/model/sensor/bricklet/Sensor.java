@@ -1,13 +1,13 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
+import berlin.yuna.tinkerforgesensor.model.builder.Compare;
 import berlin.yuna.tinkerforgesensor.model.builder.Values;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import berlin.yuna.tinkerforgesensor.util.SensorTypeHelper;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
@@ -54,7 +54,6 @@ public abstract class Sensor<T extends Device> {
     public final String uid;
     public final String name;
     public final T device;
-    public final SensorTypeHelper sensorTypeHelper;
 
     private final boolean hasStatusLed;
     private final String connectionUid;
@@ -138,7 +137,6 @@ public abstract class Sensor<T extends Device> {
         } catch (TimeoutException | NotConnectedException e) {
             throw new NetworkConnectionException(e);
         }
-        sensorTypeHelper = new SensorTypeHelper(this);
     }
 
     /**
@@ -161,26 +159,10 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Compares the sensor with {@link Sensor<T>} or {@link Device}
-     *
-     * @return true if the is a type of {@link Sensor<T>} or {@link Device}
+     * @return {@link Compare} with predefined compare methods
      */
-    @SuppressWarnings("unchecked")
-    public boolean isClassType(final Class<?>... sensorOrDevices) {
-        for (Class<?> sensorOrDevice : sensorOrDevices) {
-            if (getClass() == sensorOrDevice || getType() == sensorOrDevice) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean is(final Sensor sensor) {
-        return sensor != null && sensor.uid.equals(uid);
-    }
-
-    public SensorTypeHelper type() {
-        return sensorTypeHelper;
+    public Compare compare() {
+        return new Compare(this);
     }
 
     /**
@@ -223,6 +205,28 @@ public abstract class Sensor<T extends Device> {
      * @return current {@link Sensor<T>}
      */
     public abstract Sensor<T> send(final Object value);
+
+    /**
+     * Sets the refresh rate for the sensor values (e.g. for power issues)
+     *
+     * @param perSec hast to be in range of 0 to 1000 (0 = listen only on changes)
+     *               <br /> Some old {@link com.tinkerforge.Device} does't have the option 0 and will fall back to period callback
+     * @return current {@link Sensor<T>}
+     */
+    public synchronized Sensor<T> refreshLimit(final int perSec) {
+        if (perSec > 0 && perSec <= 1000) {
+            refreshPeriod(1000 / perSec);
+        }
+        return this;
+    }
+
+    /**
+     * Sets the refresh period directly to the {@link com.tinkerforge.Device} - its safer to use the method {@link Sensor#refreshLimit(int)}
+     *
+     * @param milliseconds callBack period
+     * @return current {@link Sensor<T>}
+     */
+    public abstract Sensor<T> refreshPeriod(final int milliseconds);
 
     /**
      * @param values some objects like a "howdy", "howdy2" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it

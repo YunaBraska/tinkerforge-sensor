@@ -62,4 +62,19 @@ public class LightAmbientV3 extends Sensor<BrickletAmbientLightV3> {
     public Sensor<BrickletAmbientLightV3> ledAdditional(final Integer value) {
         return this;
     }
+
+    @Override
+    public Sensor<BrickletAmbientLightV3> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setIlluminanceCallbackConfiguration(0, true, 'x', 0, 0);
+                sendEvent(LIGHT_LUX, device.getIlluminance());
+            } else {
+                device.setIlluminanceCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
 }

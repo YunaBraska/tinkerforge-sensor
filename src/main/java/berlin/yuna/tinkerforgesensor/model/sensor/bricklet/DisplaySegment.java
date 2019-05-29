@@ -270,4 +270,9 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
             return 0;
         }
     }
+
+    @Override
+    public Sensor<BrickletSegmentDisplay4x7> refreshPeriod(final int milliseconds) {
+        return this;
+    }
 }

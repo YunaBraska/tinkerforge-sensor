@@ -1,6 +1,6 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -12,16 +12,16 @@ import static java.lang.String.format;
 
 public class ConnectionAndPrintValues_Example extends Helper {
 
-    private static TinkerForge tinkerForge;
+    private static Stack stack;
 
-    public static TinkerForge connect() {
+    public static Stack connect() {
         try {
-            tinkerForge = new TinkerForge("localhost", 4223, true);
-            tinkerForge.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
-            while (tinkerForge.isConnecting()){
+            stack = new Stack("localhost", 4223, true);
+            stack.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
+            while (stack.isConnecting()){
                 sleep(128);
             }
-            return tinkerForge;
+            return stack;
         } catch (NetworkConnectionException e) {
             throw new RuntimeException(e);
         }
@@ -35,7 +35,7 @@ public class ConnectionAndPrintValues_Example extends Helper {
         }
         final LinkedHashMap<ValueType, Long> values = new LinkedHashMap<>();
         for (ValueType valueType : ValueType.values()) {
-            final Long value = tinkerForge.values().get(valueType, null);
+            final Long value = stack.values().get(valueType, null);
             if (value != null) {
                 values.put(valueType, value);
             }
@@ -51,7 +51,7 @@ public class ConnectionAndPrintValues_Example extends Helper {
             lineValue.append(format("%" + (typeIterator.next().toString().length() + 1) + "s |", value));
         }
         lineHead.append(format("%9s |", "Sensors"));
-        lineValue.append(format("%9s |", tinkerForge.sensors().size()));
+        lineValue.append(format("%9s |", stack.sensors().size()));
 
         System.out.println("\n" + lineHead.toString() + "\n" + lineValue.toString());
     }

@@ -23,12 +23,8 @@ public class LightAmbientV2 extends Sensor<BrickletAmbientLightV2> {
 
     @Override
     protected Sensor<BrickletAmbientLightV2> initListener() {
-        try {
-            device.addIlluminanceListener(value -> sendEvent(LIGHT_LUX, value));
-            device.setIlluminanceCallbackPeriod(CALLBACK_PERIOD);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addIlluminanceListener(value -> sendEvent(LIGHT_LUX, value));
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
@@ -44,6 +40,21 @@ public class LightAmbientV2 extends Sensor<BrickletAmbientLightV2> {
 
     @Override
     public Sensor<BrickletAmbientLightV2> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletAmbientLightV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setIlluminanceCallbackPeriod(0);
+                sendEvent(LIGHT_LUX, device.getIlluminance() * 10);
+            } else {
+                device.setIlluminanceCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

@@ -1,6 +1,6 @@
 package berlin.yuna.hackerschool.session_02_220219;
 
-import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -16,21 +16,21 @@ public class ReactionGame extends Helper {
 
     //START FUNCTION
     public static void main(final String[] args) {
-        tinkerForge = ConnectionAndPrintValues_Example.connect();
-        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //VARIABLES
-    public static TinkerForge tinkerForge;
+    public static Stack stack;
     private static int score = -1;
     private static boolean reactionNow = false;
 
     //CODE FUNCTION
     static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
-        final Sensor displayLcd = tinkerForge.sensors().displayLcd20x4();
-        final Sensor displaySegment = tinkerForge.sensors().displaySegment();
-        final Sensor buttonRGB = tinkerForge.sensors().buttonRGB();
-        final Sensor speaker = tinkerForge.sensors().speaker();
+        final Sensor displayLcd = stack.sensors().displayLcd20x4();
+        final Sensor displaySegment = stack.sensors().displaySegment();
+        final Sensor buttonRGB = stack.sensors().buttonRGB();
+        final Sensor speaker = stack.sensors().speaker();
 
         //SCORE VIEW
         if (score > -1) {
@@ -54,7 +54,7 @@ public class ReactionGame extends Helper {
         if (timePassed("reactionGame", 50)) {
             //random yellow
             if (timePassed("yellow", 1500 + new Random().nextInt(9000)) && !reactionNow && score > -1) {
-                tinkerForge.sensors().buttonRGB().send(Color.YELLOW);
+                stack.sensors().buttonRGB().send(Color.YELLOW);
                 reactionNow = true;
                 displayLcd.send("${1}Do it now! ${space}");
             } else if (reactionNow && timePassed("yellow", 600 + new Random().nextInt(1000))) {
@@ -69,7 +69,7 @@ public class ReactionGame extends Helper {
 
         //BUTTON EVENTS
         if (type.isButtonPressed() && value == 1L) {
-            if (sensor.is(tinkerForge.sensors().rotary())) {
+            if (sensor.compare().isRotary()) {
                 //RESET GAME
                 score = -1;
                 buttonRGB.ledStatusOn();
@@ -92,10 +92,10 @@ public class ReactionGame extends Helper {
     }
 
     private static void reactionGameStart() {
-        final Sensor displaySegment = tinkerForge.sensors().displaySegment();
-        final Sensor buttonRGB = tinkerForge.sensors().buttonRGB();
-        final Sensor displayLcd = tinkerForge.sensors().displayLcd20x4();
-        final Sensor speaker = tinkerForge.sensors().speaker();
+        final Sensor displaySegment = stack.sensors().displaySegment();
+        final Sensor buttonRGB = stack.sensors().buttonRGB();
+        final Sensor displayLcd = stack.sensors().displayLcd20x4();
+        final Sensor speaker = stack.sensors().speaker();
 
         if (score == -1) {
             score = -2;

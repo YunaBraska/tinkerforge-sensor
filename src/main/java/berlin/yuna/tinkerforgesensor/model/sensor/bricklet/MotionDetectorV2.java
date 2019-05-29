@@ -10,6 +10,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStat
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED;
 
 /**
@@ -26,13 +27,9 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
 
     @Override
     protected Sensor<BrickletMotionDetectorV2> initListener() {
-        try {
-            device.addMotionDetectedListener(() -> sendEvent(MOTION_DETECTED, 1L));
-            device.addDetectionCycleEndedListener(() -> sendEvent(MOTION_DETECTED, 0L));
-            device.setSensitivity(100);
-            ledStatus(LED_STATUS.bit);
-        } catch (TimeoutException | NotConnectedException ignored) {
-        }
+        device.addMotionDetectedListener(() -> sendEvent(MOTION_DETECTED, 1L));
+        device.addDetectionCycleEndedListener(() -> sendEvent(MOTION_DETECTED, 0L));
+        refreshPeriod(-1);
         return this;
     }
 
@@ -99,6 +96,20 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
             this.ledAdditionalOff();
             this.ledStatus(LED_STATUS.bit);
         } catch (Exception ignore) {
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletMotionDetectorV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setSensitivity(100);
+            } else {
+                device.setSensitivity((milliseconds / 10) + 1);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
     }

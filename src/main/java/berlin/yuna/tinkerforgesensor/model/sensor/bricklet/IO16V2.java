@@ -46,9 +46,9 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
                 final boolean output = input > -1;
                 input = output ? input : (input * -1);
                 if (output) {
-                    device.setConfiguration(input -1, 'o', true);
+                    device.setConfiguration(input - 1, 'o', true);
                 } else {
-                    device.setConfiguration(input -1, 'i', false);
+                    device.setConfiguration(input - 1, 'i', false);
                 }
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -110,6 +110,11 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
             }
         } catch (Exception ignore) {
         }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletIO16V2> refreshPeriod(final int milliseconds) {
         return this;
     }
 

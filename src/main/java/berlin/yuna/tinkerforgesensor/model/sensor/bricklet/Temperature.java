@@ -23,12 +23,8 @@ public class Temperature extends Sensor<BrickletTemperature> {
 
     @Override
     protected Sensor<BrickletTemperature> initListener() {
-        try {
-            device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-            device.setTemperatureCallbackPeriod(CALLBACK_PERIOD * 8);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
+        refreshPeriod(CALLBACK_PERIOD * 8);
         return this;
     }
 
@@ -44,6 +40,21 @@ public class Temperature extends Sensor<BrickletTemperature> {
 
     @Override
     public Sensor<BrickletTemperature> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTemperature> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setTemperatureCallbackPeriod(0);
+                sendEvent(TEMPERATURE, (long) (device.getTemperature()));
+            } else {
+                device.setTemperatureCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

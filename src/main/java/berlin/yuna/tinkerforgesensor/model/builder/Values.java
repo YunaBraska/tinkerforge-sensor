@@ -40,7 +40,7 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         for (Sensor sensor : this) {
             final RollingList<Long> sensorValues = (RollingList<Long>) sensor.valueMap().get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
-                result.put(sensor, sensorValues.stream().mapToLong(value -> value).summaryStatistics().getMin());
+                result.put(sensor, sensorValues.stream().mapToLong(send -> send).summaryStatistics().getMin());
             }
         }
         return result;
@@ -51,7 +51,7 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         for (Sensor sensor : this) {
             final RollingList<Long> sensorValues = (RollingList<Long>) sensor.valueMap().get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
-                result.put(sensor, sensorValues.stream().mapToLong(value -> value).summaryStatistics().getMax());
+                result.put(sensor, sensorValues.stream().mapToLong(send -> send).summaryStatistics().getMax());
             }
         }
         return result;
@@ -62,7 +62,7 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         for (Sensor sensor : this) {
             final RollingList<Long> sensorValues = (RollingList<Long>) sensor.valueMap().get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
-                result.put(sensor, (long) sensorValues.stream().mapToLong(value -> value).summaryStatistics().getAverage());
+                result.put(sensor, (long) sensorValues.stream().mapToLong(send -> send).summaryStatistics().getAverage());
             }
         }
         return result;
@@ -73,7 +73,7 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         for (Sensor sensor : this) {
             final RollingList<Long> sensorValues = (RollingList<Long>) sensor.valueMap().get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
-                result.put(sensor, sensorValues.stream().mapToLong(value -> value).summaryStatistics());
+                result.put(sensor, sensorValues.stream().mapToLong(send -> send).summaryStatistics());
             }
         }
         return result;

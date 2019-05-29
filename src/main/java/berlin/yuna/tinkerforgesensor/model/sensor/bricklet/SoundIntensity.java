@@ -23,12 +23,8 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 
     @Override
     protected Sensor<BrickletSoundIntensity> initListener() {
-        try {
-            device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) value));
-            device.setIntensityCallbackPeriod(3);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) value));
+        refreshPeriod(-1);
         return this;
     }
 
@@ -44,6 +40,21 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 
     @Override
     public Sensor<BrickletSoundIntensity> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletSoundIntensity> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setIntensityCallbackPeriod(0);
+                sendEvent(SOUND_INTENSITY, (long) device.getIntensity());
+            } else {
+                device.setIntensityCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

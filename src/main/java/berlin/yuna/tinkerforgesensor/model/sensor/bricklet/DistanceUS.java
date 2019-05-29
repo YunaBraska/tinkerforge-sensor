@@ -7,6 +7,7 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 
@@ -24,12 +25,8 @@ public class DistanceUS extends Sensor<BrickletDistanceUS> {
 
     @Override
     protected Sensor<BrickletDistanceUS> initListener() {
-        try {
-            device.addDistanceListener(value -> sendEvent(DISTANCE, (long) value * 10));
-            device.setDistanceCallbackPeriod(CALLBACK_PERIOD);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addDistanceListener(value -> sendEvent(DISTANCE, (long) value * 10));
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
@@ -45,6 +42,21 @@ public class DistanceUS extends Sensor<BrickletDistanceUS> {
 
     @Override
     public Sensor<BrickletDistanceUS> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletDistanceUS> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setDistanceCallbackPeriod(0);
+                sendEvent(ALTITUDE, (long) device.getDistanceValue() * 10);
+            } else {
+                device.setDistanceCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

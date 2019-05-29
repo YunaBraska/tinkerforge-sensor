@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.brick;
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickIMUV2;
 import com.tinkerforge.Device;
@@ -51,9 +51,7 @@ public class IMU2 extends Sensor<BrickIMUV2> {
     }
 
     @Override
-    protected Sensor<BrickIMUV2> initListener() throws TimeoutException, NotConnectedException {
-        device.setAllDataPeriod(CALLBACK_PERIOD);
-        device.setOrientationPeriod(CALLBACK_PERIOD);
+    protected Sensor<BrickIMUV2> initListener() {
         device.addAllDataListener((acceleration, magneticField, angularVelocity, eulerAngle, quaternion, linearAcceleration, gravityVector, temperature, calibrationStatus) ->
                 {
                     sendEvent(ACCELERATION_X, (long) acceleration[0]);
@@ -90,6 +88,7 @@ public class IMU2 extends Sensor<BrickIMUV2> {
                     sendEvent(ValueType.IMU, 2L);
                 }
         );
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
@@ -119,6 +118,22 @@ public class IMU2 extends Sensor<BrickIMUV2> {
                 device.ledsOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
                 device.ledsOff();
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickIMUV2> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAllDataPeriod(0);
+                device.setOrientationPeriod(0);
+            } else {
+                device.setAllDataPeriod(milliseconds);
+                device.setOrientationPeriod(milliseconds);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

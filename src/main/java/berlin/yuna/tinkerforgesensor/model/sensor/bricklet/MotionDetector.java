@@ -28,6 +28,7 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
     protected Sensor<BrickletMotionDetector> initListener() {
         device.addMotionDetectedListener(() -> sendEvent(MOTION_DETECTED, 1L));
         device.addDetectionCycleEndedListener(() -> sendEvent(MOTION_DETECTED, 0L));
+        refreshPeriod(-1);
         return this;
     }
 
@@ -53,6 +54,11 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
 
     @Override
     public Sensor<BrickletMotionDetector> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletMotionDetector> refreshPeriod(final int milliseconds) {
         return this;
     }
 }

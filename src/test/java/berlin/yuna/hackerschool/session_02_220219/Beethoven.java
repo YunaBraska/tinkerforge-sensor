@@ -1,6 +1,6 @@
 package berlin.yuna.hackerschool.session_02_220219;
 
-import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
@@ -13,12 +13,12 @@ public class Beethoven extends Helper {
 
     //START FUNCTION
     public static void main(final String[] args) {
-        tinkerForge = ConnectionAndPrintValues_Example.connect();
-        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //VARIABLES
-    public static TinkerForge tinkerForge;
+    public static Stack stack;
     private static boolean isRunning = false;
     private static long orientation = 0L;
 
@@ -36,50 +36,50 @@ public class Beethoven extends Helper {
 
     private static boolean beethovenMelody() {
         for (int i = 600; i < 1200; i++) {
-            tinkerForge.sensors().speaker().send(i, i, false);
+            stack.sensors().speaker().send(i, i, false);
         }
-        tinkerForge.sensors().speaker().send(500, 2590 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 600 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 2590 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 600 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 700 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 600 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 2590 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 600 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 700 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 586 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 650 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 850 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1000 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1200 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1400 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1600 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1800 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 2000 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 587 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 587 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1000 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1000 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 800 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 800 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(555, 587 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1200 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1200 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 675 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 675 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1000 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(350, 1000 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(555, 586 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 586 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 650 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 850 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 1050 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 1250 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 1450 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 1650 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 1850 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 2050 + tinkerForge.values().orientationRoll(), true);
-        tinkerForge.sensors().speaker().send(200, 2250 + tinkerForge.values().orientationRoll(), true);
+        stack.sensors().speaker().send(500, 2590 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 600 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 2590 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 600 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 700 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 600 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 2590 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 600 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 700 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 586 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 650 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 850 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1000 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1200 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1400 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1600 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1800 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 2000 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 587 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 587 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1000 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1000 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 800 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 800 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(555, 587 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1200 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1200 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 675 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 675 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1000 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(350, 1000 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(555, 586 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 586 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 650 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 850 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 1050 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 1250 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 1450 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 1650 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 1850 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 2050 + stack.values().orientationRoll(), true);
+        stack.sensors().speaker().send(200, 2250 + stack.values().orientationRoll(), true);
         return false;
     }
 }

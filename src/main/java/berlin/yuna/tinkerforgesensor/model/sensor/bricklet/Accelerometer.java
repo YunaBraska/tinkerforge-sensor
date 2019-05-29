@@ -29,8 +29,8 @@ public class Accelerometer extends Sensor<BrickletAccelerometer> {
     }
 
     @Override
-    protected Sensor<BrickletAccelerometer> initListener() throws TimeoutException, NotConnectedException {
-        device.setAccelerationCallbackPeriod(CALLBACK_PERIOD);
+    protected Sensor<BrickletAccelerometer> initListener() {
+        refreshPeriod(CALLBACK_PERIOD);
         device.addAccelerationListener((x, y, z) -> {
             sendEvent(ACCELERATION_X, (long) x);
             sendEvent(ACCELERATION_Y, (long) y);
@@ -56,6 +56,24 @@ public class Accelerometer extends Sensor<BrickletAccelerometer> {
                 device.ledOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
                 device.ledOff();
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletAccelerometer> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setAccelerationCallbackPeriod(0);
+                final BrickletAccelerometer.Acceleration acceleration = device.getAcceleration();
+                sendEvent(ACCELERATION_X, (long) acceleration.x);
+                sendEvent(ACCELERATION_Y, (long) acceleration.y);
+                sendEvent(ACCELERATION_Z, (long) acceleration.z);
+            } else {
+                device.setAccelerationCallbackPeriod(milliseconds);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

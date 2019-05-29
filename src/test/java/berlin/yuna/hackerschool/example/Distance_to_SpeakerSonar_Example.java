@@ -1,25 +1,25 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 
 public class Distance_to_SpeakerSonar_Example extends Helper {
 
-    private static TinkerForge tinkerForge;
+    private static Stack stack;
 
     public static void main(final String[] args) {
-        tinkerForge = ConnectionAndPrintValues_Example.connect();
+        stack = ConnectionAndPrintValues_Example.connect();
         sonar();
 
     }
 
     private static void sonar() {
         while (true) {
-            final Long distance = tinkerForge.values().distance();
+            final Long distance = stack.values().distance();
             if (distance > 1 && distance < 250 && timePassed(32)) {
-                tinkerForge.sensors().speaker().send(32);
+                stack.sensors().speaker().send(32);
             }
             if (distance > 1 && timePassed(distance + 200)) {
-                tinkerForge.sensors().speaker().send(distance / 8);
+                stack.sensors().speaker().send(distance / 8);
             }
         }
 

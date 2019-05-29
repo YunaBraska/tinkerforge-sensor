@@ -12,9 +12,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
 
 /**
  * Measures UV light
- *  <b>Values</b>
- *  LIGHT_UV[index] = n / 10.0
- *  <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html">Official doku</a>
+ * <b>Values</b>
+ * LIGHT_UV[index] = n / 10.0
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html">Official doku</a>
  */
 public class LightUv extends Sensor<BrickletUVLight> {
 
@@ -24,12 +24,8 @@ public class LightUv extends Sensor<BrickletUVLight> {
 
     @Override
     protected Sensor<BrickletUVLight> initListener() {
-        try {
-            device.addUVLightListener(value -> sendEvent(LIGHT_UV, value));
-            device.setUVLightCallbackPeriod(CALLBACK_PERIOD);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
+        device.addUVLightListener(value -> sendEvent(LIGHT_UV, value));
+        refreshPeriod(-1);
         return this;
     }
 
@@ -45,6 +41,21 @@ public class LightUv extends Sensor<BrickletUVLight> {
 
     @Override
     public Sensor<BrickletUVLight> ledAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletUVLight> refreshPeriod(final int milliseconds) {
+        try {
+            if (milliseconds < 1) {
+                device.setUVLightCallbackPeriod(CALLBACK_PERIOD);
+                sendEvent(LIGHT_UV, device.getUVLight());
+            } else {
+                device.setUVLightCallbackPeriod(milliseconds);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

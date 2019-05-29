@@ -2,7 +2,7 @@ package berlin.yuna.hackerschool.session_03_180519;
 
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
-import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -14,12 +14,12 @@ import java.util.Random;
  */
 public class Nathalie extends Helper {
 
-    private static TinkerForge tinkerForge;
+    private static Stack stack;
 
     //START FUNCTION
     public static void main(final String[] args) {
-        tinkerForge = ConnectionAndPrintValues_Example.connect();
-        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
     }
 
     //TODO: implement limit callback per second
@@ -43,13 +43,13 @@ public class Nathalie extends Helper {
 
         //TODO: check refresh Limit
         final int color = colors[new Random().nextInt(colors.length)];
-        tinkerForge.sensors().buttonRGB(1).sendLimit(10, color);
-        tinkerForge.sensors().buttonRGB(0).sendLimit(1, color);
-        tinkerForge.sensors().displaySegment().sendLimit(2, tinkerForge.sensors().accelerometer().send(ValueType.ACCELERATION_Y));
+        stack.sensors().buttonRGB(1).sendLimit(10, color);
+        stack.sensors().buttonRGB(0).sendLimit(1, color);
+        stack.sensors().displaySegment().sendLimit(2, stack.sensors().accelerometer().send(ValueType.ACCELERATION_Y));
 
         //Get Sensor and Value
-        final Sensor io16 = tinkerForge.sensors().iO16();
-        final long decibel = tinkerForge.values().soundIntensity() + 1;
+        final Sensor io16 = stack.sensors().iO16();
+        final long decibel = stack.values().soundIntensity() + 1;
 
         //Dynamic max volume
         if (decibel > soundMax) {
@@ -58,7 +58,7 @@ public class Nathalie extends Helper {
 
         //every 250 milliseconds - for readable display
         if (timePassed(250)) {
-            //tinkerForge.sensors().displaySegment().send((decibel / 10) + "dB");
+            //stack.sensors().displaySegment().send((decibel / 10) + "dB");
         }
 
         //every 50 milliseconds
@@ -77,9 +77,9 @@ public class Nathalie extends Helper {
         }
 
         //Fan temperature
-        if (tinkerForge.values().temperature() > 2880) {
+        if (stack.values().temperature() > 2880) {
             io16.send(17);
-        } else if (tinkerForge.values().temperature() < 2880) {
+        } else if (stack.values().temperature() < 2880) {
             io16.send(-17);
         }
     }

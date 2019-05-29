@@ -1,20 +1,20 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.logic.TinkerForge;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
 public class SoundIntensity_to_DisplaySegment_Example {
 
-    private static TinkerForge tinkerForge;
+    private static Stack stack;
 
     public static void main(final String[] args) {
-        tinkerForge = ConnectionAndPrintValues_Example.connect();
-        tinkerForge.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {
         if (type.isSoundIntensity()) {
-            tinkerForge.sensors().displaySegment().send(value / 10 + "db");
+            stack.sensors().displaySegment().send(value / 10 + "db");
         }
     }
 }

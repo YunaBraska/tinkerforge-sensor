@@ -50,4 +50,9 @@ public class Default extends Sensor<DummyDevice> {
     protected Sensor<DummyDevice> initListener() {
         return this;
     }
+
+    @Override
+    public Sensor<DummyDevice> refreshPeriod(final int milliseconds) {
+        return this;
+    }
 }

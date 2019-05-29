@@ -56,7 +56,7 @@ distanceIR.isHasLedStatus(); //returns true if the sensor has a status LED
 distanceIR.isPresent(); //true if a sensor is connected
 distanceIR.ledStatusOn(); //Switch status LED on (On/Off/Heartbeat/Status)
 distanceIR.ledAdditionalOn(); //Switch other LEDs on - can be Display-backLight, color-FlashLight, IMU-orientation-LEDs,... (On/Off/Heartbeat/Status)
-distanceIR.refreshLimit(6); //sets the refresh value rate per seconds - e.g. for power issues
+distanceIR.refreshLimit(6); //(callback period 6/sec) sets the refresh value rate in a second - e.g. for power issues
 // [...]
 ```
 

@@ -62,10 +62,10 @@ distanceIR.refreshLimit(6); //(callback period 6/sec) sets the refresh value rat
 
 * event example
 ```java
-private void onSensorEvent(final Sensor currentSensor, final ValueType valueType) {
+private void onSensorEvent(final Sensor currentSensor, final ValueType valueType, final Long value) {
     Sensor display = stack.sensors().getSegmentDisplay();
     
-    if (valueType.isMotionDetected() and value == 1L) {
+    if (valueType.isMotionDetected() and value == 1) {
         console("Motion detected");
         console("A lux value from any sensor: " + sensorList.value(LIGHT_LUX));
         console("Current sensor is new motion detection sensor? " + currentSensor.is(BrickletMotionDetectorV2.class));

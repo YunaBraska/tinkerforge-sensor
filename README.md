@@ -6,16 +6,6 @@ It Removes the pain of sensor UIDs, sensor versions, ports and provides a generi
 
 #### Examples
 * Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/example)
-* Connecting with auto closeable [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java)
-```java
-try (Stack stack = new Stack("host", 4223, "optionalPassword")) {
-    //Getting [SensorList]
-    Sensors sensors = stack.sensors;
-    //Add listener on any sensor and event getting the [SensorEvent]s
-    tinkerForge.sensorEventConsumerList.add(ths::onSensorEvent);
-}
-```
-
 * Example getting display from [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java).[Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java) and send text
 ```java
 final Sensor display = stack.sensors().displaySegment();
@@ -25,9 +15,9 @@ display.sendLimit(2, "YOU"); //Sends only two messages in a second (useful for l
 
 * Example getting multiple buttonRGB from [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java).[Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java) <- (The order comes from the connected port in the stack - higher port/stack = higher orderNumber)
 ```java
-final Sensor button_01 = stack.sensors()..buttonRGB(0);
-final Sensor button_02 = stack.sensors()..buttonRGB(1);
-final Sensor button_03 = stack.sensors()..buttonRGB(2);
+final Sensor button_01 = stack.sensors().buttonRGB(0);
+final Sensor button_02 = stack.sensors().buttonRGB(1);
+final Sensor button_03 = stack.sensors().buttonRGB(2);
 display.send(Color.MAGENTA);
 ```
 
@@ -89,6 +79,16 @@ private void onSensorEvent(final Sensor currentSensor, final ValueType valueType
         display.ledAdditionalOff;
         display.value("On");
     }
+}
+```
+
+* Connecting with auto closeable [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java)
+```java
+try (Stack stack = new Stack("host", 4223, "optionalPassword")) {
+    //Getting [SensorList]
+    Sensors sensors = stack.sensors;
+    //Add listener on any sensor and event getting the [SensorEvent]s
+    tinkerForge.sensorEventConsumerList.add(ths::onSensorEvent);
 }
 ```
 

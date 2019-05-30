@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletBarometer;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -12,11 +13,18 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * Measures air pressure and altitude changes
- * <b>Values</b>
- * <br />AIR_PRESSURE[mbar] = n / 1000.0
- * <br />ALTITUDE[m] = n / 1000.0
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.html">Official doku</a>
+ * <h3>{@link Barometer}</h3><br />
+ * <i>Measures air pressure and altitude changes</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#AIR_PRESSURE} [x / 1000.0 = mbar]</li>
+ * <li>{@link ValueType#ALTITUDE} [x / 1000.0 = m]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.htm">Official doku</a></li>
+ * </ul>
  */
 public class Barometer extends Sensor<BrickletBarometer> {
 

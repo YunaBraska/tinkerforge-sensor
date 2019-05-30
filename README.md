@@ -4,6 +4,9 @@ Tinkerforge Sensor Library
 This library simplifies Tinkerforge's sensor API.
 It Removes the pain of sensor UIDs, sensor versions, ports and provides a generic API for every sensor.
 
+#### Sensor documentation
+* A list of all sensors behaviors can be found in the [Sensor documentation](SENSOR_README.md)
+
 #### Examples
 * Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/example)
 * Example getting display from [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java).[Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java) and send text
@@ -67,7 +70,7 @@ private void onSensorEvent(final Sensor currentSensor, final ValueType valueType
     
     if (valueType.isMotionDetected() and value == 1) {
         console("Motion detected");
-        console("A lux value from any sensor: " + sensorList.value(LIGHT_LUX));
+        console("A lux value from any sensor: " + stack.values().lightLux());
         console("Current sensor is new motion detection sensor? " + currentSensor.is(BrickletMotionDetectorV2.class));
         currentSensor.ledStatusOn();
         display.ledAdditionalOn();
@@ -85,7 +88,7 @@ private void onSensorEvent(final Sensor currentSensor, final ValueType valueType
 * Connecting with auto closeable [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java)
 ```java
 try (Stack stack = new Stack("host", 4223, "optionalPassword")) {
-    //Getting [SensorList]
+    //Getting [list of sensors]
     Sensors sensors = stack.sensors;
     //Add listener on any sensor and event getting the [SensorEvent]s
     tinkerForge.sensorEventConsumerList.add(ths::onSensorEvent);

@@ -51,10 +51,10 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
     /**
      * @param value <br /> Will print everything from input using {@link String#valueOf(Object)} <- auto line break if input is too long
-     *              <br /> new line = \n {@link this#DISPLAY_SPLIT_LINE_REGEX}
-     *              <br /> line number =  {@link this#DISPLAY_LINE_ONE} {@link this#DISPLAY_LINE_TWO} {@link this#DISPLAY_LINE_THREE} {@link this#DISPLAY_LINE_FOUR}
-     *              <br /> Dynamic space = {@link this#DISPLAY_DYNAMIC_SPACE}
-     *              <br /> Clear display = {@link this#DISPLAY_CLEAR}
+     *              <br /> new line = \n {@link DisplayLcd20x4#DISPLAY_SPLIT_LINE_REGEX}
+     *              <br /> line number =  {@link DisplayLcd20x4#DISPLAY_LINE_ONE} {@link DisplayLcd20x4#DISPLAY_LINE_TWO} {@link DisplayLcd20x4#DISPLAY_LINE_THREE} {@link DisplayLcd20x4#DISPLAY_LINE_FOUR}
+     *              <br /> Dynamic space = {@link DisplayLcd20x4#DISPLAY_DYNAMIC_SPACE}
+     *              <br /> Clear display = {@link DisplayLcd20x4#DISPLAY_CLEAR}
      * @return {@link Sensor}
      */
     @Override

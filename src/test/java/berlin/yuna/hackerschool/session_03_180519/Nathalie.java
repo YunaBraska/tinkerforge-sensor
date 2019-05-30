@@ -7,6 +7,15 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
 /**
  * @author Nathalie
  */
@@ -27,6 +36,30 @@ public class Nathalie extends Helper {
 
     //CODE FUNCTION
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
+
+
+        //TODO: make a readme.md out of all sensors
+
+        try {
+            BufferedImage image = ImageIO.read(new File("/Users/morgenstern/Downloads/icon_temperature.png"));
+            final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+
+
+            int width = image.getWidth();
+            int height = image.getHeight();
+            int[][] result = new int[height][width];
+
+            for (int row = 0; row < height; row++) {
+                for (int col = 0; col < width; col++) {
+                    result[row][col] = image.getRGB(col, row);
+                }
+            }
+
+            System.out.println(Arrays.toString(pixels));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         //Get Sensor and Value
         final Sensor io16 = stack.sensors().iO16();

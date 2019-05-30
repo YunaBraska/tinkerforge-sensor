@@ -28,6 +28,7 @@ public class GeneratorTest {
      * Example: "String[] stringArray_DotArray" will be replaced with "String... stringArray"
      */
     public static final String DOT_ARRAY = "_DotArray";
+    public static final String NL = System.lineSeparator();
 
     @Test
     public void generate() throws IOException {
@@ -46,7 +47,8 @@ public class GeneratorTest {
         writeJavaFile(GeneratorSensors.generate(sensorList), targetParentDir);
         writeJavaFile(GeneratorValues.generate(sensorList), targetParentDir);
 
-
+        //README.md
+        GeneratorSensorReadme.generate(sensorList);
     }
 
     private void writeJavaFile(final JavaFile javaFile, final File targetParentDir) throws IOException {

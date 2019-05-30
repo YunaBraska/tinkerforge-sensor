@@ -2,6 +2,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletRGBLEDButton;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -10,22 +11,26 @@ import com.tinkerforge.TimeoutException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.AIR_PRESSURE;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 /**
- * Push button with built-in RGB LED
- * BUTTON_PRESSED 1/0 pressed/released
+ * <h3>{@link ButtonRGB}</h3><br />
+ * <i>Push button with built-in RGB LED</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#BUTTON_PRESSED} [0/1]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm">Official doku</a></li>
+ * </ul>
  */
 public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 

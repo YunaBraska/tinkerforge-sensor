@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletAccelerometer;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -15,12 +16,19 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ACCELERATION_Z;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * Measures acceleration in three axis
- * <b>Values</b>
- * <br />ACCELERATION_X
- * <br />ACCELERATION_Y
- * <br />ACCELERATION_Z
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer.html">Official doku</a>
+ * <h3>{@link Accelerometer}</h3><br />
+ * <i>Measures acceleration in three axis</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#ACCELERATION_X}</li>
+ * <li>{@link ValueType#ACCELERATION_Y}</li>
+ * <li>{@link ValueType#ACCELERATION_Z}</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer.html">Official doku</a></li>
+ * </ul>
  */
 public class Accelerometer extends Sensor<BrickletAccelerometer> {
 

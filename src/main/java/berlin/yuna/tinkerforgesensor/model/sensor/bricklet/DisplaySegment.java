@@ -41,7 +41,7 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     /**
      * @param value <br /> [String] print values on display
      *              <br /> [TemporalAccessor] prints the current time like {@link LocalDateTime#`now()}
-     *              <br /> [DateTimeFormatter] sets the time format default is "DateTimeFormatter.ofPattern("HH:mm")" {@link this#DATE_TIME_FORMAT}
+     *              <br /> [DateTimeFormatter] sets the time format default is "DateTimeFormatter.ofPattern("HH:mm")" {@link DisplaySegment#DATE_TIME_FORMAT}
      * @return {@link Sensor}
      */
     @Override

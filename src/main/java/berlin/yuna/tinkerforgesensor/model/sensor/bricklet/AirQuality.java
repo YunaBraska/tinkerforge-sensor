@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletAirQuality;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -18,13 +19,20 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.IAQ_INDEX;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 /**
- * Measures IAQ index, temperature, humidity and air pressure
- * <b>Values</b>
- * <br />AIR Quality[IAQ]  = n
- * <br />AIR_PRESSURE[mbar] = n / 1000.0
- * <br />TEMPERATURE[°C] = n / 100.0
- * <br />HUMIDITY[%RH] = n / 100.0
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official doku</a>
+ * <h3>{@link AirQuality}</h3><br />
+ * <i>Measures acceleration in three axis</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#IAQ_INDEX} [x = IAQ]</li>
+ * <li>{@link ValueType#TEMPERATURE} [x / 1000.0 = mbar]</li>
+ * <li>{@link ValueType#HUMIDITY} [x / 100.0 = °C]</li>
+ * <li>{@link ValueType#AIR_PRESSURE} [x / 100.0 = %RH]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official doku</a></li>
+ * </ul>
  */
 public class AirQuality extends Sensor<BrickletAirQuality> {
 

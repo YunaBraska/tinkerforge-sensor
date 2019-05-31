@@ -8,6 +8,7 @@
 * [ButtonRGB](#buttonrgb)
 * [DC](#dc)
 * [Default](#default)
+* [DisplayLcd128x64](#displaylcd128x64)
 * [DisplayLcd20x4](#displaylcd20x4)
 * [DisplaySegment](#displaysegment)
 * [DistanceIR](#distanceir)
@@ -128,6 +129,55 @@ sensors.send();
 
 --- 
 
+### [DisplayLcd128x64](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplayLcd128x64.java)
+*7.1cm (2.8") display with 128x64 pixel and touch screen**GUI elements are coming soon*
+### Values
+
+* TouchPosition (coming soon)
+* TouchGesture (coming soon)
+* GuiTabSelected (coming soon)
+* GuiSliver (coming soon)
+* GuiButton (coming soon)
+### Technical Info
+
+* [Official documentation](href=)
+###### Clear display
+```java
+display.send(true);
+```
+
+###### Send text
+```java
+display.send("Howdy");
+```
+
+###### Send text centered
+```java
+display.send("Line1", true);
+```
+
+###### Send text centered on row 2
+```java
+display.send("Line2", true, 1);
+```
+
+###### Send text on position 5 and row 3
+```java
+display.send("Line2", 4, 2);
+```
+
+###### Send text on position 9 and row 4 with font (0-9)
+```java
+display.send("Line2", 8, 3, 2);
+```
+
+###### Send text with dynamic spaces between)
+```java
+display.send("H ${s} O ${s} W ${s} D ${s} Y");
+```
+
+--- 
+
 ### [DisplayLcd20x4](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplayLcd20x4.java)
 *20x4 character alphanumeric display with blue backlight*
 ### Values
@@ -138,39 +188,39 @@ sensors.send();
 ### Technical Info
 
 * [Official documentation](href=)
-###### Sending text to display
-```java
-display.send("MyText");
-```
-
-###### Sending text to specific line
-```java
-display.send(2, "MyText");
-```
-
-###### Sending text to specific line and position
-```java
-display.send(2, 2, "MyText");
-```
-
-###### Sending text with new line
-```java
-display.send("Line 1 \n text 2");
-```
-
-###### Dynamic space
-```java
-display.send("${s} TextMiddle ${s}");
-```
-
-###### Center text
-```java
-display.send(true, "MyText");
-```
-
 ###### Clear display
 ```java
 display.send(true);
+```
+
+###### Send text
+```java
+display.send("Howdy");
+```
+
+###### Send text centered
+```java
+display.send("Line1", true);
+```
+
+###### Send text centered on row 2
+```java
+display.send("Line2", true, 1);
+```
+
+###### Send text on position 5 and row 3
+```java
+display.send("Line2", 4, 2);
+```
+
+###### Send text on position 9 and row 4 with font (0-9)
+```java
+display.send("Line2", 8, 3, 2);
+```
+
+###### Send text with dynamic spaces between)
+```java
+display.send("H ${s} O ${s} W ${s} D ${s} Y");
 ```
 
 --- 

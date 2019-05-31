@@ -78,10 +78,10 @@ public class GeneratorSensors {
         }
 
         //ADDITIONAL SENSOR SHORTCUTS
-        resultClass.addMethod(method_getSensorXY("getDisplay"));
-        resultClass.addMethod(method_getSensorXYNumber("getDisplay", asList(DisplayLcd20x4.class, DisplaySegment.class)));
-        resultClass.addMethod(method_getSensorXY("getSound"));
-        resultClass.addMethod(method_getSensorXYNumber("getSound", asList(SoundPressure.class, SoundIntensity.class)));
+        resultClass.addMethod(method_getSensorXY("display"));
+        resultClass.addMethod(method_getSensorXYNumber("display", asList(DisplayLcd20x4.class, DisplaySegment.class)));
+        resultClass.addMethod(method_getSensorXY("sound"));
+        resultClass.addMethod(method_getSensorXYNumber("sound", asList(SoundPressure.class, SoundIntensity.class)));
 
         //CREATE METHODS
         final MethodSpec method_getDefaultSensor = method_getDefaultSensor(type_ListOfSensor, type_ClassOfGenerics);

@@ -12,6 +12,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.BarometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Default;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplayLcd128x64;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplaySegment;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DistanceIR;
@@ -219,6 +220,14 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, DisplayLcd20x4.class);
     }
 
+    public Sensor displayLcd128x64() {
+        return displayLcd128x64(0);
+    }
+
+    public Sensor displayLcd128x64(final int number) {
+        return getSensor(number, DisplayLcd128x64.class);
+    }
+
     public Sensor dC() {
         return dC(0);
     }
@@ -259,19 +268,19 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, AccelerometerV2.class, Accelerometer.class);
     }
 
-    public Sensor getDisplay() {
-        return getDisplay(0);
+    public Sensor display() {
+        return display(0);
     }
 
-    public Sensor getDisplay(final int number) {
+    public Sensor display(final int number) {
         return getSensor(number, DisplayLcd20x4.class, DisplaySegment.class);
     }
 
-    public Sensor getSound() {
-        return getSound(0);
+    public Sensor sound() {
+        return sound(0);
     }
 
-    public Sensor getSound(final int number) {
+    public Sensor sound(final int number) {
         return getSensor(number, SoundPressure.class, SoundIntensity.class);
     }
 

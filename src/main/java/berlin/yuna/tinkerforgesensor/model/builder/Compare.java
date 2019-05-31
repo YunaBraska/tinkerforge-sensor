@@ -11,6 +11,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.BarometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Default;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplayLcd128x64;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplaySegment;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DistanceIR;
@@ -89,6 +90,10 @@ public class Compare {
 
     public boolean isDefault() {
         return is(Default.class);
+    }
+
+    public boolean isDisplayLcd128x64() {
+        return is(DisplayLcd128x64.class);
     }
 
     public boolean isDisplayLcd20x4() {

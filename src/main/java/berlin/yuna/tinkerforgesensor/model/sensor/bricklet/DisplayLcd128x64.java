@@ -40,13 +40,13 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <h6>Send text</h6>
  * <code>display.send("Howdy");</code>
  * <h6>Send text centered</h6>
- * <code>display.send("Line1", true);</code>
+ * <code>display.send("Line1 center", true);</code>
  * <h6>Send text centered on row 2</h6>
- * <code>display.send("Line2", true, 1);</code>
+ * <code>display.send("Line2 center", true, 1);</code>
  * <h6>Send text on position 5 and row 3</h6>
- * <code>display.send("Line2", 4, 2);</code>
+ * <code>display.send("Line3 posX=5", 4, 2);</code>
  * <h6>Send text on position 9 and row 4 with font (0-9)</h6>
- * <code>display.send("Line2", 8, 3, 2);</code>
+ * <code>display.send("Line4 posX=8 font=2", 8, 3, 2);</code>
  * <h6>Send text with dynamic spaces between)</h6>
  * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
  */

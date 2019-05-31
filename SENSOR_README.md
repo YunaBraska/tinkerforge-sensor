@@ -153,22 +153,22 @@ display.send("Howdy");
 
 ###### Send text centered
 ```java
-display.send("Line1", true);
+display.send("Line1 center", true);
 ```
 
 ###### Send text centered on row 2
 ```java
-display.send("Line2", true, 1);
+display.send("Line2 center", true, 1);
 ```
 
 ###### Send text on position 5 and row 3
 ```java
-display.send("Line2", 4, 2);
+display.send("Line3 posX=5", 4, 2);
 ```
 
 ###### Send text on position 9 and row 4 with font (0-9)
 ```java
-display.send("Line2", 8, 3, 2);
+display.send("Line4 posX=8 font=2", 8, 3, 2);
 ```
 
 ###### Send text with dynamic spaces between)
@@ -200,22 +200,17 @@ display.send("Howdy");
 
 ###### Send text centered
 ```java
-display.send("Line1", true);
+display.send("Line1 center", true);
 ```
 
 ###### Send text centered on row 2
 ```java
-display.send("Line2", true, 1);
+display.send("Line2 center", true, 1);
 ```
 
 ###### Send text on position 5 and row 3
 ```java
-display.send("Line2", 4, 2);
-```
-
-###### Send text on position 9 and row 4 with font (0-9)
-```java
-display.send("Line2", 8, 3, 2);
+display.send("Line3 posX=5", 4, 2);
 ```
 
 ###### Send text with dynamic spaces between)

@@ -46,7 +46,7 @@ public class GeneratorSensorReadme {
                 final Class<?> sensorClass = Class.forName(sensor.getTypeName());
                 final String content = new String(Files.readAllBytes(sourceFile.toPath()));
 
-                result.append(LINE_SEPARATOR).append("##").append(sensorClass.getSimpleName()).append(LINE_SEPARATOR);
+//                result.append(LINE_SEPARATOR).append("##").append(sensorClass.getSimpleName()).append(LINE_SEPARATOR);
                 final Matcher matcher = PATTERN_COMMENT.matcher(content);
                 while (matcher.find()) {
                     final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", LINE_SEPARATOR);

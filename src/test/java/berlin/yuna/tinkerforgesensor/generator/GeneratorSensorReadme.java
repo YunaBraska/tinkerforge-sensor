@@ -52,6 +52,7 @@ public class GeneratorSensorReadme {
                     final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", LINE_SEPARATOR);
                     result.append(parseNodes(Jsoup.parse(block).select("body").get(0), LINE_SEPARATOR, sensorClass));
                 }
+                result.append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
 
 
                 //REMOVE SENSORS VARIANTS FROM LIST

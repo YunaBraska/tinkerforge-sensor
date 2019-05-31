@@ -4,7 +4,11 @@ package berlin.yuna.tinkerforgesensor.generator.builder;
 import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Default;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplayLcd20x4;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplaySegment;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundIntensity;
+import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundPressure;
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
@@ -26,6 +30,7 @@ import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicSe
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getSensorVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.DOT_ARRAY;
 import static com.squareup.javapoet.WildcardTypeName.subtypeOf;
+import static java.util.Arrays.asList;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
@@ -71,6 +76,12 @@ public class GeneratorSensors {
                 sensorList.remove(sensorVersion);
             }
         }
+
+        //ADDITIONAL SENSOR SHORTCUTS
+        resultClass.addMethod(method_getSensorXY("getDisplay"));
+        resultClass.addMethod(method_getSensorXYNumber("getDisplay", asList(DisplayLcd20x4.class, DisplaySegment.class)));
+        resultClass.addMethod(method_getSensorXY("getSound"));
+        resultClass.addMethod(method_getSensorXYNumber("getSound", asList(SoundPressure.class, SoundIntensity.class)));
 
         //CREATE METHODS
         final MethodSpec method_getDefaultSensor = method_getDefaultSensor(type_ListOfSensor, type_ClassOfGenerics);

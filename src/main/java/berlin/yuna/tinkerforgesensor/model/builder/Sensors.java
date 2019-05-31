@@ -259,6 +259,22 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, AccelerometerV2.class, Accelerometer.class);
     }
 
+    public Sensor getDisplay() {
+        return getDisplay(0);
+    }
+
+    public Sensor getDisplay(final int number) {
+        return getSensor(number, DisplayLcd20x4.class, DisplaySegment.class);
+    }
+
+    public Sensor getSound() {
+        return getSound(0);
+    }
+
+    public Sensor getSound(final int number) {
+        return getSensor(number, SoundPressure.class, SoundIntensity.class);
+    }
+
     private synchronized List<Sensor> getSensor(final Class... sensorClasses) {
         return stream().filter(sensor -> sensor.compare().is(sensorClasses)).sorted(java.util.Comparator.comparingInt(Sensor::port)).collect(java.util.stream.Collectors.toList());
     }

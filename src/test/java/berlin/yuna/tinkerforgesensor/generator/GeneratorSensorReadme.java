@@ -249,7 +249,8 @@ public class GeneratorSensorReadme {
         while (linkMatch.find()) {
             final String[] link = linkMatch.group(2).split("#");
             final Class linkedClass = searchClass(link[0].trim(), baseClass);
-            final String linkDesc = linkedClass.getSimpleName() + (link.length > 1 ? "#" + link[1].trim() : "");
+//            final String linkDesc = linkedClass.getSimpleName() + (link.length > 1 ? "#" + link[1].trim() : "");
+            final String linkDesc = link.length > 1? link[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
             final String linkTarget = new File("src/main/java", linkedClass.getTypeName().replace(".", File.separator) + ".java").toString();
             text = text.replaceFirst(LINK_PATTERN.pattern(), "[" + linkDesc + "]" + "(" + linkTarget + ")");
         }

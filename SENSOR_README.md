@@ -45,9 +45,9 @@
 
 ### Values
 
-* [ValueType#ACCELERATION_X](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
-* [ValueType#ACCELERATION_Y](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
-* [ValueType#ACCELERATION_Z](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
+* [ACCELERATION_X (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
+* [ACCELERATION_Y (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
+* [ACCELERATION_Z (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer_V2.html)
@@ -59,10 +59,10 @@
 
 ### Values
 
-* [ValueType#IAQ_INDEX](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x = IAQ]
-* [ValueType#TEMPERATURE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = mbar]
-* [ValueType#HUMIDITY](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 100.0 = °C]
-* [ValueType#AIR_PRESSURE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 100.0 = %RH]
+* [IAQ_INDEX (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x = IAQ]
+* [TEMPERATURE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = mbar]
+* [HUMIDITY (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 100.0 = °C]
+* [AIR_PRESSURE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 100.0 = %RH]
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html)
@@ -75,9 +75,9 @@
 
 ### Values
 
-* [ValueType#AIR_PRESSURE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = mbar]
-* [ValueType#ALTITUDE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = m]
-* [ValueType#TEMPERATURE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 100.0 = °C]
+* [AIR_PRESSURE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = mbar]
+* [ALTITUDE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = m]
+* [TEMPERATURE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 100.0 = °C]
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.htm)
@@ -89,7 +89,7 @@
 
 ### Values
 
-* [ValueType#BUTTON_PRESSED](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [0/1]
+* [BUTTON_PRESSED (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [0/1]
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm)
@@ -132,9 +132,9 @@ sensors.send();
 *20x4 character alphanumeric display with blue backlight*
 ### Values
 
-* [ValueType#BUTTON](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [10, 20, 30, 40] = Released
-* [ValueType#BUTTON](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [11, 21, 31, 41] = Pressed
-* [ValueType#BUTTON_PRESSED](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [0/1] = Released/Pressed
+* [BUTTON (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [10, 20, 30, 40] = Released
+* [BUTTON (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [11, 21, 31, 41] = Pressed
+* [BUTTON_PRESSED (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [0/1] = Released/Pressed
 ### Technical Info
 
 * [Official documentation](href=)
@@ -183,9 +183,9 @@ display.send(true);
  @param value 
  [String] print values on display
               
- [TemporalAccessor] prints the current time like [LocalDateTime#`now()](src/main/java/java/time/LocalDateTime.java)
+ [TemporalAccessor] prints the current time like [`now() (LocalDateTime)](src/main/java/java/time/LocalDateTime.java)
               
- [DateTimeFormatter] sets the time format default is "DateTimeFormatter.ofPattern("HH:mm")" [DisplaySegment#DATE_TIME_FORMAT](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplaySegment.java)
+ [DateTimeFormatter] sets the time format default is "DateTimeFormatter.ofPattern("HH:mm")" [DATE_TIME_FORMAT (DisplaySegment)](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplaySegment.java)
  @return [Sensor](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
 /
  @param value 
@@ -249,7 +249,7 @@ DISTANCE[cm] = n / 10.0
  Todo: [1000] = 3V output
  Todo: [2000] = 5V output
 /
- [IO16V2#LED_ADDITIONAL_ON} / {@link LedStatusType](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/IO16V2.java) = all LEDs on/off
+ [LED_ADDITIONAL_ON} / {@link LedStatusType (IO16V2)](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/IO16V2.java) = all LEDs on/off
  
  [0] = all LEDs off
  

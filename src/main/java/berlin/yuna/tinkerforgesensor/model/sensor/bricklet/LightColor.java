@@ -28,7 +28,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <br />COLOR_B[blue] = n
  * <br />COLOR_LUX[lx] = n
  * <br />COLOR_TEMPERATURE[] = n
- * <br /><a https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html">Official doku</a>
+ * <br /><a https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html">Official documentation</a>
  */
 public class LightColor extends Sensor<BrickletColor> {
 

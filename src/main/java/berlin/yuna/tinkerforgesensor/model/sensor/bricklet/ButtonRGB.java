@@ -29,7 +29,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
- * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm">Official doku</a></li>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm">Official documentation</a></li>
  * </ul>
  */
 public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
@@ -47,10 +47,17 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     /**
-     * @param value <br /> [{@link Color#getRGB()}] RGB send
-     *              <br /> [Number] RGB send {@link Color#getRGB()}
-     *              <br /> [Boolean] activate highContrast
-     * @return {@link Sensor}
+     * <h3>Send</h3>
+     * <h6>Set LED color</h6>
+     * <code>
+     * sensor.send(Color.MAGENTA);
+     * sensor.send(new Color(255, 128, 64));
+     * sensor.send(12367);
+     * </code>
+     * <h6>Set auto contrast on=true off=false</h6>
+     * <code>
+     * sensor.send(true);
+     * </code>
      */
     @Override
     public Sensor<BrickletRGBLEDButton> send(final Object value) {

@@ -17,7 +17,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 
 /**
  * Four 7-segment displays with switchable colon
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Segment_Display_4x7.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Segment_Display_4x7.html">Official documentation</a>
  * <b>Technical help</b>
  * <br /><a href="https://en.wikichip.org/wiki/seven-segment_display/representing_letters">Representing Letters</a>
  * <br /><a href="https://www.systutorials.com/4670/ascii-table-and-ascii-code">ascii-table-and-ascii-code</a>

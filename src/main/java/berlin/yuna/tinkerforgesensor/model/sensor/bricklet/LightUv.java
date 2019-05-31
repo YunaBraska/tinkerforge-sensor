@@ -14,7 +14,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
  * Measures UV light
  * <b>Values</b>
  * LIGHT_UV[index] = n / 10.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html">Official documentation</a>
  */
 public class LightUv extends Sensor<BrickletUVLight> {
 

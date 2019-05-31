@@ -16,7 +16,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
  * 16-channel digital input/output
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16_V2.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16_V2.html">Official documentation</a>
  */
 public class IO16V2 extends Sensor<BrickletIO16V2> {
 

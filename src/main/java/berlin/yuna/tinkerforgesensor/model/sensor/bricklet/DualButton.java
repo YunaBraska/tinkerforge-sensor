@@ -25,7 +25,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * BUTTON 1 11 Pressed
  * BUTTON 2 20 Released
  * BUTTON 2 21 Pressed
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official documentation</a>
  */
 public class DualButton extends Sensor<BrickletDualButtonV2> {
 

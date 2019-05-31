@@ -17,7 +17,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED
  * Passive infrared (PIR) motion sensor, 12m range with 120° angle
  * <b>Values</b>
  * MOTION_DETECTED = 0/1
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html">Official documentation</a>
  */
 public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
 

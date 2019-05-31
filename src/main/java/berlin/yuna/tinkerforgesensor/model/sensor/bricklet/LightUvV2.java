@@ -22,7 +22,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UVB;
  * LIGHT_UV[index] = n / 10.0
  * LIGHT_UVA[mW/m²] = n / 10.0
  * LIGHT_UVB[mW/m²] = n / 10.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light_V2.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light_V2.html">Official documentation</a>
  */
 public class LightUvV2 extends Sensor<BrickletUVLightV2> {
 

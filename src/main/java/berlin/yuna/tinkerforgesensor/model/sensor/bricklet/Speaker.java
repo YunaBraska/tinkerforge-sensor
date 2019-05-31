@@ -11,7 +11,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
  * Creates beep with configurable frequency
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Piezo_Speaker.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Piezo_Speaker.html">Official documentation</a>
  * <b>Technical help</b>
  * <br /><a href="https://morsecode.scphillips.com/translator.html">Morse generator</a>
  */

@@ -19,7 +19,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
  * <b>Values</b>
  * <br />ROTARY[count] = n
  * <br />BUTTON_PRESSED/BUTTON_RELEASED
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Encoder_V2.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Encoder_V2.html">Official documentation</a>
  */
 public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
 

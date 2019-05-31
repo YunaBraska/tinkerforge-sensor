@@ -13,7 +13,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
  * Measures relative humidity
  * <b>Values</b>
  * HUMIDITY[%RH] = n / 100.0
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Humidity.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Humidity.html">Official documentation</a>
  */
 public class Humidity extends Sensor<BrickletHumidity> {
 

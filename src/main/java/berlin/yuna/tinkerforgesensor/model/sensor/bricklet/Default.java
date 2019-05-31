@@ -7,6 +7,20 @@ import com.tinkerforge.DummyDevice;
 
 import static java.lang.String.format;
 
+/**
+ * <h3>{@link Default}</h3><br />
+ * <i>Default sensor is representing a non existing but requested sensor</i><br />
+ *
+ * <h6>Check if the current sensor is {@link Default}</h6>
+ * <code>
+ * //false = (DefaultSensor) means that the current sensor not available
+ * sensors.isPresent();
+ * </code>
+ * <h6>All methods wont do anything</h6>
+ * <code>
+ * sensors.send();
+ * </code>
+ */
 public class Default extends Sensor<DummyDevice> {
 
     private Class<? extends Sensor> sensorImitate;

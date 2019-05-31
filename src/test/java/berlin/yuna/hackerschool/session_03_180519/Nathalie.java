@@ -4,7 +4,6 @@ import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
 import javax.imageio.ImageIO;
@@ -12,8 +11,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 /**
@@ -36,9 +33,6 @@ public class Nathalie extends Helper {
 
     //CODE FUNCTION
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
-
-
-        //TODO: make a readme.md out of all sensors
 
         try {
             BufferedImage image = ImageIO.read(new File("/Users/morgenstern/Downloads/icon_temperature.png"));

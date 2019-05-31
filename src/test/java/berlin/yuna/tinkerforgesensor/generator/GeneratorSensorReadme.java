@@ -16,11 +16,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getSensorVersions;
-import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.NL;
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 
 public class GeneratorSensorReadme {
 
-    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
+    public static final Pattern PATTERN_COMMENT = Pattern.compile("(?s)\\/\\*.*?\\*\\/");
+    //        public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
+    public static final Pattern LINK_PATTERN = Pattern.compile("(\\{@link)(.*)(})");
 
     public static void generate(final List<Class<? extends Sensor>> sensors) {
         final List<Class<? extends Sensor>> sensorList = new ArrayList<>(sensors);
@@ -36,12 +38,12 @@ public class GeneratorSensorReadme {
                 final Class<?> sensorClass = Class.forName(sensor.getTypeName());
                 final String content = new String(Files.readAllBytes(sourceFile.toPath()));
 
-                result.append(NL).append("## ").append(sensorClass.getSimpleName()).append(NL);
                 final Matcher matcher = PATTERN_COMMENT.matcher(content);
                 while (matcher.find()) {
-                    final String block = matcher.group(0).replaceFirst("^/\\**\n", "").replace("\n */", "");
-                    result.append(parseNodes(Jsoup.parse(block).select("body").get(0).childNodes(), NL, sensorClass));
+                    final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", LINE_SEPARATOR);
+                    result.append(parseNodes(Jsoup.parse(block).select("body").get(0), LINE_SEPARATOR, sensorClass));
                 }
+                result.append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
 
                 //REMOVE SENSORS VARIANTS FROM LIST
                 for (Class<? extends Sensor> sensorVersion : sensorVersions) {
@@ -59,147 +61,28 @@ public class GeneratorSensorReadme {
         }
     }
 
-    //FIXME: add table logic
-    private static StringBuilder parseNodes(final List<Node> nodeList, final String nl, final Class clazz) {
+    private static StringBuilder parseNodes(final Node root, final String parentSeparator, final Class baseClass) {
         final StringBuilder result = new StringBuilder();
-        for (Node node : nodeList) {
+        for (Node node : root.childNodes()) {
             if (node instanceof Element) {
-                final Element element = (Element) node;
-
-                switch (element.tagName().toLowerCase()) {
-                    case "a":
-                        result.append("[").append(element.text()).append("]");
-                        result.append("(").append(element.attr("href")).append(")");
-                        break;
-                    case "p":
-                    case "pre":
-                    case "span":
-                        result.append("`").append(element.text()).append("`");
-                        break;
-                    case "blockquote":
-                        result.append("> ").append(parseNodes(node.childNodes(), nl + "> ", clazz));
-                        result.append(nl);
-                        break;
-                    case "body":
-                        result.append(parseNodes(node.childNodes(), nl, clazz));
-                        result.append(nl);
-                        break;
-                    case "br":
-                        result.append(nl);
-                        break;
-                    case "caption":
-                        result.append(parseNodes(node.childNodes(), nl, clazz));
-                        result.append(nl);
-                        break;
-                    case "CENTER":
-                        break;
-                    case "code":
-                        result.append("```java").append(nl);
-                        result.append(element.text()).append(nl);
-                        result.append("```").append(nl);
-                        break;
-                    case "dl":
-                        result.append(parseNodes(node.childNodes(), nl, clazz));
-                        break;
-                    case "dd":
-                        result.append(nl).append("    ").append(parseNodes(node.childNodes(), nl + "    ", clazz)).append(nl);
-                        break;
-                    case "dt":
-                        result.append(nl).append("**").append(parseNodes(node.childNodes(), nl, clazz)).append("**").append(nl);
-                        break;
-                    case "em":
-                        result.append("*").append(parseNodes(node.childNodes(), nl, clazz)).append("*");
-                        break;
-                    case "FONT":
-                        break;
-                    case "h1":
-                        result.append(NL).append("# ").append(parseNodes(node.childNodes(), nl, clazz)).append(NL);
-                        break;
-                    case "h2":
-                        result.append(NL).append("## ").append(parseNodes(node.childNodes(), nl, clazz)).append(NL);
-                        break;
-                    case "h3":
-                        result.append(NL).append("### ").append(parseNodes(node.childNodes(), nl, clazz)).append(NL);
-                        break;
-                    case "h4":
-                        result.append(NL).append("#### ").append(parseNodes(node.childNodes(), nl, clazz)).append(NL);
-                        break;
-                    case "h5":
-                        result.append(NL).append("##### ").append(parseNodes(node.childNodes(), nl, clazz)).append(NL);
-                        break;
-                    case "h6":
-                        result.append(NL).append("###### ").append(parseNodes(node.childNodes(), nl, clazz)).append(NL);
-                        break;
-                    case "small":
-                        result.append(NL).append("###### ").append(parseNodes(node.childNodes(), nl, clazz));
-                        break;
-                    case "hr":
-                        result.append(NL).append("--- ").append(NL);
-                        break;
-                    case "strong":
-                    case "b":
-                        result.append("**").append(parseNodes(node.childNodes(), nl, clazz)).append("**");
-                        break;
-                    case "i":
-                    case "sub":
-                        result.append("*").append(parseNodes(node.childNodes(), nl, clazz)).append("*");
-                        break;
-                    case "img":
-                        result.append("![").append(element.text()).append("]");
-                        result.append("(").append(element.attr("src")).append(")");
-                        break;
-                    case "li":
-                        result.append(NL).append("* ").append(parseNodes(node.childNodes(), NL + "* ", clazz));
-                        break;
-                    case "head":
-                    case "html":
-                    case "link":
-                    case "menu":
-                    case "div":
-                    case "meta":
-                    case "noscript":
-                    case "ul":
-                    case "ol":
-                    case "script":
-                        result.append(parseNodes(node.childNodes(), nl, clazz));
-                        break;
-                    case "TABLE":
-                        break;
-                    case "TBODY":
-                        break;
-                    case "TD":
-                        break;
-                    case "TH":
-                        break;
-                    case "TITLE":
-                        break;
-                    case "TR":
-                        break;
-                    case "TT":
-                        break;
-                    case "VAR":
-                        break;
-                }
+                result.append(transformHtmlElements(node, baseClass, parentSeparator));
             } else if (node instanceof TextNode) {
-                String text = ((TextNode) node).text();
-
-                final Matcher linkMatch = Pattern.compile("(\\{@link)(.*)(})").matcher(text);
-                while (linkMatch.find()) {
-                    final String[] link = linkMatch.group(2).split("#");
-                    final String className = link[0].trim();
-                    final Class linkedClass = searchClass(className, clazz);
-                    result.append("[").append(linkedClass.getSimpleName()).append(link.length > 1 ? "#" + link[1].trim() : "").append("]");
-                    result.append("(").append(new File("src/main/java", linkedClass.getTypeName().replace(".", File.separator) + ".java").toString()).append(")");
-                }
-
-                text = text.replaceAll("(\\{@link)(.*)(})", "").replaceFirst("^\\s*\\*", "").trim();
-                text = text.replaceAll("(\\{@link)(.*)(})", "").replaceFirst("^\\s*\\*", "").trim();
-                if (!text.isEmpty()) {
-                    result.append(text);
-                }
+                result.append(resolveLinks(baseClass, ((TextNode) node).getWholeText()));
             }
         }
         return result;
+    }
+
+    private static String filterTextOnly(final List<Node> nodes) {
+        final StringBuilder sb = new StringBuilder();
+        for (Node node : nodes) {
+            if (node.childNodes().isEmpty()) {
+                sb.append(((TextNode) node).getWholeText());
+            } else {
+                sb.append(filterTextOnly(node.childNodes()));
+            }
+        }
+        return sb.toString().trim().replaceAll(LINE_SEPARATOR + "\\s*", LINE_SEPARATOR);
     }
 
     private static Class<?> searchClass(final String className, final Class linkedClass) {
@@ -208,7 +91,7 @@ public class GeneratorSensorReadme {
         } catch (ClassNotFoundException e) {
             try {
                 final File classFile = new File(System.getProperty("user.dir"), new File("src/main/java", linkedClass.getTypeName().replace(".", File.separator)).toString() + ".java");
-                String classRef = find("(import (static)*)(.*" + className + ");", new String(Files.readAllBytes(classFile.toPath())), 3);
+                String classRef = regex("(import (static)*)(.*" + className + ");", new String(Files.readAllBytes(classFile.toPath())), 3);
                 classRef = classRef != null ? classRef : linkedClass.getPackage().getName() + "." + className;
                 return Class.forName(classRef);
             } catch (ClassNotFoundException | IOException ex) {
@@ -221,12 +104,151 @@ public class GeneratorSensorReadme {
         }
     }
 
-    private static String find(final String pattern, final String content, final int group) {
+    private static String regex(final String pattern, final String content, final int group) {
         final Matcher matcher = Pattern.compile(pattern).matcher(content);
         if (matcher.find()) {
             return matcher.group(group);
         }
         return null;
+    }
+
+    //FIXME: add table logic
+    private static String transformHtmlElements(final Node node, final Class baseClass, final String parentSeparator) {
+        final Element element = (Element) node;
+        final StringBuilder result = new StringBuilder();
+        switch (element.tagName().toLowerCase()) {
+            case "a":
+                result.append("[").append(element.text()).append("]");
+                result.append("(").append(element.attr("href")).append(")");
+                break;
+            case "p":
+            case "pre":
+            case "span":
+                result.append("`").append(element.text()).append("`");
+                break;
+            case "blockquote":
+                result.append("> ").append(parseNodes(node, parentSeparator + "> ", baseClass));
+                result.append(parentSeparator);
+                break;
+            case "body":
+                result.append(parseNodes(node, parentSeparator, baseClass));
+                result.append(parentSeparator);
+                break;
+            case "br":
+                result.append(parentSeparator);
+                break;
+            case "caption":
+                result.append(parseNodes(node, parentSeparator, baseClass));
+                result.append(parentSeparator);
+                break;
+            case "CENTER":
+                break;
+            case "code":
+                result.append("```java").append(parentSeparator);
+                result.append(filterTextOnly(element.childNodes())).append(parentSeparator);
+                result.append("```").append(parentSeparator);
+                break;
+            case "dl":
+                result.append(parseNodes(node, parentSeparator, baseClass));
+                break;
+            case "dd":
+                result.append(parentSeparator).append("    ").append(parseNodes(node, parentSeparator + "    ", baseClass)).append(parentSeparator);
+                break;
+            case "dt":
+                result.append(parentSeparator).append("**").append(parseNodes(node, parentSeparator, baseClass)).append("**").append(parentSeparator);
+                break;
+            case "em":
+                result.append("*").append(parseNodes(node, parentSeparator, baseClass)).append("*");
+                break;
+            case "FONT":
+                break;
+            case "h1":
+                result.append(LINE_SEPARATOR).append("# ").append(parseNodes(node, parentSeparator, baseClass)).append(LINE_SEPARATOR);
+                break;
+            case "h2":
+                result.append(LINE_SEPARATOR).append("## ").append(parseNodes(node, parentSeparator, baseClass)).append(LINE_SEPARATOR);
+                break;
+            case "h3":
+                result.append(LINE_SEPARATOR).append("### ").append(parseNodes(node, parentSeparator, baseClass)).append(LINE_SEPARATOR);
+                break;
+            case "h4":
+                result.append(LINE_SEPARATOR).append("#### ").append(parseNodes(node, parentSeparator, baseClass)).append(LINE_SEPARATOR);
+                break;
+            case "h5":
+                result.append(LINE_SEPARATOR).append("##### ").append(parseNodes(node, parentSeparator, baseClass)).append(LINE_SEPARATOR);
+                break;
+            case "h6":
+                result.append(LINE_SEPARATOR).append("###### ").append(parseNodes(node, parentSeparator, baseClass)).append(LINE_SEPARATOR);
+                break;
+            case "small":
+                result.append(LINE_SEPARATOR).append("###### ").append(parseNodes(node, parentSeparator, baseClass));
+                break;
+            case "hr":
+                result.append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
+                break;
+            case "strong":
+            case "b":
+                result.append("**").append(parseNodes(node, parentSeparator, baseClass)).append("**");
+                break;
+            case "i":
+            case "sub":
+                result.append("*").append(parseNodes(node, parentSeparator, baseClass)).append("*");
+                break;
+            case "img":
+                result.append("![").append(element.text()).append("]");
+                result.append("(").append(element.attr("src")).append(")");
+                break;
+            case "li":
+                result.append(LINE_SEPARATOR).append("* ").append(parseNodes(node, LINE_SEPARATOR + "* ", baseClass));
+                break;
+            case "head":
+            case "html":
+            case "link":
+            case "menu":
+            case "div":
+            case "meta":
+            case "noscript":
+            case "ul":
+            case "ol":
+            case "script":
+                result.append(parseNodes(node, parentSeparator, baseClass));
+                break;
+            case "TABLE":
+                break;
+            case "TBODY":
+                break;
+            case "TD":
+                break;
+            case "TH":
+                break;
+            case "TITLE":
+                break;
+            case "TR":
+                break;
+            case "TT":
+                break;
+            case "VAR":
+                break;
+        }
+        return result.toString();
+    }
+
+    private static String resolveLinks(final Class baseClass, final String inputString) {
+        final StringBuilder result = new StringBuilder();
+        String text = inputString;
+        final Matcher linkMatch = LINK_PATTERN.matcher(text);
+        while (linkMatch.find()) {
+            final String[] link = linkMatch.group(2).split("#");
+            final Class linkedClass = searchClass(link[0].trim(), baseClass);
+            final String linkDesc = linkedClass.getSimpleName() + (link.length > 1 ? "#" + link[1].trim() : "");
+            final String linkTarget = new File("src/main/java", linkedClass.getTypeName().replace(".", File.separator) + ".java").toString();
+            text = text.replaceFirst(LINK_PATTERN.pattern(), "[" + linkDesc + "]" + "(" + linkTarget + ")");
+        }
+
+        if (!text.trim().isEmpty() && text.trim().length() > 1) {
+            result.append(text);
+        }
+        return result.toString();
     }
 
 }

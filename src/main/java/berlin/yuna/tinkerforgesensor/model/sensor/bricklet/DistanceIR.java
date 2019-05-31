@@ -15,7 +15,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
  * Measures distance up to 150cm with infrared light
  * <b>Values</b>
  * <br />DISTANCE[cm] = n / 10.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_IR.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_IR.html">Official documentation</a>
  */
 public class DistanceIR extends Sensor<BrickletDistanceIR> {
 

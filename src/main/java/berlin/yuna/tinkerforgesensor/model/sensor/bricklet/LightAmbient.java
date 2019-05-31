@@ -12,7 +12,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 /**
  * Measures ambient light up to 900lux
  * LIGHT_LUX[lx] = n / 100.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Ambient_Light.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Ambient_Light.html">Official documentation</a>
  */
 public class LightAmbient extends Sensor<BrickletAmbientLight> {
 

@@ -28,7 +28,7 @@ public class GeneratorTest {
      * Example: "String[] stringArray_DotArray" will be replaced with "String... stringArray"
      */
     public static final String DOT_ARRAY = "_DotArray";
-    public static final String NL = System.lineSeparator();
+    public static final String LINE_SEPARATOR = System.lineSeparator();
 
     @Test
     public void generate() throws IOException {

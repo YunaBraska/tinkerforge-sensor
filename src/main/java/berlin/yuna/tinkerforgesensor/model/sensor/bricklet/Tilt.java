@@ -14,7 +14,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
  * Detects inclination of Bricklet (tilt switch open/closed)
  * <b>Values</b>
  * <br />TILT[012] = closed/open/vibrating
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Tilt.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Tilt.html">Official documentation</a>
  */
 public class Tilt extends Sensor<BrickletTilt> {
 

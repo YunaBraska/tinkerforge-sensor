@@ -31,7 +31,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
- * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer_V2.html">Official doku</a></li>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer_V2.html">Official documentation</a></li>
  * </ul>
  */
 public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {

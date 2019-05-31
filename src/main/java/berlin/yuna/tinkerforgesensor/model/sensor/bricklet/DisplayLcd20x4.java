@@ -1,11 +1,13 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
@@ -15,22 +17,52 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * 20x4 character alphanumeric display with blue backlight
- * <b>Values</b>
- * BUTTON_PRESSED 0/1
- * BUTTON [10, 20, 30, 40] Released
- * BUTTON [11, 21, 31, 41] Pressed
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/LCD_20x4.html">Official doku</a>
+ * <h3>{@link DisplayLcd20x4}</h3>
+ * <i>20x4 character alphanumeric display with blue backlight</i>
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#BUTTON} [10, 20, 30, 40] = Released</li>
+ * <li>{@link ValueType#BUTTON} [11, 21, 31, 41] = Pressed</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/LCD_20x4.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Sending text to display</h6>
+ * <code>
+ * display.send("MyText");
+ * </code>
+ * <h6>Sending text to specific line</h6>
+ * <code>
+ * display.send(2, "MyText");
+ * </code>
+ * <h6>Sending text to specific line and position</h6>
+ * <code>
+ * display.send(2, 2, "MyText");
+ * </code>
+ * <h6>Sending text with new line</h6>
+ * <code>
+ * display.send("Line 1 \n text 2");
+ * </code>
+ * <h6>Dynamic space</h6>
+ * <code>
+ * display.send("${s} TextMiddle ${s}");
+ * </code>
+ * <h6>Center text</h6>
+ * <code>
+ * display.send(true, "MyText");
+ * </code>
+ * <h6>Clear display</h6>
+ * <code>
+ * display.send(true);
+ * </code>
  */
 public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
-    public static final String DISPLAY_LINE_ONE = "${0}";
-    public static final String DISPLAY_LINE_TWO = "${1}";
-    public static final String DISPLAY_LINE_THREE = "${2}";
-    public static final String DISPLAY_LINE_FOUR = "${3}";
-    public static final String DISPLAY_CLEAR = "${clear}";
-    public static final String DISPLAY_DYNAMIC_SPACE = "${space}";
-    private static final String DISPLAY_SPLIT_LINE_REGEX = "(\\n|(<br\\s*/*>))";
+    public static final String DYNAMIC_SPACE = "${s}";
+    private static final String SPLIT_LINE = System.lineSeparator();
 
     public DisplayLcd20x4(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletLCD20x4) device, uid, false);
@@ -49,33 +81,24 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         return this;
     }
 
-    /**
-     * @param value <br /> Will print everything from input using {@link String#valueOf(Object)} <- auto line break if input is too long
-     *              <br /> new line = \n {@link DisplayLcd20x4#DISPLAY_SPLIT_LINE_REGEX}
-     *              <br /> line number =  {@link DisplayLcd20x4#DISPLAY_LINE_ONE} {@link DisplayLcd20x4#DISPLAY_LINE_TWO} {@link DisplayLcd20x4#DISPLAY_LINE_THREE} {@link DisplayLcd20x4#DISPLAY_LINE_FOUR}
-     *              <br /> Dynamic space = {@link DisplayLcd20x4#DISPLAY_DYNAMIC_SPACE}
-     *              <br /> Clear display = {@link DisplayLcd20x4#DISPLAY_CLEAR}
-     * @return {@link Sensor}
-     */
+    @Override
+    public Sensor<BrickletLCD20x4> send(final Object... values) {
+        final String text = prepareText(values);
+        final int posX = preparePosX(values);
+        final int posY = preparePosY(values);
+        final boolean center = prepareCenter(values);
+        prepareClear(values);
+
+        if (text != null && !text.trim().isEmpty()) {
+            writeLines(posX, posY, text, center);
+        }
+        sendRest(values);
+        return this;
+    }
+
     @Override
     public Sensor<BrickletLCD20x4> send(final Object value) {
-        try {
-            String text;
-            if (value instanceof String) {
-                text = (String) value;
-            } else {
-                text = String.valueOf(value);
-            }
-            final int y = 0;
-            if (text != null && text.startsWith(DISPLAY_CLEAR)) {
-                device.clearDisplay();
-                text = text.substring(DISPLAY_CLEAR.length());
-            }
-            writeLines(y, device, text);
-        } catch (TimeoutException | NotConnectedException ignored) {
-            sendEvent(DEVICE_TIMEOUT, 404L);
-        }
-        return this;
+        return send(new Object[]{value});
     }
 
     @Override
@@ -102,64 +125,121 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         try {
             this.ledAdditionalOn();
             for (int i = 0; i < 7; i++) {
-                send(DISPLAY_LINE_TWO + DISPLAY_DYNAMIC_SPACE + "HOWDY [" + i + "]" + DISPLAY_DYNAMIC_SPACE);
-                send(DISPLAY_LINE_THREE + DISPLAY_DYNAMIC_SPACE + UUID.randomUUID() + DISPLAY_DYNAMIC_SPACE);
+                send(true, "HOWDY [" + i + "]");
+                send(1, DYNAMIC_SPACE + UUID.randomUUID() + DYNAMIC_SPACE);
                 Thread.sleep(128);
             }
-            send(DISPLAY_CLEAR);
+            send(true);
             this.ledAdditionalOff();
         } catch (Exception ignore) {
         }
         return this;
     }
 
-    private static void writeLines(final int posY, final BrickletLCD20x4 device, final String text) throws TimeoutException, NotConnectedException {
-        if (text != null && !text.isEmpty()) {
-            int y = posY;
-            String leftOverText = "";
-            final String[] lines = text.split(DISPLAY_SPLIT_LINE_REGEX);
-            for (String line : lines) {
-                if (y > 3) {
-                    break;
-                }
-                if (line.startsWith(DISPLAY_LINE_ONE)) {
-                    y = 0;
-                    line = line.substring(DISPLAY_LINE_ONE.length());
-                } else if (line.startsWith(DISPLAY_LINE_TWO)) {
-                    y = 1;
-                    line = line.substring(DISPLAY_LINE_TWO.length());
-                } else if (line.startsWith(DISPLAY_LINE_THREE)) {
-                    y = 2;
-                    line = line.substring(DISPLAY_LINE_THREE.length());
-                } else if (line.startsWith(DISPLAY_LINE_FOUR)) {
-                    y = 3;
-                    line = line.substring(DISPLAY_LINE_FOUR.length());
-                }
-                line = spaceUp(line);
-                line += leftOverText;
-                leftOverText = "";
-                if (line.length() > 20) {
-                    leftOverText = line.substring(20);
-                    line = line.substring(0, 20);
-                }
+    private String sendRest(final Object... values) {
+        if (values.length >= 1 && values[0] instanceof String) {
+            send(Arrays.copyOfRange(values, 1, values.length));
+        } else if (values.length >= 2 && values[1] instanceof String) {
+            send(Arrays.copyOfRange(values, 2, values.length));
+        } else if (values.length >= 3 && values[2] instanceof String) {
+            send(Arrays.copyOfRange(values, 3, values.length));
+        }
+        return null;
+    }
 
-                line = utf16ToKS0066U(line);
+    private String prepareText(final Object... values) {
+        if (values.length >= 1 && values[0] instanceof String) {
+            return (String) values[0];
+        } else if (values.length >= 2 && values[1] instanceof String) {
+            return (String) values[1];
+        } else if (values.length >= 3 && values[2] instanceof String) {
+            return (String) values[2];
+        }
+        return null;
+    }
 
-//                console("[%s] [%s] [%s]", DisplayLcd20x4.class.getSimpleName(), y, line);
-                device.writeLine((short) y, (short) 0, line);
-                y++;
+    private int preparePosX(final Object... values) {
+        if (values.length >= 2 && values[1] instanceof Number) {
+            final int preNumber = ((Number) values[1]).intValue();
+            return (preNumber >= 1 && preNumber <= 20 ? preNumber : 0);
+        }
+        return 0;
+    }
+
+    private int preparePosY(final Object... values) {
+        if (values.length >= 1 && values[0] instanceof Number) {
+            final int preNumber = ((Number) values[0]).intValue();
+            return (preNumber >= 0 && preNumber <= 3 ? preNumber : 0);
+        }
+        return 0;
+    }
+
+    private boolean prepareCenter(final Object... values) {
+        return (values.length >= 2 && values[0] instanceof Boolean);
+    }
+
+    private void prepareClear(final Object... values) {
+        if (values.length == 1 && values[0] instanceof Boolean) {
+            clearDisplay();
+        }
+    }
+
+    private Sensor<BrickletLCD20x4> clearDisplay() {
+        try {
+            device.clearDisplay();
+        } catch (TimeoutException | NotConnectedException e) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    private void writeLines(final int posX, final int posY, final String text, final boolean center) {
+        int y = posY;
+        final String[] lines = text.split(SPLIT_LINE);
+
+        String leftOverText = "";
+        for (String line : lines) {
+            line += leftOverText;
+            line = spaceUp(line);
+            leftOverText = "";
+            if (line.length() > 20) {
+                leftOverText = line.substring(20);
+                line = line.substring(0, 20);
+            } else if (center) {
+                line = centerLine(line);
             }
-            writeLines(y, device, leftOverText);
+            sentToDisplay((short) posX, (short) y, utf16ToKS0066U(line));
+            y++;
+        }
+    }
+
+    private String centerLine(final String line) {
+        final StringBuilder stringBuilder = new StringBuilder(line);
+        final int spaces = (20 - line.length()) / 2;
+        for (int i = 0; i < spaces && line.length() < 20; i++) {
+            stringBuilder.insert(0, " ");
+        }
+        for (int i = 0; i < spaces && line.length() < 20; i++) {
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    private void sentToDisplay(final short x, final short y, final String line) {
+        try {
+            device.writeLine(y, x, line);
+        } catch (TimeoutException | NotConnectedException e) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }
 
     private static String spaceUp(final String line) {
         String text = line;
-        if (text.contains(DISPLAY_DYNAMIC_SPACE)) {
+        if (text.contains(DYNAMIC_SPACE)) {
             int spaceUps;
-            while ((spaceUps = ("splitStart" + text + "splitEnd").split("\\$\\{space}").length - 1) > 0) {
-                final int length = text.length() - ((DISPLAY_DYNAMIC_SPACE).length() * spaceUps);
-                text = text.replaceFirst("\\$\\{space}", spaces((20 - length) / spaceUps));
+            while ((spaceUps = ("splitStart" + text + "splitEnd").split("\\$\\{s}").length - 1) > 0) {
+                final int length = text.length() - ((DYNAMIC_SPACE).length() * spaceUps);
+                text = text.replaceFirst("\\$\\{s}", spaces((20 - length) / spaceUps));
             }
         }
         return text;

@@ -13,7 +13,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY
  * Measures sound intensity
  * <b>Values</b>
  * SOUND_DECIBEL[db] = n / 10.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Sound_Intensity.html">Official doku</a>
+ * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Sound_Intensity.html">Official documentation</a>
  */
 public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 

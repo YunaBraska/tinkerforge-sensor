@@ -12,6 +12,10 @@ import java.util.UUID;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
@@ -56,7 +60,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
     private BrickletLCD128x64.DisplayConfiguration config;
 
     public DisplayLcd128x64(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletLCD128x64) device, uid, false);
+        super((BrickletLCD128x64) device, uid, true);
     }
 
     @Override
@@ -131,6 +135,19 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
 
     @Override
     public Sensor<BrickletLCD128x64> ledStatus(final Integer value) {
+        try {
+            if (value == LED_STATUS_OFF.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
+            } else if (value == LED_STATUS_ON.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
+            } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
+            } else if (value == LED_STATUS.bit) {
+                device.setStatusLEDConfig((short) LED_STATUS.bit);
+            }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 
@@ -154,7 +171,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
         try {
             this.ledAdditionalOn();
             for (int i = 0; i < 7; i++) {
-                send("H ${s} O ${s} W ${s} D ${s} Y $[" + i + "]");
+                send("H ${s} O ${s} W ${s} D ${s} Y [" + i + "]");
                 send(DYNAMIC_SPACE + UUID.randomUUID() + DYNAMIC_SPACE, 0, 1);
                 Thread.sleep(128);
             }

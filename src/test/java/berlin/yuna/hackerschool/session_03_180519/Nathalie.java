@@ -24,30 +24,6 @@ public class Nathalie extends Helper {
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
         stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
-
-        loop("DisplayTest1", run -> {
-            final Sensor display = stack.sensors().displayLcd128x64();
-            display.ledAdditionalOn();
-            display.send(true,
-                    "Line1 " + time() + " \n Line2",
-                    "10:2", 10, 2,
-                    "Line3", 0, 2,
-                    "${s}Line4 space${s}", 0, 3,
-                    "Line5 center", true, 4,
-                    "Line6 78901234567890 Line7 890", 0, 4);
-        });
-
-        loop("DisplayTest2", run -> {
-            final Sensor display = stack.sensors().displayLcd20x4();
-            display.ledAdditionalOn();
-            display.send(true,
-                    "Line1 " + time() + " \n Line2",
-                    "10:2", 10, 2,
-                    "Line3", 0, 2,
-                    "${s}Line4 space${s}", 0, 3,
-                    "Line5 center", true, 4,
-                    "Line6 78901234567890 Line7 890", 0, 4);
-        });
     }
 
     //VARIABLES

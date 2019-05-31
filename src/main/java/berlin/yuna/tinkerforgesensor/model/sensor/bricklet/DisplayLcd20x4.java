@@ -147,7 +147,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         try {
             this.ledAdditionalOn();
             for (int i = 0; i < 7; i++) {
-                send("H ${s} O ${s} W ${s} D ${s} Y $[" + i + "]");
+                send("H ${s} O ${s} W ${s} D ${s} Y [" + i + "]");
                 send(DYNAMIC_SPACE + UUID.randomUUID() + DYNAMIC_SPACE, 0, 1);
                 Thread.sleep(128);
             }

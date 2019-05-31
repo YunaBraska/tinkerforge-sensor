@@ -30,6 +30,10 @@ public class AllStatusLed_Loop_Example extends Helper {
                 sleep(128);
             }
         }
+
+        for (Sensor sensor : stack.sensors()) {
+            sensor.ledAdditionalOff();
+        }
         return true;
     }
 }

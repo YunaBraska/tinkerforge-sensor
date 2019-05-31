@@ -2,7 +2,6 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
-import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.Device;
@@ -25,7 +24,24 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_OFFSET;
 
 /**
- * Measures Sound Pressure Level in dB(A/B/C/D/Z)
+ * <h3>{@link SoundPressure}</h3><br />
+ * <i>Measures Sound Pressure Level in dB(A/B/C/D/Z)</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#SOUND_INTENSITY} [x / 10 = db]</li>
+ * <li>{@link ValueType#SOUND_SPECTRUM_OFFSET}</li>
+ * <li>{@link ValueType#SOUND_SPECTRUM_LENGTH}</li>
+ * <li>{@link ValueType#SOUND_SPECTRUM} [x = x[]]</li>
+ * <li>{@link ValueType#SOUND_SPECTRUM_CHUNK} [x = x[]]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc//Hardware/Bricklets/Sound_Pressure_Level.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting sound spectrum examples</h6>
+ * <code>stack.values().listSoundSpectrum();</code>
+ * <code>stack.values().listSoundSpectrumChunk();</code>
  */
 public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
 
@@ -46,8 +62,6 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
         return this;
     }
 
-    //  create new getSpectrum value method
-    //  create new spectrumChunkOffset value method
     private void sendSpectrum(final ValueType valueType, final int[] values) {
         valueMap().put(valueType, new RollingList<>(Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList())));
     }

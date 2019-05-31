@@ -49,6 +49,10 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <code>display.send("Line4 posX=8 font=2", 8, 3, 2);</code>
  * <h6>Send text with dynamic spaces between)</h6>
  * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
+ * <h6>LED Brightness (2-100)</h6>
+ * <code>display.ledAdditional(7);</code>
+ * <h6>Display ON</h6>
+ * <code>display.ledAdditionalOn;</code>
  */
 
 public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
@@ -158,6 +162,8 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
                 config.backlight = 80;
             } else if (value == LED_ADDITIONAL_OFF.bit) {
                 config.backlight = 0;
+            } else {
+                config.backlight = (short) (value.shortValue() - 2);
             }
             device.setDisplayConfiguration(config.contrast, config.backlight, config.invert, config.automaticDraw);
         } catch (TimeoutException | NotConnectedException ignored) {

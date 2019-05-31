@@ -17,9 +17,7 @@ import static java.lang.String.format;
  * sensors.isPresent();
  * </code>
  * <h6>All methods wont do anything</h6>
- * <code>
- * sensors.send();
- * </code>
+ * <code>sensors.send();</code>
  */
 public class Default extends Sensor<DummyDevice> {
 

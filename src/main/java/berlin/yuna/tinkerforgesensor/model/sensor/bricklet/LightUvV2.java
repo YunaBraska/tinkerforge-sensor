@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletUVLightV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -17,12 +18,27 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UVA;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UVB;
 
 /**
- * Measures UV-A, UV-B and UV index
- * <b>Values</b>
- * LIGHT_UV[index] = n / 10.0
- * LIGHT_UVA[mW/m²] = n / 10.0
- * LIGHT_UVB[mW/m²] = n / 10.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light_V2.html">Official documentation</a>
+ * <h3>{@link LightUvV2}</h3><br />
+ * <i>Measures UV-A, UV-B and UV index</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#LIGHT_UV} [x / 10.0 = index]</li>
+ * <li>{@link ValueType#LIGHT_UVA} [x / 10.0 = mW/m²]</li>
+ * <li>{@link ValueType#LIGHT_UVB} [x / 10.0 = mW/m²]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html_V2">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting lightUv examples</h6>
+ * <code>
+ * stack.values().lightUv();
+ * stack.values().lightUv_Avg();
+ * stack.values().lightUv_Min();
+ * stack.values().lightUv_Max();
+ * stack.values().lightUv_Sum();
+ * </code>
  */
 public class LightUvV2 extends Sensor<BrickletUVLightV2> {
 

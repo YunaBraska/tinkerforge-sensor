@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -16,11 +17,28 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 /**
- * Four 7-segment displays with switchable colon
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Segment_Display_4x7.html">Official documentation</a>
- * <b>Technical help</b>
- * <br /><a href="https://en.wikichip.org/wiki/seven-segment_display/representing_letters">Representing Letters</a>
- * <br /><a href="https://www.systutorials.com/4670/ascii-table-and-ascii-code">ascii-table-and-ascii-code</a>
+ * <h3>{@link DisplaySegment}</h3><br />
+ * <i>Four 7-segment displays with switchable colon</i><br />
+ *
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official documentation</a></li>
+ * <li><a href="https://en.wikichip.org/wiki/seven-segment_display/representing_letters">Representing Letters</a></li>
+ * <li><a href="https://www.systutorials.com/4670/ascii-table-and-ascii-code">ascii-table-and-ascii-code">ascii-table-and-ascii-code</a></li>
+ * </ul>
+ * <h6>Send text to display</h6>
+ * <code>display.send("GIRL");</code>
+ * <h6>Send current time</h6>
+ * <i>(use {@link TemporalAccessor})</i><br/>
+ * <code>display.send(LocalDateTime#now());</code>
+ * <h6>Send own time format</h6>
+ * <i>(use {@link DateTimeFormatter})</i><br/>
+ * <code>display.send(DateTimeFormatter.ofPattern("HH:mm"));</code><
+ * <h6>LED Brightness (2-9)</h6>
+ * <code>display.ledAdditional(7);</code>
+ * <h6>Display ON</h6>
+ * <code>display.ledAdditionalOn;</code>
+ *
  */
 public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
 
@@ -38,12 +56,6 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
         return this;
     }
 
-    /**
-     * @param value <br /> [String] print values on display
-     *              <br /> [TemporalAccessor] prints the current time like {@link LocalDateTime#`now()}
-     *              <br /> [DateTimeFormatter] sets the time format default is "DateTimeFormatter.ofPattern("HH:mm")" {@link DisplaySegment#DATE_TIME_FORMAT}
-     * @return {@link Sensor}
-     */
     @Override
     public Sensor<BrickletSegmentDisplay4x7> send(final Object value) {
         try {
@@ -79,11 +91,6 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
         return this;
     }
 
-    /**
-     * @param value <br /> [0/1] LED ON/OFF
-     *              <br /> [2 ... 9] Brightness
-     * @return {@link Sensor}
-     */
     @Override
     public Sensor<BrickletSegmentDisplay4x7> ledAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {

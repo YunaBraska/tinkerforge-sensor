@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletMotionDetectorV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -14,10 +15,19 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED;
 
 /**
- * Passive infrared (PIR) motion sensor, 12m range with 120° angle
- * <b>Values</b>
- * MOTION_DETECTED = 0/1
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html">Official documentation</a>
+ * <h3>{@link MotionDetectorV2}</h3><br />
+ * <i>Passive infrared (PIR) motion sensor, 12m range with 120° angle</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#MOTION_DETECTED} [0/1 cycleOff/detect]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting motion detected example</h6>
+ * <code>stack.values().motionDetected();</code>
  */
 public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
 

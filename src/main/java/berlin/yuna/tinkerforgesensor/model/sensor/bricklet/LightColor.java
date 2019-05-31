@@ -2,6 +2,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletColor;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -20,15 +21,32 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_TEMPERATU
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * Measures color (RGB send), illuminance and color temperature
- * <b>Values</b>
- * <br />COLOR[{@link Color}] = n
- * <br />COLOR_R[red] = n
- * <br />COLOR_G[green] = n
- * <br />COLOR_B[blue] = n
- * <br />COLOR_LUX[lx] = n
- * <br />COLOR_TEMPERATURE[] = n
- * <br /><a https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html">Official documentation</a>
+ * <h3>{@link LightColor}</h3><br />
+ * <i>Measures color (RGB send), illuminance and color temperature</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#COLOR}</li>
+ * <li>{@link ValueType#COLOR_R}</li>
+ * <li>{@link ValueType#COLOR_G}</li>
+ * <li>{@link ValueType#COLOR_B}</li>
+ * <li>{@link ValueType#COLOR_LUX}</li>
+ * <li>{@link ValueType#COLOR_TEMPERATURE}</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Turn on flash LED</h6>
+ * <code>color.ledAdditionalOn();</code>
+ * <h6>Getting color examples</h6>
+ * <code>
+ * stack.values().color();
+ * stack.values().color_Avg();
+ * stack.values().color_Min();
+ * stack.values().color_Max();
+ * stack.values().color_Sum();
+ * </code>
  */
 public class LightColor extends Sensor<BrickletColor> {
 

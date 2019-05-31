@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletRotaryEncoderV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -15,11 +16,20 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
 
 /**
- * Measures distance up to 150cm with infrared light
- * <b>Values</b>
- * <br />ROTARY[count] = n
- * <br />BUTTON_PRESSED/BUTTON_RELEASED
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Encoder_V2.html">Official documentation</a>
+ * <h3>{@link RotaryV2}</h3><br />
+ * <i>360° rotary encoder with push-button</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#ROTARY} [x = number]</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Encoder_V2.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting rotary number example</h6>
+ * <code>stack.values().rotary();</code>
  */
 public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
 

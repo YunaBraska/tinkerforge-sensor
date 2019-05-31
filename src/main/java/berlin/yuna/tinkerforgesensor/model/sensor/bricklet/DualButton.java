@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletDualButtonV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -18,14 +19,31 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * Two tactile buttons with built-in blue LEDs
- * <b>Values</b>
- * BUTTON_PRESSED 0/1
- * BUTTON 1 10 Released
- * BUTTON 1 11 Pressed
- * BUTTON 2 20 Released
- * BUTTON 2 21 Pressed
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official documentation</a>
+ * <h3>{@link DualButton}</h3>
+ * <i>Two tactile buttons with built-in blue LEDs</i>
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#BUTTON} [10, 20] = Released</li>
+ * <li>{@link ValueType#BUTTON} [11, 21] = Pressed</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Dual_Button.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example</h6>
+ * <code>stack.values().button();</code>
+ * <h6>Getting button pressed example</h6>
+ * <code>stack.values().buttonPressed();</code>
+ * <h6>Set LEDs on</h6>
+ * <code>button.ledAdditionalOn();</code>
+ * <h6>Set LEDs off</h6>
+ * <code>button.ledAdditionalOff();</code>
+ * <h6>Set LEDs active on press</h6>
+ * <code>button.ledAdditionalStatus();</code>
+ * <h6>Set LEDs active on release</h6>
+ * <code>button.ledAdditionalHeartbeat();</code>
  */
 public class DualButton extends Sensor<BrickletDualButtonV2> {
 

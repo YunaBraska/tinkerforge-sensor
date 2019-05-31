@@ -25,12 +25,14 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#BUTTON_PRESSED} [0/1]</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm">Official documentation</a></li>
  * </ul>
+ * <h6>Getting button pressed example</h6>
+ * <code>stack.values().buttonPressed();</code>
  */
 public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 

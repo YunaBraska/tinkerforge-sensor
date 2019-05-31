@@ -43,6 +43,12 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <code>display.send("Line3 posX=5", 4, 2);</code>
  * <h6>Send text with dynamic spaces between)</h6>
  * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
+ * <h6>Display ON</h6>
+ * <code>display.ledAdditionalOn;</code>
+ * <h6>Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example</h6>
+ * <code>stack.values().button();</code>
+ * <h6>Getting button pressed example</h6>
+ * <code>stack.values().buttonPressed();</code>
  */
 public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 

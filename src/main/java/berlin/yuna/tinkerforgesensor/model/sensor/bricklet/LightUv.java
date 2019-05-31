@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletUVLight;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -11,10 +12,25 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
 
 /**
- * Measures UV light
- * <b>Values</b>
- * LIGHT_UV[index] = n / 10.0
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html">Official documentation</a>
+ * <h3>{@link LightUv}</h3><br />
+ * <i>Measures ambient light up to 64000lux</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#LIGHT_UV} [x / 10.0 = index]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting lightUv examples</h6>
+ * <code>
+ * stack.values().lightUv();
+ * stack.values().lightUv_Avg();
+ * stack.values().lightUv_Min();
+ * stack.values().lightUv_Max();
+ * stack.values().lightUv_Sum();
+ * </code>
  */
 public class LightUv extends Sensor<BrickletUVLight> {
 

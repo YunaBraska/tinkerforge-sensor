@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -10,10 +11,28 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * Creates beep with configurable frequency
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Piezo_Speaker.html">Official documentation</a>
- * <b>Technical help</b>
- * <br /><a href="https://morsecode.scphillips.com/translator.html">Morse generator</a>
+ * <h3>{@link Speaker}</h3><br />
+ * <i>Creates beep with configurable frequency</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#BEEP_ACTIVE} [1 = active]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Piezo_Speaker.html">Official documentation</a></li>
+ * <li><a href="https://morsecode.scphillips.com/translator.html">Morse generator</a></li>
+ * </ul>
+ * <h6>Send 1 second beep</h6>
+ * <code>speaker.send(1000)</code>
+ * <h6>Send 2 second beep with frequency (min 585 - max 7100)</h6>
+ * <code>speaker.send(1000, 2000)</code>
+ * <h6>Send morse</h6>
+ * <code>speaker.send("... --- ...")</code>
+ * <h6>Send morse with frequency (min 585 - max 7100)</h6>
+ * <code>speaker.send("... --- ...", 3000)</code>
+ * <h6>Wait until sound is finished</h6>
+ * <code>speaker.send(256, 4000, true)</code>
  */
 public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 
@@ -31,17 +50,6 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         return this;
     }
 
-    /**
-     * @param values <br /> Beep = duration
-     *               <br /> Beep = duration, frequency
-     *               <br /> Beep = duration, frequency, waitTime
-     *               <br /> Beep = duration, frequency, waitBoolean
-     *               <br /> Morse = "... --- ..."
-     *               <br /> Morse = "... --- ...", frequency
-     *               <br /> Morse = "... --- ...", frequency, waitBoolean
-     *               <br /> Frequency device limits = [min 585 - max 7100]
-     * @return {@link Sensor}
-     */
     @Override
     public Sensor<BrickletPiezoSpeaker> send(final Object... values) {
         if (values != null) {
@@ -58,12 +66,6 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         return this;
     }
 
-    /**
-     * @param value <br /> Beep time = n
-     *              <br /> Morse = "... --- ..."
-     *              <br /> Frequency = number with prefix "f" [min 585 - max 7100]
-     * @return {@link Sensor}
-     */
     public Sensor<BrickletPiezoSpeaker> send(final Object value) {
         return send(value, frequency);
     }

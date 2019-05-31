@@ -25,14 +25,22 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  * <h3>Values</h3>
  * <ul>
  * <li>{@link ValueType#IAQ_INDEX} [x = IAQ]</li>
- * <li>{@link ValueType#TEMPERATURE} [x / 1000.0 = mbar]</li>
- * <li>{@link ValueType#HUMIDITY} [x / 100.0 = °C]</li>
- * <li>{@link ValueType#AIR_PRESSURE} [x / 100.0 = %RH]</li>
+ * <li>{@link ValueType#TEMPERATURE} [x / 100.0 = °C]</li>
+ * <li>{@link ValueType#HUMIDITY} [x / 100.0 = %RH]</li>
+ * <li>{@link ValueType#AIR_PRESSURE} [x / 1000.0 = mbar]</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official documentation</a></li>
  * </ul>
+ * <h6>Getting air pressure examples</h6>
+ * <code>
+ * stack.values().airPressure();
+ * stack.values().airPressure_Avg();
+ * stack.values().airPressure_Min();
+ * stack.values().airPressure_Max();
+ * stack.values().airPressure_Sum();
+ * </code>
  */
 public class AirQuality extends Sensor<BrickletAirQuality> {
 

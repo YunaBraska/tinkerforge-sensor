@@ -25,6 +25,14 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <ul>
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.htm">Official documentation</a></li>
  * </ul>
+ * <h6>Getting air pressure examples</h6>
+ * <code>
+ * stack.values().airPressure();
+ * stack.values().airPressure_Avg();
+ * stack.values().airPressure_Min();
+ * stack.values().airPressure_Max();
+ * stack.values().airPressure_Sum();
+ * </code>
  */
 public class Barometer extends Sensor<BrickletBarometer> {
 

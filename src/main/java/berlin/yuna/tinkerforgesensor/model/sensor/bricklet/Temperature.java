@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletTemperature;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -11,9 +12,25 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 /**
- * Measures ambient temperature with 0.5°C accuracy
- * <b>Values</b>
- * TEMPERATURE[°C] = n / 100.0
+ * <h3>{@link Temperature}</h3><br />
+ * <i>Measures ambient temperature with 0.5°C accuracy</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#TEMPERATURE} [x / 100.0 = °C]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Temperature.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting temperature examples</h6>
+ * <code>
+ * stack.values().temperature();
+ * stack.values().temperature_Avg();
+ * stack.values().temperature_Min();
+ * stack.values().temperature_Max();
+ * stack.values().temperature_Sum();
+ * </code>
  */
 public class Temperature extends Sensor<BrickletTemperature> {
 

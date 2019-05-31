@@ -33,6 +33,14 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <ul>
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer_V2.html">Official documentation</a></li>
  * </ul>
+ * <h6>Getting accelerationX examples</h6>
+ * <code>
+ * stack.values().accelerationX();
+ * stack.values().accelerationX_Avg();
+ * stack.values().accelerationX_Min();
+ * stack.values().accelerationX_Max();
+ * stack.values().accelerationX_Sum();
+ * </code>
  */
 public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
 

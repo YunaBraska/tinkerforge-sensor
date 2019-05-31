@@ -11,8 +11,22 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStat
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * 16-channel digital input/output
- * <br /><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16.html">Official documentation</a>
+ * <h3>{@link IO16}</h3><br />
+ * <i>16-channel digital input/output</i><br />
+ *
+ * <h3>Values</h3>
+ * <i>input values coming soon</i><br />
+ *
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Set all LEDs on</h6>
+ * <code>io16.ledAdditionalOn();</code>
+ * <h6>Turn on LED 4</h6>
+ * <code>io16.send(4);</code>
+ * <h6>Turn off LED 12</h6>
+ * <code>io16.send(-12);</code>
  */
 public class IO16 extends Sensor<BrickletIO16> {
 
@@ -26,14 +40,6 @@ public class IO16 extends Sensor<BrickletIO16> {
         return this;
     }
 
-    /**
-     * <br /> [true/false] = all LEDs on/off
-     * <br /> [0] = nothing
-     * <br /> [1 ... 17] turn on 16 LED ports
-     * <br /> [1 ... -17] turn off 16 LED ports
-     * Todo: [1000] = 3V output
-     * Todo: [2000] = 5V output
-     */
     @Override
     public Sensor<BrickletIO16> send(final Object value) {
         try {
@@ -61,15 +67,6 @@ public class IO16 extends Sensor<BrickletIO16> {
         return this;
     }
 
-    /**
-     * <br /> {@link berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType#LED_ADDITIONAL_ON} / {@link berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType#LED_ADDITIONAL_OFF} = all LEDs on/off
-     * <br /> [0] = all LEDs off
-     * <br /> [1] = all LEDs on
-     * <br /> [2 ... 18] turn on 16 LED ports
-     * <br /> [2 ... -18] turn off 16 LED ports
-     * Todo: [1000] = 3V output
-     * Todo: [2000] = 5V output
-     */
     @Override
     public Sensor<BrickletIO16> ledAdditional(final Integer value) {
         try {

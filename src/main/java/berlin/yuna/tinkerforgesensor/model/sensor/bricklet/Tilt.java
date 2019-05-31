@@ -1,20 +1,29 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletTilt;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
 
 /**
- * Detects inclination of Bricklet (tilt switch open/closed)
- * <b>Values</b>
- * <br />TILT[012] = closed/open/vibrating
- * <br /><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Tilt.html">Official documentation</a>
+ * <h3>{@link Tilt}</h3><br />
+ * <i>Detects inclination of Bricklet (tilt switch open/closed)</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#TILT} [0/1/2 = closed/open/vibrating]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Tilt.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting tilt examples</h6>
+ * <code>stack.values().tilt();</code>
  */
 public class Tilt extends Sensor<BrickletTilt> {
 
@@ -49,7 +58,7 @@ public class Tilt extends Sensor<BrickletTilt> {
         try {
             if (milliseconds < 1) {
                 device.disableTiltStateCallback();
-                sendEvent(TEMPERATURE, (long) (device.getTiltState()));
+                sendEvent(TILT, (long) (device.getTiltState()));
             } else {
                 device.enableTiltStateCallback();
             }

@@ -38,7 +38,8 @@
 * [Tilt](#tilt)
 ---
 
-### [Accelerometer](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Accelerometer.java)
+###### Accelerometer
+### [AccelerometerV2](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/AccelerometerV2.java)
 
 *Measures acceleration in three axis*
 
@@ -49,7 +50,7 @@
 * [ValueType#ACCELERATION_Z](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)
 ### Technical Info
 
-* [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer.html)
+* [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer_V2.html)
 --- 
 
 ### [AirQuality](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/AirQuality.java)
@@ -67,7 +68,8 @@
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html)
 --- 
 
-### [Barometer](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Barometer.java)
+###### Barometer
+### [BarometerV2](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/BarometerV2.java)
 
 *Measures air pressure and altitude changes*
 
@@ -75,6 +77,7 @@
 
 * [ValueType#AIR_PRESSURE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = mbar]
 * [ValueType#ALTITUDE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 1000.0 = m]
+* [ValueType#TEMPERATURE](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) [x / 100.0 = °C]
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.htm)
@@ -193,11 +196,12 @@ display.send(true);
 /
 --- 
 
+###### DistanceIR
  Measures distance up to 150cm with infrared light
  **Values**
 DISTANCE[cm] = n / 10.0
  
-[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_IR.html)
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_IR_V2.html)
 --- 
 
  Measures distance between 2cm and 400cm with ultrasound
@@ -218,20 +222,23 @@ DISTANCE[cm] = n / 10.0
 [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html)
 --- 
 
+###### Humidity
  Measures relative humidity
  **Values**
  HUMIDITY[%RH] = n / 100.0
+ TEMPERATURE[°C] = n / 100.0
  
-[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Humidity.html)
+[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Humidity_V2.html)
 --- 
 
+###### IMU
  Full fledged AHRS with 9 degrees of freedom
-/
 --- 
 
+###### IO16
  16-channel digital input/output
  
-[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16.html)
+[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16_V2.html)
  [true/false] = all LEDs on/off
  
  [0] = nothing
@@ -242,7 +249,7 @@ DISTANCE[cm] = n / 10.0
  Todo: [1000] = 3V output
  Todo: [2000] = 5V output
 /
- [IO16#LED_ADDITIONAL_ON} / {@link berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/IO16.java) = all LEDs on/off
+ [IO16V2#LED_ADDITIONAL_ON} / {@link LedStatusType](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/IO16V2.java) = all LEDs on/off
  
  [0] = all LEDs off
  
@@ -256,10 +263,12 @@ DISTANCE[cm] = n / 10.0
 /
 --- 
 
- Measures ambient light up to 900lux
+###### LightAmbientV2
+###### LightAmbient
+ Measures ambient light up to 64000lux
  LIGHT_LUX[lx] = n / 100.0
  
-[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Ambient_Light.html)
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Ambient_Light.html_V3)
 --- 
 
  Measures color (RGB send), illuminance and color temperature
@@ -279,17 +288,21 @@ COLOR_TEMPERATURE[] = n
 [Official documentation]()
 --- 
 
- Measures UV light
+###### LightUv
+ Measures UV-A, UV-B and UV index
  **Values**
  LIGHT_UV[index] = n / 10.0
+ LIGHT_UVA[mW/m²] = n / 10.0
+ LIGHT_UVB[mW/m²] = n / 10.0
  
-[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html)
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light_V2.html)
 --- 
 
  Basis to build stacks and has 4 Bricklet ports
 --- 
 
- Passive infrared (PIR) motion sensor, 7m range with 100° angle
+###### MotionDetector
+ Passive infrared (PIR) motion sensor, 12m range with 120° angle
  **Values**
  MOTION_DETECTED = 0/1
  
@@ -347,7 +360,8 @@ BUTTON_PRESSED/BUTTON_RELEASED
 /
 --- 
 
- Measures ambient temperature with 0.5°C accuracy
+###### Temperature
+ Measures ambient temperature with 0.2°C accuracy
  **Values**
  TEMPERATURE[°C] = n / 100.0
 --- 

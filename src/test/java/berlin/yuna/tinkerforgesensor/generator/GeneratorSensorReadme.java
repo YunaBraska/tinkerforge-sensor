@@ -42,11 +42,18 @@ public class GeneratorSensorReadme {
                 final Class<? extends Sensor> sensor = sensorList.iterator().next();
                 final List<Class<? extends Sensor>> sensorVersions = getSensorVersions(sensor, sensorList);
 
-                final File sourceFile = new File(new File(projectDir, "src/main/java"), sensor.getTypeName().replace(".", File.separator) + ".java");
-                final Class<?> sensorClass = Class.forName(sensor.getTypeName());
+                final Class<?> sensorClass = Class.forName(sensorVersions.get(0).getTypeName());
+                final File sourceFile = new File(new File(projectDir, "src/main/java"), sensorClass.getTypeName().replace(".", File.separator) + ".java");
                 final String content = new String(Files.readAllBytes(sourceFile.toPath()));
 
-//                result.append(LINE_SEPARATOR).append("##").append(sensorClass.getSimpleName()).append(LINE_SEPARATOR);
+                //REMOVE SENSORS VARIANTS FROM LIST
+                for (Class<? extends Sensor> sensorVersion : sensorVersions) {
+                    sensorList.remove(sensorVersion);
+                    if (sensorClass != sensorVersion) {
+                        result.append(LINE_SEPARATOR).append("###### ").append(sensorVersion.getSimpleName());
+                    }
+                }
+
                 final Matcher matcher = PATTERN_COMMENT.matcher(content);
                 while (matcher.find()) {
                     final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", LINE_SEPARATOR);
@@ -54,11 +61,6 @@ public class GeneratorSensorReadme {
                 }
                 result.append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
 
-
-                //REMOVE SENSORS VARIANTS FROM LIST
-                for (Class<? extends Sensor> sensorVersion : sensorVersions) {
-                    sensorList.remove(sensorVersion);
-                }
 
             }
 

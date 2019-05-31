@@ -20,7 +20,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ACCELERATION_Z;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link Accelerometer}</h3><br />
+ * <h3>{@link AccelerometerV2}</h3><br />
  * <i>Measures acceleration in three axis</i><br />
  *
  * <h3>Values</h3>

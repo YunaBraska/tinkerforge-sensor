@@ -29,8 +29,16 @@ public class GeneratorSensorReadme {
 
         final File projectDir = new File(System.getProperty("user.dir"));
         final StringBuilder result = new StringBuilder();
-        while (!sensorList.isEmpty()) {
-            try {
+
+        try {
+            result.append(LINE_SEPARATOR).append("## Index").append(LINE_SEPARATOR);
+            for (Class<? extends Sensor> sensor : sensorList) {
+                final String className = Class.forName(sensor.getTypeName()).getSimpleName();
+                result.append("* [").append(className).append("](#").append(className.toLowerCase()).append(")").append(LINE_SEPARATOR);
+            }
+            result.append("---").append(LINE_SEPARATOR);
+
+            while (!sensorList.isEmpty()) {
                 final Class<? extends Sensor> sensor = sensorList.iterator().next();
                 final List<Class<? extends Sensor>> sensorVersions = getSensorVersions(sensor, sensorList);
 
@@ -38,25 +46,23 @@ public class GeneratorSensorReadme {
                 final Class<?> sensorClass = Class.forName(sensor.getTypeName());
                 final String content = new String(Files.readAllBytes(sourceFile.toPath()));
 
+                result.append(LINE_SEPARATOR).append("##").append(sensorClass.getSimpleName()).append(LINE_SEPARATOR);
                 final Matcher matcher = PATTERN_COMMENT.matcher(content);
                 while (matcher.find()) {
                     final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", LINE_SEPARATOR);
                     result.append(parseNodes(Jsoup.parse(block).select("body").get(0), LINE_SEPARATOR, sensorClass));
                 }
-                result.append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
+
 
                 //REMOVE SENSORS VARIANTS FROM LIST
                 for (Class<? extends Sensor> sensorVersion : sensorVersions) {
                     sensorList.remove(sensorVersion);
                 }
 
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
             }
-        }
-        try {
+
             Files.write(new File(projectDir, "SENSOR_README.md").toPath(), result.toString().getBytes());
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }

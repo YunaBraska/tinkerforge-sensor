@@ -1,4 +1,45 @@
 
+## Index
+* [Accelerometer](#accelerometer)
+* [AccelerometerV2](#accelerometerv2)
+* [AirQuality](#airquality)
+* [Barometer](#barometer)
+* [BarometerV2](#barometerv2)
+* [ButtonRGB](#buttonrgb)
+* [DC](#dc)
+* [Default](#default)
+* [DisplayLcd20x4](#displaylcd20x4)
+* [DisplaySegment](#displaysegment)
+* [DistanceIR](#distanceir)
+* [DistanceIRV2](#distanceirv2)
+* [DistanceUS](#distanceus)
+* [DualButton](#dualbutton)
+* [Humidity](#humidity)
+* [HumidityV2](#humidityv2)
+* [IMU](#imu)
+* [IMU2](#imu2)
+* [IO16](#io16)
+* [IO16V2](#io16v2)
+* [LightAmbient](#lightambient)
+* [LightAmbientV2](#lightambientv2)
+* [LightAmbientV3](#lightambientv3)
+* [LightColor](#lightcolor)
+* [LightUv](#lightuv)
+* [LightUvV2](#lightuvv2)
+* [Master](#master)
+* [MotionDetector](#motiondetector)
+* [MotionDetectorV2](#motiondetectorv2)
+* [RotaryV2](#rotaryv2)
+* [SoundIntensity](#soundintensity)
+* [SoundPressure](#soundpressure)
+* [Speaker](#speaker)
+* [Temperature](#temperature)
+* [TemperatureV2](#temperaturev2)
+* [Tilt](#tilt)
+---
+
+##Accelerometer
+
 ### [Accelerometer](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Accelerometer.java)
 
 *Measures acceleration in three axis*
@@ -11,7 +52,7 @@
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer.html)
----
+##AirQuality
 
 ### [AirQuality](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/AirQuality.java)
 
@@ -26,7 +67,7 @@
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html)
----
+##Barometer
 
 ### [Barometer](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Barometer.java)
 
@@ -39,7 +80,7 @@
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.htm)
----
+##ButtonRGB
 
 ### [ButtonRGB](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/ButtonRGB.java)
 
@@ -65,9 +106,9 @@ sensor.send(12367);
 sensor.send(true);
 ```
 
----
+##DC
 
----
+##Default
 
 ### [Default](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.java)
 
@@ -84,7 +125,7 @@ sensors.isPresent();
 sensors.send();
 ```
 
----
+##DisplayLcd20x4
 
 ### [DisplayLcd20x4](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplayLcd20x4.java)
 *20x4 character alphanumeric display with blue backlight*
@@ -130,3 +171,191 @@ display.send(true, "MyText");
 ```java
 display.send(true);
 ```
+
+##DisplaySegment
+
+ Four 7-segment displays with switchable colon
+ 
+[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Segment_Display_4x7.html)**Technical help**
+[Representing Letters](https://en.wikichip.org/wiki/seven-segment_display/representing_letters)
+[ascii-table-and-ascii-code](https://www.systutorials.com/4670/ascii-table-and-ascii-code)
+ @param value 
+ [String] print values on display
+              
+ [TemporalAccessor] prints the current time like [LocalDateTime#`now()](src/main/java/java/time/LocalDateTime.java)
+              
+ [DateTimeFormatter] sets the time format default is "DateTimeFormatter.ofPattern("HH:mm")" [DisplaySegment#DATE_TIME_FORMAT](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplaySegment.java)
+ @return [Sensor](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+/
+ @param value 
+ [0/1] LED ON/OFF
+              
+ [2 ... 9] Brightness
+ @return [Sensor](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+/
+##DistanceIR
+
+ Measures distance up to 150cm with infrared light
+ **Values**
+DISTANCE[cm] = n / 10.0
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_IR.html)
+##DistanceUS
+
+ Measures distance between 2cm and 400cm with ultrasound
+ **Values**
+DISTANCE[cm] = n / 10.0
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_US.html)
+##DualButton
+
+ Two tactile buttons with built-in blue LEDs
+ **Values**
+ BUTTON_PRESSED 0/1
+ BUTTON 1 10 Released
+ BUTTON 1 11 Pressed
+ BUTTON 2 20 Released
+ BUTTON 2 21 Pressed
+ 
+[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html)
+##Humidity
+
+ Measures relative humidity
+ **Values**
+ HUMIDITY[%RH] = n / 100.0
+ 
+[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Humidity.html)
+##IMU
+
+ Full fledged AHRS with 9 degrees of freedom
+/
+##IO16
+
+ 16-channel digital input/output
+ 
+[Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16.html)
+ [true/false] = all LEDs on/off
+ 
+ [0] = nothing
+ 
+ [1 ... 17] turn on 16 LED ports
+ 
+ [1 ... -17] turn off 16 LED ports
+ Todo: [1000] = 3V output
+ Todo: [2000] = 5V output
+/
+ [IO16#LED_ADDITIONAL_ON} / {@link berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/IO16.java) = all LEDs on/off
+ 
+ [0] = all LEDs off
+ 
+ [1] = all LEDs on
+ 
+ [2 ... 18] turn on 16 LED ports
+ 
+ [2 ... -18] turn off 16 LED ports
+ Todo: [1000] = 3V output
+ Todo: [2000] = 5V output
+/
+##LightAmbient
+
+ Measures ambient light up to 900lux
+ LIGHT_LUX[lx] = n / 100.0
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Ambient_Light.html)
+##LightColor
+
+ Measures color (RGB send), illuminance and color temperature
+ **Values**
+COLOR[[Color](src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)] = n
+ 
+COLOR_R[red] = n
+ 
+COLOR_G[green] = n
+ 
+COLOR_B[blue] = n
+ 
+COLOR_LUX[lx] = n
+ 
+COLOR_TEMPERATURE[] = n
+ 
+[Official documentation]()
+##LightUv
+
+ Measures UV light
+ **Values**
+ LIGHT_UV[index] = n / 10.0
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html)
+##Master
+
+ Basis to build stacks and has 4 Bricklet ports
+##MotionDetector
+
+ Passive infrared (PIR) motion sensor, 7m range with 100° angle
+ **Values**
+ MOTION_DETECTED = 0/1
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html)
+##RotaryV2
+
+ Measures distance up to 150cm with infrared light
+ **Values**
+ROTARY[count] = n
+ 
+BUTTON_PRESSED/BUTTON_RELEASED
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Encoder_V2.html)
+##SoundIntensity
+
+ Measures sound intensity
+ **Values**
+ SOUND_DECIBEL[db] = n / 10.0
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Sound_Intensity.html)
+##SoundPressure
+
+ Measures Sound Pressure Level in dB(A/B/C/D/Z)
+##Speaker
+
+ Creates beep with configurable frequency
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Piezo_Speaker.html)**Technical help**
+[Morse generator](https://morsecode.scphillips.com/translator.html)
+ @param values 
+ Beep = duration
+               
+ Beep = duration, frequency
+               
+ Beep = duration, frequency, waitTime
+               
+ Beep = duration, frequency, waitBoolean
+               
+ Morse = "... --- ..."
+               
+ Morse = "... --- ...", frequency
+               
+ Morse = "... --- ...", frequency, waitBoolean
+               
+ Frequency device limits = [min 585 - max 7100]
+ @return [Sensor](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+/
+ @param value 
+ Beep time = n
+              
+ Morse = "... --- ..."
+              
+ Frequency = number with prefix "f" [min 585 - max 7100]
+ @return [Sensor](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+/
+##Temperature
+
+ Measures ambient temperature with 0.5°C accuracy
+ **Values**
+ TEMPERATURE[°C] = n / 100.0
+##Tilt
+
+ Detects inclination of Bricklet (tilt switch open/closed)
+ **Values**
+TILT[012] = closed/open/vibrating
+ 
+[Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Tilt.html)

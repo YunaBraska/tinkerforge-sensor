@@ -30,8 +30,8 @@ import static java.util.Collections.singletonList;
  * <ul>
  * <li>{@link ValueType#MOTOR_POSITION} reached position</li>
  * <li>{@link ValueType#MOTOR_VELOCITY} reached velocity</li>
- * <li>{@link ValueType#UNDER_VOLTAGE} xy[mV] voltage too low</li>
- * <li>{@link ValueType#VOLTAGE} xy[mV] output voltage change</li>
+ * <li>{@link ValueType#UNDER_VOLTAGE} [x = mV] voltage too low</li>
+ * <li>{@link ValueType#VOLTAGE} [x = mV] output voltage change</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>

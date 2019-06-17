@@ -1862,6 +1862,26 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return get_Sum(ValueType.VOLTAGE);
     }
 
+    public Long underVoltage() {
+        return get(ValueType.UNDER_VOLTAGE);
+    }
+
+    public Long underVoltage_Min() {
+        return get_Min(ValueType.UNDER_VOLTAGE);
+    }
+
+    public Long underVoltage_Max() {
+        return get_Max(ValueType.UNDER_VOLTAGE);
+    }
+
+    public Long underVoltage_Avg() {
+        return get_Avg(ValueType.UNDER_VOLTAGE);
+    }
+
+    public LongSummaryStatistics underVoltage_Sum() {
+        return get_Sum(ValueType.UNDER_VOLTAGE);
+    }
+
     public Long current() {
         return get(ValueType.CURRENT);
     }
@@ -1940,5 +1960,65 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
 
     public LongSummaryStatistics rotary_Sum() {
         return get_Sum(ValueType.ROTARY);
+    }
+
+    public Long motor() {
+        return get(ValueType.MOTOR);
+    }
+
+    public Long motor_Min() {
+        return get_Min(ValueType.MOTOR);
+    }
+
+    public Long motor_Max() {
+        return get_Max(ValueType.MOTOR);
+    }
+
+    public Long motor_Avg() {
+        return get_Avg(ValueType.MOTOR);
+    }
+
+    public LongSummaryStatistics motor_Sum() {
+        return get_Sum(ValueType.MOTOR);
+    }
+
+    public Long motorPosition() {
+        return get(ValueType.MOTOR_POSITION);
+    }
+
+    public Long motorPosition_Min() {
+        return get_Min(ValueType.MOTOR_POSITION);
+    }
+
+    public Long motorPosition_Max() {
+        return get_Max(ValueType.MOTOR_POSITION);
+    }
+
+    public Long motorPosition_Avg() {
+        return get_Avg(ValueType.MOTOR_POSITION);
+    }
+
+    public LongSummaryStatistics motorPosition_Sum() {
+        return get_Sum(ValueType.MOTOR_POSITION);
+    }
+
+    public Long motorVelocity() {
+        return get(ValueType.MOTOR_VELOCITY);
+    }
+
+    public Long motorVelocity_Min() {
+        return get_Min(ValueType.MOTOR_VELOCITY);
+    }
+
+    public Long motorVelocity_Max() {
+        return get_Max(ValueType.MOTOR_VELOCITY);
+    }
+
+    public Long motorVelocity_Avg() {
+        return get_Avg(ValueType.MOTOR_VELOCITY);
+    }
+
+    public LongSummaryStatistics motorVelocity_Sum() {
+        return get_Sum(ValueType.MOTOR_VELOCITY);
     }
 }

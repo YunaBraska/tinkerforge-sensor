@@ -177,13 +177,21 @@ public enum ValueType {
 
     VOLTAGE(ENERGY),
 
+    UNDER_VOLTAGE(ENERGY),
+
     CURRENT(ENERGY),
 
     BUTTON(ALL),
 
     BUTTON_PRESSED(BUTTON),
 
-    ROTARY(BUTTON);
+    ROTARY(BUTTON),
+
+    MOTOR(ALL),
+
+    MOTOR_POSITION(MOTOR),
+
+    MOTOR_VELOCITY(MOTOR);
 
     public final ValueType parent;
 
@@ -879,6 +887,14 @@ public enum ValueType {
         return this.is(VOLTAGE) || (this.parent != null && this.parent.contains(VOLTAGE));
     }
 
+    public boolean isUnderVoltage() {
+        return this == UNDER_VOLTAGE;
+    }
+
+    public boolean containsUnderVoltage() {
+        return this.is(UNDER_VOLTAGE) || (this.parent != null && this.parent.contains(UNDER_VOLTAGE));
+    }
+
     public boolean isCurrent() {
         return this == CURRENT;
     }
@@ -909,6 +925,30 @@ public enum ValueType {
 
     public boolean containsRotary() {
         return this.is(ROTARY) || (this.parent != null && this.parent.contains(ROTARY));
+    }
+
+    public boolean isMotor() {
+        return this == MOTOR;
+    }
+
+    public boolean containsMotor() {
+        return this.is(MOTOR) || (this.parent != null && this.parent.contains(MOTOR));
+    }
+
+    public boolean isMotorPosition() {
+        return this == MOTOR_POSITION;
+    }
+
+    public boolean containsMotorPosition() {
+        return this.is(MOTOR_POSITION) || (this.parent != null && this.parent.contains(MOTOR_POSITION));
+    }
+
+    public boolean isMotorVelocity() {
+        return this == MOTOR_VELOCITY;
+    }
+
+    public boolean containsMotorVelocity() {
+        return this.is(MOTOR_VELOCITY) || (this.parent != null && this.parent.contains(MOTOR_VELOCITY));
     }
 
     public boolean is(final ValueType valueType) {

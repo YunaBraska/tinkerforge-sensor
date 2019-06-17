@@ -4,6 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.brick.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU2;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.Master;
+import berlin.yuna.tinkerforgesensor.model.sensor.brick.Servo;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Accelerometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AccelerometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AirQuality;
@@ -150,6 +151,10 @@ public class Compare {
 
     public boolean isRotary() {
         return is(RotaryV2.class);
+    }
+
+    public boolean isServo() {
+        return is(Servo.class);
     }
 
     public boolean isSoundIntensity() {

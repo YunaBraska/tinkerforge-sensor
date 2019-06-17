@@ -5,6 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.brick.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.IMU2;
 import berlin.yuna.tinkerforgesensor.model.sensor.brick.Master;
+import berlin.yuna.tinkerforgesensor.model.sensor.brick.Servo;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Accelerometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AccelerometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.AirQuality;
@@ -98,6 +99,14 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public Sensor soundIntensity(final int number) {
         return getSensor(number, SoundIntensity.class);
+    }
+
+    public Sensor servo() {
+        return servo(0);
+    }
+
+    public Sensor servo(final int number) {
+        return getSensor(number, Servo.class);
     }
 
     public Sensor rotary() {

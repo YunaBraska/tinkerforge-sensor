@@ -579,7 +579,8 @@ stack.values().rotary();
 
 * [MOTOR_POSITION (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) reached position
 * [MOTOR_VELOCITY (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) reached velocity
-* [UNDER_VOLTAGE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) xy[V] voltage too low
+* [UNDER_VOLTAGE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) xy[mV] voltage too low
+* [VOLTAGE (ValueType)](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java) xy[mV] output voltage change
 ### Technical Info
 
 * [Official documentation](href=)

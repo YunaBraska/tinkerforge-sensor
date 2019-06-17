@@ -10,7 +10,6 @@ import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TinkerforgeThread;
 
 import java.io.Closeable;
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static berlin.yuna.tinkerforgesensor.model.type.TimeoutExecutor.execute;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_ALREADY_CONNECTED;
@@ -173,22 +171,6 @@ public class Stack implements Closeable {
             try {
                 sensorList.clear();
                 connection.disconnect();
-            } catch (Exception ignored) {
-            }
-            return true;
-        });
-
-        execute(1000, () -> {
-            try {
-                List<TinkerforgeThread> tinkerforgeThreads;
-                do {
-                    tinkerforgeThreads = Thread.getAllStackTraces().keySet().stream().filter(thread -> thread.getClass().getPackage().getName().startsWith(IPConnection.class.getPackage().getName())).map(thread -> (TinkerforgeThread) thread).collect(Collectors.toList());
-                    tinkerforgeThreads.forEach(thread -> thread.setStop(true));
-                    for (TinkerforgeThread tinkerforgeThread : tinkerforgeThreads) {
-                        tinkerforgeThread.join();
-                    }
-                } while (!tinkerforgeThreads.isEmpty());
-                sensorList.clear();
             } catch (Exception ignored) {
             }
             return true;

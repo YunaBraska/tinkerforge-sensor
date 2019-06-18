@@ -65,10 +65,10 @@ public class LightAmbientV2 extends Sensor<BrickletAmbientLightV2> {
         try {
             if (milliseconds < 1) {
                 device.setIlluminanceCallbackPeriod(0);
-                sendEvent(LIGHT_LUX, device.getIlluminance() * 10);
             } else {
                 device.setIlluminanceCallbackPeriod(milliseconds);
             }
+            sendEvent(LIGHT_LUX, device.getIlluminance() * 10);
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

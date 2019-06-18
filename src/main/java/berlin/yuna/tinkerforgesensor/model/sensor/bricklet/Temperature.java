@@ -7,7 +7,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
@@ -41,7 +40,7 @@ public class Temperature extends Sensor<BrickletTemperature> {
     @Override
     protected Sensor<BrickletTemperature> initListener() {
         device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-        refreshPeriod(CALLBACK_PERIOD * 8);
+        refreshPeriod(-1);
         return this;
     }
 
@@ -64,11 +63,11 @@ public class Temperature extends Sensor<BrickletTemperature> {
     public Sensor<BrickletTemperature> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setTemperatureCallbackPeriod(0);
-                sendEvent(TEMPERATURE, (long) (device.getTemperature()));
+                device.setTemperatureCallbackPeriod(1000);
             } else {
                 device.setTemperatureCallbackPeriod(milliseconds);
             }
+            sendEvent(TEMPERATURE, (long) (device.getTemperature()));
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

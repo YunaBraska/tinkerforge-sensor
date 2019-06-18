@@ -7,6 +7,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 
@@ -40,7 +41,7 @@ public class LightAmbient extends Sensor<BrickletAmbientLight> {
     @Override
     protected Sensor<BrickletAmbientLight> initListener() {
         device.addIlluminanceListener(value -> sendEvent(LIGHT_LUX, (long) (value * 10)));
-        refreshPeriod(-1);
+        refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
@@ -63,11 +64,11 @@ public class LightAmbient extends Sensor<BrickletAmbientLight> {
     public Sensor<BrickletAmbientLight> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setIlluminanceCallbackPeriod(0);
-                sendEvent(LIGHT_LUX, (long) (device.getIlluminance() * 10));
+                device.setIlluminanceCallbackPeriod(1000);
             } else {
                 device.setIlluminanceCallbackPeriod(milliseconds);
             }
+            sendEvent(LIGHT_LUX, (long) (device.getIlluminance() * 10));
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

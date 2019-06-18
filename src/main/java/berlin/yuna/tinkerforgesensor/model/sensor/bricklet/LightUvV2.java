@@ -7,7 +7,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -51,7 +50,7 @@ public class LightUvV2 extends Sensor<BrickletUVLightV2> {
         device.addUVIListener(value -> sendEvent(LIGHT_UV, (long) value));
         device.addUVAListener(value -> sendEvent(LIGHT_UVA, (long) value));
         device.addUVBListener(value -> sendEvent(LIGHT_UVB, (long) value));
-        refreshPeriod(CALLBACK_PERIOD);
+        refreshPeriod(1);
         return this;
     }
 
@@ -86,17 +85,17 @@ public class LightUvV2 extends Sensor<BrickletUVLightV2> {
     public Sensor<BrickletUVLightV2> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setUVACallbackConfiguration(0, true, 'x', 0, 0);
-                device.setUVBCallbackConfiguration(0, true, 'x', 0, 0);
-                device.setUVICallbackConfiguration(0, true, 'x', 0, 0);
-                sendEvent(LIGHT_UV, (long) device.getUVI());
-                sendEvent(LIGHT_UVA, (long) device.getUVA());
-                sendEvent(LIGHT_UVB, (long) device.getUVB());
+                device.setUVACallbackConfiguration(1000, false, 'x', 0, 0);
+                device.setUVBCallbackConfiguration(1000, false, 'x', 0, 0);
+                device.setUVICallbackConfiguration(1000, false, 'x', 0, 0);
             } else {
-                device.setUVACallbackConfiguration(milliseconds, false, 'x', 0, 0);
-                device.setUVBCallbackConfiguration(milliseconds, false, 'x', 0, 0);
-                device.setUVICallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setUVACallbackConfiguration(milliseconds, true, 'x', 0, 0);
+                device.setUVBCallbackConfiguration(milliseconds, true, 'x', 0, 0);
+                device.setUVICallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
+            sendEvent(LIGHT_UV, (long) device.getUVI());
+            sendEvent(LIGHT_UVA, (long) device.getUVA());
+            sendEvent(LIGHT_UVB, (long) device.getUVB());
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

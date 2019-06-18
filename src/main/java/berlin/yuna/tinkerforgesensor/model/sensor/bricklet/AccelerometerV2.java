@@ -50,7 +50,7 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
 
     @Override
     protected Sensor<BrickletAccelerometerV2> initListener() {
-        refreshPeriod(-1);
+        refreshPeriod(1);
         device.addAccelerationListener((x, y, z) -> {
             sendEvent(ACCELERATION_X, (long) x);
             sendEvent(ACCELERATION_Y, (long) y);
@@ -104,14 +104,14 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
     public Sensor<BrickletAccelerometerV2> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setAccelerationCallbackConfiguration(1000, true);
-                final BrickletAccelerometerV2.Acceleration acceleration = device.getAcceleration();
-                sendEvent(ACCELERATION_X, (long) acceleration.x);
-                sendEvent(ACCELERATION_Y, (long) acceleration.y);
-                sendEvent(ACCELERATION_Z, (long) acceleration.z);
+                device.setAccelerationCallbackConfiguration(1000, false);
             } else {
-                device.setAccelerationCallbackConfiguration(milliseconds, false);
+                device.setAccelerationCallbackConfiguration(milliseconds, true);
             }
+            final BrickletAccelerometerV2.Acceleration acceleration = device.getAcceleration();
+            sendEvent(ACCELERATION_X, (long) acceleration.x);
+            sendEvent(ACCELERATION_Y, (long) acceleration.y);
+            sendEvent(ACCELERATION_Z, (long) acceleration.z);
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

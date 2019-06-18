@@ -7,7 +7,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
 
@@ -64,11 +63,11 @@ public class LightUv extends Sensor<BrickletUVLight> {
     public Sensor<BrickletUVLight> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setUVLightCallbackPeriod(CALLBACK_PERIOD);
-                sendEvent(LIGHT_UV, device.getUVLight());
+                device.setUVLightCallbackPeriod(1000);
             } else {
                 device.setUVLightCallbackPeriod(milliseconds);
             }
+            sendEvent(LIGHT_UV, device.getUVLight());
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

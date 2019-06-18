@@ -11,7 +11,6 @@ import com.tinkerforge.TimeoutException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -58,7 +57,7 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
             send(SOUND_SPECTRUM_OFFSET, spectrumChunkOffset);
             send(SOUND_SPECTRUM_LENGTH, spectrumLength);
         });
-        refreshPeriod(CALLBACK_PERIOD);
+        refreshPeriod(1);
         return this;
     }
 
@@ -97,13 +96,13 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
     public Sensor<BrickletSoundPressureLevel> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setDecibelCallbackConfiguration(0, true, 'x', 0, 0);
+                device.setDecibelCallbackConfiguration(1000, false, 'x', 0, 0);
                 device.setSpectrumCallbackConfiguration(0);
-                sendEvent(SOUND_INTENSITY, (long) device.getDecibel());
             } else {
                 device.setSpectrumCallbackConfiguration(milliseconds);
-                device.setDecibelCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setDecibelCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
+            sendEvent(SOUND_INTENSITY, (long) device.getDecibel());
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

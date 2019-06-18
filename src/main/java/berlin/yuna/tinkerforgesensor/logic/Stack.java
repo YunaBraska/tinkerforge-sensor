@@ -134,10 +134,10 @@ public class Stack implements Closeable {
         sensorList.clear();
         if (host != null) {
             final Object result = execute(timeoutMs, () -> {
+                connection.connect(host, port);
                 if (!isEmpty(password)) {
                     connection.authenticate(password);
                 }
-                connection.connect(host, port);
                 connection.addEnumerateListener(this::doPlugAndPlay);
                 connection.enumerate();
                 return true;

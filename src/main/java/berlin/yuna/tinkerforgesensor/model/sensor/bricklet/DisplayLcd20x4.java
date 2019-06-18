@@ -55,7 +55,6 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     public static final String DYNAMIC_SPACE = "${s}";
     private static final String SPLIT_LINE = System.lineSeparator();
     public static final int COLUMN_LIMIT = 20;
-    public static final int ROW_LIMIT = 3;
 
     public DisplayLcd20x4(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletLCD20x4) device, uid, false);

@@ -66,10 +66,10 @@ public class DistanceIR extends Sensor<BrickletDistanceIR> {
         try {
             if (milliseconds < 1) {
                 device.setDistanceCallbackPeriod(0);
-                sendEvent(ALTITUDE, (long) device.getDistance() * 10);
             } else {
                 device.setDistanceCallbackPeriod(milliseconds);
             }
+            sendEvent(DISTANCE, (long) device.getDistance() * 10);
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

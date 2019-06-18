@@ -74,7 +74,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
 //        device.addGUITabSelectedListener();
 //        device.addTouchGestureListener();
 //        device.addTouchPositionListener();
-        refreshPeriod(-1);
+        refreshPeriod(1);
         return this;
     }
 
@@ -193,17 +193,17 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
         try {
             config = device.getDisplayConfiguration();
             if (milliseconds < 1) {
-                device.setTouchGestureCallbackConfiguration(0, true);
-                device.setTouchPositionCallbackConfiguration(0, true);
-                device.setGUIButtonPressedCallbackConfiguration(0, true);
-                device.setGUISliderValueCallbackConfiguration(0, true);
-                device.setGUITabSelectedCallbackConfiguration(0, true);
+                device.setTouchGestureCallbackConfiguration(1000, false);
+                device.setTouchPositionCallbackConfiguration(1000, false);
+                device.setGUIButtonPressedCallbackConfiguration(1000, false);
+                device.setGUISliderValueCallbackConfiguration(1000, false);
+                device.setGUITabSelectedCallbackConfiguration(1000, false);
             } else {
-                device.setTouchGestureCallbackConfiguration(milliseconds, false);
-                device.setTouchPositionCallbackConfiguration(milliseconds, false);
-                device.setGUIButtonPressedCallbackConfiguration(milliseconds, false);
-                device.setGUISliderValueCallbackConfiguration(milliseconds, false);
-                device.setGUITabSelectedCallbackConfiguration(milliseconds, false);
+                device.setTouchGestureCallbackConfiguration(milliseconds, true);
+                device.setTouchPositionCallbackConfiguration(milliseconds, true);
+                device.setGUIButtonPressedCallbackConfiguration(milliseconds, true);
+                device.setGUISliderValueCallbackConfiguration(milliseconds, true);
+                device.setGUITabSelectedCallbackConfiguration(milliseconds, true);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

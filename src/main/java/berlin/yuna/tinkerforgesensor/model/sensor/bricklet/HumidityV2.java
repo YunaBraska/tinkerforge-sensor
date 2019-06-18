@@ -48,7 +48,7 @@ public class HumidityV2 extends Sensor<BrickletHumidityV2> {
     protected Sensor<BrickletHumidityV2> initListener() {
         device.addHumidityListener(value -> sendEvent(HUMIDITY, (long) value));
         device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-        refreshPeriod(CALLBACK_PERIOD * 8);
+        refreshPeriod(1);
         return this;
     }
 
@@ -83,13 +83,13 @@ public class HumidityV2 extends Sensor<BrickletHumidityV2> {
     public Sensor<BrickletHumidityV2> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setTemperatureCallbackConfiguration(0, true, 'x', 0, 0);
-                device.setHumidityCallbackConfiguration(0, true, 'x', 0, 0);
+                device.setTemperatureCallbackConfiguration(1000, false, 'x', 0, 0);
+                device.setHumidityCallbackConfiguration(1000, false, 'x', 0, 0);
                 sendEvent(HUMIDITY, (long) device.getHumidity());
                 sendEvent(TEMPERATURE, (long) device.getTemperature());
             } else {
-                device.setTemperatureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
-                device.setHumidityCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setTemperatureCallbackConfiguration(milliseconds, true, 'x', 0, 0);
+                device.setHumidityCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

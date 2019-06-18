@@ -63,11 +63,11 @@ public class TemperatureV2 extends Sensor<BrickletTemperatureV2> {
     public Sensor<BrickletTemperatureV2> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setTemperatureCallbackConfiguration(0, true, 'x', 0, 0);
-                sendEvent(TEMPERATURE, (long) device.getTemperature());
+                device.setTemperatureCallbackConfiguration(1000, false, 'x', 0, 0);
             } else {
-                device.setTemperatureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setTemperatureCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
+            sendEvent(TEMPERATURE, (long) device.getTemperature());
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

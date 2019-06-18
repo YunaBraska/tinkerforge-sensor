@@ -5,7 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
 /**
- * Rotary will change servo position
+ * Rotary will change all servo positions
  * Rotary press will invert servo[0,1,2] position
  */
 public class Servo_Rotary_Example extends Helper {

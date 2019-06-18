@@ -50,7 +50,7 @@ public class BarometerV2 extends Sensor<BrickletBarometerV2> {
         device.addAltitudeListener(value -> sendEvent(ALTITUDE, (long) value));
         device.addAirPressureListener(value -> sendEvent(AIR_PRESSURE, (long) value));
         device.addTemperatureListener(value -> sendEvent(TEMPERATURE, (long) value));
-        refreshPeriod(-1);
+        refreshPeriod(1);
         return this;
     }
 
@@ -86,18 +86,17 @@ public class BarometerV2 extends Sensor<BrickletBarometerV2> {
     public Sensor<BrickletBarometerV2> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setAltitudeCallbackConfiguration(0, true, 'x', 0, 0);
-                device.setAirPressureCallbackConfiguration(0, true, 'x', 0, 0);
-                device.setTemperatureCallbackConfiguration(0, true, 'x', 0, 0);
-
-                sendEvent(ALTITUDE, (long) device.getAltitude());
-                sendEvent(AIR_PRESSURE, (long) device.getAirPressure());
-                sendEvent(TEMPERATURE, (long) device.getTemperature());
+                device.setAltitudeCallbackConfiguration(1000, true, 'x', 0, 0);
+                device.setAirPressureCallbackConfiguration(1000, true, 'x', 0, 0);
+                device.setTemperatureCallbackConfiguration(1000, true, 'x', 0, 0);
             } else {
-                device.setAltitudeCallbackConfiguration(milliseconds, false, 'x', 0, 0);
-                device.setAirPressureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
-                device.setTemperatureCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setAltitudeCallbackConfiguration(milliseconds, true, 'x', 0, 0);
+                device.setAirPressureCallbackConfiguration(milliseconds, true, 'x', 0, 0);
+                device.setTemperatureCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
+            sendEvent(ALTITUDE, (long) device.getAltitude());
+            sendEvent(AIR_PRESSURE, (long) device.getAirPressure());
+            sendEvent(TEMPERATURE, (long) device.getTemperature());
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

@@ -63,7 +63,7 @@ public class Humidity extends Sensor<BrickletHumidity> {
     public Sensor<BrickletHumidity> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setHumidityCallbackPeriod(0);
+                device.setHumidityCallbackPeriod(1000);
                 sendEvent(HUMIDITY, (long) device.getHumidity() * 10);
             } else {
                 device.setHumidityCallbackPeriod(milliseconds);

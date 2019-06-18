@@ -7,7 +7,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -50,7 +49,7 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
 
     @Override
     protected Sensor<BrickletAirQuality> initListener() {
-        refreshPeriod(CALLBACK_PERIOD * 8);
+        refreshPeriod(1);
         device.addAllValuesListener((iaqIndex, iaqIndexAccuracy, temperature, humidity, airPressure) ->
         {
             sendEvent(IAQ_INDEX, (long) iaqIndex);
@@ -93,15 +92,15 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     public Sensor<BrickletAirQuality> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setAllValuesCallbackConfiguration(0, true);
-                final BrickletAirQuality.AllValues allValues = device.getAllValues();
-                sendEvent(IAQ_INDEX, (long) allValues.iaqIndex);
-                sendEvent(TEMPERATURE, (long) allValues.temperature);
-                sendEvent(HUMIDITY, (long) allValues.humidity);
-                sendEvent(AIR_PRESSURE, (long) allValues.airPressure);
+                device.setAllValuesCallbackConfiguration(1000, false);
             } else {
-                device.setAllValuesCallbackConfiguration(milliseconds, false);
+                device.setAllValuesCallbackConfiguration(milliseconds, true);
             }
+            final BrickletAirQuality.AllValues allValues = device.getAllValues();
+            sendEvent(IAQ_INDEX, (long) allValues.iaqIndex);
+            sendEvent(TEMPERATURE, (long) allValues.temperature);
+            sendEvent(HUMIDITY, (long) allValues.humidity);
+            sendEvent(AIR_PRESSURE, (long) allValues.airPressure);
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

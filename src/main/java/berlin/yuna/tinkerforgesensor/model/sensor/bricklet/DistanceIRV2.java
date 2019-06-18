@@ -7,12 +7,10 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 
@@ -46,7 +44,7 @@ public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
     @Override
     protected Sensor<BrickletDistanceIRV2> initListener() {
         device.addDistanceListener(value -> sendEvent(DISTANCE, (long) value));
-        refreshPeriod(CALLBACK_PERIOD);
+        refreshPeriod(1);
         return this;
     }
 
@@ -83,10 +81,10 @@ public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
         try {
             if (milliseconds < 1) {
                 device.setDistanceCallbackConfiguration(0, true, 'x', 0, 0);
-                sendEvent(ALTITUDE, (long) device.getDistance());
             } else {
-                device.setDistanceCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setDistanceCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
+            sendEvent(DISTANCE, (long) device.getDistance());
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

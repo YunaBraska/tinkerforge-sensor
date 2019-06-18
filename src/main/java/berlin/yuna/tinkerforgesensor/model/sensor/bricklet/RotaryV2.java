@@ -42,7 +42,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
         device.addCountListener(value -> sendEvent(ROTARY, (long) value));
         device.addPressedListener(() -> sendEvent(BUTTON_PRESSED, 1L));
         device.addReleasedListener(() -> sendEvent(BUTTON_PRESSED, 0L));
-        refreshPeriod(4);
+        refreshPeriod(1);
         return this;
     }
 
@@ -85,11 +85,11 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
     public Sensor<BrickletRotaryEncoderV2> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setCountCallbackConfiguration(0, true, 'x', 0, 0);
-                sendEvent(ROTARY, (long) device.getCount(false));
+                device.setCountCallbackConfiguration(4, false, 'x', 0, 0);
             } else {
-                device.setCountCallbackConfiguration(milliseconds, false, 'x', 0, 0);
+                device.setCountCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
+            sendEvent(ROTARY, (long) device.getCount(false));
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

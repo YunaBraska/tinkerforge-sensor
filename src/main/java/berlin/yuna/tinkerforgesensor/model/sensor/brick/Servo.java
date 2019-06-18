@@ -113,6 +113,7 @@ public class Servo extends Sensor<BrickServo> {
         return this;
     }
 
+    //Fixme: -99 should be boolean - unique combination of (bool, int) and (bool, int, int)
     @Override
     public Sensor<BrickServo> send(final Object... values) {
         if (values.length > 0 && values[0] instanceof Number && ((Number) values[0]).intValue() == -99) {

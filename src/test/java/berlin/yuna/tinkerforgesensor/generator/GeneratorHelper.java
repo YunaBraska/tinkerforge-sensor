@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 public class GeneratorHelper {
 
+    public final static String separator = System.lineSeparator();
+
     public static List<Class<? extends Sensor>> getSensorVersions(final Class<? extends Sensor> sensor, final List<Class<? extends Sensor>> sensorList) {
         final String className = sensor.getSimpleName();
         final String packageName = sensor.getPackage().getName();

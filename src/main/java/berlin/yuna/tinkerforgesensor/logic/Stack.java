@@ -177,11 +177,29 @@ public class Stack implements Closeable {
         });
     }
 
-    public Sensors sensors(){
+    public String valuesToString() {
+        final StringBuilder lineHead = new StringBuilder();
+        final StringBuilder lineValue = new StringBuilder();
+        for (Sensor sensor : sensors()) {
+            for (ValueType valueType : ValueType.values()) {
+                final Long value = sensor.values().get(valueType, null);
+                if (value != null) {
+                    final int valueSize = valueType.toString().length() + 1;
+                    lineHead.append(format("%" + valueSize + "s |", valueType));
+                    lineValue.append(format("%" + valueSize + "s |", value));
+                }
+            }
+        }
+        lineHead.append(format("%9s |", "Sensors"));
+        lineValue.append(format("%9s |", sensors().size()));
+        return System.lineSeparator() + lineHead.toString() + System.lineSeparator() + lineValue.toString();
+    }
+
+    public Sensors sensors() {
         return new Sensors(sensorList);
     }
 
-    public Values values(){
+    public Values values() {
         return new Values(sensorList);
     }
 

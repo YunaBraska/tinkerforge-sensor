@@ -73,7 +73,8 @@ public class GeneratorTest {
     }
 
     private List<Class<? extends Sensor>> getSensorList() {
-        final Reflections reflections = new Reflections(SensorRegistry.class.getPackage().getName());
+        final String searchPackage = Sensor.class.getPackage().getName();
+        final Reflections reflections = new Reflections(searchPackage.substring(0, searchPackage.lastIndexOf(".")));
         final List<Class<? extends Sensor>> sensorList = new ArrayList<>(reflections.getSubTypesOf(Sensor.class));
         sensorList.sort(Comparator.comparing(Class::getSimpleName));
         return sensorList;

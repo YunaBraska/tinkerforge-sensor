@@ -211,12 +211,12 @@ display.send("H ${s} O ${s} W ${s} D ${s} Y");
 
 ###### LED Brightness (2-100)
 ```java
-display.ledAdditional(7);
+display.setLedAdditional(7);
 ```
 
 ###### Display ON
 ```java
-display.ledAdditionalOn;
+display.setLedAdditional_On;
 ```
 
 --- 
@@ -263,7 +263,7 @@ display.send("H ${s} O ${s} W ${s} D ${s} Y");
 
 ###### Display ON
 ```java
-display.ledAdditionalOn;
+display.setLedAdditional_On;
 ```
 
 ###### Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example
@@ -306,12 +306,12 @@ display.send(DateTimeFormatter.ofPattern("HH:mm"));
 
 ###### LED Brightness (2-9)
 ```java
-display.ledAdditional(7);
+display.setLedAdditional(7);
 ```
 
 ###### Display ON
 ```java
-display.ledAdditionalOn;
+display.setLedAdditional_On;
 ```
 
 --- 
@@ -338,7 +338,7 @@ stack.values().distance();
 
 --- 
 
-### [DistanceIR](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DistanceIR.java)
+### [BrickletDistanceIR](src/main/java/com/tinkerforge/BrickletDistanceIR.java)
 
 *Measures distance between 2cm and 400cm with ultrasound*
 
@@ -381,22 +381,22 @@ stack.values().buttonPressed();
 
 ###### Set LEDs on
 ```java
-button.ledAdditionalOn();
+button.setLedAdditional_On();
 ```
 
 ###### Set LEDs off
 ```java
-button.ledAdditionalOff();
+button.setLedAdditional_Off();
 ```
 
 ###### Set LEDs active on press
 ```java
-button.ledAdditionalStatus();
+button.setLedAdditional_Status();
 ```
 
 ###### Set LEDs active on release
 ```java
-button.ledAdditionalHeartbeat();
+button.setLedAdditional_Heartbeat();
 ```
 
 --- 
@@ -441,7 +441,7 @@ stack.values().humidity_Sum();
 * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16_V2.html)
 ###### Set all LEDs on
 ```java
-io16.ledAdditionalOn();
+io16.setLedAdditional_On();
 ```
 
 ###### Turn on LED 4
@@ -496,7 +496,7 @@ stack.values().lightLux_Sum();
 * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html)
 ###### Turn on flash LED
 ```java
-color.ledAdditionalOn();
+color.setLedAdditional_On();
 ```
 
 ###### Getting color examples

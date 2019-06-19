@@ -7,6 +7,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_STATUS;
@@ -37,13 +38,13 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <h6>Getting button pressed example</h6>
  * <code>stack.values().buttonPressed();</code>
  * <h6>Set LEDs on</h6>
- * <code>button.ledAdditionalOn();</code>
+ * <code>button.setLedAdditional_On();</code>
  * <h6>Set LEDs off</h6>
- * <code>button.ledAdditionalOff();</code>
+ * <code>button.setLedAdditional_Off();</code>
  * <h6>Set LEDs active on press</h6>
- * <code>button.ledAdditionalStatus();</code>
+ * <code>button.setLedAdditional_Status();</code>
  * <h6>Set LEDs active on release</h6>
- * <code>button.ledAdditionalHeartbeat();</code>
+ * <code>button.setLedAdditional_Heartbeat();</code>
  */
 public class DualButton extends Sensor<BrickletDualButtonV2> {
 
@@ -51,7 +52,7 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     private int buttonR;
 
     public DualButton(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletDualButtonV2) device, uid, true);
+        super((BrickletDualButtonV2) device, uid);
     }
 
     @Override
@@ -69,15 +70,20 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     }
 
     @Override
-    public Sensor<BrickletDualButtonV2> ledStatus(final Integer value) {
+    public Sensor<BrickletDualButtonV2> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
             } else if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                ledStatus = LED_STATUS_HEARTBEAT;
                 device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
             } else if (value == LED_STATUS.bit) {
+                ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -88,15 +94,20 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
 
     //TODO: set button 1 && button 2 different
     @Override
-    public Sensor<BrickletDualButtonV2> ledAdditional(final Integer value) {
+    public Sensor<BrickletDualButtonV2> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_OFF.bit) {
+                ledAdditional = LED_ADDITIONAL_OFF;
                 device.setLEDState(3, 3);
             } else if (value == LED_ADDITIONAL_ON.bit) {
+                ledAdditional = LED_ADDITIONAL_ON;
                 device.setLEDState(2, 2);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                ledAdditional = LED_ADDITIONAL_HEARTBEAT;
                 device.setLEDState(0, 0); //FIXME: does this make sense [= invert status]???
             } else if (value == LED_ADDITIONAL_STATUS.bit) {
+                ledAdditional = LED_ADDITIONAL_STATUS;
                 device.setLEDState(1, 1);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -106,19 +117,30 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     }
 
     @Override
+    public Sensor<BrickletDualButtonV2> initLedConfig() {
+        try {
+            ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
+            ledAdditional = LED_ADDITIONAL_OFF;
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
     public Sensor<BrickletDualButtonV2> flashLed() {
         try {
-            ledAdditionalOff();
+            setLedAdditional_Off();
             Thread.sleep(128);
-            ledAdditionalOn();
+            setLedAdditional_On();
             Thread.sleep(128);
-            ledAdditionalOff();
+            setLedAdditional_Off();
             Thread.sleep(128);
             device.setLEDState(2, 3);
             Thread.sleep(128);
             device.setLEDState(3, 2);
             Thread.sleep(128);
-            ledAdditionalStatus();
+            setLedAdditional_Status();
         } catch (Exception ignore) {
         }
         return this;

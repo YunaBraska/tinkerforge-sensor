@@ -3,10 +3,13 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletDistanceIRV2;
+import com.tinkerforge.BrickletLCD128x64;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -38,7 +41,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
 
     public DistanceIRV2(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletDistanceIRV2) device, uid, true);
+        super((BrickletDistanceIRV2) device, uid);
     }
 
     @Override
@@ -54,16 +57,21 @@ public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
     }
 
     @Override
-    public Sensor<BrickletDistanceIRV2> ledStatus(final Integer value) {
+    public Sensor<BrickletDistanceIRV2> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
-            if (value == LED_STATUS_ON.bit) {
-                device.setStatusLEDConfig(LED_STATUS_ON.bit);
+            if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
+                device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
+            } else if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
+                device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
-                device.setStatusLEDConfig(LED_STATUS_HEARTBEAT.bit);
+                ledStatus = LED_STATUS_HEARTBEAT;
+                device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
             } else if (value == LED_STATUS.bit) {
-                device.setStatusLEDConfig(LED_STATUS.bit);
-            } else if (value == LED_STATUS_OFF.bit) {
-                device.setStatusLEDConfig(LED_STATUS_OFF.bit);
+                ledStatus = LED_STATUS;
+                device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -72,7 +80,18 @@ public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {
     }
 
     @Override
-    public Sensor<BrickletDistanceIRV2> ledAdditional(final Integer value) {
+    public Sensor<BrickletDistanceIRV2> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletDistanceIRV2> initLedConfig() {
+        try {
+            ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
+            ledAdditional = LED_NONE;
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 

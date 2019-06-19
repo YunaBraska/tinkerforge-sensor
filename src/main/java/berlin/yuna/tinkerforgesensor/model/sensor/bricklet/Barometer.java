@@ -8,6 +8,7 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.AIR_PRESSURE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
@@ -37,7 +38,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 public class Barometer extends Sensor<BrickletBarometer> {
 
     public Barometer(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletBarometer) device, uid, false);
+        super((BrickletBarometer) device, uid);
     }
 
     @Override
@@ -54,12 +55,12 @@ public class Barometer extends Sensor<BrickletBarometer> {
     }
 
     @Override
-    public Sensor<BrickletBarometer> ledStatus(final Integer value) {
+    public Sensor<BrickletBarometer> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletBarometer> ledAdditional(final Integer value) {
+    public Sensor<BrickletBarometer> setLedAdditional(final Integer value) {
         return this;
     }
 
@@ -78,6 +79,13 @@ public class Barometer extends Sensor<BrickletBarometer> {
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletBarometer> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 }

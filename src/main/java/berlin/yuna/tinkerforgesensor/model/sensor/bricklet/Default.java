@@ -49,12 +49,12 @@ public class Default extends Sensor<DummyDevice> {
     }
 
     @Override
-    public Sensor<DummyDevice> ledStatus(final Integer value) {
+    public Sensor<DummyDevice> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<DummyDevice> ledAdditional(final Integer value) {
+    public Sensor<DummyDevice> setLedAdditional(final Integer value) {
         return this;
     }
 
@@ -65,6 +65,13 @@ public class Default extends Sensor<DummyDevice> {
 
     @Override
     public Sensor<DummyDevice> refreshPeriod(final int milliseconds) {
+        return this;
+    }
+
+    @Override
+    public Sensor<DummyDevice> initLedConfig() {
+        ledStatus = LedStatusType.LED_NONE;
+        ledAdditional = LedStatusType.LED_NONE;
         return this;
     }
 }

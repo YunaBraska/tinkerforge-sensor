@@ -2,11 +2,13 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import com.tinkerforge.BrickletColor;
 import com.tinkerforge.BrickletUVLight;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
 
@@ -34,7 +36,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
 public class LightUv extends Sensor<BrickletUVLight> {
 
     public LightUv(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletUVLight) device, uid, false);
+        super((BrickletUVLight) device, uid);
     }
 
     @Override
@@ -50,12 +52,19 @@ public class LightUv extends Sensor<BrickletUVLight> {
     }
 
     @Override
-    public Sensor<BrickletUVLight> ledStatus(final Integer value) {
+    public Sensor<BrickletUVLight> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletUVLight> ledAdditional(final Integer value) {
+    public Sensor<BrickletUVLight> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletUVLight> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

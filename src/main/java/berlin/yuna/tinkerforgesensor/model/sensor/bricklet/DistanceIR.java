@@ -8,6 +8,7 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
@@ -36,7 +37,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 public class DistanceIR extends Sensor<BrickletDistanceIR> {
 
     public DistanceIR(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletDistanceIR) device, uid, false);
+        super((BrickletDistanceIR) device, uid);
     }
 
     @Override
@@ -52,12 +53,19 @@ public class DistanceIR extends Sensor<BrickletDistanceIR> {
     }
 
     @Override
-    public Sensor<BrickletDistanceIR> ledStatus(final Integer value) {
+    public Sensor<BrickletDistanceIR> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceIR> ledAdditional(final Integer value) {
+    public Sensor<BrickletDistanceIR> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletDistanceIR> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

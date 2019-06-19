@@ -26,7 +26,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Set all LEDs on</h6>
- * <code>io16.ledAdditionalOn();</code>
+ * <code>io16.setLedAdditional_On();</code>
  * <h6>Turn on LED 4</h6>
  * <code>io16.send(4);</code>
  * <h6>Turn off LED 12</h6>
@@ -35,7 +35,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 public class IO16V2 extends Sensor<BrickletIO16V2> {
 
     public IO16V2(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletIO16V2) device, uid, true);
+        super((BrickletIO16V2) device, uid);
     }
 
     @Override
@@ -64,15 +64,20 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
     }
 
     @Override
-    public Sensor<BrickletIO16V2> ledStatus(final Integer value) {
+    public Sensor<BrickletIO16V2> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
             } else if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                ledStatus = LED_STATUS_HEARTBEAT;
                 device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
             } else if (value == LED_STATUS.bit) {
+                ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -82,7 +87,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
     }
 
     @Override
-    public Sensor<BrickletIO16V2> ledAdditional(final Integer value) {
+    public Sensor<BrickletIO16V2> setLedAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
             for (int i = 0; i < 17; i++) {
                 send(i);
@@ -98,9 +103,20 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
     }
 
     @Override
+    public Sensor<BrickletIO16V2> initLedConfig() {
+        try {
+            ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
+            ledAdditional = LED_ADDITIONAL_OFF;
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
     public Sensor<BrickletIO16V2> flashLed() {
         try {
-            ledAdditionalOff();
+            setLedAdditional_Off();
             for (int i = 1; i < 33; i++) {
                 this.send(i < 17 ? i : (i - 16) * -1);
                 Thread.sleep(32);
@@ -118,9 +134,9 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
     private Integer normalizeValue(final Object value) {
         if (value instanceof Boolean) {
             if ((Boolean) value) {
-                ledAdditionalOn();
+                setLedAdditional_On();
             } else {
-                ledAdditionalOff();
+                setLedAdditional_Off();
             }
         } else if (value instanceof Number) {
             return ((Number) value).intValue();

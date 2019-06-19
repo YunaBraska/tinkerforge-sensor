@@ -72,7 +72,7 @@ public class ReactionGame extends Helper {
             if (sensor.compare().isRotary()) {
                 //RESET GAME
                 score = -1;
-                buttonRGB.ledStatusOn();
+                buttonRGB.setLedStatus_On();
                 async("3-2-1-GO", run -> reactionGameStart());
             } else if (reactionNow) {
                 //SCORE UP - made it in time
@@ -101,9 +101,9 @@ public class ReactionGame extends Helper {
             score = -2;
             loopStop("reaction_win");
             displayLcd.send("${clear}");
-            buttonRGB.ledStatusOn();
-            displayLcd.ledStatusOn();
-            displayLcd.ledAdditionalOn();
+            buttonRGB.setLedStatus_On();
+            displayLcd.setLedStatus_On();
+            displayLcd.setLedAdditional_On();
             displaySegment.send(3);
             displayLcd.send("${space} 3 ${space}");
             buttonRGB.send(Color.RED);

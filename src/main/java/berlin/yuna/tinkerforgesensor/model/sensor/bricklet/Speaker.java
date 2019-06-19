@@ -3,10 +3,12 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletPiezoSpeaker;
+import com.tinkerforge.BrickletSoundIntensity;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
@@ -41,7 +43,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     private int wait = duration;
 
     public Speaker(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletPiezoSpeaker) device, uid, false);
+        super((BrickletPiezoSpeaker) device, uid);
     }
 
     @Override
@@ -71,12 +73,19 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> ledStatus(final Integer value) {
+    public Sensor<BrickletPiezoSpeaker> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> ledAdditional(final Integer value) {
+    public Sensor<BrickletPiezoSpeaker> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletPiezoSpeaker> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

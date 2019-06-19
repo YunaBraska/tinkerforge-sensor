@@ -3,6 +3,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import com.tinkerforge.BrickletRotaryEncoderV2;
 import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -11,6 +12,7 @@ import com.tinkerforge.TimeoutException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -45,7 +47,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_
 public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
 
     public SoundPressure(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletSoundPressureLevel) device, uid, true);
+        super((BrickletSoundPressureLevel) device, uid);
     }
 
     @Override
@@ -71,24 +73,41 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
     }
 
     @Override
-    public Sensor<BrickletSoundPressureLevel> ledStatus(final Integer value) {
+    public Sensor<BrickletSoundPressureLevel> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
             } else if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                ledStatus = LED_STATUS_HEARTBEAT;
                 device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
             } else if (value == LED_STATUS.bit) {
+                ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
     }
 
     @Override
-    public Sensor<BrickletSoundPressureLevel> ledAdditional(final Integer value) {
+    public Sensor<BrickletSoundPressureLevel> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletSoundPressureLevel> initLedConfig() {
+        try {
+            ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
+            ledAdditional = LED_NONE;
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 

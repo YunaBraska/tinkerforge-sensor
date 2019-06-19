@@ -1,7 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -13,6 +12,7 @@ import java.time.temporal.TemporalAccessor;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
@@ -33,11 +33,11 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  * <code>display.send(LocalDateTime#now());</code>
  * <h6>Send own time format</h6>
  * <i>(use {@link DateTimeFormatter})</i><br/>
- * <code>display.send(DateTimeFormatter.ofPattern("HH:mm"));</code><
+ * <code>display.send(DateTimeFormatter.ofPattern("HH:mm"));</code>
  * <h6>LED Brightness (2-9)</h6>
- * <code>display.ledAdditional(7);</code>
+ * <code>display.setLedAdditional(7);</code>
  * <h6>Display ON</h6>
- * <code>display.ledAdditionalOn;</code>
+ * <code>display.setLedAdditional_On;</code>
  *
  */
 public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
@@ -48,7 +48,7 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
 
 
     public DisplaySegment(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletSegmentDisplay4x7) device, uid, false);
+        super((BrickletSegmentDisplay4x7) device, uid);
     }
 
     @Override
@@ -87,12 +87,12 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     }
 
     @Override
-    public Sensor<BrickletSegmentDisplay4x7> ledStatus(final Integer value) {
+    public Sensor<BrickletSegmentDisplay4x7> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletSegmentDisplay4x7> ledAdditional(final Integer value) {
+    public Sensor<BrickletSegmentDisplay4x7> setLedAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
             brightness = 7;
             send(lastText);
@@ -106,15 +106,22 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     }
 
     @Override
+    public Sensor<BrickletSegmentDisplay4x7> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_ADDITIONAL_OFF;
+        return this;
+    }
+
+    @Override
     public Sensor<BrickletSegmentDisplay4x7> flashLed() {
         try {
-            this.ledAdditionalOn();
+            this.setLedAdditional_On();
             for (int i = 0; i < 9; i++) {
-                ledAdditional(i);
+                setLedAdditional(i);
                 send(LocalDateTime.now());
                 Thread.sleep(128);
             }
-            this.ledAdditionalOff();
+            this.setLedAdditional_Off();
         } catch (Exception ignore) {
         }
         return this;

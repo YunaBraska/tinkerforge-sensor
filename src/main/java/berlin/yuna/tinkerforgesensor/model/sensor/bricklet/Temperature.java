@@ -2,11 +2,13 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.BrickletTemperature;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
@@ -34,7 +36,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 public class Temperature extends Sensor<BrickletTemperature> {
 
     public Temperature(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletTemperature) device, uid, false);
+        super((BrickletTemperature) device, uid);
     }
 
     @Override
@@ -50,12 +52,19 @@ public class Temperature extends Sensor<BrickletTemperature> {
     }
 
     @Override
-    public Sensor<BrickletTemperature> ledStatus(final Integer value) {
+    public Sensor<BrickletTemperature> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletTemperature> ledAdditional(final Integer value) {
+    public Sensor<BrickletTemperature> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTemperature> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

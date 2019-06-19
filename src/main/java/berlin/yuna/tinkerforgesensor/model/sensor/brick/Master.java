@@ -7,7 +7,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -23,7 +22,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE_USB;
 public class Master extends Sensor<BrickMaster> {
 
     public Master(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickMaster) device, uid, true);
+        super((BrickMaster) device, uid);
     }
 
     @Override
@@ -41,11 +40,14 @@ public class Master extends Sensor<BrickMaster> {
     }
 
     @Override
-    public Sensor<BrickMaster> ledStatus(final Integer value) {
+    public Sensor<BrickMaster> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_ON.bit) {
                 device.enableStatusLED();
+                ledStatus = LED_STATUS_ON;
             } else if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.disableStatusLED();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -55,15 +57,29 @@ public class Master extends Sensor<BrickMaster> {
     }
 
     @Override
-    public Sensor<BrickMaster> ledAdditional(final Integer value) {
+    public Sensor<BrickMaster> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         try {
             if (device.isWifi2Present()) {
                 if (value == LED_ADDITIONAL_ON.bit) {
+                    ledAdditional = LED_ADDITIONAL_ON;
                     device.enableWifi2StatusLED();
                 } else if (value == LED_ADDITIONAL_OFF.bit) {
+                    ledAdditional = LED_ADDITIONAL_OFF;
                     device.disableWifi2StatusLED();
                 }
             }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickMaster> initLedConfig() {
+        try {
+            ledStatus = device.isStatusLEDEnabled() ? LED_STATUS_ON : LED_ADDITIONAL_OFF;
+            ledAdditional = device.isWifi2Present() && device.isWifi2StatusLEDEnabled() ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF;
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

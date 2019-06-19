@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
@@ -98,7 +100,7 @@ public class Servo extends Sensor<BrickServo> {
     }
 
     public Servo(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickServo) device, uid, true);
+        super((BrickServo) device, uid);
     }
 
     @Override
@@ -158,11 +160,14 @@ public class Servo extends Sensor<BrickServo> {
     }
 
     @Override
-    public Sensor<BrickServo> ledStatus(final Integer value) {
+    public Sensor<BrickServo> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.enableStatusLED();
             } else if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.disableStatusLED();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -172,7 +177,18 @@ public class Servo extends Sensor<BrickServo> {
     }
 
     @Override
-    public Sensor<BrickServo> ledAdditional(final Integer value) {
+    public Sensor<BrickServo> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickServo> initLedConfig() {
+        try {
+            ledStatus = device.isStatusLEDEnabled() ? LED_STATUS_ON : LED_ADDITIONAL_OFF;
+            ledAdditional = LED_NONE;
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 

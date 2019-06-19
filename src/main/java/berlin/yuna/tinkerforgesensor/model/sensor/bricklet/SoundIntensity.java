@@ -2,11 +2,13 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import com.tinkerforge.BrickletBarometer;
 import com.tinkerforge.BrickletSoundIntensity;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY;
 
@@ -28,7 +30,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY
 public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 
     public SoundIntensity(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletSoundIntensity) device, uid, true);
+        super((BrickletSoundIntensity) device, uid);
     }
 
     @Override
@@ -44,12 +46,19 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
     }
 
     @Override
-    public Sensor<BrickletSoundIntensity> ledStatus(final Integer value) {
+    public Sensor<BrickletSoundIntensity> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletSoundIntensity> ledAdditional(final Integer value) {
+    public Sensor<BrickletSoundIntensity> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletSoundIntensity> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

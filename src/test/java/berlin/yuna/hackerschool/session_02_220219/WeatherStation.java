@@ -40,7 +40,7 @@ public class WeatherStation extends Helper {
 
             if (counter == 2) {
                 stack.sensors().displayLcd20x4().send("Display: OFF, zum   Einschalten beliebige  Taste betätigen.");
-                stack.sensors().displayLcd20x4().ledAdditionalOff();
+                stack.sensors().displayLcd20x4().setLedAdditional_Off();
                 counter = 0;
             } else if (Knopf1.send(BUTTON_PRESSED) == 1 && Knopf2.send(BUTTON_PRESSED) == 1) {
                 if (airQuality < 1050000) {
@@ -48,13 +48,13 @@ public class WeatherStation extends Helper {
                     Knopf1.send(Color.RED);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Die Luftqualität istschlecht! Bite      ein Fenster  öffnen.");
-                    stack.sensors().displayLcd20x4().ledAdditionalOn();
+                    stack.sensors().displayLcd20x4().setLedAdditional_On();
                 } else {
                     Knopf2.send(Color.GREEN);
                     Knopf1.send(Color.GREEN);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Die Luftqualität istakzeptabel.");
-                    stack.sensors().displayLcd20x4().ledAdditionalOn();
+                    stack.sensors().displayLcd20x4().setLedAdditional_On();
 
                 }
 
@@ -63,12 +63,12 @@ public class WeatherStation extends Helper {
                     stack.sensors().buttonRGB().send(Color.RED);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Es ist sehr dunkel! \nMach doch Licht an ${space}");
-                    stack.sensors().displayLcd20x4().ledAdditionalOn();
+                    stack.sensors().displayLcd20x4().setLedAdditional_On();
                 } else {
                     stack.sensors().buttonRGB().send(new Color(0, light / 1500, 0));
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Es ist Hell! ${space}");
-                    stack.sensors().displayLcd20x4().ledAdditionalOn();
+                    stack.sensors().displayLcd20x4().setLedAdditional_On();
                 }
             } else if (sensor.compare().is(Knopf2) && value == 1) {
                 final int temperatur = stack.values().temperature().intValue();
@@ -77,12 +77,12 @@ public class WeatherStation extends Helper {
                     Knopf2.send(Color.GREEN);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Die Temperatur ist  Gut! Sie beträgt " + (temperatur / 100) + "°C");
-                    stack.sensors().displayLcd20x4().ledAdditionalOn();
+                    stack.sensors().displayLcd20x4().setLedAdditional_On();
                 } else {
                     Knopf2.send(Color.RED);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Bitte Temperatur erhöhen, man könnte sich erkälten denn die Temperatur beträgt" + (temperatur / 100) + " °C ");
-                    stack.sensors().displayLcd20x4().ledAdditionalOn();
+                    stack.sensors().displayLcd20x4().setLedAdditional_On();
                 }
             }
         }

@@ -7,6 +7,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -44,7 +45,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 public class AirQuality extends Sensor<BrickletAirQuality> {
 
     public AirQuality(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletAirQuality) device, uid, true);
+        super((BrickletAirQuality) device, uid);
     }
 
     @Override
@@ -66,15 +67,20 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> ledStatus(final Integer value) {
+    public Sensor<BrickletAirQuality> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
             } else if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                ledStatus = LED_STATUS_HEARTBEAT;
                 device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
             } else if (value == LED_STATUS.bit) {
+                ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -84,7 +90,8 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> ledAdditional(final Integer value) {
+    public Sensor<BrickletAirQuality> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         return this;
     }
 
@@ -101,6 +108,17 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
             sendEvent(TEMPERATURE, (long) allValues.temperature);
             sendEvent(HUMIDITY, (long) allValues.humidity);
             sendEvent(AIR_PRESSURE, (long) allValues.airPressure);
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletAirQuality> initLedConfig() {
+        try {
+            ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
+            ledAdditional = LED_NONE;
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

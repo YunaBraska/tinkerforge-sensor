@@ -11,6 +11,7 @@ import com.tinkerforge.TimeoutException;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_B;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_C;
@@ -38,7 +39,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html">Official documentation</a></li>
  * </ul>
  * <h6>Turn on flash LED</h6>
- * <code>color.ledAdditionalOn();</code>
+ * <code>color.setLedAdditional_On();</code>
  * <h6>Getting color examples</h6>
  * <code>
  * stack.values().color();
@@ -53,7 +54,7 @@ public class LightColor extends Sensor<BrickletColor> {
     private BrickletColor.Config config;
 
     public LightColor(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletColor) device, uid, false);
+        super((BrickletColor) device, uid);
     }
 
     @Override
@@ -72,16 +73,19 @@ public class LightColor extends Sensor<BrickletColor> {
     }
 
     @Override
-    public Sensor<BrickletColor> ledStatus(final Integer value) {
+    public Sensor<BrickletColor> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletColor> ledAdditional(final Integer value) {
+    public Sensor<BrickletColor> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
+                ledAdditional = LED_ADDITIONAL_ON;
                 device.lightOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
+                ledAdditional = LED_ADDITIONAL_OFF;
                 device.lightOff();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -91,17 +95,24 @@ public class LightColor extends Sensor<BrickletColor> {
     }
 
     @Override
+    public Sensor<BrickletColor> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_ADDITIONAL_OFF;
+        return this;
+    }
+
+    @Override
     public Sensor<BrickletColor> flashLed() {
         try {
             for (int i = 0; i < 7; i++) {
                 if (i % 2 == 0) {
-                    this.ledAdditionalOff();
+                    this.setLedAdditional_Off();
                 } else {
-                    this.ledAdditionalOn();
+                    this.setLedAdditional_On();
                 }
                 Thread.sleep(128);
             }
-            this.ledStatus();
+            this.setLedStatus_Status();
         } catch (Exception ignore) {
         }
         return this;

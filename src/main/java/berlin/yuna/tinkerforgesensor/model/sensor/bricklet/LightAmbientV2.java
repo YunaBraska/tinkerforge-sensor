@@ -2,12 +2,14 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import com.tinkerforge.BrickletAmbientLight;
 import com.tinkerforge.BrickletAmbientLightV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 
@@ -35,7 +37,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 public class LightAmbientV2 extends Sensor<BrickletAmbientLightV2> {
 
     public LightAmbientV2(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletAmbientLightV2) device, uid, false);
+        super((BrickletAmbientLightV2) device, uid);
     }
 
     @Override
@@ -51,12 +53,19 @@ public class LightAmbientV2 extends Sensor<BrickletAmbientLightV2> {
     }
 
     @Override
-    public Sensor<BrickletAmbientLightV2> ledStatus(final Integer value) {
+    public Sensor<BrickletAmbientLightV2> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletAmbientLightV2> ledAdditional(final Integer value) {
+    public Sensor<BrickletAmbientLightV2> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletAmbientLightV2> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

@@ -47,7 +47,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
 public class IMU2 extends Sensor<BrickIMUV2> {
 
     public IMU2(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickIMUV2) device, uid, true);
+        super((BrickIMUV2) device, uid);
     }
 
     @Override
@@ -98,11 +98,14 @@ public class IMU2 extends Sensor<BrickIMUV2> {
     }
 
     @Override
-    public Sensor<BrickIMUV2> ledStatus(final Integer value) {
+    public Sensor<BrickIMUV2> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.enableStatusLED();
             } else if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.disableStatusLED();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -112,11 +115,14 @@ public class IMU2 extends Sensor<BrickIMUV2> {
     }
 
     @Override
-    public Sensor<BrickIMUV2> ledAdditional(final Integer value) {
+    public Sensor<BrickIMUV2> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
+                ledAdditional = LED_ADDITIONAL_ON;
                 device.ledsOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
+                ledAdditional = LED_ADDITIONAL_OFF;
                 device.ledsOff();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -135,6 +141,17 @@ public class IMU2 extends Sensor<BrickIMUV2> {
                 device.setAllDataPeriod(milliseconds);
                 device.setOrientationPeriod(milliseconds);
             }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickIMUV2> initLedConfig() {
+        try {
+            ledStatus = device.isStatusLEDEnabled() ? LED_STATUS_ON : LED_ADDITIONAL_OFF;
+            ledAdditional = device.areLedsOn() ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF;
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

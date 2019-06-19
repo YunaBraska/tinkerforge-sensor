@@ -27,6 +27,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStat
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_STATUS;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -36,9 +37,8 @@ import static java.lang.Character.isDigit;
 import static java.lang.Character.toLowerCase;
 import static java.lang.String.format;
 import static java.lang.System.nanoTime;
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-
-//TODO: matthias@tinkerforge.com contact at first beta
 
 /**
  * Generic wrapper for {@link Device} to have generic methods and behavior on all sensors
@@ -47,19 +47,20 @@ import static java.util.Collections.singletonList;
  */
 public abstract class Sensor<T extends Device> {
 
-    int port = -1;
-    private Sensor parent;
-    public boolean isBrick;
+    protected int port = -1;
+    protected Sensor parent;
+    protected boolean isBrick;
+    protected LedStatusType ledStatus;
+    protected LedStatusType ledAdditional;
 
     public final String uid;
     public final String name;
     public final T device;
 
-    private final boolean hasStatusLed;
+    //    private final boolean hasStatusLed;
     private final String connectionUid;
     private final char position;
     private final ConcurrentHashMap<ValueType, RollingList<Long>> valueMap = new ConcurrentHashMap<>();
-
     private long lastCall = nanoTime();
 
     /**
@@ -112,27 +113,16 @@ public abstract class Sensor<T extends Device> {
      * @param device connected original {@link Device}
      * @param uid    cached uid of {@link Device#getIdentity()}
      */
-    public Sensor(final T device, final String uid) throws NetworkConnectionException {
-        this(device, uid, false);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param device       connected original {@link Device}
-     * @param uid          cached uid of {@link Device#getIdentity()}
-     * @param hasStatusLed for automation to know if its worth to call status led function e.g. {@link Sensor<T>#ledStatusOn()}, {@link Sensor<T>#ledStatusOff()}, {@link Sensor<T>#ledStatusHeartbeat()}, {@link Sensor<T>#ledStatus()}
-     */
-    protected Sensor(final T device, final String uid, final boolean hasStatusLed) throws NetworkConnectionException {
+    protected Sensor(final T device, final String uid) throws NetworkConnectionException {
         this.uid = uid;
         this.name = device.getClass().getSimpleName();
         this.device = device;
-        this.hasStatusLed = hasStatusLed;
         try {
             final Device.Identity identity = device.getIdentity();
             this.connectionUid = identity.connectedUid;
             this.position = identity.position;
             initPort();
+            initLedConfig();
             initListener();
         } catch (TimeoutException | NotConnectedException e) {
             throw new NetworkConnectionException(e);
@@ -166,12 +156,21 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * For automation to know if its worth to call status led function
+     * For automation to know if its worth to call setLedStatus_Status functions. Value is taken from {@link Sensor#initLedConfig()}
      *
-     * @return true if the Sensor {@link Device} has a status led
+     * @return true if the Sensor {@link Device} has setLedStatus_Status
      */
     public boolean hasLedStatus() {
-        return hasStatusLed;
+        return ledStatus != null && ledStatus != LED_NONE;
+    }
+
+    /**
+     * For automation to know if its worth to call setLedAdditional functions. Value is taken from {@link Sensor#initLedConfig()}
+     *
+     * @return true if the Sensor {@link Device} has setLedAdditional
+     */
+    public boolean hasLedAdditional() {
+        return ledAdditional != null && ledAdditional != LED_NONE;
     }
 
     /**
@@ -248,24 +247,61 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * @param value some send for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
+     * Loads the led configurations for setLedStatus_Status and setLedAdditional
+     *
      * @return current {@link Sensor<T>}
      */
-    public abstract Sensor<T> ledStatus(final Integer value);
+    public abstract Sensor<T> initLedConfig();
 
     /**
-     * @param value some send additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
+     * @return {@link LedStatusType} state or null if setLedStatus_Status is not present
+     */
+    public LedStatusType getLedStatus() {
+        return ledStatus;
+    }
+
+    /**
+     * @return {@link LedStatusType} state or null if setLedAdditional is not present
+     */
+    public LedStatusType getLedAdditional() {
+        return ledAdditional;
+    }
+
+    /**
+     * @param ledStatusType for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor<T>}
      */
-    public abstract Sensor<T> ledAdditional(final Integer value);
+    public Sensor<T> setLedStatus(final LedStatusType ledStatusType) {
+        return setLedStatus(ledStatusType.bit);
+    }
+
+    /**
+     * @param value for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
+     * @return current {@link Sensor<T>}
+     */
+    public abstract Sensor<T> setLedStatus(final Integer value);
+
+    /**
+     * @param ledStatusType additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
+     * @return current {@link Sensor<T>}
+     */
+    public Sensor<T> setLedAdditional(final LedStatusType ledStatusType) {
+        return setLedAdditional(ledStatusType.bit);
+    }
+
+    /**
+     * @param value additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
+     * @return current {@link Sensor<T>}
+     */
+    public abstract Sensor<T> setLedAdditional(final Integer value);
 
     /**
      * Status led try to show {@link LedStatusType#LED_STATUS} like the {@link com.tinkerforge.BrickletMotionDetectorV2} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledStatus() {
-        return ledStatus(LED_STATUS.bit);
+    public Sensor<T> setLedStatus_Status() {
+        return setLedStatus(LED_STATUS);
     }
 
     /**
@@ -273,8 +309,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledStatusHeartbeat() {
-        return ledStatus(LED_STATUS_HEARTBEAT.bit);
+    public Sensor<T> setLedStatus_Heartbeat() {
+        return setLedStatus(LED_STATUS_HEARTBEAT);
     }
 
     /**
@@ -282,8 +318,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledStatusOn() {
-        return ledStatus(LED_STATUS_ON.bit);
+    public Sensor<T> setLedStatus_On() {
+        return setLedStatus(LED_STATUS_ON);
     }
 
     /**
@@ -291,8 +327,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledStatusOff() {
-        return ledStatus(LED_STATUS_OFF.bit);
+    public Sensor<T> setLedStatus_Off() {
+        return setLedStatus(LED_STATUS_OFF);
     }
 
     /**
@@ -300,8 +336,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledAdditionalOn() {
-        return ledAdditional(LED_ADDITIONAL_ON.bit);
+    public Sensor<T> setLedAdditional_On() {
+        return setLedAdditional(LED_ADDITIONAL_ON);
     }
 
     /**
@@ -309,8 +345,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledAdditionalOff() {
-        return ledAdditional(LED_ADDITIONAL_OFF.bit);
+    public Sensor<T> setLedAdditional_Off() {
+        return setLedAdditional(LED_ADDITIONAL_OFF);
     }
 
     /**
@@ -318,8 +354,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledAdditionalHeartbeat() {
-        return ledAdditional(LED_ADDITIONAL_HEARTBEAT.bit);
+    public Sensor<T> setLedAdditional_Heartbeat() {
+        return setLedAdditional(LED_ADDITIONAL_HEARTBEAT);
     }
 
     /**
@@ -327,8 +363,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledAdditionalStatus() {
-        return ledAdditional(LED_ADDITIONAL_STATUS.bit);
+    public Sensor<T> setLedAdditional_Status() {
+        return setLedAdditional(LED_ADDITIONAL_STATUS);
     }
 
     /**
@@ -336,8 +372,8 @@ public abstract class Sensor<T extends Device> {
      *
      * @return current {@link Sensor<T>}
      */
-    public Sensor<T> ledBrightness(final Integer value) {
-        return ledAdditional(value);
+    public Sensor<T> setLedBrightness(final Integer value) {
+        return setLedAdditional(value);
     }
 
     /**
@@ -465,13 +501,13 @@ public abstract class Sensor<T extends Device> {
             if (this.hasLedStatus()) {
                 for (int i = 0; i < 7; i++) {
                     if (i % 2 == 0) {
-                        this.ledStatusOn();
+                        this.setLedStatus_On();
                     } else {
-                        this.ledStatusOff();
+                        this.setLedStatus_Off();
                     }
                     Thread.sleep(128);
                 }
-                this.ledStatus();
+                this.setLedStatus_Status();
             }
         } catch (Exception ignore) {
         }
@@ -513,7 +549,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Generic led function enum for all {@link Sensor} types, can be used also in {@link Sensor#ledStatus(Integer)} or {@link Sensor#ledAdditional(Integer)}
+     * Generic led function enum for all {@link Sensor} types, can be used also in {@link Sensor#setLedStatus(Integer)} or {@link Sensor#setLedAdditional(Integer)}
      */
     public enum LedStatusType {
         LED_NONE(-1),
@@ -533,6 +569,24 @@ public abstract class Sensor<T extends Device> {
 
         LedStatusType(final int bit) {
             this.bit = bit;
+        }
+
+        public static LedStatusType ledStatusTypeOf(final int bit) {
+            for (LedStatusType status : asList(LED_NONE, LED_STATUS_ON, LED_STATUS_OFF, LED_STATUS_HEARTBEAT, LED_STATUS)) {
+                if (bit == status.bit) {
+                    return status;
+                }
+            }
+            return LED_NONE;
+        }
+
+        public static LedStatusType ledAdditionalTypeOf(final int bit) {
+            for (LedStatusType status : asList(LED_NONE, LED_ADDITIONAL_ON, LED_ADDITIONAL_OFF, LED_ADDITIONAL_HEARTBEAT, LED_ADDITIONAL_STATUS)) {
+                if (bit == status.bit) {
+                    return status;
+                }
+            }
+            return LED_NONE;
         }
     }
 }

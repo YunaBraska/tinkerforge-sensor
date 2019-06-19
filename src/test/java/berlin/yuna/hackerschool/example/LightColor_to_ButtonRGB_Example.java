@@ -15,7 +15,7 @@ public class LightColor_to_ButtonRGB_Example {
 
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
         if (type.isColor()) {
-            sensor.ledAdditionalOn();
+            sensor.setLedAdditional_On();
             stack.sensors().buttonRGB().send(value);
         }
     }

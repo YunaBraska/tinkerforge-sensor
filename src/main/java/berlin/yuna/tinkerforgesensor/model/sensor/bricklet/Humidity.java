@@ -7,6 +7,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
 
@@ -34,7 +35,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
 public class Humidity extends Sensor<BrickletHumidity> {
 
     public Humidity(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletHumidity) device, uid, false);
+        super((BrickletHumidity) device, uid);
     }
 
     @Override
@@ -50,12 +51,19 @@ public class Humidity extends Sensor<BrickletHumidity> {
     }
 
     @Override
-    public Sensor<BrickletHumidity> ledStatus(final Integer value) {
+    public Sensor<BrickletHumidity> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletHumidity> ledAdditional(final Integer value) {
+    public Sensor<BrickletHumidity> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletHumidity> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

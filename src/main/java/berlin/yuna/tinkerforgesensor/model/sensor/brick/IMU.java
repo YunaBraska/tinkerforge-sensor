@@ -19,7 +19,6 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ACCELERATION_Z;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ANGULAR_VELOCITY_X;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ANGULAR_VELOCITY_Y;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ANGULAR_VELOCITY_Z;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURRENT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_X;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Y;
@@ -27,8 +26,6 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Z;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_HEADING;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_PITCH;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_ROLL;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.VOLTAGE_USB;
 
 public class IMU extends Sensor<BrickIMU> {
 
@@ -36,7 +33,7 @@ public class IMU extends Sensor<BrickIMU> {
      * Full fledged AHRS with 9 degrees of freedom
      */
     public IMU(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickIMU) device, uid, true);
+        super((BrickIMU) device, uid);
     }
 
     @Override
@@ -73,11 +70,14 @@ public class IMU extends Sensor<BrickIMU> {
     }
 
     @Override
-    public Sensor<BrickIMU> ledStatus(final Integer value) {
+    public Sensor<BrickIMU> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.enableStatusLED();
             } else if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.disableStatusLED();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -87,12 +87,15 @@ public class IMU extends Sensor<BrickIMU> {
     }
 
     @Override
-    public Sensor<BrickIMU> ledAdditional(final Integer value) {
+    public Sensor<BrickIMU> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
-                device.enableStatusLED();
+                ledAdditional = LED_ADDITIONAL_ON;
+                device.ledsOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
-                device.disableStatusLED();
+                ledAdditional = LED_ADDITIONAL_OFF;
+                device.ledsOff();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -110,6 +113,17 @@ public class IMU extends Sensor<BrickIMU> {
                 device.setAllDataPeriod(milliseconds);
                 device.setOrientationPeriod(milliseconds);
             }
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickIMU> initLedConfig() {
+        try {
+            ledStatus = device.isStatusLEDEnabled() ? LED_STATUS_ON : LED_ADDITIONAL_OFF;
+            ledAdditional = device.areLedsOn() ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF;
         } catch (TimeoutException | NotConnectedException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

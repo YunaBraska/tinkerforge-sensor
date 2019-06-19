@@ -36,7 +36,7 @@ public class TODO_SORT_OLD_EXAMPLES extends TinkerForgeUtil {
         }
         for (Sensor sensor : sortedList) {
             if (sensor.hasLedStatus() && sensor.isBrick()) {
-                sensor.ledStatus(status.bit);
+                sensor.setLedStatus(status);
                 sleep(128);
             }
         }

@@ -56,7 +56,7 @@ public class Distance_Display_Left_Right_Example extends Helper {
             servo.send(6, true);
 
 
-            display.ledAdditionalOn();
+            display.setLedAdditional_On();
             display.send("leftValue ${s}" + (leftValue / 10) + "cm", 0, 0);
             display.send("leftMotor ${s}" + (leftMotor), 0, 2);
 

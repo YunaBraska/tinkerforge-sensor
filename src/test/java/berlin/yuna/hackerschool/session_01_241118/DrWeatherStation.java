@@ -29,7 +29,7 @@ public class DrWeatherStation extends Helper {
 
         final Sensor display = stack.sensors().displayLcd20x4();
 
-        display.ledAdditionalOn();
+        display.setLedAdditional_On();
         if (type.isButtonPressed()) {
             if (value == 11) {
                 display.send("${clear}");

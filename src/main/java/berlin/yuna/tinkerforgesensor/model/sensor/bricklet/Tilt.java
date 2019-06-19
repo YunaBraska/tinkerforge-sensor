@@ -2,11 +2,13 @@ package berlin.yuna.tinkerforgesensor.model.sensor.bricklet;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.BrickletTilt;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
 
@@ -28,7 +30,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
 public class Tilt extends Sensor<BrickletTilt> {
 
     public Tilt(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletTilt) device, uid, false);
+        super((BrickletTilt) device, uid);
     }
 
     @Override
@@ -44,12 +46,19 @@ public class Tilt extends Sensor<BrickletTilt> {
     }
 
     @Override
-    public Sensor<BrickletTilt> ledStatus(final Integer value) {
+    public Sensor<BrickletTilt> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletTilt> ledAdditional(final Integer value) {
+    public Sensor<BrickletTilt> setLedAdditional(final Integer value) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletTilt> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_NONE;
         return this;
     }
 

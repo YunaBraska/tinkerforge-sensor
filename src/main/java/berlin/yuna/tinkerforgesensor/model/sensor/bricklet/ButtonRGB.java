@@ -18,6 +18,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStat
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
  * <h3>{@link ButtonRGB}</h3><br />
@@ -39,7 +40,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     boolean highContrast = false;
 
     public ButtonRGB(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletRGBLEDButton) device, uid, true);
+        super((BrickletRGBLEDButton) device, uid);
     }
 
     @Override
@@ -66,8 +67,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
         try {
             if (value instanceof Boolean) {
                 highContrast = (Boolean) value;
-            }
-            if (value instanceof Color) {
+            } else if (value instanceof Color) {
                 return send(((Color) value).getRGB());
             } else if (value instanceof java.awt.Color) {
                 return send(((java.awt.Color) value).getRGB());
@@ -75,8 +75,6 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
                 Color color = new Color(((Number) value).intValue());
                 color = highContrast ? calculateHighContrast(color) : color;
                 device.setColor(color.getRed(), color.getGreen(), color.getBlue());
-            } else {
-                device.setColor(0, 0, 0);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
         }
@@ -95,27 +93,36 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> ledStatus(final Integer value) {
+    public Sensor<BrickletRGBLEDButton> setLedStatus(final Integer value) {
+        if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_OFF.bit) {
+                ledStatus = LED_STATUS_OFF;
                 device.setStatusLEDConfig((short) LED_STATUS_OFF.bit);
             } else if (value == LED_STATUS_ON.bit) {
+                ledStatus = LED_STATUS_ON;
                 device.setStatusLEDConfig((short) LED_STATUS_ON.bit);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
+                ledStatus = LED_STATUS_HEARTBEAT;
                 device.setStatusLEDConfig((short) LED_STATUS_HEARTBEAT.bit);
             } else if (value == LED_STATUS.bit) {
+                ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
         } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> ledAdditional(final Integer value) {
+    public Sensor<BrickletRGBLEDButton> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         if (value == LED_ADDITIONAL_ON.bit) {
+            ledAdditional = LED_ADDITIONAL_ON;
             send(true);
         } else if (value == LED_ADDITIONAL_OFF.bit) {
+            ledAdditional = LED_ADDITIONAL_OFF;
             send(false);
         }
         return this;
@@ -125,7 +132,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     public Sensor<BrickletRGBLEDButton> flashLed() {
         super.flashLed();
         try {
-            ledAdditionalOn();
+            setLedAdditional_On();
             for (int color : Arrays.asList(
                     Color.WHITE,
                     Color.RED,
@@ -141,7 +148,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
                 send(color);
                 Thread.sleep(64);
             }
-            ledAdditionalOff();
+            setLedAdditional_Off();
         } catch (Exception ignore) {
         }
         return this;
@@ -149,6 +156,17 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 
     @Override
     public Sensor<BrickletRGBLEDButton> refreshPeriod(final int milliseconds) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletRGBLEDButton> initLedConfig() {
+        try {
+            ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
+            ledAdditional = LED_ADDITIONAL_ON;
+        } catch (TimeoutException | NotConnectedException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 }

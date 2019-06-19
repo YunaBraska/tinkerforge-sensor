@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
@@ -44,7 +45,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <h6>Send text with dynamic spaces between)</h6>
  * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
  * <h6>Display ON</h6>
- * <code>display.ledAdditionalOn;</code>
+ * <code>display.setLedAdditional_On;</code>
  * <h6>Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example</h6>
  * <code>stack.values().button();</code>
  * <h6>Getting button pressed example</h6>
@@ -53,11 +54,13 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
     public static final String DYNAMIC_SPACE = "${s}";
-    private static final String SPLIT_LINE = System.lineSeparator();
     public static final int COLUMN_LIMIT = 20;
 
+    private static final String SPLIT_LINE = System.lineSeparator();
+    private final String[] cachedRows = new String[]{"", "", "", ""};
+
     public DisplayLcd20x4(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletLCD20x4) device, uid, false);
+        super((BrickletLCD20x4) device, uid);
     }
 
     @Override
@@ -127,16 +130,19 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     }
 
     @Override
-    public Sensor<BrickletLCD20x4> ledStatus(final Integer value) {
+    public Sensor<BrickletLCD20x4> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletLCD20x4> ledAdditional(final Integer value) {
+    public Sensor<BrickletLCD20x4> setLedAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
+                ledAdditional = LED_ADDITIONAL_ON;
                 device.backlightOn();
             } else if (value == LED_ADDITIONAL_OFF.bit) {
+                ledAdditional = LED_ADDITIONAL_OFF;
                 device.backlightOff();
             }
         } catch (TimeoutException | NotConnectedException ignored) {
@@ -148,16 +154,28 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     @Override
     public Sensor<BrickletLCD20x4> flashLed() {
         try {
-            this.ledAdditionalOn();
+            this.setLedAdditional_On();
             for (int i = 0; i < 7; i++) {
                 send("H ${s} O ${s} W ${s} D ${s} Y [" + i + "]");
                 send(DYNAMIC_SPACE + UUID.randomUUID() + DYNAMIC_SPACE, 0, 1);
                 Thread.sleep(128);
             }
             send(true);
-            this.ledAdditionalOff();
+            this.setLedAdditional_Off();
         } catch (Exception ignore) {
         }
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletLCD20x4> refreshPeriod(final int milliseconds) {
+        return this;
+    }
+
+    @Override
+    public Sensor<BrickletLCD20x4> initLedConfig() {
+        ledStatus = LED_NONE;
+        ledAdditional = LED_ADDITIONAL_OFF;
         return this;
     }
 
@@ -208,7 +226,10 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
     private void sendToDisplay(final short x, final short y, final String line) {
         try {
-            device.writeLine(y, x, line);
+            if (!line.equals(cachedRows[y])) {
+                cachedRows[y] = line;
+                device.writeLine(y, x, line);
+            }
         } catch (TimeoutException | NotConnectedException e) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
@@ -347,10 +368,5 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
         }
 
         return ks0066u.toString();
-    }
-
-    @Override
-    public Sensor<BrickletLCD20x4> refreshPeriod(final int milliseconds) {
-        return this;
     }
 }

@@ -30,7 +30,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
- * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer.htm">Official documentation</a></li>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Barometer_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting air pressure examples</h6>
  * <code>

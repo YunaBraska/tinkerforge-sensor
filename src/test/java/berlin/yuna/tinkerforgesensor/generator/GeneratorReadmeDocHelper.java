@@ -248,15 +248,18 @@ public class GeneratorReadmeDocHelper {
                 if (linkedClassSource.get().hasComments()) {
                     final String linkDesc = link.length > 1 ? link[1].trim() : linkedClass.getSimpleName();
                     linkText.append("[").append(linkDesc).append("]");
-                    linkText.append("(").append(linkedClassSource.get().getReadmeFilePath().toString()).append(")");
+                    linkText.append("(").append(linkedClassSource.get().getReadmeFileUrl().toString()).append(")");
 
                     linkText.append(" ([source]");
                     linkText.append("(").append(linkedClassSource.get().getRelativeMavenPath().toString()).append("))");
                 } else {
                     final String linkDesc = link.length > 1 ? link[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
-                    linkText.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenPath().toString()).append(")");
+                    linkText.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
                 }
+            } else {
+                linkText.append(link.length > 1 ? link[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName());
             }
+
             text = text.replaceFirst(PATTERN_LINK.pattern(), linkText.toString());
         }
 

@@ -20,6 +20,8 @@ import static java.util.stream.Collectors.toSet;
 
 public class GeneratorReadmeDoc {
 
+    //https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/README.md
+    //https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/README.md
     public static void generate(final List<JFile> jFileList) {
         try {
             deleteDir(DIR_README.toPath());
@@ -63,10 +65,10 @@ public class GeneratorReadmeDoc {
 
             for (JFile jFile : packageFiles) {
                 result.append("* [").append(jFile.getClazz().getSimpleName()).append("]");
-                result.append("(").append(jFile.getReadmeFilePath().toString()).append(")");
+                result.append("(").append(jFile.getReadmeFileUrl().toString()).append(")");
 
                 result.append(" ([source]");
-                result.append("(").append(jFile.getRelativeMavenPath().toString()).append("))");
+                result.append("(").append(jFile.getRelativeMavenUrl().toString()).append("))");
                 result.append(LINE_SEPARATOR);
             }
             result.append("---").append(LINE_SEPARATOR);
@@ -111,7 +113,7 @@ public class GeneratorReadmeDoc {
         for (String packageGroup : packageGroups) {
             final JFile jFile = jFiles.stream().filter(file -> file.getClazz().getPackage().getName().equals(packageGroup)).collect(toList()).get(0);
             result.append("[").append(jFile.getPath().getParent().getFileName().toString().replace(JAVA_EXTENSION, "")).append("]");
-            result.append("(").append(jFile.getReadmePackagePath().toString()).append(") · ");
+            result.append("(").append(jFile.getReadmePackageUrl().toString()).append(") · ");
         }
         result.append(LINE_SEPARATOR);
         return result;

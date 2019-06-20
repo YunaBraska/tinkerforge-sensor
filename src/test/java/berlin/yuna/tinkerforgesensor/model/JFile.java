@@ -2,6 +2,8 @@ package berlin.yuna.tinkerforgesensor.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,12 +21,13 @@ public class JFile {
     private final Class superClazz;
     private final boolean hasComments;
 
+    public static final String PROJECT_URL = "https://github.com/YunaBraska/tinkerforge-sensor/blob/master/";
     public static final String DIR_REL_MAVEN = "src/main/java";
     public static final File DIR_PROJECT = new File(System.getProperty("user.dir"));
     public static final File DIR_MAVEN_PROJECT = new File(DIR_PROJECT, DIR_REL_MAVEN);
     public static final Pattern PATTERN_COMMENT = Pattern.compile("(?s)\\/\\*.*?\\*\\/");
     public static final Pattern PATTERN_LINK = Pattern.compile("(\\{@link)(.*?)(})");
-//    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
+    //    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
     public static final String JAVA_EXTENSION = ".java";
     public static final File DIR_README = new File(DIR_PROJECT, "readmeDoc");
 
@@ -50,12 +53,20 @@ public class JFile {
         return new File(DIR_README.getName(), getRelativePath().toString().replace(JAVA_EXTENSION, ".md"));
     }
 
+    public URL getReadmeFileUrl() {
+        return getUrl(getReadmeFilePath());
+    }
+
     public File getReadmePackagePath() {
         final File targetReadme = new File(DIR_README.getName(), getRelativePath().getParent().toString());
         return new File(targetReadme, "README.md");
     }
 
-    public String getSimpleName(){
+    public URL getReadmePackageUrl() {
+        return getUrl(getReadmePackagePath());
+    }
+
+    public String getSimpleName() {
         return clazz.getSimpleName();
     }
 
@@ -69,6 +80,10 @@ public class JFile {
 
     public Path getRelativeMavenPath() {
         return relativeMavenPath;
+    }
+
+    public URL getRelativeMavenUrl() {
+        return getUrl(getRelativeMavenPath().toFile());
     }
 
     public Class getClazz() {
@@ -96,6 +111,14 @@ public class JFile {
         if (o == null || getClass() != o.getClass()) return false;
         final JFile jFile = (JFile) o;
         return Objects.equals(clazz, jFile.clazz);
+    }
+
+    private URL getUrl(final File path) {
+        try {
+            return new URL(PROJECT_URL + path.toString());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("unable to build url from [" + PROJECT_URL + path.toString() + "]", e);
+        }
     }
 
     @Override

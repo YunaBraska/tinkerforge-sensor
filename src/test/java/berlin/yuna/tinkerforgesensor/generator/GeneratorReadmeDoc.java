@@ -14,6 +14,7 @@ import java.util.Set;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicClassName;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
+import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_README;
 import static berlin.yuna.tinkerforgesensor.model.JFile.JAVA_EXTENSION;
 import static java.util.stream.Collectors.toList;
@@ -25,20 +26,19 @@ public class GeneratorReadmeDoc {
         try {
             deleteDir(DIR_README.toPath());
             final List<JFile> jFiles = new ArrayList<>(jFileList);
-            final List<JFile> jFilesCements = jFiles.stream().filter(JFile::hasComments).collect(toList());
-            final Set<String> packageGroups = jFilesCements.stream().map(file -> file.getClazz().getPackage().getName()).collect(toSet());
-            final StringBuilder navigation = createNavigation(jFilesCements, packageGroups);
+            final List<JFile> jFilesComments = jFiles.stream().filter(JFile::hasComments).collect(toList());
+            final Set<String> packageGroups = jFilesComments.stream().map(file -> file.getClazz().getPackage().getName()).collect(toSet());
+            final StringBuilder navigation = createNavigation(jFilesComments, packageGroups);
 
-            createIndex(navigation, packageGroups, jFilesCements);
+            createIndex(navigation, packageGroups, jFilesComments);
 
-            while (!jFilesCements.isEmpty()) {
-                final JFile jFile = jFilesCements.listIterator().next();
-                final List<JFile> classVersions = getClassVersions(jFile, jFiles);
+            while (!jFilesComments.isEmpty()) {
+                final List<JFile> classVersions = getClassVersions(jFilesComments.listIterator().next(), jFiles);
                 GeneratorReadmeDocHelper.generate(navigation, jFiles, classVersions.get(0));
 
                 //Generate readme.md only for new versions
                 for (JFile classVersion : classVersions) {
-                    jFilesCements.remove(classVersion);
+                    jFilesComments.remove(classVersion);
                 }
             }
         } catch (IOException e) {
@@ -61,6 +61,7 @@ public class GeneratorReadmeDoc {
         for (String packageGroup : packageGroups) {
             final StringBuilder result = new StringBuilder();
             final List<JFile> packageFiles = jFiles.stream().filter(file -> file.getClazz().getPackage().getName().equals(packageGroup)).collect(toList());
+            final File packageGroupPath = packageFiles.get(0).getReadmePackagePath();
 
             result.append(LINE_SEPARATOR);
             result.append("## ");
@@ -69,17 +70,26 @@ public class GeneratorReadmeDoc {
             result.append(navigation);
             result.append("---").append(LINE_SEPARATOR);
 
-            for (JFile jFile : packageFiles) {
+            while (!packageFiles.isEmpty()) {
+                final List<JFile> classVersions = getClassVersions(packageFiles.listIterator().next(), jFiles);
+                final JFile jFile = classVersions.get(0);
+
                 result.append("* [").append(getBasicClassName(jFile.getSimpleName())).append("]");
                 result.append("(").append(jFile.getReadmeFileUrl().toString()).append(")");
 
                 result.append(" ([source]");
                 result.append("(").append(jFile.getRelativeMavenUrl().toString()).append("))");
                 result.append(LINE_SEPARATOR);
+
+                //Generate readme.md only for new versions
+                for (JFile classVersion : classVersions) {
+                    packageFiles.remove(classVersion);
+                }
             }
+
             result.append("---").append(LINE_SEPARATOR);
 
-            final File targetFile = new File(JFile.DIR_PROJECT, packageFiles.get(0).getReadmePackagePath().toString());
+            final File targetFile = new File(DIR_PROJECT, packageGroupPath.toString());
             try {
                 if (!targetFile.exists()) {
                     targetFile.getParentFile().mkdirs();

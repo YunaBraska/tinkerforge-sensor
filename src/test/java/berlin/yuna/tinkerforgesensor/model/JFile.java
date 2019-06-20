@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -102,10 +103,12 @@ public class JFile {
     }
 
     public static List<JFile> getProjectJavaFiles() throws IOException {
-        return Files.walk(DIR_MAVEN_PROJECT.toPath())
+        final List<JFile> jFileList = Files.walk(DIR_MAVEN_PROJECT.toPath())
                 .filter(Files::isRegularFile)
                 .filter(file -> file.getFileName().toString().endsWith(JAVA_EXTENSION))
                 .map(JFile::new).collect(Collectors.toList());
+        jFileList.sort(Comparator.comparing(JFile::getSimpleName));
+        return jFileList;
     }
 
     @Override

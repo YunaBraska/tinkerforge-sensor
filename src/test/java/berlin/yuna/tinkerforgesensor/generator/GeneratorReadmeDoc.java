@@ -1,7 +1,6 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 import berlin.yuna.tinkerforgesensor.model.JFile;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +11,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicClassName;
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_README;
 import static berlin.yuna.tinkerforgesensor.model.JFile.JAVA_EXTENSION;
@@ -20,8 +21,6 @@ import static java.util.stream.Collectors.toSet;
 
 public class GeneratorReadmeDoc {
 
-    //https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/README.md
-    //https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/README.md
     public static void generate(final List<JFile> jFileList) {
         try {
             deleteDir(DIR_README.toPath());
@@ -31,10 +30,17 @@ public class GeneratorReadmeDoc {
             final StringBuilder navigation = createNavigation(jFilesCements, packageGroups);
 
             createIndex(navigation, packageGroups, jFilesCements);
-            for (JFile jFile : jFilesCements) {
-                GeneratorReadmeDocHelper.generate(navigation, packageGroups, jFiles, jFile);
+
+            while (!jFilesCements.isEmpty()) {
+                final JFile jFile = jFilesCements.listIterator().next();
+                final List<JFile> classVersions = getClassVersions(jFile, jFiles);
+                GeneratorReadmeDocHelper.generate(navigation, jFiles, classVersions.get(0));
+
+                //Generate readme.md only for new versions
+                for (JFile classVersion : classVersions) {
+                    jFilesCements.remove(classVersion);
+                }
             }
-            System.out.println(jFilesCements);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +48,7 @@ public class GeneratorReadmeDoc {
     }
 
     private static void deleteDir(final Path path) throws IOException {
-        if(Files.exists(path)) {
+        if (Files.exists(path)) {
             Files.walk(path)
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
@@ -64,7 +70,7 @@ public class GeneratorReadmeDoc {
             result.append("---").append(LINE_SEPARATOR);
 
             for (JFile jFile : packageFiles) {
-                result.append("* [").append(jFile.getClazz().getSimpleName()).append("]");
+                result.append("* [").append(getBasicClassName(jFile.getSimpleName())).append("]");
                 result.append("(").append(jFile.getReadmeFileUrl().toString()).append(")");
 
                 result.append(" ([source]");

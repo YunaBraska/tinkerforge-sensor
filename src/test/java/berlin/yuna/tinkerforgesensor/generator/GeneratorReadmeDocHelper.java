@@ -32,14 +32,13 @@ public class GeneratorReadmeDocHelper {
         try {
             final List<JFile> jFiles = new ArrayList<>(jFileList);
             final StringBuilder result = new StringBuilder();
-            result.append(LINE_SEPARATOR);
             result.append("## ");
             result.append(jFile.getClazz().getPackage().getName());
             result.append(".");
             result.append(getBasicClassName(jFile.getSimpleName()));
             result.append(LINE_SEPARATOR);
             result.append(navigation);
-            result.append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
+            result.append("---").append(LINE_SEPARATOR);
 
             //Write all class versions on top
             result.append("###### ");
@@ -51,9 +50,9 @@ public class GeneratorReadmeDocHelper {
             final String content = new String(Files.readAllBytes(jFile.getPath()));
             final Matcher matcher = PATTERN_COMMENT.matcher(content);
             while (matcher.find()) {
-                final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", LINE_SEPARATOR);
+                final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", "");
                 result.append(parseNodes(Jsoup.parse(block).select("body").get(0), LINE_SEPARATOR, jFiles, jFile));
-                result.append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
+                result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
             }
 
             final File targetFile = new File(DIR_PROJECT, jFile.getReadmeFilePath().toString());
@@ -64,7 +63,7 @@ public class GeneratorReadmeDocHelper {
         }
     }
 
-    private static StringBuilder parseNodes(final Node root, final String parentSeparator, final List<JFile> jFileList, final JFile jFile) {
+    private static String parseNodes(final Node root, final String parentSeparator, final List<JFile> jFileList, final JFile jFile) {
         final StringBuilder result = new StringBuilder();
         for (Node node : root.childNodes()) {
             if (node instanceof Element) {
@@ -77,7 +76,7 @@ public class GeneratorReadmeDocHelper {
                 result.append(text);
             }
         }
-        return result;
+        return result.toString().trim();
     }
 
     private static String filterTextOnly(final List<Node> nodes) {
@@ -194,7 +193,7 @@ public class GeneratorReadmeDocHelper {
                 result.append(LINE_SEPARATOR).append("###### ").append(parseNodes(node, parentSeparator, jFileList, jFile));
                 break;
             case "hr":
-                result.append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
+                result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
                 break;
             case "strong":
             case "b":
@@ -209,7 +208,7 @@ public class GeneratorReadmeDocHelper {
                 result.append("(").append(element.attr("src")).append(")");
                 break;
             case "li":
-                result.append(LINE_SEPARATOR).append("* ").append(parseNodes(node, LINE_SEPARATOR + "* ", jFileList, jFile));
+                result.append("* ").append(parseNodes(node, LINE_SEPARATOR + "* ", jFileList, jFile)).append(LINE_SEPARATOR);
                 break;
             case "head":
             case "html":
@@ -280,11 +279,10 @@ public class GeneratorReadmeDocHelper {
             final StringBuilder result = new StringBuilder();
             final String[] matchGroup = match.group(1).split(" ");
 
-            result.append("**Parameter");
+            result.append("**Parameter** ");
             if (matchGroup.length > 1) {
-                result.append(" *").append(matchGroup[1]).append("*");
+                result.append("*").append(matchGroup[1]).append("* ");
             }
-            result.append("** ");
             text = text.replaceFirst(PATTERN_PARAM.pattern(), result.toString());
         }
         return text;

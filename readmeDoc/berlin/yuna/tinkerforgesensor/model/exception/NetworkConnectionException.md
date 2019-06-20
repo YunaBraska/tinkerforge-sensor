@@ -1,45 +1,15 @@
-
 ## berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException
 * [sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/README.md) · [exception](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/README.md) · [type](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/README.md) · [logic](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/logic/README.md) · [model](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/README.md) · [util](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/util/README.md) · [builder](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/builder/README.md) · 
-
 ---
 ###### NetworkConnectionException · 
 
 ---
+Constructs a new runtime exception with the specified detail message. The cause is not initialized, and may subsequently be initialized by a call to [initCause](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)). **Parameter** *message* the detail message. The detail message is saved for                later retrieval by the [getMessage()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method./
 
- Constructs a new runtime exception with the specified detail message.
- The cause is not initialized, and may subsequently be initialized by a
- call to [initCause](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)).
-
- **Parameter *message*** the detail message. The detail message is saved for
-                later retrieval by the [getMessage()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method.
-/
 --- 
+Constructs a new exception with the specified detail message and cause.  `Note that the detail message associated with  *cause* is *not* automatically incorporated in this exception's detail message. **Parameter** *message* the detail message (which is saved for later retrieval                by the [getMessage()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method). **Parameter** *cause*   the cause (which is saved for later retrieval by the                [getCause()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method).  (A  send is                permitted, and indicates that the cause is nonexistent or                unknown.)  *Since 1.4* /`
 
- Constructs a new exception with the specified detail message and
- cause.  `Note that the detail message associated with
-  *cause* is *not* automatically incorporated in
- this exception's detail message.
-
- **Parameter *message*** the detail message (which is saved for later retrieval
-                by the [getMessage()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method).
- **Parameter *cause***   the cause (which is saved for later retrieval by the
-                [getCause()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method).  (A  send is
-                permitted, and indicates that the cause is nonexistent or
-                unknown.)
-  *Since 1.4* /`
 --- 
+Constructs a new exception with the specified cause and a detail message of  (which typically contains the class and detail message of ). This constructor is useful for exceptions that are little more than wrappers for other throwables (for example, [NetworkConnectionException](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java))). **Parameter** *cause* the cause (which is saved for later retrieval by the              [getCause()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method).  (A  send is              permitted, and indicates that the cause is nonexistent or              unknown.)  *Since 1.4* /
 
- Constructs a new exception with the specified cause and a detail
- message of  (which
- typically contains the class and detail message of ).
- This constructor is useful for exceptions that are little more than
- wrappers for other throwables (for example, {@link
- java.security.PrivilegedActionException}).
-
- **Parameter *cause*** the cause (which is saved for later retrieval by the
-              [getCause()](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/exception/NetworkConnectionException.java)) method).  (A  send is
-              permitted, and indicates that the cause is nonexistent or
-              unknown.)
-  *Since 1.4* /
 --- 

@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;

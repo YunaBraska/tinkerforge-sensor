@@ -5,7 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
 import berlin.yuna.tinkerforgesensor.model.builder.Values;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.IPConnection;

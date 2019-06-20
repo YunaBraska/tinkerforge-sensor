@@ -1,6 +1,6 @@
 package berlin.yuna.tinkerforgesensor.util;
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.Async;
 import berlin.yuna.tinkerforgesensor.model.type.Loop;
 import berlin.yuna.tinkerforgesensor.model.type.AsyncRun;

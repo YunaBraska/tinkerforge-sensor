@@ -2,9 +2,7 @@ package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
 import static java.lang.String.format;
 

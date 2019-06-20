@@ -1,7 +1,7 @@
 package berlin.yuna.hackerschool.session_02_220219;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;

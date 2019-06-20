@@ -2,8 +2,8 @@ package berlin.yuna.tinkerforgesensor.generator;
 
 
 import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.DeviceFactory;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor.DeviceFactory;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;

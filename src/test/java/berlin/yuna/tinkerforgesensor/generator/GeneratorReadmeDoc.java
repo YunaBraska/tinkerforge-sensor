@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toSet;
 public class GeneratorReadmeDoc {
 
     //https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/README.md
-    //https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/README.md
+    //https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/README.md
     public static void generate(final List<JFile> jFileList) {
         try {
             deleteDir(DIR_README.toPath());

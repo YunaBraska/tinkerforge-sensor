@@ -1,6 +1,6 @@
 package berlin.yuna.hackerschool.example;
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.AsyncRun;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.DummyDevice;

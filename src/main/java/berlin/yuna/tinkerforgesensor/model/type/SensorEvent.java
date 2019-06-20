@@ -1,6 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.type;
 
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 
 public class SensorEvent {
 

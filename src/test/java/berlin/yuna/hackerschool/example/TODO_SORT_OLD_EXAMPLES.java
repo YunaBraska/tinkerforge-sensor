@@ -2,8 +2,8 @@ package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil;
 import com.tinkerforge.BrickletLCD20x4;
@@ -12,8 +12,8 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
-import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_OFF;
-import static berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
+import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static java.lang.String.format;
 import static java.util.Collections.reverse;

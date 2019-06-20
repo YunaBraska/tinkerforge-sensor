@@ -3,12 +3,12 @@ package berlin.yuna.tinkerforgesensor.generator.builder;
 
 import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Default;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplayLcd20x4;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.DisplaySegment;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundIntensity;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.SoundPressure;
+import berlin.yuna.tinkerforgesensor.model.sensor.Default;
+import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd20x4;
+import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegment;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.SoundIntensity;
+import berlin.yuna.tinkerforgesensor.model.sensor.SoundPressure;
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;

@@ -24,7 +24,7 @@ final Sensor button_03 = stack.sensors().buttonRGB(2);
 display.send(Color.MAGENTA);
 ```
 
-* [Compare](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Compare.java) a [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+* [Compare](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Compare.java) a [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java)
 ```java
 final Sensor display = stack.sensors().displaySegment();
 display.compare().is(display); //returns true - UID is the same
@@ -41,7 +41,7 @@ stack.values().temperature_Max();
 stack.values().temperature_Avg();
 ```
 
-* Example getting [Values](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Values.java) of specific [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+* Example getting [Values](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Values.java) of specific [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java)
 ```java
 final Sensor distanceIR = stack.sensors().distanceIR();
 distanceIR.values().distance();
@@ -50,7 +50,7 @@ distanceIR.values().distance_Max(); //This is only a measure of a short time;
 distanceIR.values().distance_Avg(); //This is only a measure of a short time;
 ```
 
-* Example other [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java) functions - all functions are safe to use and does not produce any user exceptions even if a Sensor were never connected 
+* Example other [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java) functions - all functions are safe to use and does not produce any user exceptions even if a Sensor were never connected 
 ```java
 final Sensor distanceIR = stack.sensors().distanceIR();
 distanceIR.isPort(); //returns stack-order-number (higher stack/port = higher number)
@@ -97,11 +97,11 @@ try (Stack stack = new Stack("host", 4223, "optionalPassword")) {
 
 #### How it works
 * TinkerForge original [Device](https://www.tinkerforge.com/en/doc/Software/Device_Identifier.html)
-* wrapped by Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Sensor.java)
+* wrapped by Generic [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java)
 * handles input and sends [SensorEvent](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/SensorEvent.java)
 * Auto closeable [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java) with addable event consumer
 * Returns List of Sensors [Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java)
-* Supported devices [Bricks](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/brick) and [Bricklets](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet)
+* Supported devices [Bricks and Bricklets](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor)
 * Feel free for pull request as the wrapper classes are not so hard to implement, its just a mapping ;)
 
 

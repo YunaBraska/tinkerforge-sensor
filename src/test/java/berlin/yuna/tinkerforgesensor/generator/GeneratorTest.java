@@ -5,7 +5,7 @@ import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorCompare;
 import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorSensors;
 import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorValues;
 import berlin.yuna.tinkerforgesensor.model.JFile;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import com.squareup.javapoet.JavaFile;
 import org.junit.Test;
 import org.reflections.Reflections;

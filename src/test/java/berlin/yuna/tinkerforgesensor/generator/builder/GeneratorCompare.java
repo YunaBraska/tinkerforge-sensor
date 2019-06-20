@@ -2,7 +2,7 @@ package berlin.yuna.tinkerforgesensor.generator.builder;
 
 
 import berlin.yuna.tinkerforgesensor.model.builder.Compare;
-import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
+import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;

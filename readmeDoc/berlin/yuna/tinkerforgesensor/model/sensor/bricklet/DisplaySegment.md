@@ -7,7 +7,7 @@
 
 ---
 
-### [DisplaySegment](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplaySegment.md) ([source](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplaySegment.java))
+### [DisplaySegment](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplaySegment.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplaySegment.java))
 
 *Four 7-segment displays with switchable colon*
 

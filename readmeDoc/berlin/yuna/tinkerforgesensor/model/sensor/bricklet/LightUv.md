@@ -7,13 +7,13 @@
 
 ---
 
-### [LightUv](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/LightUv.md) ([source](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/LightUv.java))
+### [LightUv](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/LightUv.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/LightUv.java))
 
 *Measures ambient light up to 64000lux*
 
 ### Values
 
-* [LIGHT_UV](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)) [x / 10.0 = index]
+* [LIGHT_UV](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)) [x / 10.0 = index]
 ### Technical Info
 
 * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/UV_Light.html)

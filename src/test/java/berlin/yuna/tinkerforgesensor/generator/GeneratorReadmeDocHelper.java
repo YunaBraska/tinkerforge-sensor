@@ -251,7 +251,7 @@ public class GeneratorReadmeDocHelper {
                     linkText.append("(").append(linkedClassSource.get().getReadmeFileUrl().toString()).append(")");
 
                     linkText.append(" ([source]");
-                    linkText.append("(").append(linkedClassSource.get().getRelativeMavenPath().toString()).append("))");
+                    linkText.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append("))");
                 } else {
                     final String linkDesc = link.length > 1 ? link[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
                     linkText.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");

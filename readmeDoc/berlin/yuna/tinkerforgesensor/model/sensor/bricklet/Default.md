@@ -7,11 +7,11 @@
 
 ---
 
-### [Default](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.md) ([source](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.java))
+### [Default](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.java))
 
 *Default sensor is representing a non existing but requested sensor*
 
-###### Check if the current sensor is [Default](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.md) ([source](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.java))
+###### Check if the current sensor is [Default](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/Default.java))
 ```java
 //false = (DefaultSensor) means that the current sensor not available
 sensors.isPresent();

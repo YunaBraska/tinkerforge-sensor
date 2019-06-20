@@ -7,7 +7,7 @@
 
 ---
 
-### [DisplayLcd128x64](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplayLcd128x64.md) ([source](src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplayLcd128x64.java))
+### [DisplayLcd128x64](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplayLcd128x64.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/bricklet/DisplayLcd128x64.java))
 *7.1cm (2.8") display with 128x64 pixel and touch screen**GUI elements are coming soon*
 ### Values
 

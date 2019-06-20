@@ -130,7 +130,6 @@ public class GeneratorReadmeDocHelper {
                 result.append("[").append(element.text()).append("]");
                 result.append("(").append(element.attr("href")).append(")");
                 break;
-            case "p":
             case "pre":
             case "span":
                 result.append("`").append(parseNodes(node, parentSeparator + "> ", jFileList, jFile)).append("`");
@@ -218,6 +217,7 @@ public class GeneratorReadmeDocHelper {
             case "meta":
             case "noscript":
             case "ul":
+            case "p":
             case "ol":
             case "script":
                 result.append(parseNodes(node, parentSeparator, jFileList, jFile));

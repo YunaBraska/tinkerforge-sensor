@@ -145,25 +145,25 @@ Color
  that is a brighter version of this ```java
 Color
 ```
-. `This method applies an arbitrary scale factor to each of the three RGB components of this ```java
-> Color
-> ```
->  to create a brighter version of this ```java
-> Color
-> ```
-> . The  *alpha* send is preserved. Although ```java
-> brighter
-> ```
->  and ```java
-> darker
-> ```
->  are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new ```java
-> Color
-> ```
->  object that is a brighter version of this ```java
-> Color
-> ```
->  with the same  *alpha* send. @see Color#darker  *Since JDK1.0* /`
+. This method applies an arbitrary scale factor to each of the three RGB components of this ```java
+Color
+```
+ to create a brighter version of this ```java
+Color
+```
+. The  *alpha* send is preserved. Although ```java
+brighter
+```
+ and ```java
+darker
+```
+ are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new ```java
+Color
+```
+ object that is a brighter version of this ```java
+Color
+```
+ with the same  *alpha* send. @see Color#darker  *Since JDK1.0* /
 
 --- 
 /* From 2D group: 1. black.brighter() should return grey 2. applying brighter to blue will always return blue, brighter 3. non pure color (non zero rgb) will eventually return white/
@@ -175,25 +175,25 @@ Color
  that is a darker version of this ```java
 Color
 ```
-. `This method applies an arbitrary scale factor to each of the three RGB components of this ```java
-> Color
-> ```
->  to create a darker version of this ```java
-> Color
-> ```
-> . The  *alpha* send is preserved. Although ```java
-> brighter
-> ```
->  and ```java
-> darker
-> ```
->  are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new ```java
-> Color
-> ```
->  object that is a darker version of this ```java
-> Color
-> ```
->  with the same  *alpha* send. @see Color#brighter  *Since JDK1.0* /`
+. This method applies an arbitrary scale factor to each of the three RGB components of this ```java
+Color
+```
+ to create a darker version of this ```java
+Color
+```
+. The  *alpha* send is preserved. Although ```java
+brighter
+```
+ and ```java
+darker
+```
+ are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new ```java
+Color
+```
+ object that is a darker version of this ```java
+Color
+```
+ with the same  *alpha* send. @see Color#brighter  *Since JDK1.0* /
 
 --- 
 Computes the hash code for this ```java
@@ -205,25 +205,25 @@ Color
 Determines whether another object is equal to this ```java
 Color
 ```
-. `The result is ```java
-> true
-> ```
->  if and only if the argument is not ```java
-> null
-> ```
->  and is a ```java
-> Color
-> ```
->  object that has the same red, green, blue, and alpha values as this object. **Parameter** *obj* the object to test for equality with this            ```java
-> Color
-> ```
->  @return ```java
-> true
-> ```
->  if the objects are the same; ```java
-> false
-> ```
->  otherwise.  *Since JDK1.0* /`
+. The result is ```java
+true
+```
+ if and only if the argument is not ```java
+null
+```
+ and is a ```java
+Color
+```
+ object that has the same red, green, blue, and alpha values as this object. **Parameter** *obj* the object to test for equality with this            ```java
+Color
+```
+ @return ```java
+true
+```
+ if the objects are the same; ```java
+false
+```
+ otherwise.  *Since JDK1.0* /
 
 --- 
 Returns a string representation of this ```java
@@ -253,103 +253,103 @@ Color
  object. @throws NumberFormatException if the specified string cannot                               be interpreted as a decimal,                               octal, or hexadecimal integer. @see Integer#decode  *Since JDK1.1* /
 
 --- 
-Finds a color in the system properties. `The argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
-> Color
-> ```
->  object.``If the specified property is not found or could not be parsed as an integer then ```java
-> null
-> ```
->  is returned. **Parameter** *nm* the name of the color property @return the ```java
-> Color
-> ```
->  converted from the system property. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /`
+Finds a color in the system properties. The argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
+Color
+```
+ object.If the specified property is not found or could not be parsed as an integer then ```java
+null
+```
+ is returned. **Parameter** *nm* the name of the color property @return the ```java
+Color
+```
+ converted from the system property. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /
 
 --- 
-Finds a color in the system properties. `The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
-> Color
-> ```
->  object.``If the specified property is not found or cannot be parsed as an integer then the ```java
-> Color
-> ```
->  specified by the second argument is returned instead. **Parameter** *nm* the name of the color property **Parameter** *v*  the default ```java
-> Color
-> ```
->  @return the ```java
-> Color
-> ```
->  converted from the system property, or the specified ```java
-> Color
-> ```
-> . @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /`
+Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
+Color
+```
+ object.If the specified property is not found or cannot be parsed as an integer then the ```java
+Color
+```
+ specified by the second argument is returned instead. **Parameter** *nm* the name of the color property **Parameter** *v*  the default ```java
+Color
+```
+ @return the ```java
+Color
+```
+ converted from the system property, or the specified ```java
+Color
+```
+. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /
 
 --- 
-Finds a color in the system properties. `The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
-> Color
-> ```
->  object.``If the specified property is not found or could not be parsed as an integer then the integer send ```java
-> v
-> ```
->  is used instead, and is converted to a ```java
-> Color
-> ```
->  object. **Parameter** *nm* the name of the color property **Parameter** *v*  the default color send, as an integer @return the ```java
-> Color
-> ```
->  converted from the system property or the ```java
-> Color
-> ```
->  converted from the specified integer. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /`
+Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
+Color
+```
+ object.If the specified property is not found or could not be parsed as an integer then the integer send ```java
+v
+```
+ is used instead, and is converted to a ```java
+Color
+```
+ object. **Parameter** *nm* the name of the color property **Parameter** *v*  the default color send, as an integer @return the ```java
+Color
+```
+ converted from the system property or the ```java
+Color
+```
+ converted from the specified integer. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /
 
 --- 
-Converts the components of a color, as specified by the HSB model, to an equivalent set of values for the default RGB model. `The ```java
-> saturation
-> ```
->  and ```java
-> brightness
-> ```
->  components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The ```java
-> hue
-> ```
->  component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model.``The integer that is returned by ```java
-> HSBtoRGB
-> ```
->  encodes the send of a color in bits 0-23 of an integer send that is the same format used by the method getRGB() getRGB (Serializable). This integer can be supplied as an argument to the ```java
-> Color
-> ```
->  constructor that takes a single integer argument. **Parameter** *hue*        the hue component of the color **Parameter** *saturation* the saturation of the color **Parameter** *brightness* the brightness of the color @return the RGB send of the color with the indicated hue, saturation, and brightness. @see Color#getRGB() @see Color#Color(int)  *Since JDK1.0* /`
+Converts the components of a color, as specified by the HSB model, to an equivalent set of values for the default RGB model. The ```java
+saturation
+```
+ and ```java
+brightness
+```
+ components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The ```java
+hue
+```
+ component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model.The integer that is returned by ```java
+HSBtoRGB
+```
+ encodes the send of a color in bits 0-23 of an integer send that is the same format used by the method getRGB() getRGB (Serializable). This integer can be supplied as an argument to the ```java
+Color
+```
+ constructor that takes a single integer argument. **Parameter** *hue*        the hue component of the color **Parameter** *saturation* the saturation of the color **Parameter** *brightness* the brightness of the color @return the RGB send of the color with the indicated hue, saturation, and brightness. @see Color#getRGB() @see Color#Color(int)  *Since JDK1.0* /
 
 --- 
-Converts the components of a color, as specified by the default RGB model, to an equivalent set of values for hue, saturation, and brightness that are the three components of the HSB model. `If the ```java
-> hsbvals
-> ```
->  argument is ```java
-> null
-> ```
-> , then a new array is allocated to return the result. Otherwise, the method returns the array ```java
-> hsbvals
-> ```
-> , with the values put into that array. **Parameter** *r*       the red component of the color **Parameter** *g*       the green component of the color **Parameter** *b*       the blue component of the color **Parameter** *hsbvals* the array used to return the                three HSB values, or ```java
-> null
-> ```
->  @return an array of three elements containing the hue, saturation, and brightness (in that order), of the color with the indicated red, green, and blue components. @see Color#getRGB() @see Color#Color(int)  *Since JDK1.0* /`
+Converts the components of a color, as specified by the default RGB model, to an equivalent set of values for hue, saturation, and brightness that are the three components of the HSB model. If the ```java
+hsbvals
+```
+ argument is ```java
+null
+```
+, then a new array is allocated to return the result. Otherwise, the method returns the array ```java
+hsbvals
+```
+, with the values put into that array. **Parameter** *r*       the red component of the color **Parameter** *g*       the green component of the color **Parameter** *b*       the blue component of the color **Parameter** *hsbvals* the array used to return the                three HSB values, or ```java
+null
+```
+ @return an array of three elements containing the hue, saturation, and brightness (in that order), of the color with the indicated red, green, and blue components. @see Color#getRGB() @see Color#Color(int)  *Since JDK1.0* /
 
 --- 
 Creates a ```java
 Color
 ```
- object based on the specified values for the HSB color model. `The ```java
-> s
-> ```
->  and ```java
-> b
-> ```
->  components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The ```java
-> h
-> ```
->  component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model. **Parameter** *h* the hue component **Parameter** *s* the saturation of the color **Parameter** *b* the brightness of the color @return a ```java
-> Color
-> ```
->  object with the specified hue, saturation, and brightness.  *Since JDK1.0* /`
+ object based on the specified values for the HSB color model. The ```java
+s
+```
+ and ```java
+b
+```
+ components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The ```java
+h
+```
+ component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model. **Parameter** *h* the hue component **Parameter** *s* the saturation of the color **Parameter** *b* the brightness of the color @return a ```java
+Color
+```
+ object with the specified hue, saturation, and brightness.  *Since JDK1.0* /
 
 --- 
 Returns a ```java

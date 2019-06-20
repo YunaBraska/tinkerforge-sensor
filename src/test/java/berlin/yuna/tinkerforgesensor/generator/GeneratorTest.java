@@ -4,7 +4,7 @@ package berlin.yuna.tinkerforgesensor.generator;
 import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorCompare;
 import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorSensors;
 import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorValues;
-import berlin.yuna.tinkerforgesensor.model.SensorRegistry;
+import berlin.yuna.tinkerforgesensor.model.JFile;
 import berlin.yuna.tinkerforgesensor.model.sensor.bricklet.Sensor;
 import com.squareup.javapoet.JavaFile;
 import org.junit.Test;
@@ -32,6 +32,7 @@ public class GeneratorTest {
 
     @Test
     public void generate() throws IOException {
+        final List<JFile> jFiles = JFile.getProjectJavaFiles();
         final List<Class<? extends Sensor>> sensorList = getSensorList();
         final File targetDeviceProviderFile = new File(System.getProperty("user.dir"), "src/main/resources/META-INF/services/com.tinkerforge.DeviceProvider");
         final File targetParentDir = new File("src/main/java");
@@ -48,7 +49,7 @@ public class GeneratorTest {
         writeJavaFile(GeneratorValues.generate(sensorList), targetParentDir);
 
         //README.md
-        GeneratorSensorReadme.generate(sensorList);
+        GeneratorReadmeDoc.generate(jFiles);
     }
 
     private void writeJavaFile(final JavaFile javaFile, final File targetParentDir) throws IOException {

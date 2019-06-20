@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getSensorVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 
-public class GeneratorSensorReadme {
+public class GeneratorSensorReadme_old {
 
     public static final Pattern PATTERN_COMMENT = Pattern.compile("(?s)\\/\\*.*?\\*\\/");
     //        public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");

@@ -44,9 +44,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
 /**
  * Full fledged AHRS with 9 degrees of freedom
  */
-public class IMU2 extends Sensor<BrickIMUV2> {
+public class IMUV2 extends Sensor<BrickIMUV2> {
 
-    public IMU2(final Device device, final String uid) throws NetworkConnectionException {
+    public IMUV2(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickIMUV2) device, uid);
     }
 

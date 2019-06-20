@@ -18,7 +18,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DualButton;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
-import berlin.yuna.tinkerforgesensor.model.sensor.IMU2;
+import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
@@ -122,7 +122,7 @@ public class Compare {
     }
 
     public boolean isIMU() {
-        return is(IMU2.class, IMU.class);
+        return is(IMUV2.class, IMU.class);
     }
 
     public boolean isIO16() {

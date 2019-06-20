@@ -18,7 +18,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DualButton;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
-import berlin.yuna.tinkerforgesensor.model.sensor.IMU2;
+import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
@@ -128,7 +128,7 @@ public class SensorRegistry {
         registry.put(BrickletHumidity.class, Humidity::new);
         registry.put(BrickletHumidityV2.class, HumidityV2::new);
         registry.put(BrickIMU.class, IMU::new);
-        registry.put(BrickIMUV2.class, IMU2::new);
+        registry.put(BrickIMUV2.class, IMUV2::new);
         registry.put(BrickletIO16.class, IO16::new);
         registry.put(BrickletIO16V2.class, IO16V2::new);
         registry.put(BrickletAmbientLight.class, LightAmbient::new);

@@ -19,7 +19,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DualButton;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
-import berlin.yuna.tinkerforgesensor.model.sensor.IMU2;
+import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
@@ -165,20 +165,12 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, IO16V2.class, IO16.class);
     }
 
-    public Sensor iMU2() {
-        return iMU2(0);
-    }
-
-    public Sensor iMU2(final int number) {
-        return getSensor(number, IMU2.class);
-    }
-
     public Sensor iMU() {
         return iMU(0);
     }
 
     public Sensor iMU(final int number) {
-        return getSensor(number, IMU.class);
+        return getSensor(number, IMUV2.class, IMU.class);
     }
 
     public Sensor humidity() {

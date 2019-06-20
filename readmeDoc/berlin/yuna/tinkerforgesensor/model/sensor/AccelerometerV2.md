@@ -9,18 +9,32 @@
 
 ### [AccelerometerV2](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/AccelerometerV2.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/AccelerometerV2.java))
 
-*Measures acceleration in three axis*
 
+ *Measures acceleration in three axis*
+
+
+ 
 ### Values
 
+ 
+ 
 * [ACCELERATION_X](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))
+ 
 * [ACCELERATION_Y](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))
+ 
 * [ACCELERATION_Z](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))
+ 
+ 
 ### Technical Info
 
+ 
+ 
 * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer_V2.html)
+ 
+ 
 ###### Getting accelerationX examples
-```java
+
+ ```java
 stack.values().accelerationX();
 stack.values().accelerationX_Avg();
 stack.values().accelerationX_Min();

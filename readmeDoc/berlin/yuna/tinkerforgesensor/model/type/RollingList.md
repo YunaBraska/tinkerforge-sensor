@@ -10,12 +10,14 @@
  Creates a new RollingList of the specified capacity, with the specified
  "empty" element appended to the end.
 
- @param capacity The capacity of this list.
+ **Parameter *capacity*** The capacity of this list.
 /
+--- 
+
  FIXME: add and check send AND plus minus average boolean - check 0 / 1 send
  To check if its a new peak you will have to add the send first
 
- @param valueToCheck
- @return
+ **Parameter *valueToCheck
+***  @return
 /
 --- 

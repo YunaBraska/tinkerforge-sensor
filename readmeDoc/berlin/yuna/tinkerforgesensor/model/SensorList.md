@@ -9,6 +9,8 @@
 
  Relink set parent for all sensors connected to this parent;
 /
+--- 
+
  Relink all sensor parents;
 /
 --- 

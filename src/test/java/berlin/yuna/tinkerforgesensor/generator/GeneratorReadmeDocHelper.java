@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,8 +20,11 @@ import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicCl
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_CODE;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_COMMENT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_LINK;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_PARAM;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_SINCE;
 
 public class GeneratorReadmeDocHelper {
 
@@ -51,8 +53,8 @@ public class GeneratorReadmeDocHelper {
             while (matcher.find()) {
                 final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", LINE_SEPARATOR);
                 result.append(parseNodes(Jsoup.parse(block).select("body").get(0), LINE_SEPARATOR, jFiles, jFile));
+                result.append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
             }
-            result.append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
 
             final File targetFile = new File(DIR_PROJECT, jFile.getReadmeFilePath().toString());
             System.out.println("Created [" + targetFile + "]");
@@ -68,7 +70,11 @@ public class GeneratorReadmeDocHelper {
             if (node instanceof Element) {
                 result.append(transformHtmlElements(node, jFileList, jFile, parentSeparator));
             } else if (node instanceof TextNode) {
-                result.append(resolveLinks(jFileList, jFile, ((TextNode) node).getWholeText()));
+                String text = resolveCode(((TextNode) node).getWholeText());
+                text = resolveParam(text);
+                text = resolveSince(text);
+                text = resolveLinks(jFileList, jFile, text);
+                result.append(text);
             }
         }
         return result;
@@ -128,7 +134,7 @@ public class GeneratorReadmeDocHelper {
             case "p":
             case "pre":
             case "span":
-                result.append("`").append(element.text()).append("`");
+                result.append("`").append(parseNodes(node, parentSeparator + "> ", jFileList, jFile)).append("`");
                 break;
             case "blockquote":
                 result.append("> ").append(parseNodes(node, parentSeparator + "> ", jFileList, jFile));
@@ -238,38 +244,77 @@ public class GeneratorReadmeDocHelper {
     }
 
     private static String resolveLinks(final List<JFile> jFileList, final JFile jFile, final String inputString) {
-        final StringBuilder result = new StringBuilder();
         String text = inputString;
-        final Matcher linkMatch = PATTERN_LINK.matcher(text);
-        while (linkMatch.find()) {
-            final String[] link = linkMatch.group(2).split("#");
-            final Class linkedClass = searchClass(jFile, link[0].trim());
+        final Matcher match = PATTERN_LINK.matcher(text);
+        while (match.find()) {
+            final String[] matchGroup = match.group(1).split("#");
+            final Class linkedClass = searchClass(jFile, matchGroup[0].trim());
 
-
-            final StringBuilder linkText = new StringBuilder();
+            final StringBuilder result = new StringBuilder();
             final Optional<JFile> linkedClassSource = jFileList.stream().filter(file -> file.getClazz() == linkedClass).findFirst();
             if (linkedClassSource.isPresent()) {
                 if (linkedClassSource.get().hasComments()) {
-                    final String linkDesc = link.length > 1 ? link[1].trim() : linkedClass.getSimpleName();
-                    linkText.append("[").append(linkDesc).append("]");
-                    linkText.append("(").append(linkedClassSource.get().getReadmeFileUrl().toString()).append(")");
+                    final String linkDesc = matchGroup.length > 1 ? matchGroup[1].trim() : linkedClass.getSimpleName();
+                    result.append("[").append(linkDesc).append("]");
+                    result.append("(").append(linkedClassSource.get().getReadmeFileUrl().toString()).append(")");
 
-                    linkText.append(" ([source]");
-                    linkText.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append("))");
+                    result.append(" ([source]");
+                    result.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append("))");
                 } else {
-                    final String linkDesc = link.length > 1 ? link[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
-                    linkText.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
+                    final String linkDesc = matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
+                    result.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
                 }
             } else {
-                linkText.append(link.length > 1 ? link[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName());
+                result.append(matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName());
             }
 
-            text = text.replaceFirst(PATTERN_LINK.pattern(), linkText.toString());
+            text = text.replaceFirst(PATTERN_LINK.pattern(), result.toString());
         }
+        return text;
+    }
 
-        if (!text.trim().isEmpty() && text.trim().length() > 1) {
-            result.append(text);
+    private static String resolveParam(final String inputString) {
+        String text = inputString;
+        final Matcher match = PATTERN_PARAM.matcher(text);
+        while (match.find()) {
+            final StringBuilder result = new StringBuilder();
+            final String[] matchGroup = match.group(1).split(" ");
+
+            result.append("**Parameter");
+            if (matchGroup.length > 1) {
+                result.append(" *").append(matchGroup[1]).append("*");
+            }
+            result.append("** ");
+            text = text.replaceFirst(PATTERN_PARAM.pattern(), result.toString());
         }
-        return result.toString();
+        return text;
+    }
+
+    private static String resolveCode(final String inputString) {
+        String text = inputString;
+        final Matcher match = PATTERN_CODE.matcher(text);
+        while (match.find()) {
+            final StringBuilder result = new StringBuilder();
+            final String[] matchGroup = match.group(1).split(" ");
+            if (matchGroup.length > 1) {
+                result.append(" *").append(matchGroup[1]).append("*");
+            }
+            text = text.replaceFirst(PATTERN_CODE.pattern(), result.toString());
+        }
+        return text;
+    }
+
+    private static String resolveSince(final String inputString) {
+        String text = inputString;
+        final Matcher match = PATTERN_SINCE.matcher(text);
+        while (match.find()) {
+            final StringBuilder result = new StringBuilder();
+            final String[] matchGroup = match.group(1).split(" ");
+            if (matchGroup.length > 1) {
+                result.append(" *Since ").append(matchGroup[1].trim()).append("* ");
+            }
+            text = text.replaceFirst(PATTERN_SINCE.pattern(), result.toString());
+        }
+        return text;
     }
 }

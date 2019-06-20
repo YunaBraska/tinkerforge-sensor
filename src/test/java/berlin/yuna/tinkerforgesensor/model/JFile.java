@@ -26,7 +26,10 @@ public class JFile {
     public static final File DIR_PROJECT = new File(System.getProperty("user.dir"));
     public static final File DIR_MAVEN_PROJECT = new File(DIR_PROJECT, DIR_REL_MAVEN);
     public static final Pattern PATTERN_COMMENT = Pattern.compile("(?s)\\/\\*.*?\\*\\/");
-    public static final Pattern PATTERN_LINK = Pattern.compile("(\\{@link)(.*?)(})");
+    public static final Pattern PATTERN_LINK = Pattern.compile("\\{@link(.*?)}");
+    public static final Pattern PATTERN_CODE = Pattern.compile("\\{@code(.*?)}");
+    public static final Pattern PATTERN_SINCE = Pattern.compile("(\\@since\\s(\\w|\\.)*\\s?)");
+    public static final Pattern PATTERN_PARAM = Pattern.compile("(\\@param\\s\\w*\\s?)");
     //    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
     public static final String JAVA_EXTENSION = ".java";
     public static final File DIR_README = new File(DIR_PROJECT, "readmeDoc");

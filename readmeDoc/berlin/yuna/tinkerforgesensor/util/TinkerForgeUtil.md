@@ -9,7 +9,9 @@
 
  loop = list of subprograms
 /
- @param string to check on
+--- 
+
+ **Parameter *string*** to check on
  @return true if string is null or empty otherwise false
 /
 --- 

@@ -8,42 +8,66 @@
 ---
 
 ### [DualButton](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/DualButton.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/DualButton.java))
-*Two tactile buttons with built-in blue LEDs*
+
+ *Two tactile buttons with built-in blue LEDs*
+
+ 
 ### Values
 
+ 
+ 
 * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)) [10, 20] = Released
+ 
 * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)) [11, 21] = Pressed
+ 
 * [BUTTON_PRESSED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)) [0/1] = Released/Pressed
+ 
+ 
 ### Technical Info
 
+ 
+ 
 * [Official documentation](href=)
+ 
+ 
 ###### Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example
-```java
+
+ ```java
 stack.values().button();
 ```
 
+ 
 ###### Getting button pressed example
-```java
+
+ ```java
 stack.values().buttonPressed();
 ```
 
+ 
 ###### Set LEDs on
-```java
+
+ ```java
 button.setLedAdditional_On();
 ```
 
+ 
 ###### Set LEDs off
-```java
+
+ ```java
 button.setLedAdditional_Off();
 ```
 
+ 
 ###### Set LEDs active on press
-```java
+
+ ```java
 button.setLedAdditional_Status();
 ```
 
+ 
 ###### Set LEDs active on release
-```java
+
+ ```java
 button.setLedAdditional_Heartbeat();
 ```
 

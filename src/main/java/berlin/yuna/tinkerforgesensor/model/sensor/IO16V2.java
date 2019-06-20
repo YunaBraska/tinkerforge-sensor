@@ -15,7 +15,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link IO16}</h3><br />
+ * <h3>{@link IO16V2}</h3><br />
  * <i>16-channel digital input/output</i><br />
  *
  * <h3>Values</h3>

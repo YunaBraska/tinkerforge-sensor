@@ -309,7 +309,7 @@ String
 ```java
 Color
 ```
- object. **Throws** [NumberFormatException](https://docs.oracle.com/javase/8/docs/api/java/lang/NumberFormatException.html)  if the specified string cannot                               be interpreted as a decimal,                               octal, or hexadecimal integer. [decode](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))  *Since JDK1.1*
+ object. **Throws** [NumberFormatException](https://docs.oracle.com/javase/8/docs/api/java/lang/NumberFormatException.html)  if the specified string cannot                               be interpreted as a decimal,                               octal, or hexadecimal integer. [Integer.decode](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html)  *Since JDK1.1*
 
 --- 
 Finds a color in the system properties. The argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a 
@@ -324,7 +324,7 @@ null
 ```java
 Color
 ```
- converted from the system property. [getProperty](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [getInteger](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
+ converted from the system property. [System.getProperty](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html) (String) [Integer.getInteger](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
 Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a 
@@ -347,7 +347,7 @@ Color
 ```java
 Color
 ```
-. [getProperty](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [getInteger](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
+. [System.getProperty](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html) (String) [Integer.getInteger](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
 Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a 
@@ -370,7 +370,7 @@ Color
 ```java
 Color
 ```
- converted from the specified integer. [getProperty](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [getInteger](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
+ converted from the specified integer. [System.getProperty](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html) (String) [Integer.getInteger](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
 Converts the components of a color, as specified by the HSB model, to an equivalent set of values for the default RGB model. The 
@@ -389,7 +389,7 @@ hue
 ```java
 HSBtoRGB
 ```
- encodes the send of a color in bits 0-23 of an integer send that is the same format used by the method *getRGB() getRGB (Serializable)*. This integer can be supplied as an argument to the 
+ encodes the send of a color in bits 0-23 of an integer send that is the same format used by the method [getRGB() getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) . This integer can be supplied as an argument to the 
 ```java
 Color
 ```

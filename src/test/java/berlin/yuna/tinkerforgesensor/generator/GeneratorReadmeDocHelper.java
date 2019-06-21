@@ -77,10 +77,10 @@ public class GeneratorReadmeDocHelper {
                 text = resolveParam(text);
                 text = resolveThrows(text);
                 text = resolveSince(text);
-                text = resolveLinks(jFileList, jFile, text, PATTERN_LINK);
-                text = resolveLinks(jFileList, jFile, text, PATTERN_SEE);
                 text = text.replaceAll(PATTERN_SERIAL.pattern(), "*Serial*");
                 text = text.replaceAll(PATTERN_RETURN.pattern(), "*Return*");
+                text = resolveLinks(jFileList, jFile, text, PATTERN_LINK);
+                text = resolveLinks(jFileList, jFile, text, PATTERN_SEE);
                 result.append(text);
             }
         }
@@ -102,7 +102,7 @@ public class GeneratorReadmeDocHelper {
     private static Class<?> searchClass(final JFile jFile, final String className) {
         try {
             //Case of own class
-            if (className.equals(jFile.getSimpleName()) || className.equals("this")) {
+            if (className.isEmpty() || className.equals(jFile.getSimpleName()) || className.equals("this")) {
                 return jFile.getClazz();
             }
             //Case of import
@@ -256,7 +256,7 @@ public class GeneratorReadmeDocHelper {
         final Matcher match = pattern.matcher(text);
         while (match.find()) {
             final String[] matchGroup = match.group(1).split("#");
-            final Class linkedClass = searchClass(jFile, matchGroup[0].trim());
+            final Class linkedClass = searchClass(jFile, matchGroup[0].replace("@see", "").trim());
 
             final StringBuilder result = new StringBuilder();
             final Optional<JFile> linkedClassSource = jFileList.stream().filter(file -> file.getClazz() == linkedClass).findFirst();
@@ -269,11 +269,11 @@ public class GeneratorReadmeDocHelper {
                     result.append(" ([source]");
                     result.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")) ");
                 } else {
-                    final String linkDesc = matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
-                    result.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
+                    result.append("[").append(linkedClass.getSimpleName()).append(matchGroup.length > 1 ? "." + matchGroup[1].trim() + "]" : "]");
+                    result.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
                 }
             } else if (linkedClass.getPackage().getName().equals(Object.class.getPackage().getName())) {
-                result.append("[").append(linkedClass.getSimpleName()).append("]");
+                result.append("[").append(linkedClass.getSimpleName()).append(matchGroup.length > 1 ? "." + matchGroup[1].trim() + "]" : "]");
                 result.append("(").append("https://docs.oracle.com/javase/8/docs/api/java/lang/").append(linkedClass.getSimpleName()).append(".html").append(") ");
             } else {
                 result.append("*");

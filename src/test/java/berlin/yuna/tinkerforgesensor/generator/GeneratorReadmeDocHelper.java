@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicClassName;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
@@ -35,7 +34,7 @@ public class GeneratorReadmeDocHelper {
             result.append("## ");
             result.append(jFile.getClazz().getPackage().getName());
             result.append(".");
-            result.append(getBasicClassName(jFile.getSimpleName()));
+            result.append(jFile.getBasicName());
             result.append(LINE_SEPARATOR);
             result.append(navigation);
             result.append("---").append(LINE_SEPARATOR);

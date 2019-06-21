@@ -1,7 +1,11 @@
 package berlin.yuna.tinkerforgesensor.model;
 
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -10,8 +14,11 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
 
 public class JFile {
 
@@ -19,7 +26,8 @@ public class JFile {
     private final Path relativePath;
     private final Path relativeMavenPath;
     private final Class clazz;
-    private final Class superClazz;
+    private final Class superClass;
+    private final Class genericClass;
     private final boolean hasComments;
 
     public static final String PROJECT_URL = "https://github.com/YunaBraska/tinkerforge-sensor/blob/master/";
@@ -31,6 +39,7 @@ public class JFile {
     public static final Pattern PATTERN_CODE = Pattern.compile("\\{@code(.*?)}");
     public static final Pattern PATTERN_SINCE = Pattern.compile("(\\@since\\s(\\w|\\.)*\\s?)");
     public static final Pattern PATTERN_PARAM = Pattern.compile("(\\@param\\s\\w*\\s?)");
+    public static final Pattern PATTERN_FILE_VERSIONS = Pattern.compile("(_*V\\d*?)$");
     //    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
     public static final String JAVA_EXTENSION = ".java";
     public static final File DIR_README = new File(DIR_PROJECT, "readmeDoc");
@@ -45,12 +54,21 @@ public class JFile {
             final String packageName = relativePath.getParent().toString().replace(File.separator, ".");
             clazz = Class.forName(packageName + "." + path.getFileName().toString().replace(JAVA_EXTENSION, ""));
 
-            final String typeName = clazz.getGenericSuperclass().getTypeName();
-            superClazz = typeName.contains("<") ? Class.forName(typeName.substring(0, typeName.indexOf("<"))) : null;
+            final Type genericSuperclass = clazz.getGenericSuperclass();
+            final String typeName = genericSuperclass.getTypeName();
+            superClass = typeName.contains("<") ? Class.forName(typeName.substring(0, typeName.indexOf("<"))) : null;
+
+            final String genericClassName = clazz.getGenericSuperclass() instanceof ParameterizedTypeImpl ? ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0].getTypeName() : "";
+            genericClass = genericClassName.length() > 2 ? Class.forName(genericClassName) : null;
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Unable to read file [" + path.toString() + "]", e);
         }
 
+//        try {
+//            Class.forName(((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments()[0].getTypeName());
+//        } catch (ClassNotFoundException ignored) {
+//
+//        }
     }
 
     public File getReadmeFilePath() {
@@ -74,6 +92,10 @@ public class JFile {
         return clazz.getSimpleName();
     }
 
+    public Package getPackage() {
+        return clazz.getPackage();
+    }
+
     public Path getPath() {
         return path;
     }
@@ -94,21 +116,29 @@ public class JFile {
         return clazz;
     }
 
-    public Class getSuperClazz() {
-        return superClazz;
+    public Class getSuperClass() {
+        return superClass;
+    }
+
+    public Class getGenericClass() {
+        return genericClass;
     }
 
     public boolean hasComments() {
         return hasComments;
     }
 
+    public String getBasicName() {
+        final String className = getSimpleName();
+        final Matcher match = PATTERN_FILE_VERSIONS.matcher(className);
+        return match.find() ? className.substring(0, className.length() - match.group(1).length()) : className;
+    }
+
     public static List<JFile> getProjectJavaFiles() throws IOException {
-        final List<JFile> jFileList = Files.walk(DIR_MAVEN_PROJECT.toPath())
+        return Files.walk(DIR_MAVEN_PROJECT.toPath())
                 .filter(Files::isRegularFile)
                 .filter(file -> file.getFileName().toString().endsWith(JAVA_EXTENSION))
-                .map(JFile::new).collect(Collectors.toList());
-        jFileList.sort(Comparator.comparing(JFile::getSimpleName));
-        return jFileList;
+                .map(JFile::new).sorted(comparing(JFile::getSimpleName)).collect(Collectors.toList());
     }
 
     @Override

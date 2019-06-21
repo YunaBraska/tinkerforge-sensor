@@ -11,12 +11,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getBasicClassName;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_README;
 import static berlin.yuna.tinkerforgesensor.model.JFile.JAVA_EXTENSION;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -50,7 +50,7 @@ public class GeneratorReadmeDoc {
     private static void deleteDir(final Path path) throws IOException {
         if (Files.exists(path)) {
             Files.walk(path)
-                    .sorted(Comparator.reverseOrder())
+                    .sorted(reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
         }
@@ -74,7 +74,7 @@ public class GeneratorReadmeDoc {
                 final List<JFile> classVersions = getClassVersions(packageFiles.listIterator().next(), jFiles);
                 final JFile jFile = classVersions.get(0);
 
-                result.append("* [").append(getBasicClassName(jFile.getSimpleName())).append("]");
+                result.append("* [").append(jFile.getBasicName()).append("]");
                 result.append("(").append(jFile.getReadmeFileUrl().toString()).append(")");
 
                 result.append(" ([source]");

@@ -91,7 +91,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * You can add new enumTypes without harm</i>
  *
  * ---
- * <ul><li>Device {@link BrickletAccelerometer} => Sensor {@link Accelerometer}</li>
+ * <ul>
+ * <li>Device {@link BrickletAccelerometer} => Sensor {@link Accelerometer}</li>
  * <li>Device {@link BrickletAccelerometerV2} => Sensor {@link AccelerometerV2}</li>
  * <li>Device {@link BrickletAirQuality} => Sensor {@link AirQuality}</li>
  * <li>Device {@link BrickletBarometer} => Sensor {@link Barometer}</li>

@@ -4,7 +4,7 @@
 ###### RollingList · 
 
 ---
-### [RollingList](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/RollingList.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/RollingList.java))  extends *LinkedList*
+### [RollingList](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/RollingList.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/RollingList.java))  extends [LinkedList](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html)
 
  *Rolling list with limited capacity*
 

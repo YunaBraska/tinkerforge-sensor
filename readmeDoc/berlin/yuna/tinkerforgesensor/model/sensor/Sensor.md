@@ -7,10 +7,10 @@
 Generic wrapper for *Device* to have generic methods and behavior on all sensors **Parameter**
 
 --- 
-List of *Consumer* for getting all {@link Sensor
+List of [Consumer](https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html)  for getting all {@link Sensor
 
 --- 
-**Parameter** *consumer* to notify *Consumer* with {@link Sensor
+**Parameter** *consumer* to notify [Consumer](https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html)  with {@link Sensor
 
 --- 
 Creates new [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java))  **Parameter** *device* *Device* to wrap with [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java))  **Parameter** *uid*    for unique identifier *Return* [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java))

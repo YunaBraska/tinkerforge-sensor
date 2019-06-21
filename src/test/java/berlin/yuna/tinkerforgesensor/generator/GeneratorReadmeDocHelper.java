@@ -272,9 +272,9 @@ public class GeneratorReadmeDocHelper {
                     result.append("[").append(linkedClass.getSimpleName()).append(matchGroup.length > 1 ? "." + matchGroup[1].trim() + "]" : "]");
                     result.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
                 }
-            } else if (linkedClass.getPackage().getName().equals(Object.class.getPackage().getName())) {
+            } else if (linkedClass.getTypeName().startsWith("java.")) {
                 result.append("[").append(linkedClass.getSimpleName()).append(matchGroup.length > 1 ? "." + matchGroup[1].trim() + "]" : "]");
-                result.append("(").append("https://docs.oracle.com/javase/8/docs/api/java/lang/").append(linkedClass.getSimpleName()).append(".html").append(") ");
+                result.append("(").append("https://docs.oracle.com/javase/8/docs/api/").append(linkedClass.getTypeName().replace(".", "/")).append(".html").append(") ");
             } else {
                 result.append("*");
                 result.append(matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName());

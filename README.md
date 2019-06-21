@@ -5,7 +5,7 @@ This library simplifies Tinkerforge's sensor API.
 It Removes the pain of sensor UIDs, sensor versions, ports and provides a generic API for every sensor.
 
 #### Sensor documentation
-* A list of all sensors behaviors can be found in the [Sensor documentation](readmeDoc/README.md)
+##### A list of all sensors behaviors and more can be found in the [ReadmeDoc](readmeDoc/README.md)
 
 #### Examples
 * Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/example)

@@ -18,7 +18,11 @@
 ###### Getting air pressure examples
  
 ```java
-stack.values().airPressure(); stack.values().airPressure_Avg(); stack.values().airPressure_Min(); stack.values().airPressure_Max(); stack.values().airPressure_Sum();
+stack.values().airPressure();
+stack.values().airPressure_Avg();
+stack.values().airPressure_Min();
+stack.values().airPressure_Max();
+stack.values().airPressure_Sum();
 ```
 
 --- 

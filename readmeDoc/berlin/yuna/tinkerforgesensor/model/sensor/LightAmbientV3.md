@@ -15,7 +15,11 @@
 ###### Getting lightLux examples
  
 ```java
-stack.values().lightLux(); stack.values().lightLux_Avg(); stack.values().lightLux_Min(); stack.values().lightLux_Max(); stack.values().lightLux_Sum();
+stack.values().lightLux();
+stack.values().lightLux_Avg();
+stack.values().lightLux_Min();
+stack.values().lightLux_Max();
+stack.values().lightLux_Sum();
 ```
 
 --- 

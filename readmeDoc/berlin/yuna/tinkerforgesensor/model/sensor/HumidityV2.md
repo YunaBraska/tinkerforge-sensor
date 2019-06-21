@@ -16,7 +16,11 @@
 ###### Getting humidity examples
  
 ```java
-stack.values().humidity(); stack.values().humidity_Avg(); stack.values().humidity_Min(); stack.values().humidity_Max(); stack.values().humidity_Sum();
+stack.values().humidity();
+stack.values().humidity_Avg();
+stack.values().humidity_Min();
+stack.values().humidity_Max();
+stack.values().humidity_Sum();
 ```
 
 --- 

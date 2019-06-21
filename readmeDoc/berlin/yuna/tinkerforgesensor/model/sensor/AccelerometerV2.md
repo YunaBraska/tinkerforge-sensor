@@ -17,7 +17,11 @@
 ###### Getting accelerationX examples
  
 ```java
-stack.values().accelerationX(); stack.values().accelerationX_Avg(); stack.values().accelerationX_Min(); stack.values().accelerationX_Max(); stack.values().accelerationX_Sum();
+stack.values().accelerationX();
+stack.values().accelerationX_Avg();
+stack.values().accelerationX_Min();
+stack.values().accelerationX_Max();
+stack.values().accelerationX_Sum();
 ```
 
 --- 

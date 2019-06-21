@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
@@ -89,7 +90,7 @@ public class GeneratorReadmeDocHelper {
                 sb.append(filterTextOnly(node.childNodes()));
             }
         }
-        return sb.toString().trim().replaceAll(LINE_SEPARATOR + "\\s*", LINE_SEPARATOR);
+        return sb.toString();
     }
 
     private static Class<?> searchClass(final JFile jFile, final String className) {
@@ -153,8 +154,9 @@ public class GeneratorReadmeDocHelper {
             case "CENTER":
                 break;
             case "code":
-                result.append(parentSeparator).append("```java").append(parentSeparator);
-                result.append(filterTextOnly(element.childNodes())).append(parentSeparator);
+                result.append(parentSeparator).append("```java").append(SEPARATOR);
+                final String code = filterTextOnly(element.childNodes()).replace("; ", ";" + SEPARATOR);
+                result.append(code.trim()).append(parentSeparator);
                 result.append("```").append(parentSeparator);
                 break;
             case "dl":

@@ -17,7 +17,11 @@
 ###### Getting lightUv examples
  
 ```java
-stack.values().lightUv(); stack.values().lightUv_Avg(); stack.values().lightUv_Min(); stack.values().lightUv_Max(); stack.values().lightUv_Sum();
+stack.values().lightUv();
+stack.values().lightUv_Avg();
+stack.values().lightUv_Min();
+stack.values().lightUv_Max();
+stack.values().lightUv_Sum();
 ```
 
 --- 

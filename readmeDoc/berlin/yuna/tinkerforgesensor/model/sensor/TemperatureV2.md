@@ -15,7 +15,11 @@
 ###### Getting temperature examples
  
 ```java
-stack.values().temperature(); stack.values().temperature_Avg(); stack.values().temperature_Min(); stack.values().temperature_Max(); stack.values().temperature_Sum();
+stack.values().temperature();
+stack.values().temperature_Avg();
+stack.values().temperature_Min();
+stack.values().temperature_Max();
+stack.values().temperature_Sum();
 ```
 
 --- 

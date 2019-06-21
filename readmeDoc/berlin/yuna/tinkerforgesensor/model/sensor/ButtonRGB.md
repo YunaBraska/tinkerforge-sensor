@@ -24,7 +24,9 @@ stack.values().buttonPressed();
 ###### Set LED color
  
 ```java
-sensor.send(Color.MAGENTA); sensor.send(new Color(255, 128, 64)); sensor.send(12367);
+sensor.send(Color.MAGENTA);
+sensor.send(new Color(255, 128, 64));
+sensor.send(12367);
 ```
  
 ###### Set auto contrast on=true off=false

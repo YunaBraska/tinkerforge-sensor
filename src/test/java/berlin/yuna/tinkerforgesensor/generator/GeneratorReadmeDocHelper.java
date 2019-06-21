@@ -24,8 +24,11 @@ import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_CODE;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_COMMENT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_LINK;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_PARAM;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_RETURN;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_SEE;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_SERIAL;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_SINCE;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_THROWS;
 
 public class GeneratorReadmeDocHelper {
 
@@ -72,9 +75,12 @@ public class GeneratorReadmeDocHelper {
             } else if (node instanceof TextNode) {
                 String text = resolveCode(((TextNode) node).getWholeText());
                 text = resolveParam(text);
+                text = resolveThrows(text);
                 text = resolveSince(text);
                 text = resolveLinks(jFileList, jFile, text, PATTERN_LINK);
                 text = resolveLinks(jFileList, jFile, text, PATTERN_SEE);
+                text = text.replaceAll(PATTERN_SERIAL.pattern(), "*Serial*");
+                text = text.replaceAll(PATTERN_RETURN.pattern(), "*Return*");
                 result.append(text);
             }
         }
@@ -267,7 +273,9 @@ public class GeneratorReadmeDocHelper {
                     result.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
                 }
             } else {
+                result.append("*");
                 result.append(matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName());
+                result.append("*");
             }
 
             text = text.replaceFirst(pattern.pattern(), result.toString().replace("@see", ""));
@@ -287,6 +295,22 @@ public class GeneratorReadmeDocHelper {
                 result.append("*").append(matchGroup[1]).append("* ");
             }
             text = text.replaceFirst(PATTERN_PARAM.pattern(), result.toString());
+        }
+        return text;
+    }
+
+    private static String resolveThrows(final String inputString) {
+        String text = inputString;
+        final Matcher match = PATTERN_THROWS.matcher(text);
+        while (match.find()) {
+            final StringBuilder result = new StringBuilder();
+            final String[] matchGroup = match.group(1).split(" ");
+
+            result.append("**Throws** ");
+            if (matchGroup.length > 1) {
+                result.append("{@link ").append(matchGroup[1]).append("} ");
+            }
+            text = text.replaceFirst(PATTERN_THROWS.pattern(), result.toString());
         }
         return text;
     }

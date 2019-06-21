@@ -19,14 +19,14 @@ display.send("GIRL");
 ```
  
 ###### Send current time
- *(use TemporalAccessor)*
+ *(use *TemporalAccessor*)*
  
 ```java
 display.send(LocalDateTime#now());
 ```
  
 ###### Send own time format
- *(use DateTimeFormatter)*
+ *(use *DateTimeFormatter*)*
  
 ```java
 display.send(DateTimeFormatter.ofPattern("HH:mm"));

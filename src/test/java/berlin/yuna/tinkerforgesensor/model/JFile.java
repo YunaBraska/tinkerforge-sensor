@@ -40,6 +40,9 @@ public class JFile {
     public static final Pattern PATTERN_CODE = Pattern.compile("\\{@code(.*?)}");
     public static final Pattern PATTERN_SINCE = Pattern.compile("(\\@since\\s(\\w|\\.)*\\s?)");
     public static final Pattern PATTERN_PARAM = Pattern.compile("(\\@param\\s\\w*\\s?)");
+    public static final Pattern PATTERN_THROWS = Pattern.compile("(\\@throws\\s\\w*\\s?)");
+    public static final Pattern PATTERN_SERIAL = Pattern.compile("(\\@serial?)");
+    public static final Pattern PATTERN_RETURN = Pattern.compile("(\\@return?)");
     public static final Pattern PATTERN_FILE_VERSIONS = Pattern.compile("(_*V\\d*?)$");
     //    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
     public static final String JAVA_EXTENSION = ".java";

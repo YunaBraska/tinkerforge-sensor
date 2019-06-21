@@ -12,17 +12,16 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
-import static java.lang.String.format;
 import static java.util.Comparator.comparingInt;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * <h3>{@link SensorList} extends {@link CopyOnWriteArrayList}</h3><br />
+ * <i>List of sensors and filter functions</i><br />
+ */
 public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
-
-    private final ReentrantLock lock = new ReentrantLock();
 
     public synchronized List<Sensor> filter(final Predicate<? super T> predicate) {
         return stream().filter(predicate).collect(toList());
@@ -34,7 +33,6 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     public synchronized List<Sensor> getSensor(final Class<?>... sensorOrDevices) {
-        waitForUnlock(10101);
         return stream().filter(sensor -> sensor.compare().is(sensorOrDevices)).sorted(comparingInt(Sensor::port)).collect(toList());
     }
 
@@ -119,37 +117,6 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
         return result;
     }
 
-    public synchronized boolean isLocked() {
-        return lock.isLocked();
-    }
-
-    public synchronized void lock() {
-        try {
-            lock(30000);
-        } catch (InterruptedException ignore) {
-        }
-    }
-
-    public synchronized boolean lock(final long waitForUnlock) throws InterruptedException {
-        return lock.tryLock(waitForUnlock, MILLISECONDS);
-    }
-
-    public void unlock() {
-        if (lock.isLocked()) {
-            lock.unlock();
-        }
-    }
-
-    public synchronized void waitForUnlock(final long waitForUnlock) {
-        try {
-            lock(waitForUnlock);
-        } catch (IllegalMonitorStateException | InterruptedException e) {
-            System.err.println(format("[ERROR] LOCK [waitForUnlock] [%s] [%s]", waitForUnlock, e.getClass().getSimpleName()));
-        } finally {
-            unlock();
-        }
-    }
-
     public synchronized boolean add(final T t) {
         final int i = indexOf(t);
         if (i > -1) {
@@ -168,7 +135,9 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     /**
-     * Relink set parent for all sensors connected to this parent;
+     * <h3>linkParent</h3>
+     * Relink set parent for all sensors connected to this parent
+     * @param parent sensor to link as paren
      */
     public synchronized void linkParent(final Sensor parent) {
         forEach(sensor -> sensor.linkParent(parent));
@@ -176,7 +145,8 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
     }
 
     /**
-     * Relink all sensor parents;
+     * <h3>relinkParents</h3>
+     * Relink all sensor parents
      */
     public synchronized void relinkParents() {
         final List<T> parentList = copyList();

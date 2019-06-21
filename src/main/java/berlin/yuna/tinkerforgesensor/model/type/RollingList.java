@@ -49,7 +49,7 @@ public class RollingList<T> extends LinkedList<T> {
      * <h3>addAndCheckIfItsNewPeak</h3><br />
      * To check if its a new peak you will have to add the send first
      * <i>Rolling list with limited capacity</i><br />
-     * @param valueToCheck
+     * @param valueToCheck value to check for
      * @return returns true if its a new peak
      */
     public boolean addAndCheckIfItsNewPeak(final T valueToCheck) {
@@ -58,6 +58,10 @@ public class RollingList<T> extends LinkedList<T> {
         return lastPeaks.size() < 2 || (lastPeaks.contains(((Number) valueToCheck).longValue()) && !lastPeaks.get(lastPeaks.size() - 2).equals(valueToCheck));
     }
 
+    /**
+     * <h3>getLastPeaks</h3><br />
+     * @return {@link List} of peaks
+     */
     public List<Long> getLastPeaks() {
         final List<Long> values = this.stream().map(value -> ((Number) value).longValue()).collect(toList());
         List<Long> lastPeek = new ArrayList<>(values);

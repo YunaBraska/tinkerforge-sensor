@@ -45,11 +45,14 @@ public class GeneratorReadmeDocHelper {
             result.append("---").append(LINE_SEPARATOR);
 
             //Write all class versions on top
+            final List<JFile> classVersions = getClassVersions(jFile, jFiles);
             result.append("###### ");
-            for (JFile classVersion : getClassVersions(jFile, jFiles)) {
-                result.append(classVersion.getSimpleName()).append(" · ");
-            }
+            if (classVersions.size() > 1) {
+                for (JFile classVersion : classVersions) {
+                    result.append(classVersion.getSimpleName()).append(" · ");
+                }
             result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
+            }
 
             final String content = new String(Files.readAllBytes(jFile.getPath()));
             final Matcher matcher = PATTERN_COMMENT.matcher(content);

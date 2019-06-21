@@ -1,10 +1,7 @@
 ## berlin.yuna.tinkerforgesensor.model.sensor.Sensor
 * [sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/README.md) · [exception](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/exception/README.md) · [type](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/README.md) · [logic](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/logic/README.md) · [model](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/README.md) · [util](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/util/README.md) · [builder](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/builder/README.md) · 
 ---
-###### Sensor · 
-
----
-Generic wrapper for *Device* to have generic methods and behavior on all sensors **Parameter**
+###### Generic wrapper for *Device* to have generic methods and behavior on all sensors **Parameter**
 
 --- 
 List of [Consumer](https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html)  for getting all {@link Sensor

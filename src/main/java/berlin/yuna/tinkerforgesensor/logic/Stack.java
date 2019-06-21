@@ -33,21 +33,24 @@ import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
 import static java.lang.String.format;
 
+/**
+ * <h3>{@link Stack} implements {@link Closeable}</h3><br />
+ * <i>Stack connection and event handler</i><br />
+ */
 public class Stack implements Closeable {
 
     /**
-     * IPConnection connection of the {@link Sensor} and for enumerating available {@link Sensor}
+     * <h3>{@link Stack#connection}</h3>
+     * IPConnection connection for {@link Sensor} in {@link Stack}
      */
     public IPConnection connection = new IPConnection();
 
     /**
+     * <h3>{@link Stack#sensorEventConsumerList}</h3>
      * List of {@link Consumer} for getting all {@link SensorEvent}
      */
     public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
 
-    /**
-     * SensorList holds all connected {@link Sensor} managing that list
-     */
     private final SensorList<Sensor> sensorList = new SensorList<>();
 
     private final String host;
@@ -60,7 +63,8 @@ public class Stack implements Closeable {
     private final String pingConnectionHandlerName = "Ping_" + connectionHandlerName;
 
     /**
-     * Dummy Sensorlist, wont connect to any {@link Sensor} as the host is not set
+     * <h3>Dummy Stack</h3>
+     * Dummy {@link Stack}, wont connect to any {@link Sensor} as the host is not set
      *
      * @throws NetworkConnectionException should never happen
      */
@@ -69,6 +73,7 @@ public class Stack implements Closeable {
     }
 
     /**
+     * <h3>Stack(host, port)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
      * @param host for {@link Stack#connection}
@@ -80,6 +85,7 @@ public class Stack implements Closeable {
     }
 
     /**
+     * <h3>Stack(host, port, ignoreConnectionError)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
      * @param host                  for {@link Stack#connection}
@@ -92,6 +98,7 @@ public class Stack implements Closeable {
     }
 
     /**
+     * <h3>Stack(host, port, password)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
      * @param host     for {@link Stack#connection}
@@ -104,6 +111,7 @@ public class Stack implements Closeable {
     }
 
     /**
+     * <h3>Stack(host, port, password, ignoreConnectionError)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
      * @param host                  for {@link Stack#connection}
@@ -121,6 +129,7 @@ public class Stack implements Closeable {
     }
 
     /**
+     * <h3>connect</h3>
      * connects to given host - this method will be called from {@link Stack} constructor
      *
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
@@ -150,11 +159,17 @@ public class Stack implements Closeable {
         createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.getDefault(), System.currentTimeMillis(), PING));
     }
 
+    /**
+     * <h3>isConnecting</h3>
+     *
+     * @return true if stack is connecting to the sensors
+     */
     public boolean isConnecting() {
         return (lastConnect + (timeoutMs / 2)) > System.currentTimeMillis();
     }
 
     /**
+     * <h3>disconnect</h3>
      * disconnects all {@link Sensor} from the given host see {@link Stack#close()}
      */
     public synchronized void disconnect() {
@@ -177,6 +192,11 @@ public class Stack implements Closeable {
         });
     }
 
+    /**
+     * <h3>valuesToString</h3>
+     *
+     * @return all values from all sensors as string
+     */
     public String valuesToString() {
         final StringBuilder lineHead = new StringBuilder();
         final StringBuilder lineValue = new StringBuilder();
@@ -195,10 +215,20 @@ public class Stack implements Closeable {
         return System.lineSeparator() + lineHead.toString() + System.lineSeparator() + lineValue.toString();
     }
 
+    /**
+     * <h3>sensors</h3>
+     *
+     * @return List of sensors {@link Sensors}
+     */
     public Sensors sensors() {
         return new Sensors(sensorList);
     }
 
+    /**
+     * <h3>values</h3>
+     *
+     * @return List of sensors {@link Values}
+     */
     public Values values() {
         return new Values(sensorList);
     }

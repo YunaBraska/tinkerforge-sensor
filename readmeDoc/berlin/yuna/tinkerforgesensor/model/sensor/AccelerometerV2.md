@@ -15,7 +15,8 @@
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Accelerometer_V2.html) 
 ###### Getting accelerationX examples
- ```java
+ 
+```java
 stack.values().accelerationX(); stack.values().accelerationX_Avg(); stack.values().accelerationX_Min(); stack.values().accelerationX_Max(); stack.values().accelerationX_Sum();
 ```
 

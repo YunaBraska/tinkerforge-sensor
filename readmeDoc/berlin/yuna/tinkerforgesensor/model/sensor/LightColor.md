@@ -18,12 +18,14 @@
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html) 
 ###### Turn on flash LED
- ```java
+ 
+```java
 color.setLedAdditional_On();
 ```
  
 ###### Getting color examples
- ```java
+ 
+```java
 stack.values().color(); stack.values().color_Avg(); stack.values().color_Min(); stack.values().color_Max(); stack.values().color_Sum();
 ```
 

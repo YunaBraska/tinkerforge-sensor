@@ -4,9 +4,9 @@
 ###### TinkerForgeUtil · 
 
 ---
-loop = list of subprograms/
+loop = list of subprograms
 
 --- 
-**Parameter** *string* to check on @return true if string is null or empty otherwise false/
+**Parameter** *string* to check on @return true if string is null or empty otherwise false
 
 --- 

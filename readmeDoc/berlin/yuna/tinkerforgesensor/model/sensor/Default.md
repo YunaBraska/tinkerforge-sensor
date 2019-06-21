@@ -9,12 +9,14 @@
  *Default sensor is representing a non existing but requested sensor*
  
 ###### Check if the current sensor is [Default](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/Default.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Default.java))
- ```java
+ 
+```java
 //false = (DefaultSensor) means that the current sensor not available sensors.isPresent();
 ```
  
 ###### All methods wont do anything
- ```java
+ 
+```java
 sensors.send();
 ```
 

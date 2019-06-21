@@ -9,11 +9,12 @@
  *Push button with built-in RGB LED*
  
 ### Values
- * [BUTTON_PRESSED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)) [0/1] = Released/Pressed 
+ * [BUTTON_PRESSED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0/1] = Released/Pressed 
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm) 
 ###### Getting button pressed example
- ```java
+ 
+```java
 stack.values().buttonPressed();
 ```
 
@@ -21,14 +22,15 @@ stack.values().buttonPressed();
 ### Send
  
 ###### Set LED color
- ```java
+ 
+```java
 sensor.send(Color.MAGENTA); sensor.send(new Color(255, 128, 64)); sensor.send(12367);
 ```
  
 ###### Set auto contrast on=true off=false
- ```java
+ 
+```java
 sensor.send(true);
 ```
-/
 
 --- 

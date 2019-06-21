@@ -9,11 +9,12 @@
  *Measures ambient temperature with 0.2°C accuracy*
  
 ### Values
- * [TEMPERATURE](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java)) [x / 100.0 = °C] 
+ * [TEMPERATURE](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x / 100.0 = °C] 
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Temperature_V2.html) 
 ###### Getting temperature examples
- ```java
+ 
+```java
 stack.values().temperature(); stack.values().temperature_Avg(); stack.values().temperature_Min(); stack.values().temperature_Max(); stack.values().temperature_Sum();
 ```
 

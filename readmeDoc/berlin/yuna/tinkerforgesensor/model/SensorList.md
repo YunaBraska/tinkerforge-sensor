@@ -4,9 +4,9 @@
 ###### SensorList · 
 
 ---
-Relink set parent for all sensors connected to this parent;/
+Relink set parent for all sensors connected to this parent;
 
 --- 
-Relink all sensor parents;/
+Relink all sensor parents;
 
 --- 

@@ -23,6 +23,7 @@ import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_CODE;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_COMMENT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_LINK;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_PARAM;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_SEE;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_SINCE;
 
 public class GeneratorReadmeDocHelper {
@@ -49,7 +50,7 @@ public class GeneratorReadmeDocHelper {
             final String content = new String(Files.readAllBytes(jFile.getPath()));
             final Matcher matcher = PATTERN_COMMENT.matcher(content);
             while (matcher.find()) {
-                final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replace(LINE_SEPARATOR + " */", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", "");
+                final String block = matcher.group(0).replaceFirst("^/\\**" + LINE_SEPARATOR, "").replaceAll("\\*/$", "").replaceAll("(^|" + LINE_SEPARATOR + ")\\s*\\*", "");
                 result.append(parseNodes(Jsoup.parse(block).select("body").get(0), LINE_SEPARATOR, jFiles, jFile));
                 result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("--- ").append(LINE_SEPARATOR);
             }
@@ -71,7 +72,8 @@ public class GeneratorReadmeDocHelper {
                 String text = resolveCode(((TextNode) node).getWholeText());
                 text = resolveParam(text);
                 text = resolveSince(text);
-                text = resolveLinks(jFileList, jFile, text);
+                text = resolveLinks(jFileList, jFile, text, PATTERN_LINK);
+                text = resolveLinks(jFileList, jFile, text, PATTERN_SEE);
                 result.append(text);
             }
         }
@@ -151,7 +153,7 @@ public class GeneratorReadmeDocHelper {
             case "CENTER":
                 break;
             case "code":
-                result.append("```java").append(parentSeparator);
+                result.append(parentSeparator).append("```java").append(parentSeparator);
                 result.append(filterTextOnly(element.childNodes())).append(parentSeparator);
                 result.append("```").append(parentSeparator);
                 break;
@@ -241,9 +243,9 @@ public class GeneratorReadmeDocHelper {
         return result.toString();
     }
 
-    private static String resolveLinks(final List<JFile> jFileList, final JFile jFile, final String inputString) {
+    private static String resolveLinks(final List<JFile> jFileList, final JFile jFile, final String inputString, final Pattern pattern) {
         String text = inputString;
-        final Matcher match = PATTERN_LINK.matcher(text);
+        final Matcher match = pattern.matcher(text);
         while (match.find()) {
             final String[] matchGroup = match.group(1).split("#");
             final Class linkedClass = searchClass(jFile, matchGroup[0].trim());
@@ -257,7 +259,7 @@ public class GeneratorReadmeDocHelper {
                     result.append("(").append(linkedClassSource.get().getReadmeFileUrl().toString()).append(")");
 
                     result.append(" ([source]");
-                    result.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append("))");
+                    result.append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")) ");
                 } else {
                     final String linkDesc = matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
                     result.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
@@ -266,7 +268,7 @@ public class GeneratorReadmeDocHelper {
                 result.append(matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName());
             }
 
-            text = text.replaceFirst(PATTERN_LINK.pattern(), result.toString());
+            text = text.replaceFirst(pattern.pattern(), result.toString().replace("@see", ""));
         }
         return text;
     }

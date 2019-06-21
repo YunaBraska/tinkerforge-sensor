@@ -4,465 +4,585 @@
 ###### Color · 
 
 ---
-The color send. @serial @see #getRGB/
+The color send. @serial [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-The color send in the default sRGB ```java
+The color send in the default sRGB 
+```java
 ColorSpace
 ```
- as ```java
+ as 
+```java
 float
 ```
- components (no alpha). If ```java
+ components (no alpha). If 
+```java
 null
 ```
- after object construction, this must be an sRGB color constructed with 8-bit precision, so compute from the ```java
+ after object construction, this must be an sRGB color constructed with 8-bit precision, so compute from the 
+```java
 int
 ```
- color send. @serial @see #getRGBColorComponents @see #getRGBComponents/
+ color send. @serial [getRGBColorComponents](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGBComponents](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-The color send in the native ```java
+The color send in the native 
+```java
 ColorSpace
 ```
- as ```java
+ as 
+```java
 float
 ```
- components (no alpha). If ```java
+ components (no alpha). If 
+```java
 null
 ```
- after object construction, this must be an sRGB color constructed with 8-bit precision, so compute from the ```java
+ after object construction, this must be an sRGB color constructed with 8-bit precision, so compute from the 
+```java
 int
 ```
- color send. @serial @see #getRGBColorComponents @see #getRGBComponents/
+ color send. @serial [getRGBColorComponents](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGBComponents](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-The alpha send as a ```java
+The alpha send as a 
+```java
 float
 ```
- component. If ```java
+ component. If 
+```java
 frgbvalue
 ```
- is ```java
+ is 
+```java
 null
 ```
-, this is not valid data, so compute from the ```java
+, this is not valid data, so compute from the 
+```java
 int
 ```
- color send. @serial @see #getRGBComponents @see #getComponents/
+ color send. @serial [getRGBComponents](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getComponents](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-JDK 1.1 serialVersionUID/
+JDK 1.1 serialVersionUID
 
 --- 
-Initialize JNI field and method IDs/
+Initialize JNI field and method IDs
 
 --- 
-Checks the color integer components supplied for validity and will set to min or max if its out of range **Parameter** *value* to correct*/
+Checks the color integer components supplied for validity and will set to min or max if its out of range **Parameter** *value* to correct
 
 --- 
-Creates an opaque sRGB color with the specified red, green, and blue values in the range (0 - 255). The actual color used in rendering depends on finding the best match given the color space available for a given output device. Alpha is defaulted to 255. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component @throws IllegalArgumentException if ```java
+Creates an opaque sRGB color with the specified red, green, and blue values in the range (0 - 255). The actual color used in rendering depends on finding the best match given the color space available for a given output device. Alpha is defaulted to 255. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component @throws IllegalArgumentException if 
+```java
 r
 ```
-, ```java
+, 
+```java
 g
 ```
-                                  or ```java
+                                  or 
+```java
 b
 ```
- are outside of the range                                  0 to 255, inclusive @see #getRed @see #getGreen @see #getBlue @see #getRGB/
+ are outside of the range                                  0 to 255, inclusive [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0 - 255). **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component @throws IllegalArgumentException if ```java
+Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0 - 255). **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component @throws IllegalArgumentException if 
+```java
 r
 ```
-, ```java
+, 
+```java
 g
 ```
-,                                  ```java
+,                                  
+```java
 b
 ```
- or ```java
+ or 
+```java
 a
 ```
- are outside of the range                                  0 to 255, inclusive @see #getRed @see #getGreen @see #getBlue @see #getAlpha @see #getRGB/
+ are outside of the range                                  0 to 255, inclusive [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getAlpha](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Creates an opaque sRGB color with the specified combined RGB send consisting of the red component in bits 16-23, the green component in bits 8-15, and the blue component in bits 0-7.  The actual color used in rendering depends on finding the best match given the color space available for a particular output device.  Alpha is defaulted to 255. **Parameter** *rgb* the combined RGB components @see #getRed @see #getGreen @see #getBlue @see #getRGB/
+Creates an opaque sRGB color with the specified combined RGB send consisting of the red component in bits 16-23, the green component in bits 8-15, and the blue component in bits 0-7.  The actual color used in rendering depends on finding the best match given the color space available for a particular output device.  Alpha is defaulted to 255. **Parameter** *rgb* the combined RGB components [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Creates an sRGB color with the specified combined RGBA send consisting of the alpha component in bits 24-31, the red component in bits 16-23, the green component in bits 8-15, and the blue component in bits 0-7. If the ```java
+Creates an sRGB color with the specified combined RGBA send consisting of the alpha component in bits 24-31, the red component in bits 16-23, the green component in bits 8-15, and the blue component in bits 0-7. If the 
+```java
 hasalpha
 ```
- argument is ```java
+ argument is 
+```java
 false
 ```
-, alpha is defaulted to 255. **Parameter** *rgba*     the combined RGBA components **Parameter** *hasalpha* ```java
+, alpha is defaulted to 255. **Parameter** *rgba*     the combined RGBA components **Parameter** *hasalpha* 
+```java
 true
 ```
- if the alpha bits are valid;                 ```java
+ if the alpha bits are valid;                 
+```java
 false
 ```
- otherwise @see #getRed @see #getGreen @see #getBlue @see #getAlpha @see #getRGB/
+ otherwise [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getAlpha](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0.0 - 1.0).  The actual color used in rendering depends on finding the best match given the color space available for a particular output device. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component @throws IllegalArgumentException if ```java
+Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0.0 - 1.0).  The actual color used in rendering depends on finding the best match given the color space available for a particular output device. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component @throws IllegalArgumentException if 
+```java
 r
 ```
-, ```java
+, 
+```java
 g
 ```
-                                  ```java
+                                  
+```java
 b
 ```
- or ```java
+ or 
+```java
 a
 ```
- are outside of the range                                  0.0 to 1.0, inclusive @see #getRed @see #getGreen @see #getBlue @see #getAlpha @see #getRGB/
+ are outside of the range                                  0.0 to 1.0, inclusive [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getAlpha](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Returns the red component in the range 0-255 in the default sRGB space. @return the red component. @see #getRGB/
+Returns the red component in the range 0-255 in the default sRGB space. @return the red component. [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Returns the green component in the range 0-255 in the default sRGB space. @return the green component. @see #getRGB/
+Returns the green component in the range 0-255 in the default sRGB space. @return the green component. [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Returns the blue component in the range 0-255 in the default sRGB space. @return the blue component. @see #getRGB/
+Returns the blue component in the range 0-255 in the default sRGB space. @return the blue component. [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Returns the alpha component in the range 0-255. @return the alpha component. @see #getRGB/
+Returns the alpha component in the range 0-255. @return the alpha component. [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Returns the RGB send representing the color in the default sRGB (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue). @return the RGB send of the color in the default sRGB ```java
+Returns the RGB send representing the color in the default sRGB (Bits 24-31 are alpha, 16-23 are red, 8-15 are green, 0-7 are blue). @return the RGB send of the color in the default sRGB 
+```java
 ColorModel
 ```
-. @see #getRed @see #getGreen @see #getBlue  *Since JDK1.0* /
+. [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))  *Since JDK1.0*
 
 --- 
-Creates a new ```java
+Creates a new 
+```java
 Color
 ```
- that is a brighter version of this ```java
+ that is a brighter version of this 
+```java
 Color
 ```
-. This method applies an arbitrary scale factor to each of the three RGB components of this ```java
+. This method applies an arbitrary scale factor to each of the three RGB components of this 
+```java
 Color
 ```
- to create a brighter version of this ```java
+ to create a brighter version of this 
+```java
 Color
 ```
-. The  *alpha* send is preserved. Although ```java
+. The  *alpha* send is preserved. Although 
+```java
 brighter
 ```
- and ```java
+ and 
+```java
 darker
 ```
- are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new ```java
+ are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new 
+```java
 Color
 ```
- object that is a brighter version of this ```java
+ object that is a brighter version of this 
+```java
 Color
 ```
- with the same  *alpha* send. @see Color#darker  *Since JDK1.0* /
+ with the same  *alpha* send. [darker](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))  *Since JDK1.0*
 
 --- 
-/* From 2D group: 1. black.brighter() should return grey 2. applying brighter to blue will always return blue, brighter 3. non pure color (non zero rgb) will eventually return white/
+/* From 2D group: 1. black.brighter() should return grey 2. applying brighter to blue will always return blue, brighter 3. non pure color (non zero rgb) will eventually return white
 
 --- 
-Creates a new ```java
+Creates a new 
+```java
 Color
 ```
- that is a darker version of this ```java
+ that is a darker version of this 
+```java
 Color
 ```
-. This method applies an arbitrary scale factor to each of the three RGB components of this ```java
+. This method applies an arbitrary scale factor to each of the three RGB components of this 
+```java
 Color
 ```
- to create a darker version of this ```java
+ to create a darker version of this 
+```java
 Color
 ```
-. The  *alpha* send is preserved. Although ```java
+. The  *alpha* send is preserved. Although 
+```java
 brighter
 ```
- and ```java
+ and 
+```java
 darker
 ```
- are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new ```java
+ are inverse operations, the results of a series of invocations of these two methods might be inconsistent because of rounding errors. @return a new 
+```java
 Color
 ```
- object that is a darker version of this ```java
+ object that is a darker version of this 
+```java
 Color
 ```
- with the same  *alpha* send. @see Color#brighter  *Since JDK1.0* /
+ with the same  *alpha* send. [brighter](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))  *Since JDK1.0*
 
 --- 
-Computes the hash code for this ```java
+Computes the hash code for this 
+```java
 Color
 ```
-. @return a hash code send for this object.  *Since JDK1.0* /
+. @return a hash code send for this object.  *Since JDK1.0*
 
 --- 
-Determines whether another object is equal to this ```java
+Determines whether another object is equal to this 
+```java
 Color
 ```
-. The result is ```java
+. The result is 
+```java
 true
 ```
- if and only if the argument is not ```java
+ if and only if the argument is not 
+```java
 null
 ```
- and is a ```java
+ and is a 
+```java
 Color
 ```
- object that has the same red, green, blue, and alpha values as this object. **Parameter** *obj* the object to test for equality with this            ```java
+ object that has the same red, green, blue, and alpha values as this object. **Parameter** *obj* the object to test for equality with this            
+```java
 Color
 ```
- @return ```java
+ @return 
+```java
 true
 ```
- if the objects are the same; ```java
+ if the objects are the same; 
+```java
 false
 ```
- otherwise.  *Since JDK1.0* /
+ otherwise.  *Since JDK1.0*
 
 --- 
-Returns a string representation of this ```java
+Returns a string representation of this 
+```java
 Color
 ```
-. This method is intended to be used only for debugging purposes.  The content and format of the returned string might vary between implementations. The returned string might be empty but cannot be ```java
+. This method is intended to be used only for debugging purposes.  The content and format of the returned string might vary between implementations. The returned string might be empty but cannot be 
+```java
 null
 ```
-. @return a string representation of this ```java
+. @return a string representation of this 
+```java
 Color
 ```
-./
+.
 
 --- 
-Converts a ```java
+Converts a 
+```java
 String
 ```
- to an integer and returns the specified opaque ```java
+ to an integer and returns the specified opaque 
+```java
 Color
 ```
-. This method handles string formats that are used to represent octal and hexadecimal numbers. **Parameter** *nm* a ```java
+. This method handles string formats that are used to represent octal and hexadecimal numbers. **Parameter** *nm* a 
+```java
 String
 ```
- that represents           an opaque color as a 24-bit integer @return the new ```java
+ that represents           an opaque color as a 24-bit integer @return the new 
+```java
 Color
 ```
- object. @throws NumberFormatException if the specified string cannot                               be interpreted as a decimal,                               octal, or hexadecimal integer. @see Integer#decode  *Since JDK1.1* /
+ object. @throws NumberFormatException if the specified string cannot                               be interpreted as a decimal,                               octal, or hexadecimal integer. [decode](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))  *Since JDK1.1*
 
 --- 
-Finds a color in the system properties. The argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
+Finds a color in the system properties. The argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a 
+```java
 Color
 ```
- object.If the specified property is not found or could not be parsed as an integer then ```java
+ object.If the specified property is not found or could not be parsed as an integer then 
+```java
 null
 ```
- is returned. **Parameter** *nm* the name of the color property @return the ```java
+ is returned. **Parameter** *nm* the name of the color property @return the 
+```java
 Color
 ```
- converted from the system property. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /
+ converted from the system property. [getProperty](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [getInteger](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
-Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
+Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a 
+```java
 Color
 ```
- object.If the specified property is not found or cannot be parsed as an integer then the ```java
+ object.If the specified property is not found or cannot be parsed as an integer then the 
+```java
 Color
 ```
- specified by the second argument is returned instead. **Parameter** *nm* the name of the color property **Parameter** *v*  the default ```java
+ specified by the second argument is returned instead. **Parameter** *nm* the name of the color property **Parameter** *v*  the default 
+```java
 Color
 ```
- @return the ```java
+ @return the 
+```java
 Color
 ```
- converted from the system property, or the specified ```java
+ converted from the system property, or the specified 
+```java
 Color
 ```
-. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /
+. [getProperty](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [getInteger](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
-Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a ```java
+Finds a color in the system properties. The first argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a 
+```java
 Color
 ```
- object.If the specified property is not found or could not be parsed as an integer then the integer send ```java
+ object.If the specified property is not found or could not be parsed as an integer then the integer send 
+```java
 v
 ```
- is used instead, and is converted to a ```java
+ is used instead, and is converted to a 
+```java
 Color
 ```
- object. **Parameter** *nm* the name of the color property **Parameter** *v*  the default color send, as an integer @return the ```java
+ object. **Parameter** *nm* the name of the color property **Parameter** *v*  the default color send, as an integer @return the 
+```java
 Color
 ```
- converted from the system property or the ```java
+ converted from the system property or the 
+```java
 Color
 ```
- converted from the specified integer. @see System#getProperty(String) @see Integer#getInteger(String) @see Color#Color(int)  *Since JDK1.0* /
+ converted from the specified integer. [getProperty](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [getInteger](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (String) [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
-Converts the components of a color, as specified by the HSB model, to an equivalent set of values for the default RGB model. The ```java
+Converts the components of a color, as specified by the HSB model, to an equivalent set of values for the default RGB model. The 
+```java
 saturation
 ```
- and ```java
+ and 
+```java
 brightness
 ```
- components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The ```java
+ components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The 
+```java
 hue
 ```
- component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model.The integer that is returned by ```java
+ component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model.The integer that is returned by 
+```java
 HSBtoRGB
 ```
- encodes the send of a color in bits 0-23 of an integer send that is the same format used by the method getRGB() getRGB (Serializable). This integer can be supplied as an argument to the ```java
+ encodes the send of a color in bits 0-23 of an integer send that is the same format used by the method getRGB() getRGB (Serializable). This integer can be supplied as an argument to the 
+```java
 Color
 ```
- constructor that takes a single integer argument. **Parameter** *hue*        the hue component of the color **Parameter** *saturation* the saturation of the color **Parameter** *brightness* the brightness of the color @return the RGB send of the color with the indicated hue, saturation, and brightness. @see Color#getRGB() @see Color#Color(int)  *Since JDK1.0* /
+ constructor that takes a single integer argument. **Parameter** *hue*        the hue component of the color **Parameter** *saturation* the saturation of the color **Parameter** *brightness* the brightness of the color @return the RGB send of the color with the indicated hue, saturation, and brightness. [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) () [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
-Converts the components of a color, as specified by the default RGB model, to an equivalent set of values for hue, saturation, and brightness that are the three components of the HSB model. If the ```java
+Converts the components of a color, as specified by the default RGB model, to an equivalent set of values for hue, saturation, and brightness that are the three components of the HSB model. If the 
+```java
 hsbvals
 ```
- argument is ```java
+ argument is 
+```java
 null
 ```
-, then a new array is allocated to return the result. Otherwise, the method returns the array ```java
+, then a new array is allocated to return the result. Otherwise, the method returns the array 
+```java
 hsbvals
 ```
-, with the values put into that array. **Parameter** *r*       the red component of the color **Parameter** *g*       the green component of the color **Parameter** *b*       the blue component of the color **Parameter** *hsbvals* the array used to return the                three HSB values, or ```java
+, with the values put into that array. **Parameter** *r*       the red component of the color **Parameter** *g*       the green component of the color **Parameter** *b*       the blue component of the color **Parameter** *hsbvals* the array used to return the                three HSB values, or 
+```java
 null
 ```
- @return an array of three elements containing the hue, saturation, and brightness (in that order), of the color with the indicated red, green, and blue components. @see Color#getRGB() @see Color#Color(int)  *Since JDK1.0* /
+ @return an array of three elements containing the hue, saturation, and brightness (in that order), of the color with the indicated red, green, and blue components. [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) () [Color](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) (int)  *Since JDK1.0*
 
 --- 
-Creates a ```java
+Creates a 
+```java
 Color
 ```
- object based on the specified values for the HSB color model. The ```java
+ object based on the specified values for the HSB color model. The 
+```java
 s
 ```
- and ```java
+ and 
+```java
 b
 ```
- components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The ```java
+ components should be floating-point values between zero and one (numbers in the range 0.0-1.0).  The 
+```java
 h
 ```
- component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model. **Parameter** *h* the hue component **Parameter** *s* the saturation of the color **Parameter** *b* the brightness of the color @return a ```java
+ component can be any floating-point number.  The floor of this number is subtracted from it to create a fraction between 0 and 1.  This fractional number is then multiplied by 360 to produce the hue angle in the HSB color model. **Parameter** *h* the hue component **Parameter** *s* the saturation of the color **Parameter** *b* the brightness of the color @return a 
+```java
 Color
 ```
- object with the specified hue, saturation, and brightness.  *Since JDK1.0* /
+ object with the specified hue, saturation, and brightness.  *Since JDK1.0*
 
 --- 
-Returns a ```java
+Returns a 
+```java
 float
 ```
- array containing the color and alpha components of the ```java
+ array containing the color and alpha components of the 
+```java
 Color
 ```
-, as represented in the default sRGB color space. If ```java
+, as represented in the default sRGB color space. If 
+```java
 compArray
 ```
- is ```java
+ is 
+```java
 null
 ```
-, an array of length 4 is created for the return send.  Otherwise, ```java
+, an array of length 4 is created for the return send.  Otherwise, 
+```java
 compArray
 ```
- must have length 4 or greater, and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with                  color and alpha components and returns @return the RGBA components in a ```java
+ must have length 4 or greater, and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with                  color and alpha components and returns @return the RGBA components in a 
+```java
 float
 ```
- array./
+ array.
 
 --- 
-Returns a ```java
+Returns a 
+```java
 float
 ```
- array containing only the color components of the ```java
+ array containing only the color components of the 
+```java
 Color
 ```
-, in the default sRGB color space.  If ```java
+, in the default sRGB color space.  If 
+```java
 compArray
 ```
- is ```java
+ is 
+```java
 null
 ```
-, an array of length 3 is created for the return send.  Otherwise, ```java
+, an array of length 3 is created for the return send.  Otherwise, 
+```java
 compArray
 ```
- must have length 3 or greater, and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with color                  components and returns @return the RGB components in a ```java
+ must have length 3 or greater, and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with color                  components and returns @return the RGB components in a 
+```java
 float
 ```
- array./
+ array.
 
 --- 
-Returns a ```java
+Returns a 
+```java
 float
 ```
- array containing the color and alpha components of the ```java
+ array containing the color and alpha components of the 
+```java
 Color
 ```
-, in the ```java
+, in the 
+```java
 ColorSpace
 ```
- of the ```java
+ of the 
+```java
 Color
 ```
-. If ```java
+. If 
+```java
 compArray
 ```
- is ```java
+ is 
+```java
 null
 ```
-, an array with length equal to the number of components in the associated ```java
+, an array with length equal to the number of components in the associated 
+```java
 ColorSpace
 ```
- plus one is created for the return send.  Otherwise, ```java
+ plus one is created for the return send.  Otherwise, 
+```java
 compArray
 ```
- must have at least this length and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with the color and                  alpha components of this ```java
+ must have at least this length and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with the color and                  alpha components of this 
+```java
 Color
 ```
- in its                  ```java
+ in its                  
+```java
 ColorSpace
 ```
- and returns @return the color and alpha components in a ```java
+ and returns @return the color and alpha components in a 
+```java
 float
 ```
- array./
+ array.
 
 --- 
-Returns a ```java
+Returns a 
+```java
 float
 ```
- array containing only the color components of the ```java
+ array containing only the color components of the 
+```java
 Color
 ```
-, in the ```java
+, in the 
+```java
 ColorSpace
 ```
- of the ```java
+ of the 
+```java
 Color
 ```
-. If ```java
+. If 
+```java
 compArray
 ```
- is ```java
+ is 
+```java
 null
 ```
-, an array with length equal to the number of components in the associated ```java
+, an array with length equal to the number of components in the associated 
+```java
 ColorSpace
 ```
- is created for the return send.  Otherwise, ```java
+ is created for the return send.  Otherwise, 
+```java
 compArray
 ```
- must have at least this length and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with the color                  components of this ```java
+ must have at least this length and it is filled in with the components and returned. **Parameter** *compArray* an array that this method fills with the color                  components of this 
+```java
 Color
 ```
- in its                  ```java
+ in its                  
+```java
 ColorSpace
 ```
- and returns @return the color components in a ```java
+ and returns @return the color components in a 
+```java
 float
 ```
- array./
+ array.
 
 --- 

@@ -13,29 +13,34 @@
  * [Representing Letters](https://en.wikichip.org/wiki/seven-segment_display/representing_letters)
  * [ascii-table-and-ascii-code">ascii-table-and-ascii-code](https://www.systutorials.com/4670/ascii-table-and-ascii-code) 
 ###### Send text to display
- ```java
+ 
+```java
 display.send("GIRL");
 ```
  
 ###### Send current time
  *(use TemporalAccessor)*
- ```java
+ 
+```java
 display.send(LocalDateTime#now());
 ```
  
 ###### Send own time format
  *(use DateTimeFormatter)*
- ```java
+ 
+```java
 display.send(DateTimeFormatter.ofPattern("HH:mm"));
 ```
  
 ###### LED Brightness (2-9)
- ```java
+ 
+```java
 display.setLedAdditional(7);
 ```
  
 ###### Display ON
- ```java
+ 
+```java
 display.setLedAdditional_On;
 ```
 

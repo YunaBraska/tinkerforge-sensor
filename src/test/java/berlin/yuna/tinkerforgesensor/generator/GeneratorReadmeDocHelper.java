@@ -114,7 +114,7 @@ public class GeneratorReadmeDocHelper {
             return Class.forName(jFile.getClazz().getPackage().getName() + "." + className);
         } catch (ClassNotFoundException | IOException ex) {
             try {
-                return Class.forName("java.lang." + className);
+                return Class.forName(Object.class.getPackage().getName() + "." + className);
             } catch (ClassNotFoundException exc) {
                 return jFile.getClazz();
             }
@@ -272,6 +272,9 @@ public class GeneratorReadmeDocHelper {
                     final String linkDesc = matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName();
                     result.append("[").append(linkDesc).append("]").append("(").append(linkedClassSource.get().getRelativeMavenUrl().toString()).append(")");
                 }
+            } else if (linkedClass.getPackage().getName().equals(Object.class.getPackage().getName())) {
+                result.append("[").append(linkedClass.getSimpleName()).append("]");
+                result.append("(").append("https://docs.oracle.com/javase/8/docs/api/java/lang/").append(linkedClass.getSimpleName()).append(".html").append(") ");
             } else {
                 result.append("*");
                 result.append(matchGroup.length > 1 ? matchGroup[1].trim() + " (" + linkedClass.getSimpleName() + ")" : linkedClass.getSimpleName());

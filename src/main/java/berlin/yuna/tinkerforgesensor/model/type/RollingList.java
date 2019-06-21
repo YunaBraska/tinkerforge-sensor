@@ -8,16 +8,14 @@ import java.util.LongSummaryStatistics;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * <h3>{@link RollingList} extends {@link LinkedList}</h3><br />
+ * <i>Rolling list with limited capacity</i><br />
+ */
 public class RollingList<T> extends LinkedList<T> {
 
     private final int capacity;
 
-    /**
-     * Creates a new RollingList of the specified capacity, with the specified
-     * "empty" element appended to the end.
-     *
-     * @param capacity The capacity of this list.
-     */
     public RollingList(final int capacity) {
         this.capacity = capacity;
     }
@@ -48,11 +46,11 @@ public class RollingList<T> extends LinkedList<T> {
     }
 
     /**
-     * FIXME: add and check send AND plus minus average boolean - check 0 / 1 send
+     * <h3>addAndCheckIfItsNewPeak</h3><br />
      * To check if its a new peak you will have to add the send first
-     *
+     * <i>Rolling list with limited capacity</i><br />
      * @param valueToCheck
-     * @return
+     * @return returns true if its a new peak
      */
     public boolean addAndCheckIfItsNewPeak(final T valueToCheck) {
         add(valueToCheck);

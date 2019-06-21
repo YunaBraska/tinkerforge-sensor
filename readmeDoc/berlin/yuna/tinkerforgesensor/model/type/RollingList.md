@@ -4,9 +4,14 @@
 ###### RollingList · 
 
 ---
-Creates a new RollingList of the specified capacity, with the specified "empty" element appended to the end. **Parameter** *capacity* The capacity of this list.
+### [RollingList](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/RollingList.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/RollingList.java))  extends *LinkedList*
+
+ *Rolling list with limited capacity*
 
 --- 
-FIXME: add and check send AND plus minus average boolean - check 0 / 1 send To check if its a new peak you will have to add the send first **Parameter** *valueToCheck* *Return*
+### addAndCheckIfItsNewPeak
+
+ To check if its a new peak you will have to add the send first *Rolling list with limited capacity*
+ **Parameter** *valueToCheck* *Return* returns true if its a new peak
 
 --- 

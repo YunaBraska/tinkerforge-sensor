@@ -73,7 +73,7 @@ Initialize JNI field and method IDs
 Checks the color integer components supplied for validity and will set to min or max if its out of range **Parameter** *value* to correct
 
 --- 
-Creates an opaque sRGB color with the specified red, green, and blue values in the range (0 - 255). The actual color used in rendering depends on finding the best match given the color space available for a given output device. Alpha is defaulted to 255. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Throws** *IllegalArgumentException* if 
+Creates an opaque sRGB color with the specified red, green, and blue values in the range (0 - 255). The actual color used in rendering depends on finding the best match given the color space available for a given output device. Alpha is defaulted to 255. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Throws** [IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html)  if 
 ```java
 r
 ```
@@ -88,7 +88,7 @@ b
  are outside of the range                                  0 to 255, inclusive [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0 - 255). **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component **Throws** *IllegalArgumentException* if 
+Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0 - 255). **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component **Throws** [IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html)  if 
 ```java
 r
 ```
@@ -129,7 +129,7 @@ false
  otherwise [getRed](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getGreen](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getBlue](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getAlpha](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java)) [getRGB](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))
 
 --- 
-Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0.0 - 1.0).  The actual color used in rendering depends on finding the best match given the color space available for a particular output device. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component **Throws** *IllegalArgumentException* if 
+Creates an sRGB color with the specified red, green, blue, and alpha values in the range (0.0 - 1.0).  The actual color used in rendering depends on finding the best match given the color space available for a particular output device. **Parameter** *r* the red component **Parameter** *g* the green component **Parameter** *b* the blue component **Parameter** *a* the alpha component **Throws** [IllegalArgumentException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html)  if 
 ```java
 r
 ```
@@ -309,7 +309,7 @@ String
 ```java
 Color
 ```
- object. **Throws** *NumberFormatException* if the specified string cannot                               be interpreted as a decimal,                               octal, or hexadecimal integer. [decode](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))  *Since JDK1.1*
+ object. **Throws** [NumberFormatException](https://docs.oracle.com/javase/8/docs/api/java/lang/NumberFormatException.html)  if the specified string cannot                               be interpreted as a decimal,                               octal, or hexadecimal integer. [decode](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/Color.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/Color.java))  *Since JDK1.1*
 
 --- 
 Finds a color in the system properties. The argument is treated as the name of a system property to be obtained. The string send of this property is then interpreted as an integer which is then converted to a 

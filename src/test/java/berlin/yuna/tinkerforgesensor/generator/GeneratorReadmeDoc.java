@@ -119,7 +119,7 @@ public class GeneratorReadmeDoc {
 
         result.append("Connecting to ").append(stackLink).append(LINE_SEPARATOR);
         result.append("```java").append(LINE_SEPARATOR);
-        result.append("Stack stack = new Stack(\"host\", 4223, \"optionalPassword\");").append(LINE_SEPARATOR);
+        result.append("Stack stack = new Stack(\"host\", 4223, \"optionalPassword\");").append(LINE_SEPARATOR).append(LINE_SEPARATOR);
         result.append("// Get/Define RGB_Button;").append(LINE_SEPARATOR);
         result.append("Sensor button = stack.sensors().buttonRGB();").append(LINE_SEPARATOR);
         result.append("// Get/Define value sound intensity;").append(LINE_SEPARATOR);

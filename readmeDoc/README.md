@@ -7,6 +7,7 @@
 Connecting to Connecting to [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/logic/Stack.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java))
 ```java
 Stack stack = new Stack("host", 4223, "optionalPassword");
+
 // Get/Define RGB_Button;
 Sensor button = stack.sensors().buttonRGB();
 // Get/Define value sound intensity;

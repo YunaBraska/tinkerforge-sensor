@@ -36,13 +36,8 @@ public class GeneratorReadmeDocHelper {
         try {
             final List<JFile> jFiles = new ArrayList<>(jFileList);
             final StringBuilder result = new StringBuilder();
-            result.append("## ");
-            result.append(jFile.getClazz().getPackage().getName());
-            result.append(".");
-            result.append(jFile.getBasicName());
-            result.append(LINE_SEPARATOR);
+            result.append("## ").append(jFile.getClazz().getPackage().getName()).append(".").append(jFile.getBasicName()).append(LINE_SEPARATOR);
             result.append(navigation);
-            result.append("---").append(LINE_SEPARATOR);
 
             //Write all class versions on top
             final List<JFile> classVersions = getClassVersions(jFile, jFiles);
@@ -51,7 +46,7 @@ public class GeneratorReadmeDocHelper {
                 for (JFile classVersion : classVersions) {
                     result.append(classVersion.getSimpleName()).append(" · ");
                 }
-            result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
+                result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
             }
 
             final String content = new String(Files.readAllBytes(jFile.getPath()));

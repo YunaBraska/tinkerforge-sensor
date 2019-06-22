@@ -11,9 +11,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ public class JFile {
     //    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
     public static final String JAVA_EXTENSION = ".java";
     public static final File DIR_README = new File(DIR_PROJECT, "readmeDoc");
+    public static final List<JFile> jFiles = readJFiles();
 
     public JFile(final Path path) {
         this.path = path;
@@ -138,11 +140,23 @@ public class JFile {
         return match.find() ? className.substring(0, className.length() - match.group(1).length()) : className;
     }
 
-    public static List<JFile> getProjectJavaFiles() throws IOException {
-        return Files.walk(DIR_MAVEN_PROJECT.toPath())
-                .filter(Files::isRegularFile)
-                .filter(file -> file.getFileName().toString().endsWith(JAVA_EXTENSION))
-                .map(JFile::new).sorted(comparing(JFile::getSimpleName)).collect(Collectors.toList());
+    public static JFile getJFile(final Predicate<JFile> filter) {
+        return jFiles.stream().filter(filter).findFirst().orElseGet(null);
+    }
+
+    public static List<JFile> getProjectJavaFiles() {
+        return new ArrayList<>(jFiles);
+    }
+
+    private static List<JFile> readJFiles() {
+        try {
+            return Files.walk(DIR_MAVEN_PROJECT.toPath())
+                    .filter(Files::isRegularFile)
+                    .filter(file -> file.getFileName().toString().endsWith(JAVA_EXTENSION))
+                    .map(JFile::new).sorted(comparing(JFile::getSimpleName)).collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to read project files from [" + DIR_MAVEN_PROJECT + "]");
+        }
     }
 
     @Override

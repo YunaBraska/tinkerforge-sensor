@@ -114,7 +114,9 @@ public class GeneratorReadmeDoc {
         result.append(navigation);
 
         final JFile stack = JFile.getJFile(jFile -> jFile.getClazz() == Stack.class);
-        result.append(format("Connecting to [%s](%s)", stack.getSimpleName(), stack.getRelativeMavenUrl())).append(LINE_SEPARATOR);
+        final String stackLink = format("Connecting to [%s](%s) ([source](%s))", stack.getSimpleName(), stack.getReadmeFileUrl(), stack.getRelativeMavenUrl());
+
+        result.append("Connecting to ").append(stackLink).append(LINE_SEPARATOR);
         result.append("```java").append(LINE_SEPARATOR);
         result.append("Stack stack = new Stack(\"host\", 4223, \"optionalPassword\");").append(LINE_SEPARATOR);
         result.append("// Get/Define RGB_Button;").append(LINE_SEPARATOR);
@@ -123,13 +125,13 @@ public class GeneratorReadmeDoc {
         result.append("Long soundIntensity = stack.values().soundIntensity();").append(LINE_SEPARATOR);
         result.append("```").append(LINE_SEPARATOR);
 
-        result.append(format("Disconnecting [%s](%s)", stack.getSimpleName(), stack.getRelativeMavenUrl())).append(LINE_SEPARATOR);
+        result.append("Disconnecting ").append(stackLink).append(LINE_SEPARATOR);
         result.append("```java").append(LINE_SEPARATOR);
         result.append("Stack stack = new Stack(\"host\", 4223, \"optionalPassword\");").append(LINE_SEPARATOR);
         result.append("stack.disconnect()").append(LINE_SEPARATOR);
         result.append("```").append(LINE_SEPARATOR);
 
-        result.append(format("Autocloaseable stack [%s](%s)", stack.getSimpleName(), stack.getRelativeMavenUrl())).append(LINE_SEPARATOR);
+        result.append("Auto closeable stack ").append(stackLink).append(LINE_SEPARATOR);
         result.append("```java").append(LINE_SEPARATOR);
         result.append("try (Stack stack = new Stack(\"host\", 4223, \"optionalPassword\")) {").append(LINE_SEPARATOR);
         result.append("  // Get/Define RGB_Button;").append(LINE_SEPARATOR);
@@ -137,7 +139,7 @@ public class GeneratorReadmeDoc {
         result.append("}").append(LINE_SEPARATOR);
         result.append("```").append(LINE_SEPARATOR);
 
-        result.append(format("Event handling with [%s](%s)", stack.getSimpleName(), stack.getRelativeMavenUrl())).append(LINE_SEPARATOR);
+        result.append("Event handling with ").append(stackLink).append(LINE_SEPARATOR);
         result.append("```java").append(LINE_SEPARATOR);
         result.append("Stack stack = new Stack(\"host\", 4223, \"optionalPassword\");").append(LINE_SEPARATOR);
         result.append("//Add listener for [SensorEvent] from all sensors").append(LINE_SEPARATOR);

@@ -2,10 +2,11 @@ package berlin.yuna.tinkerforgesensor.generator;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.JFile;
-import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -157,15 +158,20 @@ public class GeneratorReadmeDoc {
     }
 
     private static StringBuilder createNavigation(final List<JFile> jFiles, final Set<String> packageGroups) {
-        final StringBuilder result = new StringBuilder();
-        result.append("* ");
-        result.append("[⌂ Start]").append("(").append(new File(PROJECT_URL, "readmeDoc/README.md")).append(")");
-        for (String packageGroup : packageGroups) {
-            final JFile jFile = jFiles.stream().filter(file -> file.getClazz().getPackage().getName().equals(packageGroup)).collect(toList()).get(0);
-            result.append(" · [").append(jFile.getPath().getParent().getFileName().toString().replace(JAVA_EXTENSION, "")).append("]");
-            result.append("(").append(jFile.getReadmePackageUrl().toString()).append(")");
+        try {
+            final StringBuilder result = new StringBuilder();
+            result.append("* ");
+
+            result.append("[⌂ Start]").append("(").append(new URL(PROJECT_URL + "readmeDoc/README.md")).append(")");
+            for (String packageGroup : packageGroups) {
+                final JFile jFile = jFiles.stream().filter(file -> file.getClazz().getPackage().getName().equals(packageGroup)).collect(toList()).get(0);
+                result.append(" · [").append(jFile.getPath().getParent().getFileName().toString().replace(JAVA_EXTENSION, "")).append("]");
+                result.append("(").append(jFile.getReadmePackageUrl().toString()).append(")");
+            }
+            result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
+            return result;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
         }
-        result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);;
-        return result;
     }
 }

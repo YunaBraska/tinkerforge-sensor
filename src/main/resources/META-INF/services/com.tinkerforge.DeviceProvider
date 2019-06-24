@@ -28,6 +28,7 @@ com.tinkerforge.BrickletPiezoSpeakerProvider
 com.tinkerforge.BrickletRGBLEDButtonProvider
 com.tinkerforge.BrickletRotaryEncoderV2Provider
 com.tinkerforge.BrickletSegmentDisplay4x7Provider
+com.tinkerforge.BrickletSegmentDisplay4x7V2Provider
 com.tinkerforge.BrickletSoundIntensityProvider
 com.tinkerforge.BrickletSoundPressureLevelProvider
 com.tinkerforge.BrickletTemperatureProvider

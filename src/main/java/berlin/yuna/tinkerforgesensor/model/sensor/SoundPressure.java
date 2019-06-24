@@ -5,8 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -88,7 +87,7 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -104,7 +103,7 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_NONE;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -121,7 +120,7 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
                 device.setDecibelCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
             sendEvent(SOUND_INTENSITY, (long) device.getDecibel());
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

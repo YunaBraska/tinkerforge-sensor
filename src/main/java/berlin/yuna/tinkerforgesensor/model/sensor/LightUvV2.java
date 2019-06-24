@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletUVLightV2;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS;
@@ -77,7 +76,7 @@ public class LightUvV2 extends Sensor<BrickletUVLightV2> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -93,7 +92,7 @@ public class LightUvV2 extends Sensor<BrickletUVLightV2> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_NONE;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -114,7 +113,7 @@ public class LightUvV2 extends Sensor<BrickletUVLightV2> {
             sendEvent(LIGHT_UV, (long) device.getUVI());
             sendEvent(LIGHT_UVA, (long) device.getUVA());
             sendEvent(LIGHT_UVB, (long) device.getUVB());
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

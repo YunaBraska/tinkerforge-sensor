@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,7 +144,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
                 ledAdditional = LED_ADDITIONAL_OFF;
                 device.backlightOff();
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -182,7 +181,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     private Sensor<BrickletLCD20x4> clearDisplay() {
         try {
             device.clearDisplay();
-        } catch (TimeoutException | NotConnectedException e) {
+        } catch (TinkerforgeException e) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -230,7 +229,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
                 cachedRows[y] = line;
                 device.writeLine(y, x, line);
             }
-        } catch (TimeoutException | NotConnectedException e) {
+        } catch (TinkerforgeException e) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }

@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletSoundIntensity;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
@@ -70,7 +69,7 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
                 device.setIntensityCallbackPeriod(milliseconds);
             }
             sendEvent(SOUND_INTENSITY, (long) device.getIntensity());
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

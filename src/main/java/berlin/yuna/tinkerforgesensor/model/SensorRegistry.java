@@ -11,6 +11,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Default;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd128x64;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegment;
+import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegmentV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
@@ -69,6 +70,7 @@ import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.BrickletRGBLEDButton;
 import com.tinkerforge.BrickletRotaryEncoderV2;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
+import com.tinkerforge.BrickletSegmentDisplay4x7V2;
 import com.tinkerforge.BrickletSoundIntensity;
 import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.BrickletTemperature;
@@ -100,6 +102,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletLCD128x64} => Sensor {@link DisplayLcd128x64}</li>
  * <li>Device {@link BrickletLCD20x4} => Sensor {@link DisplayLcd20x4}</li>
  * <li>Device {@link BrickletSegmentDisplay4x7} => Sensor {@link DisplaySegment}</li>
+ * <li>Device {@link BrickletSegmentDisplay4x7V2} => Sensor {@link DisplaySegmentV2}</li>
  * <li>Device {@link BrickletDistanceIR} => Sensor {@link DistanceIR}</li>
  * <li>Device {@link BrickletDistanceIRV2} => Sensor {@link DistanceIRV2}</li>
  * <li>Device {@link BrickletDistanceUS} => Sensor {@link DistanceUS}</li>
@@ -160,6 +163,7 @@ public class SensorRegistry {
         registry.put(BrickletLCD128x64.class, DisplayLcd128x64::new);
         registry.put(BrickletLCD20x4.class, DisplayLcd20x4::new);
         registry.put(BrickletSegmentDisplay4x7.class, DisplaySegment::new);
+        registry.put(BrickletSegmentDisplay4x7V2.class, DisplaySegmentV2::new);
         registry.put(BrickletDistanceIR.class, DistanceIR::new);
         registry.put(BrickletDistanceIRV2.class, DistanceIRV2::new);
         registry.put(BrickletDistanceUS.class, DistanceUS::new);
@@ -203,6 +207,7 @@ public class SensorRegistry {
         registry.put(BrickletLCD128x64.DEVICE_IDENTIFIER, BrickletLCD128x64::new);
         registry.put(BrickletLCD20x4.DEVICE_IDENTIFIER, BrickletLCD20x4::new);
         registry.put(BrickletSegmentDisplay4x7.DEVICE_IDENTIFIER, BrickletSegmentDisplay4x7::new);
+        registry.put(BrickletSegmentDisplay4x7V2.DEVICE_IDENTIFIER, BrickletSegmentDisplay4x7V2::new);
         registry.put(BrickletDistanceIR.DEVICE_IDENTIFIER, BrickletDistanceIR::new);
         registry.put(BrickletDistanceIRV2.DEVICE_IDENTIFIER, BrickletDistanceIRV2::new);
         registry.put(BrickletDistanceUS.DEVICE_IDENTIFIER, BrickletDistanceUS::new);

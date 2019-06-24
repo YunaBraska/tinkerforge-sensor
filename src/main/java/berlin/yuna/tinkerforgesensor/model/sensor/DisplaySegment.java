@@ -1,14 +1,18 @@
 package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.util.SegmentFormatter;
+import berlin.yuna.tinkerforgesensor.util.SegmentsV2;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
+import com.tinkerforge.BrickletSegmentDisplay4x7V2;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
+import java.util.List;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
@@ -22,7 +26,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  *
  * <h3>Technical Info</h3>
  * <ul>
- * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Air_Quality.html">Official documentation</a></li>
+ * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Segment_Display_4x7.html">Official documentation</a></li>
  * <li><a href="https://en.wikichip.org/wiki/seven-segment_display/representing_letters">Representing Letters</a></li>
  * <li><a href="https://www.systutorials.com/4670/ascii-table-and-ascii-code">ascii-table-and-ascii-code">ascii-table-and-ascii-code</a></li>
  * </ul>
@@ -38,14 +42,13 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  * <code>display.setLedAdditional(7);</code>
  * <h6>Display ON</h6>
  * <code>display.setLedAdditional_On;</code>
- *
  */
 public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
 
-    private static short brightness = 5;
-    private String lastText = "";
-    public static DateTimeFormatter DATE_TIME_FORMAT = ofPattern("HH:mm");
-
+    private static final int DIGIT_LIMIT = 4;
+    private short brightness = 5;
+    private Object lastText = ' ';
+    private DateTimeFormatter timeFormatter = ofPattern("HH:mm");
 
     public DisplaySegment(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletSegmentDisplay4x7) device, uid);
@@ -59,28 +62,28 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     @Override
     public Sensor<BrickletSegmentDisplay4x7> send(final Object value) {
         try {
-            if (value instanceof DateTimeFormatter) {
-                DATE_TIME_FORMAT = (DateTimeFormatter) value;
-            } else if (value instanceof TemporalAccessor) {
-                send(DATE_TIME_FORMAT.format((TemporalAccessor) value));
-            } else if (value instanceof String) {
-                String preText = value.toString().trim();
-                boolean colon = false;
-                if (preText.contains(":")) {
-                    colon = true;
-                    preText = preText.replace(":", "");
+            final SegmentFormatter sf = new SegmentFormatter(value, lastText, timeFormatter, DIGIT_LIMIT);
+            final short[] digits = toSegments(sf.getDigits());
+            final boolean colon;
+            timeFormatter = sf.getDateTimeFormatter();
+            lastText = brightness == 0 ? lastText : value;
+
+            if (value instanceof TemporalAccessor) {
+                if (sf.isBlinkColon()) {
+                    colon = (((LocalDateTime) value).getSecond() % 2 == 0) ? false : true;
+                } else {
+                    colon = false;
                 }
-                final StringBuilder text = new StringBuilder(preText);
-                while (text.length() < 4) {
-                    text.insert(0, ' ');
-                }
-                final short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
-                device.setSegments(segments, brightness, colon);
-                lastText = text.toString();
             } else {
-                send(String.valueOf(value));
+                colon = sf.getColons()[0];
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+
+//            device.setSegments(digits[0], digits[1], digits[2], digits[3], colons, sf.isTick());
+
+            device.setSegments(digits, brightness, colon);
+
+            lastText = brightness == 0? lastText : value;
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -94,13 +97,11 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     @Override
     public Sensor<BrickletSegmentDisplay4x7> setLedAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
-            brightness = 7;
-            send(lastText);
+            setBrightness((short) 7);
         } else if (value == LED_ADDITIONAL_OFF.bit) {
-            send("");
+            setBrightness((short) 0);
         } else {
-            brightness = (short) (value.shortValue() - 2);
-            send(lastText);
+            setBrightness((short) (value.shortValue() - 2));
         }
         return this;
     }
@@ -115,16 +116,26 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     @Override
     public Sensor<BrickletSegmentDisplay4x7> flashLed() {
         try {
-            this.setLedAdditional_On();
+            setLedAdditional_On();
+            send("1.2.:3.‘4.");
+            Thread.sleep(128);
             for (int i = 0; i < 9; i++) {
                 setLedAdditional(i);
                 send(LocalDateTime.now());
                 Thread.sleep(128);
             }
-            this.setLedAdditional_Off();
+            setLedAdditional_Off();
+            setLedAdditional(7);
         } catch (Exception ignore) {
         }
         return this;
+    }
+
+    private void setBrightness(final short value) {
+        if (value >= 0 && value <= 7 && brightness != value) {
+            brightness = value;
+            send(brightness == 0 ? "" : lastText);
+        }
     }
 
     public enum Segments {
@@ -283,6 +294,30 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
             }
             return 0;
         }
+    }
+
+    private short[] toSegments(final char[] chars){
+        final short[] result = new short[DIGIT_LIMIT];
+        for (int i = 0; i < DIGIT_LIMIT; i++) {
+            result[i] = Segments.get(chars[i]);
+        }
+        return result;
+    }
+
+    private void sendText(final Object value) throws TinkerforgeException {
+        String preText = value.toString().trim();
+        boolean colon = false;
+        if (preText.contains(":")) {
+            colon = true;
+            preText = preText.replace(":", "");
+        }
+        final StringBuilder text = new StringBuilder(preText);
+        while (text.length() < 4) {
+            text.insert(0, ' ');
+        }
+        final short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
+        device.setSegments(segments, brightness, colon);
+        lastText = brightness == 0? lastText : text.toString();
     }
 
     @Override

@@ -5,8 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickIMUV2;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
@@ -108,7 +107,7 @@ public class IMUV2 extends Sensor<BrickIMUV2> {
                 ledStatus = LED_STATUS_OFF;
                 device.disableStatusLED();
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -125,7 +124,7 @@ public class IMUV2 extends Sensor<BrickIMUV2> {
                 ledAdditional = LED_ADDITIONAL_OFF;
                 device.ledsOff();
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -141,7 +140,7 @@ public class IMUV2 extends Sensor<BrickIMUV2> {
                 device.setAllDataPeriod(milliseconds);
                 device.setOrientationPeriod(milliseconds);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -152,7 +151,7 @@ public class IMUV2 extends Sensor<BrickIMUV2> {
         try {
             ledStatus = device.isStatusLEDEnabled() ? LED_STATUS_ON : LED_ADDITIONAL_OFF;
             ledAdditional = device.areLedsOn() ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

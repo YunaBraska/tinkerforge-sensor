@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletRotaryEncoderV2;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS;
@@ -53,7 +52,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
             if (value instanceof Boolean) {
                 device.getCount((Boolean) value);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -76,7 +75,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -92,7 +91,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_NONE;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -107,7 +106,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
                 device.setCountCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
             sendEvent(ROTARY, (long) device.getCount(false));
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

@@ -11,8 +11,7 @@ import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +123,7 @@ public abstract class Sensor<T extends Device> {
             initPort();
             initLedConfig();
             initListener();
-        } catch (TimeoutException | NotConnectedException e) {
+        } catch (TinkerforgeException e) {
             throw new NetworkConnectionException(e);
         }
     }
@@ -463,7 +462,7 @@ public abstract class Sensor<T extends Device> {
         return this;
     }
 
-    protected abstract Sensor<T> initListener() throws TimeoutException, NotConnectedException;
+    protected abstract Sensor<T> initListener() throws TinkerforgeException;
 
     /**
      * Compares the sensor with {@link Device}

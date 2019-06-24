@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletBarometerV2;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS;
@@ -77,7 +76,7 @@ public class BarometerV2 extends Sensor<BrickletBarometerV2> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -103,7 +102,7 @@ public class BarometerV2 extends Sensor<BrickletBarometerV2> {
             sendEvent(ALTITUDE, (long) device.getAltitude());
             sendEvent(AIR_PRESSURE, (long) device.getAirPressure());
             sendEvent(TEMPERATURE, (long) device.getTemperature());
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -114,7 +113,7 @@ public class BarometerV2 extends Sensor<BrickletBarometerV2> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_NONE;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

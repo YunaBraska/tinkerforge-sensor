@@ -1,7 +1,5 @@
 package com.tinkerforge;
 
-import berlin.yuna.tinkerforgesensor.util.Base58;
-
 import java.util.UUID;
 
 public class DummyDevice extends Device {
@@ -14,7 +12,7 @@ public class DummyDevice extends Device {
     }
 
     public DummyDevice(final String uid, final IPConnection ipCon) {
-        super(Base58.encode(UUID.randomUUID().toString().getBytes()), new IPConnection());
+        super(IPConnectionBaseProvider.base58Encode(System.currentTimeMillis()), new IPConnection());
         apiVersion[0] = 0;
         apiVersion[1] = 0;
         apiVersion[2] = 1;

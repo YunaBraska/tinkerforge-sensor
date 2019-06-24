@@ -5,8 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletColor;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
@@ -88,7 +87,7 @@ public class LightColor extends Sensor<BrickletColor> {
                 ledAdditional = LED_ADDITIONAL_OFF;
                 device.lightOff();
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -138,7 +137,7 @@ public class LightColor extends Sensor<BrickletColor> {
                 device.setIlluminanceCallbackPeriod(milliseconds);
                 device.setColorTemperatureCallbackPeriod(milliseconds);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

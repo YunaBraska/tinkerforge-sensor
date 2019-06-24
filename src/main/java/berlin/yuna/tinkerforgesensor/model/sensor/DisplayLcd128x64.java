@@ -3,8 +3,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickletLCD128x64;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -157,7 +156,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -178,7 +177,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
                 config.backlight = (short) (value.shortValue() - 2);
             }
             device.setDisplayConfiguration(config.contrast, config.backlight, config.invert, config.automaticDraw);
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -189,7 +188,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_ADDITIONAL_OFF;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -229,7 +228,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
                 device.setGUISliderValueCallbackConfiguration(milliseconds, true);
                 device.setGUITabSelectedCallbackConfiguration(milliseconds, true);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -238,7 +237,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
     private Sensor<BrickletLCD128x64> clearDisplay() {
         try {
             device.clearDisplay();
-        } catch (TimeoutException | NotConnectedException e) {
+        } catch (TinkerforgeException e) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -285,7 +284,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
                     device.drawText(posX, posY, font, true, line);
                 }
             }
-        } catch (TimeoutException | NotConnectedException e) {
+        } catch (TinkerforgeException e) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }

@@ -5,8 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletRGBLEDButton;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -76,7 +75,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
                 color = highContrast ? calculateHighContrast(color) : color;
                 device.setColor(color.getRed(), color.getGreen(), color.getBlue());
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
         }
         return this;
     }
@@ -109,7 +108,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -164,7 +163,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_ADDITIONAL_ON;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

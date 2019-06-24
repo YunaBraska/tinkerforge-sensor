@@ -3,8 +3,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import com.tinkerforge.BrickletIO16V2;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
@@ -57,7 +56,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
                     device.setConfiguration(input - 1, 'i', false);
                 }
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -80,7 +79,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -107,7 +106,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_ADDITIONAL_OFF;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

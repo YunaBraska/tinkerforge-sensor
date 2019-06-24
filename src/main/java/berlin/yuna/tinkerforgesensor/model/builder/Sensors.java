@@ -12,6 +12,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Default;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd128x64;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegment;
+import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegmentV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
@@ -210,7 +211,7 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
     }
 
     public Sensor displaySegment(final int number) {
-        return getSensor(number, DisplaySegment.class);
+        return getSensor(number, DisplaySegmentV2.class, DisplaySegment.class);
     }
 
     public Sensor displayLcd20x4() {

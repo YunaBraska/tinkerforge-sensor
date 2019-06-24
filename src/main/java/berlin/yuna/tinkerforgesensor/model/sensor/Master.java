@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
@@ -50,7 +49,7 @@ public class Master extends Sensor<BrickMaster> {
                 ledStatus = LED_STATUS_OFF;
                 device.disableStatusLED();
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -69,7 +68,7 @@ public class Master extends Sensor<BrickMaster> {
                     device.disableWifi2StatusLED();
                 }
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -80,7 +79,7 @@ public class Master extends Sensor<BrickMaster> {
         try {
             ledStatus = device.isStatusLEDEnabled() ? LED_STATUS_ON : LED_ADDITIONAL_OFF;
             ledAdditional = device.isWifi2Present() && device.isWifi2StatusLEDEnabled() ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -101,7 +100,7 @@ public class Master extends Sensor<BrickMaster> {
                 device.setStackVoltageCallbackPeriod(milliseconds);
                 device.setUSBVoltageCallbackPeriod(milliseconds);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

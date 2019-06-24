@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletAccelerometer;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.CALLBACK_PERIOD;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
@@ -77,7 +76,7 @@ public class Accelerometer extends Sensor<BrickletAccelerometer> {
                 ledAdditional = LED_ADDITIONAL_OFF;
                 device.ledOff();
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -95,7 +94,7 @@ public class Accelerometer extends Sensor<BrickletAccelerometer> {
             sendEvent(ACCELERATION_X, (long) acceleration.x);
             sendEvent(ACCELERATION_Y, (long) acceleration.y);
             sendEvent(ACCELERATION_Z, (long) acceleration.z);
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -106,7 +105,7 @@ public class Accelerometer extends Sensor<BrickletAccelerometer> {
         try {
             ledStatus = LED_NONE;
             ledAdditional = device.isLEDOn() ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

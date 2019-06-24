@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletAccelerometerV2;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
@@ -81,7 +80,7 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
                 ledStatus = LED_STATUS;
                 device.setStatusLEDConfig((short) LED_STATUS.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -101,7 +100,7 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
                 ledAdditional = LED_ADDITIONAL_HEARTBEAT;
                 device.setInfoLEDConfig(LED_STATUS_HEARTBEAT.bit);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -119,7 +118,7 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
             sendEvent(ACCELERATION_X, (long) acceleration.x);
             sendEvent(ACCELERATION_Y, (long) acceleration.y);
             sendEvent(ACCELERATION_Z, (long) acceleration.z);
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -130,7 +129,7 @@ public class AccelerometerV2 extends Sensor<BrickletAccelerometerV2> {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LedStatusType.ledAdditionalTypeOf(device.getInfoLEDConfig());
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;

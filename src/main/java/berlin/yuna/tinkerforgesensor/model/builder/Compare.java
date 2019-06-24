@@ -11,6 +11,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Default;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd128x64;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegment;
+import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegmentV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
@@ -102,7 +103,7 @@ public class Compare {
     }
 
     public boolean isDisplaySegment() {
-        return is(DisplaySegment.class);
+        return is(DisplaySegmentV2.class, DisplaySegment.class);
     }
 
     public boolean isDistanceIR() {

@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
@@ -108,7 +107,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
         try {
             sendEvent(BEEP_ACTIVE, 1L);
             device.morseCode((String) value, frequency);
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }
@@ -120,7 +119,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
                 device.beep(duration, frequency);
                 waitForEnd(wait);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }

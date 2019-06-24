@@ -4,8 +4,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickServo;
 import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
+import com.tinkerforge.TinkerforgeException;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -169,7 +168,7 @@ public class Servo extends Sensor<BrickServo> {
                 ledStatus = LED_STATUS_OFF;
                 device.disableStatusLED();
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -185,7 +184,7 @@ public class Servo extends Sensor<BrickServo> {
         try {
             ledStatus = device.isStatusLEDEnabled() ? LED_STATUS_ON : LED_ADDITIONAL_OFF;
             ledAdditional = LED_NONE;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
@@ -218,12 +217,12 @@ public class Servo extends Sensor<BrickServo> {
                 }
                 servoConfigOrg.set(servoConfig);
             }
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }
 
-    private void enable(final int port, final boolean enable) throws TimeoutException, NotConnectedException {
+    private void enable(final int port, final boolean enable) throws TinkerforgeException {
         if (enable) {
             device.enable((short) port);
         } else {
@@ -235,7 +234,7 @@ public class Servo extends Sensor<BrickServo> {
         try {
             device.setMinimumVoltage(minVoltage);
             this.minVoltage = minVoltage;
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }
@@ -245,7 +244,7 @@ public class Servo extends Sensor<BrickServo> {
             device.setOutputVoltage(maxVoltage);
             this.maxVoltage = maxVoltage;
             sendEvent(VOLTAGE, (long) maxVoltage);
-        } catch (TimeoutException | NotConnectedException ignored) {
+        } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }

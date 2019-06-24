@@ -122,6 +122,7 @@ public class GeneratorReadmeDoc {
             result.append("]").append("(").append(classVersion.getRelativeMavenUrl().toString()).append(")").append(", ");
         }
         result.deleteCharAt(result.length() - 2);
+        result.deleteCharAt(result.length() - 1);
         result.append(")*");
         result.append(LINE_SEPARATOR);
         return result;

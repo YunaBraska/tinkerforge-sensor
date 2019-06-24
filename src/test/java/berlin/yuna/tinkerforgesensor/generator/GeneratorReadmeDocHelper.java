@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorReadmeDoc.prepareClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_CODE;
@@ -41,11 +42,9 @@ public class GeneratorReadmeDocHelper {
 
             //Write all class versions on top
             final List<JFile> classVersions = getClassVersions(jFile, jFiles);
-            result.append("###### ");
             if (classVersions.size() > 1) {
-                for (JFile classVersion : classVersions) {
-                    result.append(classVersion.getSimpleName()).append(" · ");
-                }
+                result.append("###### ");
+                result.append(prepareClassVersions(classVersions));
                 result.append(LINE_SEPARATOR).append(LINE_SEPARATOR).append("---").append(LINE_SEPARATOR);
             }
 

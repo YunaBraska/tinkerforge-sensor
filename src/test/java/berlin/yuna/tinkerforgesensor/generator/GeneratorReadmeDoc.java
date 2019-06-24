@@ -10,14 +10,17 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.LINE_SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_README;
 import static berlin.yuna.tinkerforgesensor.model.JFile.JAVA_EXTENSION;
+import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_FILE_VERSIONS;
 import static berlin.yuna.tinkerforgesensor.model.JFile.PROJECT_URL;
 import static java.lang.String.format;
 import static java.util.Comparator.reverseOrder;
@@ -72,7 +75,7 @@ public class GeneratorReadmeDoc {
             result.append(packageGroup);
             result.append(LINE_SEPARATOR);
             result.append(navigation);
-            result.append("---").append(LINE_SEPARATOR);
+            result.append(LINE_SEPARATOR);
 
             while (!packageFiles.isEmpty()) {
                 final List<JFile> classVersions = getClassVersions(packageFiles.listIterator().next(), jFiles);
@@ -83,7 +86,8 @@ public class GeneratorReadmeDoc {
 
                 result.append(" ([source]");
                 result.append("(").append(jFile.getRelativeMavenUrl().toString()).append("))");
-                result.append(LINE_SEPARATOR);
+
+                result.append(prepareClassVersions(classVersions));
 
                 //Generate readme.md only for new versions
                 for (JFile classVersion : classVersions) {
@@ -104,6 +108,23 @@ public class GeneratorReadmeDoc {
                 throw new RuntimeException("failed to write index file for [" + targetFile + "]", e);
             }
         }
+    }
+
+    public static StringBuilder prepareClassVersions(final List<JFile> versions) {
+        final List<JFile> classVersions = new ArrayList<>(versions);
+        final StringBuilder result = new StringBuilder();
+        result.append(" *(");
+        Collections.reverse(classVersions);
+        for (JFile classVersion : classVersions) {
+            final Matcher match = PATTERN_FILE_VERSIONS.matcher(classVersion.getSimpleName());
+            final String linkDesc = match.find() ? match.group(0) : "V1";
+            result.append("[").append(linkDesc.replace("_", ""));
+            result.append("]").append("(").append(classVersion.getRelativeMavenUrl().toString()).append(")").append(", ");
+        }
+        result.deleteCharAt(result.length() - 2);
+        result.append(")*");
+        result.append(LINE_SEPARATOR);
+        return result;
     }
 
     private static void createStartPage(final StringBuilder navigation) {

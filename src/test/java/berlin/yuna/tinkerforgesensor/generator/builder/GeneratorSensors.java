@@ -71,7 +71,7 @@ public class GeneratorSensors {
             final String methodName = firstLetterLow(sensor.getBasicName());
 
             if (!"default".equals(methodName)) {
-                resultClass.addMethods(additionalSensorShortcuts(type_ListOfSensor, sensor.getBasicName(), sensorVersions.stream().map(JFile::getClazz).collect(toList())));
+                resultClass.addMethods(addSensorShortcuts(type_ListOfSensor, sensor.getBasicName(), sensorVersions.stream().map(JFile::getClazz).collect(toList())));
 //                resultClass.addMethod(method_getSensorXY(methodName));
 //                resultClass.addMethod(method_getSensorXYNumber(methodName, sensorVersions.stream().map(JFile::getClazz).collect(toList())));
 //                resultClass.addMethod(method_getSensorListXY(type_ListOfSensor, sensor.getClazz().getSimpleName(), sensorVersions.stream().map(JFile::getClazz).toArray()));
@@ -84,8 +84,8 @@ public class GeneratorSensors {
         }
 
         //ADDITIONAL SENSOR SHORTCUTS
-        resultClass.addMethods(additionalSensorShortcuts(type_ListOfSensor, "Display", asList(DisplayLcd128x64.class, DisplayLcd20x4.class, DisplaySegmentV2.class, DisplaySegment.class)));
-        resultClass.addMethods(additionalSensorShortcuts(type_ListOfSensor, "Sound", asList(SoundPressure.class, SoundIntensity.class)));
+        resultClass.addMethods(addSensorShortcuts(type_ListOfSensor, "Display", asList(DisplayLcd128x64.class, DisplayLcd20x4.class, DisplaySegmentV2.class, DisplaySegment.class)));
+        resultClass.addMethods(addSensorShortcuts(type_ListOfSensor, "Sound", asList(SoundPressure.class, SoundIntensity.class)));
 
         //CREATE METHODS
         final MethodSpec method_getDefaultSensor = method_getDefaultSensor(type_ClassOfGenerics);
@@ -97,7 +97,7 @@ public class GeneratorSensors {
         return JavaFile.builder(generateClass.getPackage().getName(), resultClass.build()).build();
     }
 
-    private static List<MethodSpec> additionalSensorShortcuts(final ParameterizedTypeName type_ListOfSensor, final String sensorName, final List<Class> sensorVersions) {
+    private static List<MethodSpec> addSensorShortcuts(final ParameterizedTypeName type_ListOfSensor, final String sensorName, final List<Class> sensorVersions) {
         final String sensorNameLow = firstLetterLow(sensorName);
         final MethodSpec sensorXY = method_getSensorXY(sensorNameLow);
         final MethodSpec getSensorXYNumber = method_getSensorXYNumber(sensorNameLow, sensorVersions);

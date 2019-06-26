@@ -79,7 +79,7 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
     }
 
     @Override
-    public Sensor<BrickletMotionDetector> setLedAdditional(final Integer value) {
+    public Sensor<BrickletMotionDetector> ledAdditional(final Integer value) {
         return this;
     }
 

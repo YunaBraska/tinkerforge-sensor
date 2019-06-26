@@ -82,7 +82,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
     }
 
     @Override
-    public Sensor<BrickletRotaryEncoderV2> setLedAdditional(final Integer value) {
+    public Sensor<BrickletRotaryEncoderV2> ledAdditional(final Integer value) {
         return this;
     }
 

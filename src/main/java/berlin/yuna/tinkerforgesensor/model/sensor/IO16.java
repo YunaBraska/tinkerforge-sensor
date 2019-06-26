@@ -22,7 +22,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16.html">Official documentation</a></li>
  * </ul>
  * <h6>Set all LEDs on</h6>
- * <code>io16.setLedAdditional_On();</code>
+ * <code>io16.ledAdditional_setOn();</code>
  * <h6>Turn on LED 4</h6>
  * <code>io16.send(4);</code>
  * <h6>Turn off LED 12</h6>
@@ -68,7 +68,7 @@ public class IO16 extends Sensor<BrickletIO16> {
     }
 
     @Override
-    public Sensor<BrickletIO16> setLedAdditional(final Integer value) {
+    public Sensor<BrickletIO16> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
@@ -96,7 +96,7 @@ public class IO16 extends Sensor<BrickletIO16> {
     @Override
     public Sensor<BrickletIO16> flashLed() {
         try {
-            setLedAdditional_Off();
+            ledAdditional_setOff();
             for (int i = 1; i < 33; i++) {
                 this.send(i < 17 ? i : (i - 16) * -1);
                 Thread.sleep(32);
@@ -134,9 +134,9 @@ public class IO16 extends Sensor<BrickletIO16> {
     private Integer normalizeValue(final Object value) {
         if (value instanceof Boolean) {
             if ((Boolean) value) {
-                setLedAdditional_On();
+                ledAdditional_setOn();
             } else {
-                setLedAdditional_Off();
+                ledAdditional_setOff();
             }
         } else if (value instanceof Number) {
             return ((Number) value).intValue();

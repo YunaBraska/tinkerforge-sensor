@@ -76,7 +76,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> setLedAdditional(final Integer value) {
+    public Sensor<BrickletPiezoSpeaker> ledAdditional(final Integer value) {
         return this;
     }
 

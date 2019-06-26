@@ -37,9 +37,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <h6>Getting button pressed example</h6>
  * <code>stack.values().buttonPressed();</code>
  * <h6>Set LEDs on</h6>
- * <code>button.setLedAdditional_On();</code>
+ * <code>button.ledAdditional_setOn();</code>
  * <h6>Set LEDs off</h6>
- * <code>button.setLedAdditional_Off();</code>
+ * <code>button.ledAdditional_setOff();</code>
  * <h6>Set LEDs active on press</h6>
  * <code>button.setLedAdditional_Status();</code>
  * <h6>Set LEDs active on release</h6>
@@ -93,7 +93,7 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
 
     //TODO: set button 1 && button 2 different
     @Override
-    public Sensor<BrickletDualButtonV2> setLedAdditional(final Integer value) {
+    public Sensor<BrickletDualButtonV2> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_OFF.bit) {
@@ -129,11 +129,11 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     @Override
     public Sensor<BrickletDualButtonV2> flashLed() {
         try {
-            setLedAdditional_Off();
+            ledAdditional_setOff();
             Thread.sleep(128);
-            setLedAdditional_On();
+            ledAdditional_setOn();
             Thread.sleep(128);
-            setLedAdditional_Off();
+            ledAdditional_setOff();
             Thread.sleep(128);
             device.setLEDState(2, 3);
             Thread.sleep(128);

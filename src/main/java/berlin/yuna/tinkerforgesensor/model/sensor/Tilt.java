@@ -49,7 +49,7 @@ public class Tilt extends Sensor<BrickletTilt> {
     }
 
     @Override
-    public Sensor<BrickletTilt> setLedAdditional(final Integer value) {
+    public Sensor<BrickletTilt> ledAdditional(final Integer value) {
         return this;
     }
 

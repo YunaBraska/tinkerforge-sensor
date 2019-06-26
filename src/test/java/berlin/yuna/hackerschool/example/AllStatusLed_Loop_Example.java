@@ -26,13 +26,13 @@ public class AllStatusLed_Loop_Example extends Helper {
         for (Sensor sensor : stack.sensors()) {
             if (sensor.hasLedStatus()) {
                 sensor.setLedStatus(ledReverse ? LED_STATUS_ON : LED_STATUS_OFF);
-                sensor.setLedAdditional(ledReverse ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF);
+                sensor.ledAdditional(ledReverse ? LED_ADDITIONAL_ON : LED_ADDITIONAL_OFF);
                 sleep(128);
             }
         }
 
         for (Sensor sensor : stack.sensors()) {
-            sensor.setLedAdditional_Off();
+            sensor.ledAdditional_setOff();
         }
         return true;
     }

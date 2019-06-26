@@ -114,7 +114,7 @@ public class IMUV2 extends Sensor<BrickIMUV2> {
     }
 
     @Override
-    public Sensor<BrickIMUV2> setLedAdditional(final Integer value) {
+    public Sensor<BrickIMUV2> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {

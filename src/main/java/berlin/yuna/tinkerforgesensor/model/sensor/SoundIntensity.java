@@ -49,7 +49,7 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
     }
 
     @Override
-    public Sensor<BrickletSoundIntensity> setLedAdditional(final Integer value) {
+    public Sensor<BrickletSoundIntensity> ledAdditional(final Integer value) {
         return this;
     }
 

@@ -5,8 +5,10 @@ import berlin.yuna.tinkerforgesensor.model.JFile;
 import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Default;
+import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd128x64;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd20x4;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegment;
+import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegmentV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundIntensity;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundPressure;
@@ -26,9 +28,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.firstLetterLow;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.getClassVersions;
-import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.DOT_ARRAY;
 import static com.squareup.javapoet.WildcardTypeName.subtypeOf;
 import static java.util.Arrays.asList;
@@ -69,8 +71,10 @@ public class GeneratorSensors {
             final String methodName = firstLetterLow(sensor.getBasicName());
 
             if (!"default".equals(methodName)) {
-                resultClass.addMethod(method_getSensorXY(methodName));
-                resultClass.addMethod(method_getSensorXYNumber(methodName, sensorVersions.stream().map(JFile::getClazz).collect(toList())));
+                resultClass.addMethods(additionalSensorShortcuts(type_ListOfSensor, sensor.getBasicName(), sensorVersions.stream().map(JFile::getClazz).collect(toList())));
+//                resultClass.addMethod(method_getSensorXY(methodName));
+//                resultClass.addMethod(method_getSensorXYNumber(methodName, sensorVersions.stream().map(JFile::getClazz).collect(toList())));
+//                resultClass.addMethod(method_getSensorListXY(type_ListOfSensor, sensor.getClazz().getSimpleName(), sensorVersions.stream().map(JFile::getClazz).toArray()));
             }
 
             //REMOVE SENSORS VARIANTS FROM LIST
@@ -80,14 +84,11 @@ public class GeneratorSensors {
         }
 
         //ADDITIONAL SENSOR SHORTCUTS
-        //FIXME: add loop for sensor number?
-        resultClass.addMethod(method_getSensorXY("display"));
-        resultClass.addMethod(method_getSensorXYNumber("display", asList(DisplayLcd20x4.class, DisplaySegment.class)));
-        resultClass.addMethod(method_getSensorXY("sound"));
-        resultClass.addMethod(method_getSensorXYNumber("sound", asList(SoundPressure.class, SoundIntensity.class)));
+        resultClass.addMethods(additionalSensorShortcuts(type_ListOfSensor, "Display", asList(DisplayLcd128x64.class, DisplayLcd20x4.class, DisplaySegmentV2.class, DisplaySegment.class)));
+        resultClass.addMethods(additionalSensorShortcuts(type_ListOfSensor, "Sound", asList(SoundPressure.class, SoundIntensity.class)));
 
         //CREATE METHODS
-        final MethodSpec method_getDefaultSensor = method_getDefaultSensor(type_ListOfSensor, type_ClassOfGenerics);
+        final MethodSpec method_getDefaultSensor = method_getDefaultSensor(type_ClassOfGenerics);
         resultClass.addMethod(method_getSensor(type_ListOfSensor, type_ClassOfGenerics));
         resultClass.addMethod(method_getSensorNumber(type_ListOfSensor, type_ClassOfGenerics, method_getDefaultSensor));
         resultClass.addMethod(method_getDefaultSensor);
@@ -96,7 +97,15 @@ public class GeneratorSensors {
         return JavaFile.builder(generateClass.getPackage().getName(), resultClass.build()).build();
     }
 
-    private static MethodSpec method_getDefaultSensor(final ParameterizedTypeName type_ListOfSensor, final ClassName type_ClassOfGenerics) {
+    private static List<MethodSpec> additionalSensorShortcuts(final ParameterizedTypeName type_ListOfSensor, final String sensorName, final List<Class> sensorVersions) {
+        final String sensorNameLow = firstLetterLow(sensorName);
+        final MethodSpec sensorXY = method_getSensorXY(sensorNameLow);
+        final MethodSpec getSensorXYNumber = method_getSensorXYNumber(sensorNameLow, sensorVersions);
+        final MethodSpec getSensorListXY = method_getSensorListXY(type_ListOfSensor, sensorName, sensorVersions);
+        return asList(sensorXY, getSensorXYNumber, getSensorListXY);
+    }
+
+    private static MethodSpec method_getDefaultSensor(final ClassName type_ClassOfGenerics) {
         final String parameterName = "sensorClass";
         return MethodSpec.methodBuilder("getDefaultSensor")
                 .addModifiers(PRIVATE)
@@ -129,7 +138,7 @@ public class GeneratorSensors {
                 .addParameter(ArrayTypeName.of(type_ClassOfGenerics), parameterName + DOT_ARRAY, FINAL)
                 .returns(Sensor.class)
                 .addStatement("final $T sensors = get$T($N)", type_ListOfSensor, Sensor.class, parameterName)
-                .addStatement("return sensors.size() > $N ? sensors.get($N) : $N($N[0])", parameterNumber, parameterNumber, method_getDefaultSensor.name, parameterName)
+                .addStatement("return $N < sensors.size() ? sensors.get($N) : $N($N[0])", parameterNumber, parameterNumber, method_getDefaultSensor.name, parameterName)
                 .build();
     }
 
@@ -153,19 +162,22 @@ public class GeneratorSensors {
                 .build();
     }
 
-//    private static MethodSpec constructor_sensors(final ParameterizedTypeName type_SensorList, final String type_SensorListName) {
-//        return MethodSpec.constructorBuilder()
-//                .addModifiers(PUBLIC)
-//                .addParameter(type_SensorList, type_SensorListName, FINAL)
-//                .addStatement("this.$N = $N", type_SensorListName, type_SensorListName)
-//                .build();
-//    }
-
     private static MethodSpec method_getSensorXY(final String methodName) {
         return MethodSpec.methodBuilder(methodName)
                 .addModifiers(PUBLIC)
                 .returns(Sensor.class).addStatement("return $N(0)", methodName).build();
     }
+
+    private static MethodSpec method_getSensorListXY(final ParameterizedTypeName type_ListOfSensor, final String sensorName, final List<Class> sensorVersions) {
+        final String returnLine = "return get" + Sensor.class.getSimpleName() + sensorVersions.stream()
+                .map(sv -> "$T.class").collect(Collectors.joining(", ", "(", ")"));
+        return MethodSpec.methodBuilder("get" + sensorName + "List")
+                .addModifiers(PUBLIC)
+                .returns(type_ListOfSensor)
+                .addStatement(returnLine, sensorVersions.toArray())
+                .build();
+    }
+
 
     private static MethodSpec method_getSensorXYNumber(final String methodName, final List<Class> sensorVersions) {
         final MethodSpec.Builder method = MethodSpec.methodBuilder(methodName)

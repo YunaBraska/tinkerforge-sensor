@@ -39,9 +39,9 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  * <i>(use {@link DateTimeFormatter})</i><br/>
  * <code>display.send(DateTimeFormatter.ofPattern("HH:mm"));</code>
  * <h6>LED Brightness (2-9)</h6>
- * <code>display.setLedAdditional(7);</code>
+ * <code>display.ledAdditional(7);</code>
  * <h6>Display ON</h6>
- * <code>display.setLedAdditional_On;</code>
+ * <code>display.ledAdditional_setOn;</code>
  */
 public class DisplaySegmentV2 extends Sensor<BrickletSegmentDisplay4x7V2> {
 
@@ -120,7 +120,7 @@ public class DisplaySegmentV2 extends Sensor<BrickletSegmentDisplay4x7V2> {
     }
 
     @Override
-    public Sensor<BrickletSegmentDisplay4x7V2> setLedAdditional(final Integer value) {
+    public Sensor<BrickletSegmentDisplay4x7V2> ledAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
             setBrightness(7);
             send(lastText);
@@ -144,21 +144,22 @@ public class DisplaySegmentV2 extends Sensor<BrickletSegmentDisplay4x7V2> {
     @Override
     public Sensor<BrickletSegmentDisplay4x7V2> flashLed() {
         try {
-            setLedAdditional_On();
+            ledAdditional_setOn();
             send("1.2.:3.‘4.");
             Thread.sleep(128);
             for (int i = 0; i < 9; i++) {
                 if (i % 2 == 0) {
-                    this.setLedStatus_On();
+                    this.ledStatus_setOn();
                 } else {
-                    this.setLedStatus_Off();
+                    this.ledStatus_setOff();
                 }
-                setLedAdditional(i);
+                ledAdditional(i);
                 send(LocalDateTime.now());
                 Thread.sleep(128);
             }
-            setLedAdditional_Off();
-            setLedAdditional(7);
+            send(" ");
+            ledAdditional_setOff();
+            ledAdditional(5);
         } catch (Exception ignore) {
         }
         return this;

@@ -37,10 +37,10 @@ public class Anthony extends Helper {
                 Knopf1.send(Color.GREEN);
                 Knopf2.send(Color.RED);
                 Knopf3.send(Color.BLUE);
-                stack.sensors().dualButton().setLedAdditional_Off();
+                stack.sensors().dualButton().ledAdditional_setOff();
                 display.send("${clear}");
                 display.send("Grün = Messstation  Rot = Distance Game Blau = Abstands Sensor");
-                display.setLedAdditional_On();
+                display.ledAdditional_setOn();
             }
 
 
@@ -118,7 +118,7 @@ public class Anthony extends Helper {
                 if (airQuality < 1050000) {
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Die airQuality istschlecht! Bitte     ein Fenster  öffnen.");
-                    stack.sensors().displayLcd20x4().setLedAdditional_On();
+                    stack.sensors().displayLcd20x4().ledAdditional_setOn();
                     stack.sensors().speaker().send(300);
                     sleep(500);
                     stack.sensors().speaker().send(300);
@@ -130,7 +130,7 @@ public class Anthony extends Helper {
                     Knopf1.send(Color.GREEN);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Die airQuality istakzeptabel.");
-                    stack.sensors().displayLcd20x4().setLedAdditional_On();
+                    stack.sensors().displayLcd20x4().ledAdditional_setOn();
 
                 }
             }
@@ -148,7 +148,7 @@ public class Anthony extends Helper {
                 final int luftdruck = stack.values().airPressure().intValue();
                 stack.sensors().displayLcd20x4().send("${clear}");
                 stack.sensors().displayLcd20x4().send("Der Luftdruck       beträgt " + (luftdruck / 1000000) + "BAR, das entspricht " + (luftdruck / 1000) + " mbar.");
-                stack.sensors().displayLcd20x4().setLedAdditional_On();
+                stack.sensors().displayLcd20x4().ledAdditional_setOn();
             }
         }
     }
@@ -164,12 +164,12 @@ public class Anthony extends Helper {
                     Knopf2.send(Color.GREEN);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Die Temperatur ist  Gut! Sie beträgt " + (temperatur / 100) + "°C");
-                    stack.sensors().displayLcd20x4().setLedAdditional_On();
+                    stack.sensors().displayLcd20x4().ledAdditional_setOn();
                 } else {
                     Knopf2.send(Color.RED);
                     stack.sensors().displayLcd20x4().send("${clear}");
                     stack.sensors().displayLcd20x4().send("Bitte Temperatur erhöhen, die Temperatur beträgt:" + (temperatur / 100) + " °C ");
-                    stack.sensors().displayLcd20x4().setLedAdditional_On();
+                    stack.sensors().displayLcd20x4().ledAdditional_setOn();
                 }
             }
         }

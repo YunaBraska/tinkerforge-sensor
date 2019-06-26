@@ -8,7 +8,6 @@ import berlin.yuna.tinkerforgesensor.util.SegmentsV2;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,7 +69,7 @@ public class Check_DisplaySegment extends Helper {
             displays.forEach(display -> display.send("8888"));
             for (int i = 0; i < 12; i++) {
                 final int index = i;
-                displays.forEach(display -> display.setLedAdditional(index));
+                displays.forEach(display -> display.ledAdditional(index));
                 sleep(256);
             }
 

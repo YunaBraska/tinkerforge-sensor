@@ -38,7 +38,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Color.html">Official documentation</a></li>
  * </ul>
  * <h6>Turn on flash LED</h6>
- * <code>color.setLedAdditional_On();</code>
+ * <code>color.ledAdditional_setOn();</code>
  * <h6>Getting color examples</h6>
  * <code>
  * stack.values().color();
@@ -77,7 +77,7 @@ public class LightColor extends Sensor<BrickletColor> {
     }
 
     @Override
-    public Sensor<BrickletColor> setLedAdditional(final Integer value) {
+    public Sensor<BrickletColor> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
@@ -105,13 +105,13 @@ public class LightColor extends Sensor<BrickletColor> {
         try {
             for (int i = 0; i < 7; i++) {
                 if (i % 2 == 0) {
-                    this.setLedAdditional_Off();
+                    this.ledAdditional_setOff();
                 } else {
-                    this.setLedAdditional_On();
+                    this.ledAdditional_setOn();
                 }
                 Thread.sleep(128);
             }
-            this.setLedStatus_Status();
+            this.ledStatus_setStatus();
         } catch (Exception ignore) {
         }
         return this;

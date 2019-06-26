@@ -55,7 +55,7 @@ public class Humidity extends Sensor<BrickletHumidity> {
     }
 
     @Override
-    public Sensor<BrickletHumidity> setLedAdditional(final Integer value) {
+    public Sensor<BrickletHumidity> ledAdditional(final Integer value) {
         return this;
     }
 

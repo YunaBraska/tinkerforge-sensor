@@ -66,7 +66,7 @@ public class Accelerometer extends Sensor<BrickletAccelerometer> {
     }
 
     @Override
-    public Sensor<BrickletAccelerometer> setLedAdditional(final Integer value) {
+    public Sensor<BrickletAccelerometer> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {

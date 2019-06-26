@@ -86,7 +86,7 @@ public class IMU extends Sensor<BrickIMU> {
     }
 
     @Override
-    public Sensor<BrickIMU> setLedAdditional(final Integer value) {
+    public Sensor<BrickIMU> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {

@@ -40,36 +40,36 @@ public class ApplicationStart extends Helper {
 
             if (!start) {
                 //Reset buttons
-                stack.sensors().forEach(Sensor::setLedStatus_Off);
-                stack.sensors().stream().filter(s -> !s.compare().isDisplayLcd20x4()).forEach(Sensor::setLedAdditional_Off);
+                stack.sensors().forEach(Sensor::ledStatus_setOff);
+                stack.sensors().stream().filter(s -> !s.compare().isDisplayLcd20x4()).forEach(Sensor::ledAdditional_setOff);
             }
             if (!start && stack.values().rotary() == 1) {
                 program = 1;
                 display.send("${clear}");
                 display.send("1. Programm: Wetterstation!");
-                display.setLedAdditional_On();
-                buttonRGB_1.setLedStatus_On();
-                buttonRGB_2.setLedStatus_On();
-                stack.sensors().lightAmbient().setLedStatus_On();
-                stack.sensors().airQuality().setLedStatus_On();
+                display.ledAdditional_setOn();
+                buttonRGB_1.ledStatus_setOn();
+                buttonRGB_2.ledStatus_setOn();
+                stack.sensors().lightAmbient().ledStatus_setOn();
+                stack.sensors().airQuality().ledStatus_setOn();
             } else if (!start && stack.values().rotary() == 2) {
                 program = 2;
                 display.send("${clear}");
                 display.send("2. Program: Reaction Game!");
-                display.setLedAdditional_On();
-                buttonRGB_1.setLedStatus_On();
-                buttonRGB_2.setLedStatus_On();
+                display.ledAdditional_setOn();
+                buttonRGB_1.ledStatus_setOn();
+                buttonRGB_2.ledStatus_setOn();
             } else if (!start && stack.values().rotary() == 3) {
                 program = 3;
                 display.send("${clear}");
                 display.send("3. Program: Uhrsula!");
-                display.setLedAdditional_On();
-                stack.sensors().lightAmbient().setLedStatus_On();
+                display.ledAdditional_setOn();
+                stack.sensors().lightAmbient().ledStatus_setOn();
             } else if (!start && stack.values().rotary() == 4) {
                 program = 4;
                 display.send("${clear}");
                 display.send("4. Program: Beethoven!");
-                display.setLedAdditional_On();
+                display.ledAdditional_setOn();
             }
         }
 

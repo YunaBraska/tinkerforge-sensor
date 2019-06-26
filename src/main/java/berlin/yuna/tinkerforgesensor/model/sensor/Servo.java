@@ -175,7 +175,7 @@ public class Servo extends Sensor<BrickServo> {
     }
 
     @Override
-    public Sensor<BrickServo> setLedAdditional(final Integer value) {
+    public Sensor<BrickServo> ledAdditional(final Integer value) {
         return this;
     }
 

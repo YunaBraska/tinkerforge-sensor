@@ -21,7 +21,6 @@ display.sendLimit(2, "YOU"); //Sends only two messages in a second (useful for l
 final Sensor button_01 = stack.sensors().buttonRGB(0);
 final Sensor button_02 = stack.sensors().buttonRGB(1);
 final Sensor button_03 = stack.sensors().buttonRGB(2);
-display.send(Color.MAGENTA);
 ```
 
 * [Compare](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Compare.java) a [Sensor](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Sensor.java)

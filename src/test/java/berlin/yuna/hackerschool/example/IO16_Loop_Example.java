@@ -22,7 +22,7 @@ public class IO16_Loop_Example extends Helper{
     private static boolean loopOver16IO_example() {
         final Sensor io16 = stack.sensors().iO16();
 
-        io16.setLedAdditional_Off();
+        io16.ledAdditional_setOff();
         for (int i = 1; i < 17; i++) {
             io16.send(i);
             sleep(32);
@@ -36,7 +36,7 @@ public class IO16_Loop_Example extends Helper{
         for (int i = 1; i < 9; i++) {
             final int index = ledReverse ? 9 - i : i;
             //Side turn all off
-            stack.sensors().iO16().setLedAdditional_Off();
+            stack.sensors().iO16().ledAdditional_setOff();
             //Side A
             stack.sensors().iO16().send(index);
             //Side B

@@ -44,7 +44,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <h6>Send text with dynamic spaces between)</h6>
  * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
  * <h6>Display ON</h6>
- * <code>display.setLedAdditional_On;</code>
+ * <code>display.ledAdditional_setOn;</code>
  * <h6>Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example</h6>
  * <code>stack.values().button();</code>
  * <h6>Getting button pressed example</h6>
@@ -134,7 +134,7 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     }
 
     @Override
-    public Sensor<BrickletLCD20x4> setLedAdditional(final Integer value) {
+    public Sensor<BrickletLCD20x4> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
@@ -153,14 +153,14 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     @Override
     public Sensor<BrickletLCD20x4> flashLed() {
         try {
-            this.setLedAdditional_On();
+            this.ledAdditional_setOn();
             for (int i = 0; i < 7; i++) {
                 send("H ${s} O ${s} W ${s} D ${s} Y [" + i + "]");
                 send(DYNAMIC_SPACE + UUID.randomUUID() + DYNAMIC_SPACE, 0, 1);
                 Thread.sleep(128);
             }
             send(true);
-            this.setLedAdditional_Off();
+            this.ledAdditional_setOff();
         } catch (Exception ignore) {
         }
         return this;

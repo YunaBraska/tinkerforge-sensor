@@ -31,7 +31,7 @@ public class MariaSofia extends Helper {
         //Bewegungsmelder
 
         //if (type.isMotionDetected() == true && ){
-            //stack.sensors().iO16().setLedAdditional_On();
+            //stack.sensors().iO16().ledAdditional_setOn();
             //for(int i = 0; i < 16; i++) {
                 //send.(i);
 
@@ -53,7 +53,7 @@ public class MariaSofia extends Helper {
 
         //Licht
         if (switchbeep == false && type.isSoundIntensity() && value > 1100) {
-            stack.sensors().iO16().setLedAdditional_On();
+            stack.sensors().iO16().ledAdditional_setOn();
         }
         if (type.isSoundIntensity() && value > 1100 && !running) {
             running = true;
@@ -73,7 +73,7 @@ public class MariaSofia extends Helper {
                 running = false;
             });
         } else if (type.isSoundIntensity() && value < 1100) {
-            stack.sensors().iO16().setLedAdditional_Off();
+            stack.sensors().iO16().ledAdditional_setOff();
 
             //tinkerForge.sensors().iO16().send();
         }

@@ -57,7 +57,7 @@ public class DistanceUS extends Sensor<BrickletDistanceUS> {
     }
 
     @Override
-    public Sensor<BrickletDistanceUS> setLedAdditional(final Integer value) {
+    public Sensor<BrickletDistanceUS> ledAdditional(final Integer value) {
         return this;
     }
 

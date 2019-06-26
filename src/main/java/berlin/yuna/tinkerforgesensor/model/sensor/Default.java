@@ -54,7 +54,7 @@ public class Default extends Sensor<DummyDevice> {
     }
 
     @Override
-    public Sensor<DummyDevice> setLedAdditional(final Integer value) {
+    public Sensor<DummyDevice> ledAdditional(final Integer value) {
         return this;
     }
 

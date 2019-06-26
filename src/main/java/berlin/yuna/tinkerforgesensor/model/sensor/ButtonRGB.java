@@ -115,7 +115,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> setLedAdditional(final Integer value) {
+    public Sensor<BrickletRGBLEDButton> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         if (value == LED_ADDITIONAL_ON.bit) {
             ledAdditional = LED_ADDITIONAL_ON;
@@ -131,7 +131,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     public Sensor<BrickletRGBLEDButton> flashLed() {
         super.flashLed();
         try {
-            setLedAdditional_On();
+            ledAdditional_setOn();
             for (int color : Arrays.asList(
                     Color.WHITE,
                     Color.RED,
@@ -147,7 +147,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
                 send(color);
                 Thread.sleep(64);
             }
-            setLedAdditional_Off();
+            ledAdditional_setOff();
         } catch (Exception ignore) {
         }
         return this;

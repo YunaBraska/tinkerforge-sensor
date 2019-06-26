@@ -56,7 +56,7 @@ public class LightAmbient extends Sensor<BrickletAmbientLight> {
     }
 
     @Override
-    public Sensor<BrickletAmbientLight> setLedAdditional(final Integer value) {
+    public Sensor<BrickletAmbientLight> ledAdditional(final Integer value) {
         return this;
     }
 

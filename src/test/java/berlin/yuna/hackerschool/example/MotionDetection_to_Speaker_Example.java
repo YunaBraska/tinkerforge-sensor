@@ -15,10 +15,10 @@ public class MotionDetection_to_Speaker_Example {
 
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
         if (type.isMotionDetected() && value.intValue() == 1) {
-            sensor.setLedAdditional_On();
+            sensor.ledAdditional_setOn();
             stack.sensors().speaker().send(1000);
         } else if(type.isMotionDetected() && value.intValue() == 0){
-            sensor.setLedAdditional_Off();
+            sensor.ledAdditional_setOff();
         }
     }
 }

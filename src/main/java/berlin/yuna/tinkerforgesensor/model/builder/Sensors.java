@@ -70,12 +70,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, Tilt.class);
     }
 
+    public List<Sensor> getTiltList() {
+        return getSensor(Tilt.class);
+    }
+
     public Sensor temperature() {
         return temperature(0);
     }
 
     public Sensor temperature(final int number) {
         return getSensor(number, TemperatureV2.class, Temperature.class);
+    }
+
+    public List<Sensor> getTemperatureList() {
+        return getSensor(TemperatureV2.class, Temperature.class);
     }
 
     public Sensor speaker() {
@@ -86,12 +94,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, Speaker.class);
     }
 
+    public List<Sensor> getSpeakerList() {
+        return getSensor(Speaker.class);
+    }
+
     public Sensor soundPressure() {
         return soundPressure(0);
     }
 
     public Sensor soundPressure(final int number) {
         return getSensor(number, SoundPressure.class);
+    }
+
+    public List<Sensor> getSoundPressureList() {
+        return getSensor(SoundPressure.class);
     }
 
     public Sensor soundIntensity() {
@@ -102,12 +118,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, SoundIntensity.class);
     }
 
+    public List<Sensor> getSoundIntensityList() {
+        return getSensor(SoundIntensity.class);
+    }
+
     public Sensor servo() {
         return servo(0);
     }
 
     public Sensor servo(final int number) {
         return getSensor(number, Servo.class);
+    }
+
+    public List<Sensor> getServoList() {
+        return getSensor(Servo.class);
     }
 
     public Sensor rotary() {
@@ -118,12 +142,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, RotaryV2.class);
     }
 
+    public List<Sensor> getRotaryList() {
+        return getSensor(RotaryV2.class);
+    }
+
     public Sensor motionDetector() {
         return motionDetector(0);
     }
 
     public Sensor motionDetector(final int number) {
         return getSensor(number, MotionDetectorV2.class, MotionDetector.class);
+    }
+
+    public List<Sensor> getMotionDetectorList() {
+        return getSensor(MotionDetectorV2.class, MotionDetector.class);
     }
 
     public Sensor master() {
@@ -134,12 +166,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, Master.class);
     }
 
+    public List<Sensor> getMasterList() {
+        return getSensor(Master.class);
+    }
+
     public Sensor lightUv() {
         return lightUv(0);
     }
 
     public Sensor lightUv(final int number) {
         return getSensor(number, LightUvV2.class, LightUv.class);
+    }
+
+    public List<Sensor> getLightUvList() {
+        return getSensor(LightUvV2.class, LightUv.class);
     }
 
     public Sensor lightColor() {
@@ -150,12 +190,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, LightColor.class);
     }
 
+    public List<Sensor> getLightColorList() {
+        return getSensor(LightColor.class);
+    }
+
     public Sensor lightAmbient() {
         return lightAmbient(0);
     }
 
     public Sensor lightAmbient(final int number) {
         return getSensor(number, LightAmbientV3.class, LightAmbientV2.class, LightAmbient.class);
+    }
+
+    public List<Sensor> getLightAmbientList() {
+        return getSensor(LightAmbientV3.class, LightAmbientV2.class, LightAmbient.class);
     }
 
     public Sensor iO16() {
@@ -166,12 +214,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, IO16V2.class, IO16.class);
     }
 
+    public List<Sensor> getIO16List() {
+        return getSensor(IO16V2.class, IO16.class);
+    }
+
     public Sensor iMU() {
         return iMU(0);
     }
 
     public Sensor iMU(final int number) {
         return getSensor(number, IMUV2.class, IMU.class);
+    }
+
+    public List<Sensor> getIMUList() {
+        return getSensor(IMUV2.class, IMU.class);
     }
 
     public Sensor humidity() {
@@ -182,12 +238,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, HumidityV2.class, Humidity.class);
     }
 
+    public List<Sensor> getHumidityList() {
+        return getSensor(HumidityV2.class, Humidity.class);
+    }
+
     public Sensor dualButton() {
         return dualButton(0);
     }
 
     public Sensor dualButton(final int number) {
         return getSensor(number, DualButton.class);
+    }
+
+    public List<Sensor> getDualButtonList() {
+        return getSensor(DualButton.class);
     }
 
     public Sensor distanceUS() {
@@ -198,12 +262,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, DistanceUS.class);
     }
 
+    public List<Sensor> getDistanceUSList() {
+        return getSensor(DistanceUS.class);
+    }
+
     public Sensor distanceIR() {
         return distanceIR(0);
     }
 
     public Sensor distanceIR(final int number) {
         return getSensor(number, DistanceIRV2.class, DistanceIR.class);
+    }
+
+    public List<Sensor> getDistanceIRList() {
+        return getSensor(DistanceIRV2.class, DistanceIR.class);
     }
 
     public Sensor displaySegment() {
@@ -214,12 +286,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, DisplaySegmentV2.class, DisplaySegment.class);
     }
 
+    public List<Sensor> getDisplaySegmentList() {
+        return getSensor(DisplaySegmentV2.class, DisplaySegment.class);
+    }
+
     public Sensor displayLcd20x4() {
         return displayLcd20x4(0);
     }
 
     public Sensor displayLcd20x4(final int number) {
         return getSensor(number, DisplayLcd20x4.class);
+    }
+
+    public List<Sensor> getDisplayLcd20x4List() {
+        return getSensor(DisplayLcd20x4.class);
     }
 
     public Sensor displayLcd128x64() {
@@ -230,12 +310,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, DisplayLcd128x64.class);
     }
 
+    public List<Sensor> getDisplayLcd128x64List() {
+        return getSensor(DisplayLcd128x64.class);
+    }
+
     public Sensor dC() {
         return dC(0);
     }
 
     public Sensor dC(final int number) {
         return getSensor(number, DC.class);
+    }
+
+    public List<Sensor> getDCList() {
+        return getSensor(DC.class);
     }
 
     public Sensor buttonRGB() {
@@ -246,12 +334,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, ButtonRGB.class);
     }
 
+    public List<Sensor> getButtonRGBList() {
+        return getSensor(ButtonRGB.class);
+    }
+
     public Sensor barometer() {
         return barometer(0);
     }
 
     public Sensor barometer(final int number) {
         return getSensor(number, BarometerV2.class, Barometer.class);
+    }
+
+    public List<Sensor> getBarometerList() {
+        return getSensor(BarometerV2.class, Barometer.class);
     }
 
     public Sensor airQuality() {
@@ -262,6 +358,10 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, AirQuality.class);
     }
 
+    public List<Sensor> getAirQualityList() {
+        return getSensor(AirQuality.class);
+    }
+
     public Sensor accelerometer() {
         return accelerometer(0);
     }
@@ -270,12 +370,20 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, AccelerometerV2.class, Accelerometer.class);
     }
 
+    public List<Sensor> getAccelerometerList() {
+        return getSensor(AccelerometerV2.class, Accelerometer.class);
+    }
+
     public Sensor display() {
         return display(0);
     }
 
     public Sensor display(final int number) {
-        return getSensor(number, DisplayLcd20x4.class, DisplaySegment.class);
+        return getSensor(number, DisplayLcd128x64.class, DisplayLcd20x4.class, DisplaySegmentV2.class, DisplaySegment.class);
+    }
+
+    public List<Sensor> getDisplayList() {
+        return getSensor(DisplayLcd128x64.class, DisplayLcd20x4.class, DisplaySegmentV2.class, DisplaySegment.class);
     }
 
     public Sensor sound() {
@@ -286,13 +394,17 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(number, SoundPressure.class, SoundIntensity.class);
     }
 
+    public List<Sensor> getSoundList() {
+        return getSensor(SoundPressure.class, SoundIntensity.class);
+    }
+
     private synchronized List<Sensor> getSensor(final Class... sensorClasses) {
         return stream().filter(sensor -> sensor.compare().is(sensorClasses)).sorted(java.util.Comparator.comparingInt(Sensor::port)).collect(java.util.stream.Collectors.toList());
     }
 
     private synchronized Sensor getSensor(final int number, final Class... sensorClasses) {
         final List<Sensor> sensors = getSensor(sensorClasses);
-        return sensors.size() > number ? sensors.get(number) : getDefaultSensor(sensorClasses[0]);
+        return number < sensors.size() ? sensors.get(number) : getDefaultSensor(sensorClasses[0]);
     }
 
     private Sensor getDefaultSensor(final Class sensorClass) {

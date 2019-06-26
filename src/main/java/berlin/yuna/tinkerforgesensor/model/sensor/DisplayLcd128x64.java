@@ -51,9 +51,9 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  * <h6>Send text with dynamic spaces between)</h6>
  * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
  * <h6>LED Brightness (2-100)</h6>
- * <code>display.setLedAdditional(7);</code>
+ * <code>display.ledAdditional(7);</code>
  * <h6>Display ON</h6>
- * <code>display.setLedAdditional_On;</code>
+ * <code>display.ledAdditional_setOn;</code>
  */
 
 public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
@@ -163,7 +163,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
     }
 
     @Override
-    public Sensor<BrickletLCD128x64> setLedAdditional(final Integer value) {
+    public Sensor<BrickletLCD128x64> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
@@ -198,14 +198,14 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
     public Sensor<BrickletLCD128x64> flashLed() {
         try {
             for (int i = 0; i < 9; i++) {
-                setLedAdditional((i + 1) * 10);
+                ledAdditional((i + 1) * 10);
                 send("H ${s} O ${s} W ${s} D ${s} Y [" + i + "]");
                 send(ofPattern("hh:mm:ss").format(LocalDateTime.now()), true, 1);
                 send(DYNAMIC_SPACE + UUID.randomUUID() + DYNAMIC_SPACE, 0, 2);
                 Thread.sleep(128);
             }
             send(true);
-            setLedAdditional_Off();
+            ledAdditional_setOff();
         } catch (Exception ignore) {
         }
         return this;

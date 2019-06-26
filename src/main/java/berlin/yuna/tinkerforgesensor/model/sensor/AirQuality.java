@@ -89,7 +89,7 @@ public class AirQuality extends Sensor<BrickletAirQuality> {
     }
 
     @Override
-    public Sensor<BrickletAirQuality> setLedAdditional(final Integer value) {
+    public Sensor<BrickletAirQuality> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         return this;
     }

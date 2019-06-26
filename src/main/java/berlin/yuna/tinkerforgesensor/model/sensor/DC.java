@@ -54,7 +54,7 @@ public class DC extends Sensor<BrickDC> {
     }
 
     @Override
-    public Sensor<BrickDC> setLedAdditional(final Integer value) {
+    public Sensor<BrickDC> ledAdditional(final Integer value) {
         return this;
     }
 

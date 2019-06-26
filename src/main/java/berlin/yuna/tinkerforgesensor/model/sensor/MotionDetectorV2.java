@@ -95,7 +95,7 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
     }
 
     @Override
-    public Sensor<BrickletMotionDetectorV2> setLedAdditional(final Integer value) {
+    public Sensor<BrickletMotionDetectorV2> ledAdditional(final Integer value) {
         send(value);
         return this;
     }
@@ -114,13 +114,13 @@ public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
     @Override
     public Sensor<BrickletMotionDetectorV2> flashLed() {
         try {
-            this.setLedAdditional_On();
+            this.ledAdditional_setOn();
             this.setLedStatus(LED_STATUS_HEARTBEAT);
             for (int i = 0; i < 8; i++) {
                 send(i);
                 Thread.sleep(128);
             }
-            this.setLedAdditional_Off();
+            this.ledAdditional_setOff();
             this.setLedStatus(LED_STATUS);
         } catch (Exception ignore) {
         }

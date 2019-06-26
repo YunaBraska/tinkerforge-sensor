@@ -94,7 +94,7 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
     }
 
     @Override
-    public Sensor<BrickletSoundPressureLevel> setLedAdditional(final Integer value) {
+    public Sensor<BrickletSoundPressureLevel> ledAdditional(final Integer value) {
         return this;
     }
 

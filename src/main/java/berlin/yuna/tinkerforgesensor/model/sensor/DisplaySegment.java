@@ -2,17 +2,13 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.util.SegmentFormatter;
-import berlin.yuna.tinkerforgesensor.util.SegmentsV2;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
-import com.tinkerforge.BrickletSegmentDisplay4x7V2;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
-import java.util.ArrayList;
-import java.util.List;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
@@ -39,9 +35,9 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  * <i>(use {@link DateTimeFormatter})</i><br/>
  * <code>display.send(DateTimeFormatter.ofPattern("HH:mm"));</code>
  * <h6>LED Brightness (2-9)</h6>
- * <code>display.setLedAdditional(7);</code>
+ * <code>display.ledAdditional(7);</code>
  * <h6>Display ON</h6>
- * <code>display.setLedAdditional_On;</code>
+ * <code>display.ledAdditional_setOn;</code>
  */
 public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
 
@@ -78,10 +74,7 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
                 colon = sf.getColons()[0];
             }
 
-//            device.setSegments(digits[0], digits[1], digits[2], digits[3], colons, sf.isTick());
-
             device.setSegments(digits, brightness, colon);
-
             lastText = brightness == 0? lastText : value;
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
@@ -95,7 +88,7 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     }
 
     @Override
-    public Sensor<BrickletSegmentDisplay4x7> setLedAdditional(final Integer value) {
+    public Sensor<BrickletSegmentDisplay4x7> ledAdditional(final Integer value) {
         if (value == LED_ADDITIONAL_ON.bit) {
             setBrightness((short) 7);
         } else if (value == LED_ADDITIONAL_OFF.bit) {
@@ -116,16 +109,17 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
     @Override
     public Sensor<BrickletSegmentDisplay4x7> flashLed() {
         try {
-            setLedAdditional_On();
+            ledAdditional_setOn();
             send("1.2.:3.‘4.");
             Thread.sleep(128);
             for (int i = 0; i < 9; i++) {
-                setLedAdditional(i);
+                ledAdditional(i);
                 send(LocalDateTime.now());
                 Thread.sleep(128);
             }
-            setLedAdditional_Off();
-            setLedAdditional(7);
+            send(" ");
+            ledAdditional_setOff();
+            ledAdditional(5);
         } catch (Exception ignore) {
         }
         return this;
@@ -302,22 +296,6 @@ public class DisplaySegment extends Sensor<BrickletSegmentDisplay4x7> {
             result[i] = Segments.get(chars[i]);
         }
         return result;
-    }
-
-    private void sendText(final Object value) throws TinkerforgeException {
-        String preText = value.toString().trim();
-        boolean colon = false;
-        if (preText.contains(":")) {
-            colon = true;
-            preText = preText.replace(":", "");
-        }
-        final StringBuilder text = new StringBuilder(preText);
-        while (text.length() < 4) {
-            text.insert(0, ' ');
-        }
-        final short[] segments = {Segments.get(text.charAt(0)), Segments.get(text.charAt(1)), Segments.get(text.charAt(2)), Segments.get(text.charAt(3))};
-        device.setSegments(segments, brightness, colon);
-        lastText = brightness == 0? lastText : text.toString();
     }
 
     @Override

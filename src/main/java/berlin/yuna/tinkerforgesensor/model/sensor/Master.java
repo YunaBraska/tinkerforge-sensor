@@ -56,7 +56,7 @@ public class Master extends Sensor<BrickMaster> {
     }
 
     @Override
-    public Sensor<BrickMaster> setLedAdditional(final Integer value) {
+    public Sensor<BrickMaster> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         try {
             if (device.isWifi2Present()) {

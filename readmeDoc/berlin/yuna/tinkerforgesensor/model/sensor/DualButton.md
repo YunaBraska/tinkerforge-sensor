@@ -25,13 +25,13 @@ stack.values().buttonPressed();
 ###### Set LEDs on
  
 ```java
-button.setLedAdditional_On();
+button.ledAdditional_setOn();
 ```
  
 ###### Set LEDs off
  
 ```java
-button.setLedAdditional_Off();
+button.ledAdditional_setOff();
 ```
  
 ###### Set LEDs active on press

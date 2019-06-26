@@ -57,13 +57,13 @@ display.send("H ${s} O ${s} W ${s} D ${s} Y");
 ###### LED Brightness (2-100)
  
 ```java
-display.setLedAdditional(7);
+display.ledAdditional(7);
 ```
  
 ###### Display ON
  
 ```java
-display.setLedAdditional_On;
+display.ledAdditional_setOn;
 ```
 
 --- 

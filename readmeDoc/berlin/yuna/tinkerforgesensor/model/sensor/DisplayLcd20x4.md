@@ -49,7 +49,7 @@ display.send("H ${s} O ${s} W ${s} D ${s} Y");
 ###### Display ON
  
 ```java
-display.setLedAdditional_On;
+display.ledAdditional_setOn;
 ```
  
 ###### Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example

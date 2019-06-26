@@ -36,13 +36,13 @@ display.send(DateTimeFormatter.ofPattern("HH:mm"));
 ###### LED Brightness (2-9)
  
 ```java
-display.setLedAdditional(7);
+display.ledAdditional(7);
 ```
  
 ###### Display ON
  
 ```java
-display.setLedAdditional_On;
+display.ledAdditional_setOn;
 ```
 
 --- 

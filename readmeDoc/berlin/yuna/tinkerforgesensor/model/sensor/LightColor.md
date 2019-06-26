@@ -18,7 +18,7 @@
 ###### Turn on flash LED
  
 ```java
-color.setLedAdditional_On();
+color.ledAdditional_setOn();
 ```
  
 ###### Getting color examples

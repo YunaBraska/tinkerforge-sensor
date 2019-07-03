@@ -140,6 +140,7 @@ public class Stack implements Closeable {
         connection.setTimeout(timeoutMs);
         connection.addDisconnectedListener(event -> handleConnect(event, true));
         connection.addConnectedListener(event -> handleConnect(event, false));
+        connection.addEnumerateListener(this::doPlugAndPlay);
         sensorList.clear();
         if (host != null) {
             final Object result = execute(timeoutMs, () -> {
@@ -147,7 +148,6 @@ public class Stack implements Closeable {
                 if (!isEmpty(password)) {
                     connection.authenticate(password);
                 }
-                connection.addEnumerateListener(this::doPlugAndPlay);
                 connection.enumerate();
                 return true;
             });

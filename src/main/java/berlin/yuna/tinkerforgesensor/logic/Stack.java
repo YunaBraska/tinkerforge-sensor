@@ -169,17 +169,9 @@ public class Stack implements Closeable {
 
     /**
      * <h3>disconnect</h3>
-     * disconnects all {@link Sensor} from the given host see {@link Stack#close()}
-     */
-    public synchronized void disconnect() {
-        close();
-    }
-
-    /**
      * disconnects all {@link Sensor} from the given host and removes the sensors from {@link Stack#sensorList}
      */
-    @Override
-    public void close() {
+    public synchronized void disconnect() {
         asyncStop(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
@@ -189,6 +181,14 @@ public class Stack implements Closeable {
             }
             return true;
         });
+    }
+
+    /**
+     * disconnects all {@link Sensor} from the given host see {@link Stack#disconnect()}
+     */
+    @Override
+    public void close() {
+        disconnect();
     }
 
     /**

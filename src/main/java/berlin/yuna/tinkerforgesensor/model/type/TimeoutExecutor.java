@@ -21,6 +21,7 @@ public class TimeoutExecutor {
             return exception;
         } finally {
             future.cancel(true);
+            executor.shutdown();
         }
     }
 }

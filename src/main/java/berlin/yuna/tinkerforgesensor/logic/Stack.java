@@ -140,6 +140,7 @@ public class Stack implements Closeable {
         connection.setTimeout(timeoutMs);
         connection.addDisconnectedListener(event -> handleConnect(event, true));
         connection.addConnectedListener(event -> handleConnect(event, false));
+        connection.addEnumerateListener(this::doPlugAndPlay);
         sensorList.clear();
         if (host != null) {
             final Object result = execute(timeoutMs, () -> {
@@ -147,8 +148,6 @@ public class Stack implements Closeable {
                 if (!isEmpty(password)) {
                     connection.authenticate(password);
                 }
-                connection.addEnumerateListener(this::doPlugAndPlay);
-                connection.enumerate();
                 return true;
             });
             if (!ignoreConnectionError && result instanceof Throwable) {
@@ -170,26 +169,25 @@ public class Stack implements Closeable {
 
     /**
      * <h3>disconnect</h3>
-     * disconnects all {@link Sensor} from the given host see {@link Stack#close()}
-     */
-    public synchronized void disconnect() {
-        close();
-    }
-
-    /**
      * disconnects all {@link Sensor} from the given host and removes the sensors from {@link Stack#sensorList}
      */
-    @Override
-    public void close() {
+    public synchronized void disconnect() {
         asyncStop(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
-                sensorList.clear();
                 connection.disconnect();
             } catch (Exception ignored) {
             }
             return true;
         });
+    }
+
+    /**
+     * disconnects all {@link Sensor} from the given host see {@link Stack#disconnect()}
+     */
+    @Override
+    public void close() {
+        disconnect();
     }
 
     /**
@@ -288,12 +286,16 @@ public class Stack implements Closeable {
                 case IPConnection.DISCONNECT_REASON_REQUEST:
                 case IPConnection.DISCONNECT_REASON_ERROR:
                 case IPConnection.DISCONNECT_REASON_SHUTDOWN:
-                    //Clear list fast at USB interruption
-                    disconnect();
+                    sensorList.clear();
                     sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_DISCONNECTED);
                     break;
             }
         } else {
+            try {
+                connection.enumerate();
+            } catch (Exception ignored) {
+            }
+
             switch (connectionEvent) {
                 case IPConnection.CONNECT_REASON_REQUEST:
                     sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_CONNECTED);

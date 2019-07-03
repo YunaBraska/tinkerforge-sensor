@@ -13,7 +13,7 @@ It Removes the pain of sensor UIDs, sensor versions, ports and provides a generi
 * [x] [18.05.19 (RatePAY)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_03_180519)
 * [ ] *<s>20.07.19 (Trabrennbahn/Mariendorf)</s>*
 * [ ] *<s>03.08.19 (Trabrennbahn/Mariendorf)</s>*
-* [X] September (RatePAY)
+* [X] xx.09.19 (RatePAY)
 
 #### Examples
 * Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/example)

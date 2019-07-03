@@ -175,6 +175,7 @@ public class Stack implements Closeable {
         asyncStop(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
+                sensorList.clear();
                 connection.disconnect();
             } catch (Exception ignored) {
             }
@@ -306,54 +307,4 @@ public class Stack implements Closeable {
             }
         }
     }
-
-
-//FIXME: old connection handler - can it be reactivated?
-//    private synchronized void checkConnection() {
-//        sensorList.waitForUnlock(timeoutMs);
-//        if (sensorList.isEmpty()) {
-//            deviceSearch();
-//        } else if (deviceSearch + timeoutMs < currentTimeMillis()) {
-//            for (Sensor sensor : sensorList) {
-//                try {
-//                    sensor.refreshPortE();
-//                } catch (TimeoutException | NotConnectedException e) {
-//                    sendEvent(sensor, 404, DEVICE_TIMEOUT);
-//                    sensorList.remove(sensor);
-//                    deviceSearch();
-//                }
-//            }
-//        }
-//    }
-
-//    private void deviceSearch() {
-//        if (deviceSearch + timeoutMs < currentTimeMillis()) {
-//            try {
-//                preventDeviceSearch();
-//                sendEvent(sensorList.getDefault(), 1, DEVICE_SEARCH);
-//                disconnect();
-//                preventDeviceSearch();
-//                connect();
-//            } catch (NetworkConnectionException e) {
-//                System.err.println(format("[ERROR] RECOVER [deviceSearch] [%s]", e.getClass().getSimpleName()));
-//            } finally {
-//                preventDeviceSearch();
-//            }
-//        }
-//    }
-//
-//    private void stopThread(final Thread thread) {
-//        TimeoutExecutor.execute(timeoutMs / 2, () -> {
-//            try {
-//                preventDeviceSearch();
-//                thread.interrupt();
-//                thread.join();
-//            } catch (Exception ignore) {
-//                return false;
-//            } finally {
-//                preventDeviceSearch();
-//            }
-//            return true;
-//        });
-//    }
 }

@@ -3,7 +3,7 @@ package berlin.yuna.hackerschool.example;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-public class AmbientLight_to_DisplaySegment_Example {
+public class SoundIntensity_to_Display_Example {
 
     private static Stack stack;
 
@@ -13,8 +13,8 @@ public class AmbientLight_to_DisplaySegment_Example {
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {
-        if (type.isLightLux()) {
-            stack.sensors().displaySegment().sendLimit(2,value / 100 + "LX");
+        if (type.isSoundIntensity()) {
+            stack.sensors().display().send(value / 10 + "db");
         }
     }
 }

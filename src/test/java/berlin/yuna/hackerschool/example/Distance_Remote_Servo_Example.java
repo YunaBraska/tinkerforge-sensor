@@ -5,7 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-public class Distance_Display_Left_Right_Example extends Helper {
+public class Distance_Remote_Servo_Example extends Helper {
 
     private static Stack localStack;
     private static Stack remoteStack;
@@ -42,7 +42,7 @@ public class Distance_Display_Left_Right_Example extends Helper {
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
         final Sensor leftDistance = localStack.sensors().distanceIR(0);
         final Sensor rightDistance = localStack.sensors().distanceIR(1);
-        final Sensor display = localStack.sensors().displayLcd128x64();
+        final Sensor display = localStack.sensors().display();
         final Sensor servo = remoteStack.sensors().servo();
 
         //init

@@ -62,7 +62,9 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
     }
 
     private void sendSpectrum(final ValueType valueType, final int[] values) {
-        valueMap().put(valueType, new RollingList<>(Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList())));
+        if (values.length > 0) {
+            valueMap().put(valueType, new RollingList<>(Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList())));
+        }
     }
 
     @Override

@@ -175,7 +175,6 @@ public class Stack implements Closeable {
         asyncStop(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
-                sensorList.clear();
                 connection.disconnect();
             } catch (Exception ignored) {
             }
@@ -287,8 +286,7 @@ public class Stack implements Closeable {
                 case IPConnection.DISCONNECT_REASON_REQUEST:
                 case IPConnection.DISCONNECT_REASON_ERROR:
                 case IPConnection.DISCONNECT_REASON_SHUTDOWN:
-                    //Clear list fast at USB interruption
-                    disconnect();
+                    sensorList.clear();
                     sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_DISCONNECTED);
                     break;
             }

@@ -7,6 +7,14 @@ It Removes the pain of sensor UIDs, sensor versions, ports and provides a generi
 #### Sensor documentation
 ##### A list of all sensors behaviors and more can be found in the [ReadmeDoc](readmeDoc/README.md)
 
+#### Hackerschool sessions (berlin)
+* [x] [24.11.18 (RatePAY)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_01_241118)
+* [x] [22.02.19 (RatePAY)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_02_220219)
+* [x] [18.05.19 (RatePAY)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_03_180519)
+* [ ] *<s>20.07.19 (Trabrennbahn/Mariendorf)</s>*
+* [ ] *<s>03.08.19 (Trabrennbahn/Mariendorf)</s>*
+* [X] September (RatePAY)
+
 #### Examples
 * Examples can be found here: (https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/example)
 * Example getting display from [Stack](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/logic/Stack.java).[Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/builder/Sensors.java) and send text

@@ -148,7 +148,6 @@ public class Stack implements Closeable {
                 if (!isEmpty(password)) {
                     connection.authenticate(password);
                 }
-                connection.enumerate();
                 return true;
             });
             if (!ignoreConnectionError && result instanceof Throwable) {
@@ -294,6 +293,11 @@ public class Stack implements Closeable {
                     break;
             }
         } else {
+            try {
+                connection.enumerate();
+            } catch (Exception ignored) {
+            }
+
             switch (connectionEvent) {
                 case IPConnection.CONNECT_REASON_REQUEST:
                     sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_CONNECTED);

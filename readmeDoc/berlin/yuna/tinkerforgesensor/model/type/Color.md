@@ -585,3 +585,6 @@ float
  array.
 
 --- 
+**Parameter** *color* input *Return* new color same as input with high contrast
+
+--- 

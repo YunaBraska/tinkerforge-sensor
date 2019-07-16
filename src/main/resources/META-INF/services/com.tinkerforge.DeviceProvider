@@ -26,6 +26,7 @@ com.tinkerforge.BrickletMotionDetectorProvider
 com.tinkerforge.BrickletMotionDetectorV2Provider
 com.tinkerforge.BrickletPiezoSpeakerProvider
 com.tinkerforge.BrickletRGBLEDButtonProvider
+com.tinkerforge.BrickletRGBLEDV2Provider
 com.tinkerforge.BrickletRotaryEncoderV2Provider
 com.tinkerforge.BrickletSegmentDisplay4x7Provider
 com.tinkerforge.BrickletSegmentDisplay4x7V2Provider

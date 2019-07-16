@@ -29,7 +29,6 @@ public class ConnectionAndPrintValues_Example extends Helper {
         } else if (!timePassed(256)) {
             return;
         }
-
         System.out.println(stack.valuesToString());
     }
 }

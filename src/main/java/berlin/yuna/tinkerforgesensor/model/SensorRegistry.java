@@ -22,6 +22,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
+import berlin.yuna.tinkerforgesensor.model.sensor.LedRGBV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
@@ -68,6 +69,7 @@ import com.tinkerforge.BrickletMotionDetector;
 import com.tinkerforge.BrickletMotionDetectorV2;
 import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.BrickletRGBLEDButton;
+import com.tinkerforge.BrickletRGBLEDV2;
 import com.tinkerforge.BrickletRotaryEncoderV2;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
 import com.tinkerforge.BrickletSegmentDisplay4x7V2;
@@ -113,6 +115,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickIMUV2} => Sensor {@link IMUV2}</li>
  * <li>Device {@link BrickletIO16} => Sensor {@link IO16}</li>
  * <li>Device {@link BrickletIO16V2} => Sensor {@link IO16V2}</li>
+ * <li>Device {@link BrickletRGBLEDV2} => Sensor {@link LedRGBV2}</li>
  * <li>Device {@link BrickletAmbientLight} => Sensor {@link LightAmbient}</li>
  * <li>Device {@link BrickletAmbientLightV2} => Sensor {@link LightAmbientV2}</li>
  * <li>Device {@link BrickletAmbientLightV3} => Sensor {@link LightAmbientV3}</li>
@@ -174,6 +177,7 @@ public class SensorRegistry {
         registry.put(BrickIMUV2.class, IMUV2::new);
         registry.put(BrickletIO16.class, IO16::new);
         registry.put(BrickletIO16V2.class, IO16V2::new);
+        registry.put(BrickletRGBLEDV2.class, LedRGBV2::new);
         registry.put(BrickletAmbientLight.class, LightAmbient::new);
         registry.put(BrickletAmbientLightV2.class, LightAmbientV2::new);
         registry.put(BrickletAmbientLightV3.class, LightAmbientV3::new);
@@ -218,6 +222,7 @@ public class SensorRegistry {
         registry.put(BrickIMUV2.DEVICE_IDENTIFIER, BrickIMUV2::new);
         registry.put(BrickletIO16.DEVICE_IDENTIFIER, BrickletIO16::new);
         registry.put(BrickletIO16V2.DEVICE_IDENTIFIER, BrickletIO16V2::new);
+        registry.put(BrickletRGBLEDV2.DEVICE_IDENTIFIER, BrickletRGBLEDV2::new);
         registry.put(BrickletAmbientLight.DEVICE_IDENTIFIER, BrickletAmbientLight::new);
         registry.put(BrickletAmbientLightV2.DEVICE_IDENTIFIER, BrickletAmbientLightV2::new);
         registry.put(BrickletAmbientLightV3.DEVICE_IDENTIFIER, BrickletAmbientLightV3::new);

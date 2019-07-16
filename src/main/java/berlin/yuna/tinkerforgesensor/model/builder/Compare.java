@@ -22,6 +22,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
+import berlin.yuna.tinkerforgesensor.model.sensor.LedRGBV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
@@ -128,6 +129,10 @@ public class Compare {
 
     public boolean isIO16() {
         return is(IO16V2.class, IO16.class);
+    }
+
+    public boolean isLedRGB() {
+        return is(LedRGBV2.class);
     }
 
     public boolean isLightAmbient() {

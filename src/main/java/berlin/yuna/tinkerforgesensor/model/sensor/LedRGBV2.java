@@ -2,65 +2,50 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
-import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.tinkerforge.BrickletRGBLEDButton;
+import com.tinkerforge.BrickletRGBLEDV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.Color.convertToHighContrast;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link ButtonRGB}</h3><br />
- * <i>Push button with built-in RGB LED</i><br />
+ * <h3>{@link LedRGBV2}</h3><br />
+ * <i>Controls one RGB LED</i><br />
  *
- * <h3>Values</h3>
- * <ul>
- * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
- * </ul>
- * <h3>Technical Info</h3>
- * <ul>
- * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm">Official documentation</a></li>
- * </ul>
- * <h6>Getting button pressed example</h6>
- * <code>stack.values().buttonPressed();</code>
+ * <h6>Set LED color</h6>
+ * <code>
+ * sensor.send(Color.MAGENTA);
+ * sensor.send(new Color(255, 128, 64));
+ * sensor.send(12367);
+ * </code>
+ * <h6>Set auto contrast on=true off=false</h6>
+ * <code>
+ * sensor.send(true);
+ * </code>
  */
-public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
+public class LedRGBV2 extends Sensor<BrickletRGBLEDV2> {
 
     boolean highContrast = false;
 
-    public ButtonRGB(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletRGBLEDButton) device, uid);
+    public LedRGBV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletRGBLEDV2) device, uid);
     }
 
     @Override
-    protected Sensor<BrickletRGBLEDButton> initListener() {
-        device.addButtonStateChangedListener(value -> sendEvent(BUTTON_PRESSED, value == 1 ? 0L : 1L));
+    protected Sensor<BrickletRGBLEDV2> initListener() {
         return this;
     }
 
-    /**
-     * <h3>Send</h3>
-     * <h6>Set LED color</h6>
-     * <code>
-     * sensor.send(Color.MAGENTA);
-     * sensor.send(new Color(255, 128, 64));
-     * sensor.send(12367);
-     * </code>
-     * <h6>Set auto contrast on=true off=false</h6>
-     * <code>
-     * sensor.send(true);
-     * </code>
-     */
     @Override
-    public Sensor<BrickletRGBLEDButton> send(final Object value) {
+    public Sensor<BrickletRGBLEDV2> send(final Object value) {
         try {
             if (value instanceof Boolean) {
                 highContrast = (Boolean) value;
@@ -71,7 +56,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
             } else if (value instanceof Number) {
                 Color color = new Color(((Number) value).intValue());
                 color = highContrast ? convertToHighContrast(color) : color;
-                device.setColor(color.getRed(), color.getGreen(), color.getBlue());
+                device.setRGBValue(color.getRed(), color.getGreen(), color.getBlue());
             }
         } catch (TinkerforgeException ignored) {
         }
@@ -79,7 +64,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> setLedStatus(final Integer value) {
+    public Sensor<BrickletRGBLEDV2> setLedStatus(final Integer value) {
         if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_OFF.bit) {
@@ -102,7 +87,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> ledAdditional(final Integer value) {
+    public Sensor<BrickletRGBLEDV2> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
         if (value == LED_ADDITIONAL_ON.bit) {
             ledAdditional = LED_ADDITIONAL_ON;
@@ -115,7 +100,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> flashLed() {
+    public Sensor<BrickletRGBLEDV2> flashLed() {
         super.flashLed();
         try {
             for (int color : Color.RAINBOW) {
@@ -129,15 +114,15 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> refreshPeriod(final int milliseconds) {
+    public Sensor<BrickletRGBLEDV2> refreshPeriod(final int milliseconds) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletRGBLEDButton> initLedConfig() {
+    public Sensor<BrickletRGBLEDV2> initLedConfig() {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
-            ledAdditional = LED_ADDITIONAL_ON;
+            ledAdditional = LED_NONE;
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

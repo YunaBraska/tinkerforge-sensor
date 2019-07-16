@@ -23,6 +23,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
+import berlin.yuna.tinkerforgesensor.model.sensor.LedRGBV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
@@ -204,6 +205,18 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public List<Sensor> getLightAmbientList() {
         return getSensor(LightAmbientV3.class, LightAmbientV2.class, LightAmbient.class);
+    }
+
+    public Sensor ledRGB() {
+        return ledRGB(0);
+    }
+
+    public Sensor ledRGB(final int number) {
+        return getSensor(number, LedRGBV2.class);
+    }
+
+    public List<Sensor> getLedRGBList() {
+        return getSensor(LedRGBV2.class);
     }
 
     public Sensor iO16() {

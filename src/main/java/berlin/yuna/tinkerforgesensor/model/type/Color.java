@@ -1,6 +1,10 @@
 package berlin.yuna.tinkerforgesensor.model.type;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Color implements Serializable {
 
@@ -17,6 +21,8 @@ public class Color implements Serializable {
     public final static int MAGENTA = new Color(255, 0, 255).getRGB();
     public final static int CYAN = new Color(0, 255, 255).getRGB();
     public final static int BLUE = new Color(0, 0, 255).getRGB();
+
+    public final static int[] RAINBOW = getRainbow();
 
     /**
      * The color send.
@@ -767,5 +773,33 @@ public class Color implements Serializable {
         }
         System.arraycopy(fvalue, 0, f, 0, n);
         return f;
+    }
+
+    /**
+     * @param color input
+     * @return new color same as input with high contrast
+     */
+    public static Color convertToHighContrast(final Color color) {
+        Color result = color;
+        final int max = Collections.min(Arrays.asList(result.getRed(), result.getGreen(), result.getBlue()));
+        result = new Color(result.getRed() - max, result.getGreen() - max, result.getBlue() - max);
+
+        // +100% brightness
+        final float[] hsb = Color.RGBtoHSB(result.getRed(), result.getGreen(), result.getBlue(), null);
+        result = new Color(Color.HSBtoRGB(hsb[0], hsb[1], 0.5f * (1f + hsb[2])));
+        return result;
+    }
+
+    private static int[] getRainbow() {
+        final int count = 100;
+        final List<Integer> colors = new ArrayList<>();
+        for (int r = 0; r < count; r++) colors.add(new Color(r * 255 / 100, 255, 0).getRGB());
+        for (int g = count; g > 0; g--) colors.add(new Color(255, g * 255 / 100, 0).getRGB());
+        for (int b = 0; b < count; b++) colors.add(new Color(255, 0, b * 255 / 100).getRGB());
+        for (int r = count; r > 0; r--) colors.add(new Color(r * 255 / 100, 0, 255).getRGB());
+        for (int g = 0; g < count; g++) colors.add(new Color(0, g * 255 / 100, 255).getRGB());
+        for (int b = count; b > 0; b--) colors.add(new Color(0, 255, b * 255 / 100).getRGB());
+        colors.add(new Color(0, 255, 0).getRGB());
+        return colors.stream().mapToInt(Integer::intValue).toArray();
     }
 }

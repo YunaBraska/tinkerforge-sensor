@@ -203,9 +203,11 @@ public class Stack implements Closeable {
             for (ValueType valueType : ValueType.values()) {
                 final Long value = sensor.values().get(valueType, null);
                 if (value != null) {
-                    final int valueSize = valueType.toString().length() + 1;
-                    lineHead.append(format("%" + valueSize + "s |", valueType));
-                    lineValue.append(format("%" + valueSize + "s |", value));
+                    final int valueLength = value.toString().length();
+                    final int typeLength = valueType.toString().length();
+                    final int fieldSize = (valueLength > typeLength ? valueLength : typeLength) + 1;
+                    lineHead.append(format("%" + fieldSize + "s |", valueType));
+                    lineValue.append(format("%" + fieldSize + "s |", value));
                 }
             }
         }

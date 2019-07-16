@@ -4,7 +4,7 @@ import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-public class LightColor_to_ButtonRGB_Example {
+public class LightColor_to_RGB_Example {
 
     private static Stack stack;
 
@@ -16,7 +16,10 @@ public class LightColor_to_ButtonRGB_Example {
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
         if (type.isColor()) {
             sensor.ledAdditional_setOn();
+            stack.sensors().buttonRGB().send(true);
+            stack.sensors().ledRGB().send(true);
             stack.sensors().buttonRGB().send(value);
+            stack.sensors().ledRGB().send(value);
         }
     }
 }

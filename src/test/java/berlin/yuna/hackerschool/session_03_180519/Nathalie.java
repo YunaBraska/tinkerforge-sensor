@@ -55,9 +55,7 @@ public class Nathalie extends Helper {
         }
 
         //every 250 milliseconds - for readable display
-        if (timePassed(250)) {
-            stack.sensors().displaySegment().send((decibel / 10) + "dB");
-        }
+        stack.sensors().displaySegment().sendLimit(2, (decibel / 10) + "dB");
 
         //every 50 milliseconds
         if (timePassed(50)) {

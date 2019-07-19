@@ -7,7 +7,7 @@ package berlin.yuna.tinkerforgesensor.model.type;
  * You can add new enumTypes without harm</i>
  *
  * ---
- * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>SOUND_SPECTRUM_CHUNK</li><li>SOUND_SPECTRUM_OFFSET</li><li>SOUND_SPECTRUM_LENGTH</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>TOUCH</li><li>TOUCH_1</li><li>TOUCH_2</li><li>TOUCH_3</li><li>TOUCH_4</li><li>TOUCH_5</li><li>TOUCH_6</li><li>TOUCH_7</li><li>TOUCH_8</li><li>TOUCH_9</li><li>TOUCH_10</li><li>TOUCH_11</li><li>TOUCH_12</li><li>TOUCH_PROXIMITY</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>IMU</li><li>CALIBRATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_PRESSED</li><li>ROTARY</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li></ul> */
+ * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>SOUND_SPECTRUM_CHUNK</li><li>SOUND_SPECTRUM_OFFSET</li><li>SOUND_SPECTRUM_LENGTH</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>TOUCH</li><li>TOUCH_1</li><li>TOUCH_2</li><li>TOUCH_3</li><li>TOUCH_4</li><li>TOUCH_5</li><li>TOUCH_6</li><li>TOUCH_7</li><li>TOUCH_8</li><li>TOUCH_9</li><li>TOUCH_10</li><li>TOUCH_11</li><li>TOUCH_12</li><li>TOUCH_PROXIMITY</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>IMU</li><li>CALIBRATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_PRESSED</li><li>ROTARY</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>MOUSE_INPUT</li><li>MOUSE_CLICK_COUNT</li><li>MOUSE_PRESSED</li><li>MOUSE_RELEASED</li><li>MOUSE_ENTERED</li><li>MOUSE_EXITED</li><li>MOUSE_DRAGGED</li><li>MOUSE_MOVED</li><li>MOUSE_MOVE_X</li><li>MOUSE_MOVE_Y</li><li>MOUSE_WHEEL_MOVED</li></ul> */
 public enum ValueType {
     ALL(null),
 
@@ -195,7 +195,39 @@ public enum ValueType {
 
     MOTOR_POSITION(MOTOR),
 
-    MOTOR_VELOCITY(MOTOR);
+    MOTOR_VELOCITY(MOTOR),
+
+    HUMAN_INPUT(ALL),
+
+    KEY_INPUT(HUMAN_INPUT),
+
+    KEY_PRESSED(KEY_INPUT),
+
+    KEY_RELEASED(KEY_INPUT),
+
+    KEY_CHAR(KEY_INPUT),
+
+    MOUSE_INPUT(HUMAN_INPUT),
+
+    MOUSE_CLICK_COUNT(MOUSE_INPUT),
+
+    MOUSE_PRESSED(MOUSE_INPUT),
+
+    MOUSE_RELEASED(MOUSE_INPUT),
+
+    MOUSE_ENTERED(MOUSE_INPUT),
+
+    MOUSE_EXITED(MOUSE_INPUT),
+
+    MOUSE_DRAGGED(MOUSE_INPUT),
+
+    MOUSE_MOVED(MOUSE_INPUT),
+
+    MOUSE_MOVE_X(MOUSE_INPUT),
+
+    MOUSE_MOVE_Y(MOUSE_INPUT),
+
+    MOUSE_WHEEL_MOVED(MOUSE_INPUT);
 
     public final ValueType parent;
 
@@ -953,6 +985,134 @@ public enum ValueType {
 
     public boolean containsMotorVelocity() {
         return this.is(MOTOR_VELOCITY) || (this.parent != null && this.parent.contains(MOTOR_VELOCITY));
+    }
+
+    public boolean isHumanInput() {
+        return this == HUMAN_INPUT;
+    }
+
+    public boolean containsHumanInput() {
+        return this.is(HUMAN_INPUT) || (this.parent != null && this.parent.contains(HUMAN_INPUT));
+    }
+
+    public boolean isKeyInput() {
+        return this == KEY_INPUT;
+    }
+
+    public boolean containsKeyInput() {
+        return this.is(KEY_INPUT) || (this.parent != null && this.parent.contains(KEY_INPUT));
+    }
+
+    public boolean isKeyPressed() {
+        return this == KEY_PRESSED;
+    }
+
+    public boolean containsKeyPressed() {
+        return this.is(KEY_PRESSED) || (this.parent != null && this.parent.contains(KEY_PRESSED));
+    }
+
+    public boolean isKeyReleased() {
+        return this == KEY_RELEASED;
+    }
+
+    public boolean containsKeyReleased() {
+        return this.is(KEY_RELEASED) || (this.parent != null && this.parent.contains(KEY_RELEASED));
+    }
+
+    public boolean isKeyChar() {
+        return this == KEY_CHAR;
+    }
+
+    public boolean containsKeyChar() {
+        return this.is(KEY_CHAR) || (this.parent != null && this.parent.contains(KEY_CHAR));
+    }
+
+    public boolean isMouseInput() {
+        return this == MOUSE_INPUT;
+    }
+
+    public boolean containsMouseInput() {
+        return this.is(MOUSE_INPUT) || (this.parent != null && this.parent.contains(MOUSE_INPUT));
+    }
+
+    public boolean isMouseClickCount() {
+        return this == MOUSE_CLICK_COUNT;
+    }
+
+    public boolean containsMouseClickCount() {
+        return this.is(MOUSE_CLICK_COUNT) || (this.parent != null && this.parent.contains(MOUSE_CLICK_COUNT));
+    }
+
+    public boolean isMousePressed() {
+        return this == MOUSE_PRESSED;
+    }
+
+    public boolean containsMousePressed() {
+        return this.is(MOUSE_PRESSED) || (this.parent != null && this.parent.contains(MOUSE_PRESSED));
+    }
+
+    public boolean isMouseReleased() {
+        return this == MOUSE_RELEASED;
+    }
+
+    public boolean containsMouseReleased() {
+        return this.is(MOUSE_RELEASED) || (this.parent != null && this.parent.contains(MOUSE_RELEASED));
+    }
+
+    public boolean isMouseEntered() {
+        return this == MOUSE_ENTERED;
+    }
+
+    public boolean containsMouseEntered() {
+        return this.is(MOUSE_ENTERED) || (this.parent != null && this.parent.contains(MOUSE_ENTERED));
+    }
+
+    public boolean isMouseExited() {
+        return this == MOUSE_EXITED;
+    }
+
+    public boolean containsMouseExited() {
+        return this.is(MOUSE_EXITED) || (this.parent != null && this.parent.contains(MOUSE_EXITED));
+    }
+
+    public boolean isMouseDragged() {
+        return this == MOUSE_DRAGGED;
+    }
+
+    public boolean containsMouseDragged() {
+        return this.is(MOUSE_DRAGGED) || (this.parent != null && this.parent.contains(MOUSE_DRAGGED));
+    }
+
+    public boolean isMouseMoved() {
+        return this == MOUSE_MOVED;
+    }
+
+    public boolean containsMouseMoved() {
+        return this.is(MOUSE_MOVED) || (this.parent != null && this.parent.contains(MOUSE_MOVED));
+    }
+
+    public boolean isMouseMoveX() {
+        return this == MOUSE_MOVE_X;
+    }
+
+    public boolean containsMouseMoveX() {
+        return this.is(MOUSE_MOVE_X) || (this.parent != null && this.parent.contains(MOUSE_MOVE_X));
+    }
+
+    public boolean isMouseMoveY() {
+        return this == MOUSE_MOVE_Y;
+    }
+
+    public boolean containsMouseMoveY() {
+        return this.is(MOUSE_MOVE_Y) || (this.parent != null && this.parent.contains(MOUSE_MOVE_Y));
+    }
+
+    public boolean isMouseWheelMoved() {
+        return this == MOUSE_WHEEL_MOVED;
+    }
+
+    public boolean containsMouseWheelMoved() {
+        return this.is(MOUSE_WHEEL_MOVED) || (this.parent != null && this.parent.contains(MOUSE_WHEEL_MOVED));
     }
 
     public boolean is(final ValueType valueType) {

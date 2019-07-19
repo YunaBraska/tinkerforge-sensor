@@ -124,6 +124,9 @@ Relink parent and sets port if given Sensor were the parent **Parameter** *senso
 Internal api to send {@link Sensor
 
 --- 
+Internal api to send {@link Sensor
+
+--- 
 Compares the sensor with *Device* *Return* true if the is connected with class type of *Device*
 
 --- 

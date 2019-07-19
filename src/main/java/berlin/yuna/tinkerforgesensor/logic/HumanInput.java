@@ -1,5 +1,7 @@
 package berlin.yuna.tinkerforgesensor.logic;
 
+import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.apple.eawt.Application;
 
 import javax.swing.BorderFactory;
@@ -20,7 +22,24 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_CHAR;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_RELEASED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_CLICK_COUNT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_DRAGGED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_ENTERED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_EXITED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_X;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_Y;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_RELEASED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_WHEEL_MOVED;
+import static java.lang.Character.getNumericValue;
 import static java.util.Objects.requireNonNull;
 
 public class HumanInput extends JFrame implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -40,6 +59,7 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
     final JLabel mouseMods = new JLabel();
     final JLabel mouseClickCount = new JLabel();
     final JLabel mouseButton = new JLabel();
+    public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
 
     public static void main(final String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         UIManager.setLookAndFeel(javax.swing.plaf.nimbus.NimbusLookAndFeel.class.getTypeName());
@@ -116,75 +136,81 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
     }
 
     public void keyPressed(final KeyEvent event) {
-        onKeyEvent("Key Pressed", event);
+        onKeyEvent(KEY_PRESSED, event);
     }
 
     public void keyReleased(final KeyEvent event) {
-        onKeyEvent("Key Released", event);
+        onKeyEvent(KEY_RELEASED, event);
     }
 
     public void keyTyped(final KeyEvent event) {
-        onKeyEvent("Key Typed", event);
+        onKeyEvent(KEY_PRESSED, event);
     }
 
     @Override
     public void mouseClicked(final MouseEvent event) {
-        onMouseEvent("Mouse Clicked", event);
+        onMouseEvent(MOUSE_CLICK_COUNT, event);
     }
 
     @Override
     public void mousePressed(final MouseEvent event) {
-        onMouseEvent("Mouse Pressed", event);
+        onMouseEvent(MOUSE_PRESSED, event);
     }
 
     @Override
     public void mouseReleased(final MouseEvent event) {
-        onMouseEvent("Mouse Released", event);
+        onMouseEvent(MOUSE_RELEASED, event);
     }
 
     @Override
     public void mouseEntered(final MouseEvent event) {
-        onMouseEvent("Mouse Entered", event);
+        onMouseEvent(MOUSE_ENTERED, event);
     }
 
     @Override
     public void mouseExited(final MouseEvent event) {
-        onMouseEvent("Mouse Exited", event);
+        onMouseEvent(MOUSE_EXITED, event);
     }
 
     @Override
     public void mouseDragged(final MouseEvent event) {
-        onMouseEvent("Mouse Drag", event);
+        onMouseEvent(MOUSE_DRAGGED, event);
     }
 
     @Override
     public void mouseMoved(final MouseEvent event) {
-        onMouseEvent("Mouse Move", event);
+        onMouseEvent(MOUSE_MOVED, event);
     }
 
     @Override
     public void mouseWheelMoved(final MouseWheelEvent event) {
-        onMouseEvent("Mouse Wheel", event);
+        onMouseEvent(MOUSE_WHEEL_MOVED, event);
     }
 
-    private void onMouseEvent(final String type, final MouseEvent event) {
-        mouseType.setText(type);
-        mouseX.setText(String.valueOf(event.getX()));
-        mouseY.setText(String.valueOf(event.getY()));
+    private void onMouseEvent(final ValueType type, final MouseEvent event) {
+        mouseType.setText(type.toString());
         mouseMods.setText(String.valueOf(event.getModifiers()));
-        mouseClickCount.setText(String.valueOf(event.getClickCount()));
-        mouseButton.setText(String.valueOf(event.getButton()));
+        sendEventToConsumer(mouseX, MOUSE_MOVE_X, (long) event.getX());
+        sendEventToConsumer(mouseY, MOUSE_MOVE_Y, (long) event.getY());
+        sendEventToConsumer(mouseClickCount, MOUSE_CLICK_COUNT, (long) event.getClickCount());
+        if (type.isMouseClickCount()) {
+            sendEventToConsumer(mouseButton, MOUSE_PRESSED, 0L);
+        } else {
+            sendEventToConsumer(mouseButton, MOUSE_PRESSED, (long) event.getButton());
+        }
+
     }
 
-    private void onKeyEvent(final String type, final KeyEvent event) {
+    private void onKeyEvent(final ValueType type, final KeyEvent event) {
         final int code = event.getKeyCode();
-        keyCode.setText(String.valueOf(code));
         keyTextCode.setText(KeyEvent.getKeyText(code));
-        keyChar.setText(String.valueOf(event.getKeyChar()));
-        keyType.setText(type);
+        keyType.setText(type.toString());
         keyMods.setText(KeyEvent.getModifiersExText(event.getModifiersEx()));
         keyAction.setText(String.valueOf(event.isActionKey()));
         keyLocation.setText(keyboardLocation(event.getKeyLocation()));
+
+        sendEventToConsumer(keyCode, KEY_PRESSED, (long) code);
+        sendEventToConsumer(keyChar, KEY_CHAR, (long) getNumericValue(event.getKeyChar()));
     }
 
     private String keyboardLocation(final int keyLocation) {
@@ -200,6 +226,16 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
             case KeyEvent.KEY_LOCATION_UNKNOWN:
             default:
                 return "Unknown [" + keyLocation + "]";
+        }
+    }
+
+    private void sendEventToConsumer(final JLabel label, final ValueType type, final Long value) {
+        final String labelValue = String.valueOf(value);
+        if (!label.getText().equals(labelValue)) {
+            label.setText(labelValue);
+            for (Consumer<SensorEvent> consumer : sensorEventConsumerList) {
+                consumer.accept(new SensorEvent(null, value, type));
+            }
         }
     }
 }

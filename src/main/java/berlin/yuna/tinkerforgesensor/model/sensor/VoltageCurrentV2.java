@@ -6,9 +6,9 @@ public class VoltageCurrentV2 {
 //        BrickletVoltageCurrentV2 device = (BrickletVoltageCurrentV2) sensor.device;
 //        registration.sensitivity(50, ENERGY);
 //
-//        device.addCurrentListener(send -> sendEvent( CURRENT, (long) send));
-//        device.addPowerListener(send -> sendEvent( POWER, (long) send));
-//        device.addVoltageListener(send -> sendEvent( VOLTAGE, (long) send));
+//        device.addCurrentListener(send -> sendEventUnchecked( CURRENT, (long) send));
+//        device.addPowerListener(send -> sendEventUnchecked( POWER, (long) send));
+//        device.addVoltageListener(send -> sendEventUnchecked( VOLTAGE, (long) send));
 //
 //        sensor.hasStatusLed = true;
 //        registration.ledConsumer.add(sensorLedEvent -> sensorLedEvent.process(

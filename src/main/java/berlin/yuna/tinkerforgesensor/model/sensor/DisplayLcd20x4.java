@@ -65,12 +65,12 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     @Override
     protected Sensor<BrickletLCD20x4> initListener() {
         device.addButtonPressedListener(value -> {
-            sendEvent(BUTTON_PRESSED, 1L);
-            sendEvent(BUTTON, (value * 10L) + 1L);
+            sendEvent(BUTTON_PRESSED, 1L, true);
+            sendEvent(BUTTON, (value * 10L) + 1L, true);
         });
         device.addButtonReleasedListener(value -> {
-            sendEvent(BUTTON_PRESSED, 0L);
-            sendEvent(BUTTON_PRESSED, (value * 10L));
+            sendEvent(BUTTON_PRESSED, 0L, true);
+            sendEvent(BUTTON_PRESSED, (value * 10L), true);
         });
         return this;
     }

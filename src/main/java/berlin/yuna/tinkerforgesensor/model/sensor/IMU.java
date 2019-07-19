@@ -48,7 +48,7 @@ public class IMU extends Sensor<BrickIMU> {
                     sendEvent(ANGULAR_VELOCITY_X, (long) angX);
                     sendEvent(ANGULAR_VELOCITY_Y, (long) angY);
                     sendEvent(ANGULAR_VELOCITY_Z, (long) angZ);
-                    //sendEvent( TEMPERATURE, (long) temperature);
+                    //sendEventUnchecked( TEMPERATURE, (long) temperature);
                     sendEvent(ValueType.IMU, 1L);
                 }
         );

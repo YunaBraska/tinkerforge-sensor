@@ -200,9 +200,10 @@ public class AudioDevice {
     }
 
     private Control findControl(final Control.Type type) {
-        if (!line.isOpen()) throw new RuntimeException("Line is closed: " + this.toString());
-        return findControl(type, line.getControls());
-
+        if(line.isOpen()) {
+            return findControl(type, line.getControls());
+        }
+        return null;
     }
 
     private Control findControl(final Control.Type type, final Control... controls) {

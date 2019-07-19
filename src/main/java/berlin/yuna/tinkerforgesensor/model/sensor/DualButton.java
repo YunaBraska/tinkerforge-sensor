@@ -166,14 +166,14 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     private void sendEvent(final int buttonL, final int buttonR) {
         if (this.buttonL != buttonL) {
             this.buttonL = buttonL;
-            sendEvent(BUTTON_PRESSED, buttonL == 1 ? 0L : 1L);
-            sendEvent(BUTTON, buttonL == 1 ? 10L : 11L);
+            sendEvent(BUTTON_PRESSED, buttonL == 1 ? 0L : 1L, true);
+            sendEvent(BUTTON, buttonL == 1 ? 10L : 11L, true);
         }
 
         if (this.buttonR != buttonR) {
             this.buttonR = buttonR;
-            sendEvent(BUTTON_PRESSED, buttonR == 1 ? 0L : 1L);
-            sendEvent(BUTTON, buttonR == 1 ? 20L : 21L);
+            sendEvent(BUTTON_PRESSED, buttonR == 1 ? 0L : 1L, true);
+            sendEvent(BUTTON, buttonR == 1 ? 20L : 21L, true);
         }
     }
 }

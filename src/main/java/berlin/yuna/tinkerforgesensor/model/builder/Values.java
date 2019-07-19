@@ -2021,4 +2021,324 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
     public LongSummaryStatistics motorVelocity_Sum() {
         return get_Sum(ValueType.MOTOR_VELOCITY);
     }
+
+    public Long humanInput() {
+        return get(ValueType.HUMAN_INPUT);
+    }
+
+    public Long humanInput_Min() {
+        return get_Min(ValueType.HUMAN_INPUT);
+    }
+
+    public Long humanInput_Max() {
+        return get_Max(ValueType.HUMAN_INPUT);
+    }
+
+    public Long humanInput_Avg() {
+        return get_Avg(ValueType.HUMAN_INPUT);
+    }
+
+    public LongSummaryStatistics humanInput_Sum() {
+        return get_Sum(ValueType.HUMAN_INPUT);
+    }
+
+    public Long keyInput() {
+        return get(ValueType.KEY_INPUT);
+    }
+
+    public Long keyInput_Min() {
+        return get_Min(ValueType.KEY_INPUT);
+    }
+
+    public Long keyInput_Max() {
+        return get_Max(ValueType.KEY_INPUT);
+    }
+
+    public Long keyInput_Avg() {
+        return get_Avg(ValueType.KEY_INPUT);
+    }
+
+    public LongSummaryStatistics keyInput_Sum() {
+        return get_Sum(ValueType.KEY_INPUT);
+    }
+
+    public Long keyPressed() {
+        return get(ValueType.KEY_PRESSED);
+    }
+
+    public Long keyPressed_Min() {
+        return get_Min(ValueType.KEY_PRESSED);
+    }
+
+    public Long keyPressed_Max() {
+        return get_Max(ValueType.KEY_PRESSED);
+    }
+
+    public Long keyPressed_Avg() {
+        return get_Avg(ValueType.KEY_PRESSED);
+    }
+
+    public LongSummaryStatistics keyPressed_Sum() {
+        return get_Sum(ValueType.KEY_PRESSED);
+    }
+
+    public Long keyReleased() {
+        return get(ValueType.KEY_RELEASED);
+    }
+
+    public Long keyReleased_Min() {
+        return get_Min(ValueType.KEY_RELEASED);
+    }
+
+    public Long keyReleased_Max() {
+        return get_Max(ValueType.KEY_RELEASED);
+    }
+
+    public Long keyReleased_Avg() {
+        return get_Avg(ValueType.KEY_RELEASED);
+    }
+
+    public LongSummaryStatistics keyReleased_Sum() {
+        return get_Sum(ValueType.KEY_RELEASED);
+    }
+
+    public Long keyChar() {
+        return get(ValueType.KEY_CHAR);
+    }
+
+    public Long keyChar_Min() {
+        return get_Min(ValueType.KEY_CHAR);
+    }
+
+    public Long keyChar_Max() {
+        return get_Max(ValueType.KEY_CHAR);
+    }
+
+    public Long keyChar_Avg() {
+        return get_Avg(ValueType.KEY_CHAR);
+    }
+
+    public LongSummaryStatistics keyChar_Sum() {
+        return get_Sum(ValueType.KEY_CHAR);
+    }
+
+    public Long mouseInput() {
+        return get(ValueType.MOUSE_INPUT);
+    }
+
+    public Long mouseInput_Min() {
+        return get_Min(ValueType.MOUSE_INPUT);
+    }
+
+    public Long mouseInput_Max() {
+        return get_Max(ValueType.MOUSE_INPUT);
+    }
+
+    public Long mouseInput_Avg() {
+        return get_Avg(ValueType.MOUSE_INPUT);
+    }
+
+    public LongSummaryStatistics mouseInput_Sum() {
+        return get_Sum(ValueType.MOUSE_INPUT);
+    }
+
+    public Long mouseClickCount() {
+        return get(ValueType.MOUSE_CLICK_COUNT);
+    }
+
+    public Long mouseClickCount_Min() {
+        return get_Min(ValueType.MOUSE_CLICK_COUNT);
+    }
+
+    public Long mouseClickCount_Max() {
+        return get_Max(ValueType.MOUSE_CLICK_COUNT);
+    }
+
+    public Long mouseClickCount_Avg() {
+        return get_Avg(ValueType.MOUSE_CLICK_COUNT);
+    }
+
+    public LongSummaryStatistics mouseClickCount_Sum() {
+        return get_Sum(ValueType.MOUSE_CLICK_COUNT);
+    }
+
+    public Long mousePressed() {
+        return get(ValueType.MOUSE_PRESSED);
+    }
+
+    public Long mousePressed_Min() {
+        return get_Min(ValueType.MOUSE_PRESSED);
+    }
+
+    public Long mousePressed_Max() {
+        return get_Max(ValueType.MOUSE_PRESSED);
+    }
+
+    public Long mousePressed_Avg() {
+        return get_Avg(ValueType.MOUSE_PRESSED);
+    }
+
+    public LongSummaryStatistics mousePressed_Sum() {
+        return get_Sum(ValueType.MOUSE_PRESSED);
+    }
+
+    public Long mouseReleased() {
+        return get(ValueType.MOUSE_RELEASED);
+    }
+
+    public Long mouseReleased_Min() {
+        return get_Min(ValueType.MOUSE_RELEASED);
+    }
+
+    public Long mouseReleased_Max() {
+        return get_Max(ValueType.MOUSE_RELEASED);
+    }
+
+    public Long mouseReleased_Avg() {
+        return get_Avg(ValueType.MOUSE_RELEASED);
+    }
+
+    public LongSummaryStatistics mouseReleased_Sum() {
+        return get_Sum(ValueType.MOUSE_RELEASED);
+    }
+
+    public Long mouseEntered() {
+        return get(ValueType.MOUSE_ENTERED);
+    }
+
+    public Long mouseEntered_Min() {
+        return get_Min(ValueType.MOUSE_ENTERED);
+    }
+
+    public Long mouseEntered_Max() {
+        return get_Max(ValueType.MOUSE_ENTERED);
+    }
+
+    public Long mouseEntered_Avg() {
+        return get_Avg(ValueType.MOUSE_ENTERED);
+    }
+
+    public LongSummaryStatistics mouseEntered_Sum() {
+        return get_Sum(ValueType.MOUSE_ENTERED);
+    }
+
+    public Long mouseExited() {
+        return get(ValueType.MOUSE_EXITED);
+    }
+
+    public Long mouseExited_Min() {
+        return get_Min(ValueType.MOUSE_EXITED);
+    }
+
+    public Long mouseExited_Max() {
+        return get_Max(ValueType.MOUSE_EXITED);
+    }
+
+    public Long mouseExited_Avg() {
+        return get_Avg(ValueType.MOUSE_EXITED);
+    }
+
+    public LongSummaryStatistics mouseExited_Sum() {
+        return get_Sum(ValueType.MOUSE_EXITED);
+    }
+
+    public Long mouseDragged() {
+        return get(ValueType.MOUSE_DRAGGED);
+    }
+
+    public Long mouseDragged_Min() {
+        return get_Min(ValueType.MOUSE_DRAGGED);
+    }
+
+    public Long mouseDragged_Max() {
+        return get_Max(ValueType.MOUSE_DRAGGED);
+    }
+
+    public Long mouseDragged_Avg() {
+        return get_Avg(ValueType.MOUSE_DRAGGED);
+    }
+
+    public LongSummaryStatistics mouseDragged_Sum() {
+        return get_Sum(ValueType.MOUSE_DRAGGED);
+    }
+
+    public Long mouseMoved() {
+        return get(ValueType.MOUSE_MOVED);
+    }
+
+    public Long mouseMoved_Min() {
+        return get_Min(ValueType.MOUSE_MOVED);
+    }
+
+    public Long mouseMoved_Max() {
+        return get_Max(ValueType.MOUSE_MOVED);
+    }
+
+    public Long mouseMoved_Avg() {
+        return get_Avg(ValueType.MOUSE_MOVED);
+    }
+
+    public LongSummaryStatistics mouseMoved_Sum() {
+        return get_Sum(ValueType.MOUSE_MOVED);
+    }
+
+    public Long mouseMoveX() {
+        return get(ValueType.MOUSE_MOVE_X);
+    }
+
+    public Long mouseMoveX_Min() {
+        return get_Min(ValueType.MOUSE_MOVE_X);
+    }
+
+    public Long mouseMoveX_Max() {
+        return get_Max(ValueType.MOUSE_MOVE_X);
+    }
+
+    public Long mouseMoveX_Avg() {
+        return get_Avg(ValueType.MOUSE_MOVE_X);
+    }
+
+    public LongSummaryStatistics mouseMoveX_Sum() {
+        return get_Sum(ValueType.MOUSE_MOVE_X);
+    }
+
+    public Long mouseMoveY() {
+        return get(ValueType.MOUSE_MOVE_Y);
+    }
+
+    public Long mouseMoveY_Min() {
+        return get_Min(ValueType.MOUSE_MOVE_Y);
+    }
+
+    public Long mouseMoveY_Max() {
+        return get_Max(ValueType.MOUSE_MOVE_Y);
+    }
+
+    public Long mouseMoveY_Avg() {
+        return get_Avg(ValueType.MOUSE_MOVE_Y);
+    }
+
+    public LongSummaryStatistics mouseMoveY_Sum() {
+        return get_Sum(ValueType.MOUSE_MOVE_Y);
+    }
+
+    public Long mouseWheelMoved() {
+        return get(ValueType.MOUSE_WHEEL_MOVED);
+    }
+
+    public Long mouseWheelMoved_Min() {
+        return get_Min(ValueType.MOUSE_WHEEL_MOVED);
+    }
+
+    public Long mouseWheelMoved_Max() {
+        return get_Max(ValueType.MOUSE_WHEEL_MOVED);
+    }
+
+    public Long mouseWheelMoved_Avg() {
+        return get_Avg(ValueType.MOUSE_WHEEL_MOVED);
+    }
+
+    public LongSummaryStatistics mouseWheelMoved_Sum() {
+        return get_Sum(ValueType.MOUSE_WHEEL_MOVED);
+    }
 }

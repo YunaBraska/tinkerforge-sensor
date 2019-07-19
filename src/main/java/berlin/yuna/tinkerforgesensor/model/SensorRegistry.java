@@ -30,6 +30,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LightColor;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUv;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUvV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
+import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
@@ -124,6 +125,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletUVLight} => Sensor {@link LightUv}</li>
  * <li>Device {@link BrickletUVLightV2} => Sensor {@link LightUvV2}</li>
  * <li>Device {@link DummyDevice} => Sensor {@link LocalAudio}</li>
+ * <li>Device {@link DummyDevice} => Sensor {@link LocalControl}</li>
  * <li>Device {@link BrickMaster} => Sensor {@link Master}</li>
  * <li>Device {@link BrickletMotionDetector} => Sensor {@link MotionDetector}</li>
  * <li>Device {@link BrickletMotionDetectorV2} => Sensor {@link MotionDetectorV2}</li>
@@ -187,6 +189,7 @@ public class SensorRegistry {
         registry.put(BrickletUVLight.class, LightUv::new);
         registry.put(BrickletUVLightV2.class, LightUvV2::new);
         registry.put(DummyDevice.class, LocalAudio::new);
+        registry.put(DummyDevice.class, LocalControl::new);
         registry.put(BrickMaster.class, Master::new);
         registry.put(BrickletMotionDetector.class, MotionDetector::new);
         registry.put(BrickletMotionDetectorV2.class, MotionDetectorV2::new);
@@ -232,6 +235,7 @@ public class SensorRegistry {
         registry.put(BrickletColor.DEVICE_IDENTIFIER, BrickletColor::new);
         registry.put(BrickletUVLight.DEVICE_IDENTIFIER, BrickletUVLight::new);
         registry.put(BrickletUVLightV2.DEVICE_IDENTIFIER, BrickletUVLightV2::new);
+        registry.put(DummyDevice.DEVICE_IDENTIFIER, DummyDevice::new);
         registry.put(DummyDevice.DEVICE_IDENTIFIER, DummyDevice::new);
         registry.put(BrickMaster.DEVICE_IDENTIFIER, BrickMaster::new);
         registry.put(BrickletMotionDetector.DEVICE_IDENTIFIER, BrickletMotionDetector::new);

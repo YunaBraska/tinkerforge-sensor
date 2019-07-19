@@ -76,7 +76,7 @@ public class IMUV2 extends Sensor<BrickIMUV2> {
                     sendEvent(GRAVITY_VECTOR_Y, (long) gravityVector[1]);
                     sendEvent(GRAVITY_VECTOR_Z, (long) gravityVector[2]);
                     sendEvent(CALIBRATION, (long) calibrationStatus);
-                    //sendEvent( TEMPERATURE, (long) temperature);
+                    //sendEventUnchecked( TEMPERATURE, (long) temperature);
                     sendEvent(ValueType.IMU, 2L);
                 }
         );

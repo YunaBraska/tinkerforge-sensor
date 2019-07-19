@@ -9,7 +9,6 @@ import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.Device;
-import com.tinkerforge.DummyDevice;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.TinkerforgeException;
 
@@ -71,7 +70,7 @@ public abstract class Sensor<T extends Device> {
     protected final int SENSOR_VALUE_LIMIT = 99;
 
     /**
-     * @param consumer to notify {@link Consumer} with {@link Sensor<T>Event} at {@link Sensor<T>#sendEvent(ValueType, Long)}
+     * @param consumer to notify {@link Consumer} with {@link Sensor<T>Event} at {@link Sensor<T>#sendEventUnchecked(ValueType, Long)}
      * @return {@link Sensor<T>}
      */
     public Sensor<T> addListener(final Consumer<SensorEvent> consumer) {
@@ -452,14 +451,30 @@ public abstract class Sensor<T extends Device> {
      *
      * @param valueType type of send to send
      * @param value     send to send
+     * @param unchecked send without any checks
      * @return {@link Sensor<T>#port}
      */
-    protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
+    protected Sensor<T> sendEvent(final ValueType valueType, final Long value, final boolean unchecked) {
         final RollingList<Long> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
-        if (timeSeries.addAndCheckIfItsNewPeak(value)) {
+        if ((unchecked && timeSeries.add(value)) || timeSeries.addAndCheckIfItsNewPeak(value)) {
             consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, value, valueType)));
         }
         return this;
+    }
+
+    /**
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     *
+     * @param valueType type of send to send
+     * @param value     send to send
+     * @return {@link Sensor<T>#port}
+     */
+    protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
+        return sendEvent(valueType, value, false);
+    }
+
+    protected Sensor<T> sendEventUnchecked(final SensorEvent sensorEvent) {
+        return sendEvent(sensorEvent.valueType, sensorEvent.value, true);
     }
 
     protected abstract Sensor<T> initListener() throws TinkerforgeException;

@@ -6,7 +6,6 @@
 ### [LocalAudio](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/LocalAudio.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/LocalAudio.java))
 
  *Mini audio player plays wav only*
- *Under construction*
  
 ### Technical Info
  

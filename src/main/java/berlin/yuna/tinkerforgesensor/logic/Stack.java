@@ -6,6 +6,7 @@ import berlin.yuna.tinkerforgesensor.model.builder.Values;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
+import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -315,7 +316,10 @@ public class Stack implements Closeable {
         sensorList.clear();
         try {
             final Sensor sensor = sensorList.getDefault();
+            final LocalControl localControl = new LocalControl(sensor.device, sensor.uid);
             sensorList.add(new LocalAudio(sensor.device, sensor.uid));
+            sensorList.add(localControl);
+            localControl.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
         } catch (NetworkConnectionException ignored) {
         }
     }

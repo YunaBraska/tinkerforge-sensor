@@ -39,7 +39,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
 
     @Override
     protected Sensor<BrickletRotaryEncoderV2> initListener() {
-        device.addCountListener(value -> sendEvent(ROTARY, (long) value));
+        device.addCountListener(value -> sendEvent(ROTARY, (long) value, true));
         device.addPressedListener(() -> sendEvent(BUTTON_PRESSED, 1L));
         device.addReleasedListener(() -> sendEvent(BUTTON_PRESSED, 0L));
         refreshPeriod(1);
@@ -105,7 +105,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
             } else {
                 device.setCountCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
-            sendEvent(ROTARY, (long) device.getCount(false));
+            sendEvent(ROTARY, (long) device.getCount(false), true);
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

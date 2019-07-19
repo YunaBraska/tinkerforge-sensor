@@ -30,6 +30,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightColor;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUv;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUvV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
@@ -169,6 +170,18 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public List<Sensor> getMasterList() {
         return getSensor(Master.class);
+    }
+
+    public Sensor localAudio() {
+        return localAudio(0);
+    }
+
+    public Sensor localAudio(final int number) {
+        return getSensor(number, LocalAudio.class);
+    }
+
+    public List<Sensor> getLocalAudioList() {
+        return getSensor(LocalAudio.class);
     }
 
     public Sensor lightUv() {

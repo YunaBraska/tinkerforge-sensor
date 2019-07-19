@@ -134,7 +134,7 @@ public abstract class Sensor<T extends Device> {
      * @return true if the sensor is present
      */
     public boolean isPresent() {
-        return !(device instanceof DummyDevice);
+        return !(this instanceof Default);
     }
 
     /**

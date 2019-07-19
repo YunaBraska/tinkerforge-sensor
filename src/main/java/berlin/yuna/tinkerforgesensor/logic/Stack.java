@@ -5,6 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
 import berlin.yuna.tinkerforgesensor.model.builder.Values;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
+import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -141,7 +142,7 @@ public class Stack implements Closeable {
         connection.addDisconnectedListener(event -> handleConnect(event, true));
         connection.addConnectedListener(event -> handleConnect(event, false));
         connection.addEnumerateListener(this::doPlugAndPlay);
-        sensorList.clear();
+        clearSensorList();
         if (host != null) {
             final Object result = execute(timeoutMs, () -> {
                 connection.connect(host, port);
@@ -175,7 +176,7 @@ public class Stack implements Closeable {
         asyncStop(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
-                sensorList.clear();
+                clearSensorList();
                 connection.disconnect();
             } catch (Exception ignored) {
             }
@@ -289,7 +290,7 @@ public class Stack implements Closeable {
                 case IPConnection.DISCONNECT_REASON_REQUEST:
                 case IPConnection.DISCONNECT_REASON_ERROR:
                 case IPConnection.DISCONNECT_REASON_SHUTDOWN:
-                    sensorList.clear();
+                    clearSensorList();
                     sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_DISCONNECTED);
                     break;
             }
@@ -307,6 +308,15 @@ public class Stack implements Closeable {
                     sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_RECONNECTED);
                     break;
             }
+        }
+    }
+
+    private void clearSensorList() {
+        sensorList.clear();
+        try {
+            final Sensor sensor = sensorList.getDefault();
+            sensorList.add(new LocalAudio(sensor.device, sensor.uid));
+        } catch (NetworkConnectionException ignored) {
         }
     }
 }

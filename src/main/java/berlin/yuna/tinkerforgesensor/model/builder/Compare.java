@@ -29,6 +29,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightColor;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUv;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUvV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
@@ -145,6 +146,10 @@ public class Compare {
 
     public boolean isLightUv() {
         return is(LightUvV2.class, LightUv.class);
+    }
+
+    public boolean isLocalAudio() {
+        return is(LocalAudio.class);
     }
 
     public boolean isMaster() {

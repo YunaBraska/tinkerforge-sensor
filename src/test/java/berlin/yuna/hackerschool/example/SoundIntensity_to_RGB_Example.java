@@ -5,8 +5,6 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-import static berlin.yuna.hackerschool.example.Helper.timePassed;
-
 public class SoundIntensity_to_RGB_Example {
 
     private static Stack stack;

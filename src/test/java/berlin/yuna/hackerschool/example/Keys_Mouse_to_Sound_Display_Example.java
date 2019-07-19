@@ -12,8 +12,10 @@ public class Keys_Mouse_to_Sound_Display_Example {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensors().localControl().ledAdditional_setOn();
         stack.sensorEventConsumerList.add(event -> onSensorEvent(event.value, event.valueType));
+
+        //Activate localControl
+        stack.sensors().localControl().ledAdditional_setOn();
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {

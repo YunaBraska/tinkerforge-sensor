@@ -29,7 +29,7 @@ public class Keys_Mouse_to_Sound_Display_Example {
             stack.sensors().localAudio().send(sound);
         }
 
-        if(type.isRotary()) {
+        if (type.isRotary()) {
             //Set volume
             stack.sensors().localAudio().send(value);
         }

@@ -19,11 +19,10 @@ public class Keys_Mouse_to_Sound_Display_Example {
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {
-        if (type.containsMouseInput()) {
+        if (type.containsHumanInput()) {
             //Write on display
             stack.sensors().display().ledAdditional_setOn();
             stack.sensors().display().send(value + " [" + type + "]", true);
-
         }
 
         if (type.isButtonPressed() || (type.isMouseClickCount() && value >= 2)) {

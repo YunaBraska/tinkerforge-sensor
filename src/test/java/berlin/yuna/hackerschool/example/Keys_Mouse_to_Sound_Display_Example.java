@@ -32,7 +32,6 @@ public class Keys_Mouse_to_Sound_Display_Example {
         if(type.isRotary()) {
             //Set volume
             stack.sensors().localAudio().send(value);
-            char c = (char) stack.sensors().localControl().values().keyChar().intValue();
         }
     }
 }

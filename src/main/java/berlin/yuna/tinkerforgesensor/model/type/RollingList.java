@@ -49,24 +49,47 @@ public class RollingList<T> extends LinkedList<T> {
      * <h3>addAndCheckIfItsNewPeak</h3><br />
      * To check if its a new peak you will have to add the send first
      * <i>Rolling list with limited capacity</i><br />
-     * @param valueToCheck value to check for
+     *
+     * @param valueToCheck values to check for
      * @return returns true if its a new peak
      */
     public boolean addAndCheckIfItsNewPeak(final T valueToCheck) {
         add(valueToCheck);
-        final List<Long> lastPeaks = getLastPeaks();
-        return lastPeaks.size() < 2 || (lastPeaks.contains(((Number) valueToCheck).longValue()) && !lastPeaks.get(lastPeaks.size() - 2).equals(valueToCheck));
+        final List<Number> valuesToCheck = (List<Number>) valueToCheck;
+        for (int i = 0; i < valuesToCheck.size(); i++) {
+//        for (Number valueToCheck : valuesToChecks) {
+            final List<Number> lastPeaks = getLastPeaks(i);
+            final Long value = valuesToCheck.get(i).longValue();
+            if (lastPeaks.size() < 2 || (lastPeaks.contains(value) && !lastPeaks.get(lastPeaks.size() - 2).equals(value))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * <h3>getLastPeaks</h3><br />
+     *
      * @return {@link List} of peaks
      */
-    public List<Long> getLastPeaks() {
-        final List<Long> values = this.stream().map(value -> ((Number) value).longValue()).collect(toList());
-        List<Long> lastPeek = new ArrayList<>(values);
-        List<Long> current = new ArrayList<>(values);
-        final LongSummaryStatistics statistics = values.stream().mapToLong(value -> value).summaryStatistics();
+    public List<Number> getLastPeaks(final int index) {
+        final List<List<Number>> time = this.stream().map(value -> ((List<Number>) value)).collect(toList());
+        if (!listIsEmpty(time) && (time.size() - 1) > index) {
+            return getLastPeaks(time.get(index));
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * <h3>getLastPeaks</h3><br />
+     *
+     * @return {@link List} of peaks
+     */
+    private List<Number> getLastPeaks(final List<Number> values) {
+//        final List<Long> values = this.stream().map(value -> ((Number) value).longValue()).collect(toList());
+        List<Number> lastPeek = new ArrayList<>(values);
+        List<Number> current = new ArrayList<>(values);
+        final LongSummaryStatistics statistics = values.stream().mapToLong(Number::longValue).summaryStatistics();
         final double average = statistics.getAverage();
         final long max = statistics.getMax();
         final long min = statistics.getMin();
@@ -81,12 +104,16 @@ public class RollingList<T> extends LinkedList<T> {
         return lastPeek;
     }
 
-    private List<Long> getLastPeaks(final long sensitivity, final List<Long> values, final double average) {
-        final List<Long> lastPeek = new ArrayList<>();
-        for (long value : values) {
-            final double percentage = calcPercentage(average, value);
+    public static boolean listIsEmpty(final List list) {
+        return list == null || list.isEmpty();
+    }
+
+    private List<Number> getLastPeaks(final long sensitivity, final List<Number> values, final double average) {
+        final List<Number> lastPeek = new ArrayList<>();
+        for (Number value : values) {
+            final double percentage = calcPercentage(average, value.longValue());
             if (percentage > (100 - sensitivity)) {
-                lastPeek.add(value);
+                lastPeek.add(value.longValue());
             }
         }
         return lastPeek;

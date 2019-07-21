@@ -30,6 +30,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.RollingList.listIsEmpty;
 import static java.lang.Character.getNumericValue;
 import static java.lang.Character.isDigit;
 import static java.lang.Character.toLowerCase;
@@ -58,7 +59,7 @@ public abstract class Sensor<T extends Device> {
     //    private final boolean hasStatusLed;
     private final String connectionUid;
     private final char position;
-    private final ConcurrentHashMap<ValueType, RollingList<Long>> valueMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<ValueType, RollingList<List<Number>>> valueMap = new ConcurrentHashMap<>();
     private long lastCall = nanoTime();
 
     /**
@@ -240,7 +241,7 @@ public abstract class Sensor<T extends Device> {
         return new Values(singletonList(this));
     }
 
-    public ConcurrentHashMap<ValueType, RollingList<Long>> valueMap() {
+    public ConcurrentHashMap<ValueType, RollingList<List<Number>>> valueMap() {
         return valueMap;
     }
 
@@ -374,6 +375,8 @@ public abstract class Sensor<T extends Device> {
         return ledAdditional(value);
     }
 
+    //TODO: in use? refactor getValueList, getValue
+
     /**
      * Gets the send of {@link ValueType}
      *
@@ -392,8 +395,8 @@ public abstract class Sensor<T extends Device> {
      * @return send from sensor of type {@link ValueType} or fallback if no send with {@link ValueType} were found
      */
     public Long send(final ValueType valueType, final Long fallback) {
-        final RollingList<Long> valueList = valueMap.get(valueType);
-        return valueList == null || valueList.isEmpty() || valueList.getLast() == null ? fallback : valueList.getLast();
+        final RollingList<List<Number>> valueList = valueMap.get(valueType);
+        return listIsEmpty(valueList) || listIsEmpty(valueList.getLast()) ? fallback : valueList.getLast().get(0).longValue();
     }
 
     /**
@@ -450,17 +453,41 @@ public abstract class Sensor<T extends Device> {
      * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
      *
      * @param valueType type of send to send
-     * @param value     send to send
+     * @param values    send to send
      * @param unchecked send without any checks
      * @return {@link Sensor<T>#port}
      */
-    protected Sensor<T> sendEvent(final ValueType valueType, final Long value, final boolean unchecked) {
-        final RollingList<Long> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
-        if ((unchecked && timeSeries.add(value)) || timeSeries.addAndCheckIfItsNewPeak(value)) {
-            consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, value, valueType)));
+    protected Sensor<T> sendEvent(final ValueType valueType, final List<Number> values, final boolean unchecked) {
+        final RollingList<List<Number>> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
+        if ((unchecked && timeSeries.add(values)) || timeSeries.addAndCheckIfItsNewPeak(values)) {
+            consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, values, valueType)));
         }
         return this;
     }
+
+    /**
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     *
+     * @param valueType type of send to send
+     * @param value     to send
+     * @return {@link Sensor<T>#port}
+     */
+    protected Sensor<T> sendEvent(final ValueType valueType, final Number value) {
+        return sendEvent(valueType, singletonList(value), false);
+    }
+
+    /**
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     *
+     * @param valueType type of send to send
+     * @param value     to send
+     * @param unchecked send without any checks
+     * @return {@link Sensor<T>#port}
+     */
+    protected Sensor<T> sendEvent(final ValueType valueType, final Number value, final boolean unchecked) {
+        return sendEvent(valueType, singletonList(value), unchecked);
+    }
+
 
     /**
      * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
@@ -470,11 +497,18 @@ public abstract class Sensor<T extends Device> {
      * @return {@link Sensor<T>#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
-        return sendEvent(valueType, value, false);
+        return sendEvent(valueType, singletonList(value), false);
     }
 
+    /**
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     *
+     * @param valueType type of send to send
+     * @param value     send to send
+     * @return {@link Sensor<T>#port}
+     */
     protected Sensor<T> sendEventUnchecked(final SensorEvent sensorEvent) {
-        return sendEvent(sensorEvent.valueType, sensorEvent.value, true);
+        return sendEvent(sensorEvent.getValueType(), sensorEvent.getValues(), true);
     }
 
     protected abstract Sensor<T> initListener() throws TinkerforgeException;

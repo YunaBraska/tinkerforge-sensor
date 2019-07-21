@@ -279,7 +279,7 @@ public class Stack implements Closeable {
         }
     }
 
-    private void sendEvent(final Sensor sensor, final long value, final ValueType valueType) {
+    private void sendEvent(final Sensor sensor, final Long value, final ValueType valueType) {
         if (sensor != null) {
             sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, valueType)));
         }

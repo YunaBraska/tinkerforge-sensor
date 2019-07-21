@@ -5,7 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-public class Distance_Remote_Servo_Example extends Helper {
+public class Servo_Distance_Remote_Example extends Helper {
 
     private static Stack localStack;
     private static Stack remoteStack;

@@ -8,6 +8,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
@@ -51,9 +52,9 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
     @Override
     protected Sensor<BrickletSoundPressureLevel> initListener() {
         device.addDecibelListener(value -> sendEvent(SOUND_INTENSITY, (long) value));
-        device.addSpectrumListener(value -> sendSpectrum(SOUND_SPECTRUM, value));
+        device.addSpectrumListener(values -> sendEvent(SOUND_SPECTRUM, intToList(values)));
         device.addSpectrumLowLevelListener((spectrumLength, spectrumChunkOffset, spectrumChunkData) -> {
-            sendSpectrum(SOUND_SPECTRUM_CHUNK, spectrumChunkData);
+            sendEvent(SOUND_SPECTRUM_CHUNK, intToList(spectrumChunkData));
             send(SOUND_SPECTRUM_OFFSET, spectrumChunkOffset);
             send(SOUND_SPECTRUM_LENGTH, spectrumLength);
         });
@@ -61,10 +62,14 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
         return this;
     }
 
-    private void sendSpectrum(final ValueType valueType, final int[] values) {
-        if (values.length > 0) {
-            valueMap().put(valueType, new RollingList<>(Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList())));
-        }
+//    private void sendSpectrum(final ValueType valueType, final int[] values) {
+//        if (values.length > 0) {
+//            valueMap().put(valueType, new RollingList<>(intToList(values)));
+//        }
+//    }
+
+    private List<Number> intToList(final int[] values) {
+        return Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList());
     }
 
     @Override

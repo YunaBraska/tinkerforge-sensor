@@ -4,13 +4,25 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 
 public class SensorEvent {
 
-    public final Sensor sensor;
-    public final Long value;
-    public final ValueType valueType;
+    private final Sensor sensor;
+    private final Long value;
+    private final ValueType type;
 
-    public SensorEvent(final Sensor sensor, final Long value, final ValueType valueType) {
+    public SensorEvent(final Sensor sensor, final Long value, final ValueType type) {
         this.sensor = sensor;
         this.value = value;
-        this.valueType = valueType;
+        this.type = type;
+    }
+
+    public Sensor sensor() {
+        return sensor;
+    }
+
+    public Long value() {
+        return value;
+    }
+
+    public ValueType type() {
+        return type;
     }
 }

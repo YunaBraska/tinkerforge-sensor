@@ -474,7 +474,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     protected Sensor<T> sendEventUnchecked(final SensorEvent sensorEvent) {
-        return sendEvent(sensorEvent.valueType, sensorEvent.value, true);
+        return sendEvent(sensorEvent.type(), sensorEvent.value(), true);
     }
 
     protected abstract Sensor<T> initListener() throws TinkerforgeException;

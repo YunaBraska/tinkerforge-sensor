@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_CHAR;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_CLICK_COUNT;
@@ -39,7 +38,6 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_Y;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_WHEEL_MOVED;
-import static java.lang.Character.getNumericValue;
 import static java.util.Objects.requireNonNull;
 
 public class HumanInput extends JFrame implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -144,7 +142,7 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
     }
 
     public void keyTyped(final KeyEvent event) {
-        onKeyEvent(KEY_PRESSED, event);
+//        onKeyEvent(KEY_PRESSED, event);
     }
 
     @Override
@@ -209,8 +207,7 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
         keyAction.setText(String.valueOf(event.isActionKey()));
         keyLocation.setText(keyboardLocation(event.getKeyLocation()));
 
-        sendEventToConsumer(keyCode, KEY_PRESSED, (long) code);
-        sendEventToConsumer(keyChar, KEY_CHAR, (long) getNumericValue(event.getKeyChar()));
+        sendEventToConsumer(keyCode, type, (long) code);
     }
 
     private String keyboardLocation(final int keyLocation) {
@@ -231,11 +228,9 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
 
     private void sendEventToConsumer(final JLabel label, final ValueType type, final Long value) {
         final String labelValue = String.valueOf(value);
-        if (!label.getText().equals(labelValue)) {
-            label.setText(labelValue);
-            for (Consumer<SensorEvent> consumer : sensorEventConsumerList) {
-                consumer.accept(new SensorEvent(null, value, type));
-            }
+        label.setText(labelValue);
+        for (Consumer<SensorEvent> consumer : sensorEventConsumerList) {
+            consumer.accept(new SensorEvent(null, value, type));
         }
     }
 }

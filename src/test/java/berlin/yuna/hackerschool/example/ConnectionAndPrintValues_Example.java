@@ -24,8 +24,8 @@ public class ConnectionAndPrintValues_Example extends Helper {
     }
 
     private static void printAllValues(final SensorEvent sensorEvent) {
-        if (sensorEvent.valueType.containsDeviceStatus()) {
-            System.out.println(format("Sensor [%s] type [%s] send [%s]", sensorEvent.sensor.name, sensorEvent.valueType, sensorEvent.value));
+        if (sensorEvent.type().containsDeviceStatus()) {
+            System.out.println(format("Sensor [%s] type [%s] send [%s]", sensorEvent.sensor().name, sensorEvent.type(), sensorEvent.value()));
         } else if (!timePassed(256)) {
             return;
         }

@@ -22,7 +22,7 @@ public class Distance_Remote_Servo_Example extends Helper {
 
 
         localStack = ConnectionAndPrintValues_Example.connect();
-        localStack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor, event.value, event.valueType));
+        localStack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.value(), event.type()));
     }
 
     private static boolean invert = false;

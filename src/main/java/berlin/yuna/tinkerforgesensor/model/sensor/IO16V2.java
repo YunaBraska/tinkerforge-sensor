@@ -7,6 +7,7 @@ import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
@@ -50,6 +51,7 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
             if (input != null) {
                 final boolean output = input > -1;
                 input = output ? input : (input * -1);
+                ledAdditional = LED_ADDITIONAL_STATUS;
                 if (output) {
                     device.setConfiguration(input - 1, 'o', true);
                 } else {
@@ -87,11 +89,14 @@ public class IO16V2 extends Sensor<BrickletIO16V2> {
 
     @Override
     public Sensor<BrickletIO16V2> ledAdditional(final Integer value) {
+        if (ledAdditional.bit == value) return this;
         if (value == LED_ADDITIONAL_ON.bit) {
+            ledAdditional = LED_ADDITIONAL_ON;
             for (int i = 0; i < 17; i++) {
                 send(i);
             }
         } else if (value == LED_ADDITIONAL_OFF.bit) {
+            ledAdditional = LED_ADDITIONAL_OFF;
             for (int i = 0; i < 17; i++) {
                 send(i * -1);
             }

@@ -49,6 +49,7 @@ public class RollingList<T> extends LinkedList<T> {
      * <h3>addAndCheckIfItsNewPeak</h3><br />
      * To check if its a new peak you will have to add the send first
      * <i>Rolling list with limited capacity</i><br />
+     *
      * @param valueToCheck value to check for
      * @return returns true if its a new peak
      */
@@ -60,6 +61,7 @@ public class RollingList<T> extends LinkedList<T> {
 
     /**
      * <h3>getLastPeaks</h3><br />
+     *
      * @return {@link List} of peaks
      */
     public List<Long> getLastPeaks() {

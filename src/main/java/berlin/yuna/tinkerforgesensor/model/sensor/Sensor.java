@@ -12,8 +12,12 @@ import com.tinkerforge.Device;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.TinkerforgeException;
 
+import javax.management.relation.RoleList;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -240,7 +244,8 @@ public abstract class Sensor<T extends Device> {
         return new Values(singletonList(this));
     }
 
-    public ConcurrentHashMap<ValueType, RollingList<Long>> valueMap() {
+    //FIXME; ConcurrentExceptions
+    public synchronized ConcurrentHashMap<ValueType, RollingList<Long>> valueMap() {
         return valueMap;
     }
 
@@ -372,28 +377,6 @@ public abstract class Sensor<T extends Device> {
      */
     public Sensor<T> setLedBrightness(final Integer value) {
         return ledAdditional(value);
-    }
-
-    /**
-     * Gets the send of {@link ValueType}
-     *
-     * @param valueType to get from {@link Sensor<T>#values}
-     * @return send from sensor of type {@link ValueType} or 0L if not found
-     */
-    public Long send(final ValueType valueType) {
-        return send(valueType, 0L);
-    }
-
-    /**
-     * Gets the send of {@link ValueType}
-     *
-     * @param valueType to get from {@link Sensor<T>#values}
-     * @param fallback  will return this if no send with {@link ValueType} were found
-     * @return send from sensor of type {@link ValueType} or fallback if no send with {@link ValueType} were found
-     */
-    public Long send(final ValueType valueType, final Long fallback) {
-        final RollingList<Long> valueList = valueMap.get(valueType);
-        return valueList == null || valueList.isEmpty() || valueList.getLast() == null ? fallback : valueList.getLast();
     }
 
     /**

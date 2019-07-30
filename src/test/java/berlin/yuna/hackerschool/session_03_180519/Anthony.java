@@ -142,7 +142,7 @@ public class Anthony extends Helper {
         if (stack.sensors().buttonRGB().isPresent()) {
 
 
-            if (Knopf3.send(BUTTON_PRESSED) == 1) {
+            if (Knopf3.values().get(BUTTON_PRESSED) == 1) {
 
                 Knopf3.send(Color.CYAN);
                 final int luftdruck = stack.values().airPressure().intValue();

@@ -4,7 +4,9 @@ import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
-import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
+
+import java.util.Random;
 
 /**
  * @author Nathalie
@@ -16,38 +18,25 @@ public class Nathalie extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.value(), event.type()));
+        stack.sensorEventConsumerList.add(Nathalie::onSensorEvent);
     }
 
     //VARIABLES
     private static long soundMax = 1;
+    private static final int rustle = 300;
 
     //CODE FUNCTION
-    private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {
-//        try {
-//            BufferedImage image = ImageIO.read(new File("/Users/morgenstern/Downloads/icon_temperature.png"));
-//            final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-//
-//
-//            int width = image.getWidth();
-//            int height = image.getHeight();
-//            int[][] result = new int[height][width];
-//
-//            for (int row = 0; row < height; row++) {
-//                for (int col = 0; col < width; col++) {
-//                    result[row][col] = image.getRGB(col, row);
-//                }
-//            }
-//
-//            //System.out.println(Arrays.toString(pixels));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
+    private static void onSensorEvent(final SensorEvent event) {
         //Get Sensor and Value
         final Sensor io16 = stack.sensors().iO16();
-        final long decibel = stack.values().soundIntensity() + 1;
+        long decibel = stack.sensors().sound(0).values().soundIntensity() + 1;
+
+        //remove rustle
+        if (decibel > rustle) {
+            decibel = decibel - 300;
+        } else {
+            decibel = 1;
+        }
 
         //Dynamic max volume
         if (decibel > soundMax) {
@@ -67,7 +56,7 @@ public class Nathalie extends Helper {
             }
 
             //Switch other LEDs off
-            for (int led = ledCount; led < 16; led++) {
+            for (int led = ledCount; led < 17; led++) {
                 io16.send(-led);
             }
         }

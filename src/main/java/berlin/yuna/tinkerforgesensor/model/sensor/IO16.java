@@ -7,6 +7,7 @@ import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_STATUS;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
@@ -54,6 +55,7 @@ public class IO16 extends Sensor<BrickletIO16> {
                 } else {
                     block = 'a';
                 }
+                ledAdditional = LED_ADDITIONAL_STATUS;
                 device.setPortConfiguration(block, (short) getPotential(firstDigit(input)), output ? 'o' : 'i', output);
             }
         } catch (TinkerforgeException ignored) {
@@ -72,9 +74,11 @@ public class IO16 extends Sensor<BrickletIO16> {
         if (ledAdditional.bit == value) return this;
         try {
             if (value == LED_ADDITIONAL_ON.bit) {
+                ledAdditional = LED_ADDITIONAL_ON;
                 device.setPortConfiguration('a', (short) 255, 'o', true);
                 device.setPortConfiguration('b', (short) 255, 'o', true);
             } else if (value == LED_ADDITIONAL_OFF.bit) {
+                ledAdditional = LED_ADDITIONAL_OFF;
                 device.setPortConfiguration('a', (short) 255, 'i', false);
                 device.setPortConfiguration('b', (short) 255, 'i', false);
             } else {

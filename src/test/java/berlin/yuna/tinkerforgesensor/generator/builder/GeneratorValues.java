@@ -24,7 +24,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorHelper.SEPARATOR;
 import static berlin.yuna.tinkerforgesensor.generator.GeneratorTest.toHumanReadable;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_CHUNK;
 import static com.squareup.javapoet.WildcardTypeName.subtypeOf;
 import static java.util.Arrays.asList;
 import static javax.lang.model.element.Modifier.FINAL;
@@ -71,7 +70,7 @@ public class GeneratorValues {
         resultClass.addMethods(asList(method_get, method_getMin, method_getMax, method_getAvg, method_getSum));
 
         final MethodSpec method_getList = method_getList();
-        resultClass.addMethods(asList(method_getValueType(SOUND_SPECTRUM, method_getList), method_getValueType(SOUND_SPECTRUM_CHUNK, method_getList), method_getList));
+        resultClass.addMethods(asList(method_getValueType(SOUND_SPECTRUM, method_getList), method_getList));
 
         //GENERATE METHODS
         for (ValueType valueType : ValueType.values()) {

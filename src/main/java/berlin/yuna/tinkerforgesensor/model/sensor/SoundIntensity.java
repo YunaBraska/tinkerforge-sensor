@@ -16,7 +16,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#SOUND_INTENSITY} [x / 10 = db]</li>
+ * <li>{@link ValueType#SOUND_INTENSITY} [x / 100 = db]</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
@@ -33,7 +33,7 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 
     @Override
     protected Sensor<BrickletSoundIntensity> initListener() {
-        device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) (value < 300? value + 300 : value)));
+        device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) value  * 10));
         refreshPeriod(1);
         return this;
     }

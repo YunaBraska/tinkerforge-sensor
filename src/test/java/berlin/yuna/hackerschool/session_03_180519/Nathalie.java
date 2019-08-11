@@ -23,20 +23,12 @@ public class Nathalie extends Helper {
 
     //VARIABLES
     private static long soundMax = 1;
-    private static final int rustle = 300;
 
     //CODE FUNCTION
     private static void onSensorEvent(final SensorEvent event) {
         //Get Sensor and Value
         final Sensor io16 = stack.sensors().iO16();
-        long decibel = stack.sensors().sound(0).values().soundIntensity() + 1;
-
-        //remove rustle
-        if (decibel > rustle) {
-            decibel = decibel - 300;
-        } else {
-            decibel = 1;
-        }
+        final long decibel = stack.values().soundIntensity() + 1;
 
         //Dynamic max volume
         if (decibel > soundMax) {
@@ -44,7 +36,7 @@ public class Nathalie extends Helper {
         }
 
         //every 250 milliseconds - for readable display
-        stack.sensors().displaySegment().sendLimit(2, (decibel / 10) + "dB");
+        stack.sensors().displaySegment().sendLimit(2, (stack.values().decibel() / 10) + "dB");
 
         //every 50 milliseconds
         if (timePassed(50)) {

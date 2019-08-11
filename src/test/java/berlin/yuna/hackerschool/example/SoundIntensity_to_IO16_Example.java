@@ -4,7 +4,7 @@ import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 
-public class SoundIntensity_to_IO16_Example {
+public class SoundIntensity_to_IO16_Example extends Helper {
 
     private static long dynamicMaxVolume = 0;
     private static Stack stack;
@@ -29,7 +29,7 @@ public class SoundIntensity_to_IO16_Example {
             io16.send(false);
 
             //Turn on LEDs (max 16)
-            final long port = ((16 * value) / dynamicMaxVolume);
+            final long port = ((16 * (value + 1)) / dynamicMaxVolume);
             for (int i = 0; i < port; i++) {
                 io16.send(i);
             }

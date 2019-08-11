@@ -7,7 +7,9 @@ import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
@@ -15,12 +17,10 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DECIBEL;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_CHUNK;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_LENGTH;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_OFFSET;
 
 /**
  * <h3>{@link SoundPressure}</h3><br />
@@ -28,11 +28,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#SOUND_INTENSITY} [x / 10 = db]</li>
- * <li>{@link ValueType#SOUND_SPECTRUM_OFFSET}</li>
- * <li>{@link ValueType#SOUND_SPECTRUM_LENGTH}</li>
+ * <li>{@link ValueType#DECIBEL} [x / 10 = db]</li>
+ * <li>{@link ValueType#SOUND_INTENSITY} [x / 100 = db]</li>
  * <li>{@link ValueType#SOUND_SPECTRUM} [x = x[]]</li>
- * <li>{@link ValueType#SOUND_SPECTRUM_CHUNK} [x = x[]]</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
@@ -41,8 +39,21 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM_
  * <h6>Getting sound spectrum examples</h6>
  * <code>stack.values().listSoundSpectrum();</code>
  * <code>stack.values().listSoundSpectrumChunk();</code>
+ * <h6>Setting FFT to size of 256</h6>
+ * <code>send(256)</code>
+ * <h6>Setting FFT to size of 256</h6>
+ * <i>Allowed: 128, 256, 512, 1024</i>
+ * <code>send(256)</code>
+ * <h6>Setting weighting</h6>
+ * <i>Allowed: A, B, C, D, Z</i>
+ * <code>send("A")</code>
+ * <h6>Setting FFT and weighting</h6>
+ * <code>send("A", 256)</code>
  */
 public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
+
+    private int weighting;
+    private int fftSize;
 
     public SoundPressure(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletSoundPressureLevel) device, uid);
@@ -50,25 +61,74 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
 
     @Override
     protected Sensor<BrickletSoundPressureLevel> initListener() {
-        device.addDecibelListener(value -> sendEvent(SOUND_INTENSITY, (long) value));
-        device.addSpectrumListener(value -> sendSpectrum(SOUND_SPECTRUM, value));
-        device.addSpectrumLowLevelListener((spectrumLength, spectrumChunkOffset, spectrumChunkData) -> {
-            sendSpectrum(SOUND_SPECTRUM_CHUNK, spectrumChunkData);
-            send(SOUND_SPECTRUM_OFFSET, spectrumChunkOffset);
-            send(SOUND_SPECTRUM_LENGTH, spectrumLength);
+        device.addDecibelListener(value -> sendEvent(DECIBEL, (long) value));
+        device.addSpectrumListener(values -> {
+            //cause of nullPointer somehow
+            if (values != null && values.length > 1) {
+                valueMap().put(SOUND_SPECTRUM, new RollingList<>(Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList())));
+
+                final int[] intensity = Arrays.copyOfRange(values, 1, values.length / 3);
+                sendEvent(SOUND_INTENSITY, (long) Arrays.stream(intensity).mapToLong(i -> i).summaryStatistics().getAverage());
+            }
         });
         refreshPeriod(1);
+        send(256, 4);
         return this;
     }
 
-    private void sendSpectrum(final ValueType valueType, final int[] values) {
-        if (values != null && values.length > 0) {
-            valueMap().put(valueType, new RollingList<>(Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList())));
+    @Override
+    public Sensor<BrickletSoundPressureLevel> send(final Object... values) {
+        final List<Object> items = new ArrayList<>();
+        if (values.length > 1 && values[1] instanceof Number) {
+            final int value = ((Number) values[1]).intValue();
+            if (value == 4) {
+                send('Z');
+            } else if (value == 0 || value == 1 || value == 2 || value == 3) {
+                send((char) value);
+            }
+            send(values[0]);
+        } else {
+            Arrays.stream(values).forEach(this::send);
         }
+        return this;
     }
 
     @Override
     public Sensor<BrickletSoundPressureLevel> send(final Object value) {
+        try {
+            int fftSize = this.fftSize;
+            int weighing = this.weighting;
+            if (value instanceof Character) {
+                switch ((Character) value) {
+                    case 'A':
+                        weighing = 0;
+                        break;
+                    case 'B':
+                        weighing = 1;
+                        break;
+                    case 'C':
+                        weighing = 2;
+                        break;
+                    case 'D':
+                        weighing = 3;
+                        break;
+                    case 'Z':
+                        weighing = 4;
+                        break;
+                }
+            } else if (value instanceof String) {
+                send(((String) value).charAt(0));
+            } else if (value instanceof Number) {
+                fftSize = ((Number) value).intValue();
+            }
+            if (this.fftSize != fftSize || this.weighting != weighing) {
+                this.fftSize = fftSize;
+                this.weighting = weighing;
+                device.setConfiguration(fftSize, weighing);
+            }
+        } catch (TinkerforgeException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
+        }
         return this;
     }
 

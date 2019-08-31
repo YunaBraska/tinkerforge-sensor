@@ -11,7 +11,7 @@ public class SoundIntensity_to_IO16_Example extends Helper {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.value(), event.type()));
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.getValue(), event.getValueType()));
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {

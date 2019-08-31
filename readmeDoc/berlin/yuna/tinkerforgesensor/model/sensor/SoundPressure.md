@@ -8,19 +8,27 @@
  *Measures Sound Pressure Level in dB(A/B/C/D/Z)*
  
 ### Values
- * [DECIBEL](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x / 10 = db]
+ * [SOUND_DECIBEL](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x / 10 = db]
  * [SOUND_INTENSITY](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x / 100 = db]
  * [SOUND_SPECTRUM](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x = x[]] 
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc//Hardware/Bricklets/Sound_Pressure_Level.html) 
-###### Getting sound spectrum examples
+###### Get sound spectrum
  
 ```java
 stack.values().listSoundSpectrum();
 ```
  
+###### Get sound spectrum with FFT index 20
+ 
 ```java
-stack.values().listSoundSpectrumChunk();
+stack.values().listSoundSpectrum(20);
+```
+ 
+###### Get sound spectrum list
+ 
+```java
+stack.values().listSoundSpectrum_List();
 ```
  
 ###### Setting FFT to size of 256

@@ -12,12 +12,9 @@ import com.tinkerforge.Device;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.TinkerforgeException;
 
-import javax.management.relation.RoleList;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -59,10 +56,12 @@ public abstract class Sensor<T extends Device> {
     public final String name;
     public final T device;
 
-    //    private final boolean hasStatusLed;
     private final String connectionUid;
     private final char position;
-    private final ConcurrentHashMap<ValueType, RollingList<Long>> valueMap = new ConcurrentHashMap<>();
+
+    //TODO: HashMap only when using lock?
+    //TODO: Number Array instead of list?
+    private final ConcurrentHashMap<ValueType, RollingList<List<Number>>> valueMap = new ConcurrentHashMap<>();
     private long lastCall = nanoTime();
 
     /**
@@ -244,10 +243,87 @@ public abstract class Sensor<T extends Device> {
         return new Values(singletonList(this));
     }
 
-    //FIXME; ConcurrentExceptions
-    public synchronized ConcurrentHashMap<ValueType, RollingList<Long>> valueMap() {
-        return valueMap;
+    //TODO: move to values builder
+    @Deprecated
+    public Number getValue(final ValueType valueType, final int timeIndex, final int valueIndex, final Number fallback) {
+        final Number value = getValue(valueType, timeIndex, valueIndex);
+        return value == null ? fallback : value;
     }
+
+    @Deprecated
+    public Number getValue(final ValueType valueType, final int timeIndex, final Number fallback) {
+        final Number value = getValue(valueType, timeIndex);
+        return value == null ? fallback : value;
+    }
+
+    @Deprecated
+    public Number getValue(final ValueType valueType, final Number fallback) {
+        final Number value = getValue(valueType);
+        return value == null ? fallback : value;
+    }
+
+    @Deprecated
+    public Number getValue(final ValueType valueType) {
+        return getValue(valueType, -1, -1);
+    }
+
+    @Deprecated
+    public Number getValue(final ValueType valueType, final int timeIndex) {
+        return getValue(valueType, timeIndex, -1);
+    }
+
+    public Number getValue(final ValueType valueType, final int timeIndex, final int valueIndex) {
+        final List<Number> numbers = getValueList(valueType, timeIndex);
+        if (valueIndex > -1) {
+            return numbers.size() > valueIndex ? numbers.get(valueIndex) : null;
+        }
+        return numbers.isEmpty() ? null : numbers.get(0);
+    }
+
+    public List<Number> getValueList(final ValueType valueType) {
+        return getValueList(valueType, -1);
+    }
+
+    public List<Number> getValueList(final ValueType valueType, final int timeIndex) {
+        final RollingList<List<Number>> timeValueList = getTimeValueList(valueType);
+        if (timeIndex > -1) {
+            //TODO: cloneList needed?
+            return timeValueList.size() > timeIndex ? timeValueList.cloneList().get(timeIndex) : new ArrayList<>();
+        }
+        return timeValueList.isEmpty() ? new ArrayList<>() : timeValueList.getLast();
+    }
+
+    public List<Number> getValueListVertical(final ValueType valueType) {
+        return getValueListVertical(valueType, -1);
+    }
+
+    public List<Number> getValueListVertical(final ValueType valueType, final int valueIndex) {
+        final List<Number> result = new ArrayList<>();
+        if (valueMap.containsKey(valueType)) {
+            for (List<Number> values : valueMap.get(valueType)) {
+                if (valueIndex > -1 & values.size() > valueIndex) {
+                    result.add(values.get(0));
+                } else if (valueIndex < 0) {
+                    result.add(values.get(0));
+                }
+            }
+        }
+        return result;
+    }
+
+    public RollingList<List<Number>> getTimeValueList(final ValueType valueType) {
+        return valueMap.containsKey(valueType) ? new RollingList<>(valueMap.get(valueType)) : new RollingList<>(SENSOR_VALUE_LIMIT);
+    }
+
+    public HashMap<ValueType, Long> valueMap() {
+        return new HashMap<>(0);
+    }
+
+    //Number                                getValue(Sensor, type, int timeIndex, int valueIndex)
+    //List<Number>                          getValueList(Sensor, type, int timeIndex)
+    //RollingList<List<Number>>             getValueTimeList(Sensor, type)
+    //Map<Type RollingList<List<Number>>>   getValueTimeListForType(sensor);
+    //getValueTimeListForTypeAndSensor(sensor);
 
     /**
      * Loads the led configurations for ledStatus_setStatus and ledAdditional
@@ -433,16 +509,39 @@ public abstract class Sensor<T extends Device> {
      * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
      *
      * @param valueType type of send to send
-     * @param value     send to send
+     * @param values    send to send
      * @param unchecked send without any checks
      * @return {@link Sensor<T>#port}
      */
-    protected Sensor<T> sendEvent(final ValueType valueType, final Long value, final boolean unchecked) {
-        final RollingList<Long> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
-        if ((unchecked && timeSeries.add(value)) || timeSeries.addAndCheckIfItsNewPeak(value)) {
-            consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, value, valueType)));
+    protected Sensor<T> sendEvent(final ValueType valueType, final List<Number> values, final boolean unchecked) {
+        final RollingList<List<Number>> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
+        if ((unchecked && timeSeries.add(values)) || timeSeries.addAndCheckIfItsNewPeak(values)) {
+            consumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(this, values, valueType)));
         }
         return this;
+    }
+
+    /**
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     *
+     * @param valueType type of send to send
+     * @param value     to send
+     * @return {@link Sensor<T>#port}
+     */
+    protected Sensor<T> sendEvent(final ValueType valueType, final Number value) {
+        return sendEvent(valueType, singletonList(value), false);
+    }
+
+    /**
+     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     *
+     * @param valueType type of send to send
+     * @param value     to send
+     * @param unchecked send without any checks
+     * @return {@link Sensor<T>#port}
+     */
+    protected Sensor<T> sendEvent(final ValueType valueType, final Number value, final boolean unchecked) {
+        return sendEvent(valueType, singletonList(value), unchecked);
     }
 
     /**
@@ -453,11 +552,11 @@ public abstract class Sensor<T extends Device> {
      * @return {@link Sensor<T>#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
-        return sendEvent(valueType, value, false);
+        return sendEvent(valueType, singletonList(value), false);
     }
 
     protected Sensor<T> sendEventUnchecked(final SensorEvent sensorEvent) {
-        return sendEvent(sensorEvent.type(), sensorEvent.value(), true);
+        return sendEvent(sensorEvent.getValueType(), sensorEvent.getValues(), true);
     }
 
     protected abstract Sensor<T> initListener() throws TinkerforgeException;

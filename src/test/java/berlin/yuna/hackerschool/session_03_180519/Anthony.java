@@ -17,7 +17,7 @@ public class Anthony extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.value(), event.type()));
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.getValue(), event.getValueType()));
     }
 
     //VARIABLES
@@ -142,7 +142,7 @@ public class Anthony extends Helper {
         if (stack.sensors().buttonRGB().isPresent()) {
 
 
-            if (Knopf3.values().get(BUTTON_PRESSED) == 1) {
+            if (Knopf3.values().buttonPressed() == 1) {
 
                 Knopf3.send(Color.CYAN);
                 final int luftdruck = stack.values().airPressure().intValue();

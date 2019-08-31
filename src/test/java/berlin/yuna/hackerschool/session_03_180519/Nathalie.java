@@ -6,8 +6,6 @@ import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
-import java.util.Random;
-
 /**
  * @author Nathalie
  */
@@ -22,21 +20,23 @@ public class Nathalie extends Helper {
     }
 
     //VARIABLES
-    private static long soundMax = 1;
+    private static final long soundMax = 2000;
+    private static long frequency = 0;
 
     //CODE FUNCTION
     private static void onSensorEvent(final SensorEvent event) {
         //Get Sensor and Value
         final Sensor io16 = stack.sensors().iO16();
-        final long decibel = stack.values().soundIntensity() + 1;
+        final Sensor display = stack.sensors().displaySegment();
+        long decibel = stack.values().soundSpectrum(frequency) + 1;
 
-        //Dynamic max volume
-        if (decibel > soundMax) {
-            soundMax = decibel;
+        if (decibel < 1) {
+            decibel = stack.values().soundIntensity() + 1;
         }
 
         //every 250 milliseconds - for readable display
-        stack.sensors().displaySegment().sendLimit(2, (stack.values().decibel() / 10) + "dB");
+//        display.sendLimit(4, stack.values().soundSpectrum(frequency) + "F");
+        display.sendLimit(4, (stack.values().soundDecibel() / 10) + "dB");
 
         //every 50 milliseconds
         if (timePassed(50)) {
@@ -58,6 +58,10 @@ public class Nathalie extends Helper {
             io16.send(17);
         } else if (stack.values().temperature() < 2880) {
             io16.send(-17);
+        }
+
+        if (event.sensor().compare().isRotary()) {
+            frequency = event.getValue() * 2;
         }
     }
 }

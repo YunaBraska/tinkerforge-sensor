@@ -1,7 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.type.RollingList;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.Device;
@@ -17,7 +16,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DECIBEL;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_DECIBEL;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
@@ -28,7 +27,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#DECIBEL} [x / 10 = db]</li>
+ * <li>{@link ValueType#SOUND_DECIBEL} [x / 10 = db]</li>
  * <li>{@link ValueType#SOUND_INTENSITY} [x / 100 = db]</li>
  * <li>{@link ValueType#SOUND_SPECTRUM} [x = x[]]</li>
  * </ul>
@@ -36,9 +35,12 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
  * <ul>
  * <li><a href="https://www.tinkerforge.com/de/doc//Hardware/Bricklets/Sound_Pressure_Level.html">Official documentation</a></li>
  * </ul>
- * <h6>Getting sound spectrum examples</h6>
+ * <h6>Get sound spectrum</h6>
  * <code>stack.values().listSoundSpectrum();</code>
- * <code>stack.values().listSoundSpectrumChunk();</code>
+ * <h6>Get sound spectrum with FFT index 20</h6>
+ * <code>stack.values().listSoundSpectrum(20);</code>
+ * <h6>Get sound spectrum list</h6>
+ * <code>stack.values().listSoundSpectrum_List();</code>
  * <h6>Setting FFT to size of 256</h6>
  * <code>send(256)</code>
  * <h6>Setting FFT to size of 256</h6>
@@ -61,11 +63,11 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
 
     @Override
     protected Sensor<BrickletSoundPressureLevel> initListener() {
-        device.addDecibelListener(value -> sendEvent(DECIBEL, (long) value));
+        device.addDecibelListener(value -> sendEvent(SOUND_DECIBEL, (long) value));
         device.addSpectrumListener(values -> {
             //cause of nullPointer somehow
             if (values != null && values.length > 1) {
-                valueMap().put(SOUND_SPECTRUM, new RollingList<>(Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList())));
+                sendEvent(SOUND_SPECTRUM, intToLongList(values), true);
 
                 final int[] intensity = Arrays.copyOfRange(values, 1, values.length / 3);
                 sendEvent(SOUND_INTENSITY, (long) Arrays.stream(intensity).mapToLong(i -> i).summaryStatistics().getAverage());
@@ -186,5 +188,9 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
         return this;
+    }
+
+    private List<Number> intToLongList(final int[] values) {
+        return Arrays.stream(values).mapToLong(value -> value).boxed().collect(Collectors.toList());
     }
 }

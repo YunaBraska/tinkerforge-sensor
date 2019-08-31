@@ -22,8 +22,8 @@ public class Servo_Key_Example extends Helper {
     private static final long speed = 2000;
 
     private static void onSensorEvent(final SensorEvent event) {
-        if (event.type().containsKeyInput()) {
-            keys[event.value().intValue()] = event.type().isKeyPressed();
+        if (event.getValueType().containsKeyInput()) {
+            keys[event.getValue().intValue()] = event.getValueType().isKeyPressed();
 
             if (keys[VK_LEFT]) {
                 move(speed, speed);

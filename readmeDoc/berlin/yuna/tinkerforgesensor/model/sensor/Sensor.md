@@ -121,6 +121,12 @@ Internal api to send {@link Sensor
 Internal api to send {@link Sensor
 
 --- 
+Internal api to send {@link Sensor
+
+--- 
+Internal api to send {@link Sensor
+
+--- 
 Compares the sensor with *Device* *Return* true if the is connected with class type of *Device*
 
 --- 

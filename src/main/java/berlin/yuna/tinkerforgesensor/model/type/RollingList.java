@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.LongSummaryStatistics;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import static java.util.stream.Collectors.toList;
 
@@ -12,7 +13,7 @@ import static java.util.stream.Collectors.toList;
  * <h3>{@link RollingList} extends {@link LinkedList}</h3><br />
  * <i>Rolling list with limited capacity</i><br />
  */
-public class RollingList<T> extends LinkedList<T> {
+public class RollingList<T> extends LinkedBlockingDeque<T> {
 
     private final int capacity;
 
@@ -21,8 +22,8 @@ public class RollingList<T> extends LinkedList<T> {
     }
 
     public RollingList(final Collection<? extends T> collection) {
-        super(collection);
-        this.capacity = collection.size();
+        super(collection == null ? new LinkedList<>() : collection);
+        this.capacity = collection == null ? 0 : collection.size();
     }
 
     public RollingList<T> add(final T... values) {
@@ -55,8 +56,9 @@ public class RollingList<T> extends LinkedList<T> {
      */
     public boolean addAndCheckIfItsNewPeak(final T valueToCheck) {
         add(valueToCheck);
-        final List<Long> lastPeaks = getLastPeaks();
-        return lastPeaks.size() < 2 || (lastPeaks.contains(((Number) valueToCheck).longValue()) && !lastPeaks.get(lastPeaks.size() - 2).equals(valueToCheck));
+        return true; //TODO: compare with list before.... https://stackoverflow.com/questions/17607974/determining-the-type-of-objects-in-a-collection-or-array/17608138
+//        final List<Long> lastPeaks = getLastPeaks();
+//        return lastPeaks.size() < 2 || (lastPeaks.contains(((Number) valueToCheck).longValue()) && !lastPeaks.get(lastPeaks.size() - 2).equals(valueToCheck));
     }
 
     /**

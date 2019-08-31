@@ -14,7 +14,7 @@ public class Beethoven extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.value(), event.type()));
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.getValue(), event.getValueType()));
     }
 
     //VARIABLES

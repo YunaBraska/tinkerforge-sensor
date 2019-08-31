@@ -17,7 +17,7 @@ public class WeatherStation extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.value(), event.type()));
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.getValue(), event.getValueType()));
     }
 
     //VARIABLES
@@ -42,7 +42,7 @@ public class WeatherStation extends Helper {
                 stack.sensors().displayLcd20x4().send("Display: OFF, zum   Einschalten beliebige  Taste betätigen.");
                 stack.sensors().displayLcd20x4().ledAdditional_setOff();
                 counter = 0;
-            } else if (Knopf1.values().get(BUTTON_PRESSED) == 1 && Knopf2.values().get(BUTTON_PRESSED) == 1) {
+            } else if (Knopf1.values().buttonPressed() == 1 && Knopf2.values().buttonPressed() == 1) {
                 if (airQuality < 1050000) {
                     Knopf2.send(Color.RED);
                     Knopf1.send(Color.RED);

@@ -9,7 +9,7 @@ public class AmbientLight_to_Display_Example {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.value(), event.type()));
+        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.getValue(), event.getValueType()));
     }
 
     private static void onSensorEvent(final Long value, final ValueType type) {

@@ -40,7 +40,7 @@ import static java.util.Arrays.asList;
  * <h6>Activation</h6>
  * <code>localControl.ledAdditional_setOn()</code>
  * <h6>Key code</h6>
- * <code>stack.values().keyCode()</code>
+ * <code>values().keyCode()</code>
  * <h6>Readable Key Character</h6>
  * <code>Char char = (char) stack.values().keyChar().intValue()</code>
  */

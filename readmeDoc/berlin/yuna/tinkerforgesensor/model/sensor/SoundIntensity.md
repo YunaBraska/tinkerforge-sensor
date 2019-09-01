@@ -11,10 +11,10 @@
  * [SOUND_INTENSITY](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x / 100 = db] 
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Sound_Intensity.html) 
-###### Getting sound intensity example
+###### Getting sound intensity
  
 ```java
-stack.values().soundIntensity();
+values().soundIntensity();
 ```
 
 --- 

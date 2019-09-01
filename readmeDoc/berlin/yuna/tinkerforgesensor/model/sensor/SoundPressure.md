@@ -16,19 +16,19 @@
 ###### Get sound spectrum
  
 ```java
-stack.values().listSoundSpectrum();
+values().listSoundSpectrum();
 ```
  
 ###### Get sound spectrum with FFT index 20
  
 ```java
-stack.values().listSoundSpectrum(20);
+values().listSoundSpectrum(20);
 ```
  
 ###### Get sound spectrum list
  
 ```java
-stack.values().listSoundSpectrum_List();
+values().listSoundSpectrum_List();
 ```
  
 ###### Setting FFT to size of 256

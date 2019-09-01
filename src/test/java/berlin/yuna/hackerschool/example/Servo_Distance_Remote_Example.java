@@ -97,7 +97,7 @@ public class Servo_Distance_Remote_Example extends Helper {
 
 
         if (sensor.compare().isRotary()) {
-            if (type.isButtonPressed() && value == 1) {
+            if (type.isButtonPressed()) {
                 invert = !invert;
                 servo.send(0, true, invert);
                 servo.send(1, true, invert);

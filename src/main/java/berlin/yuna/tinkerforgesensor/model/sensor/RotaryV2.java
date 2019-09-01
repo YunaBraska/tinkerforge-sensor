@@ -11,7 +11,9 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
 
@@ -22,14 +24,16 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
  * <h3>Values</h3>
  * <ul>
  * <li>{@link ValueType#ROTARY} [x = number]</li>
- * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [1] = Pressed</li>
+ * <li>{@link ValueType#BUTTON_RELEASED} [0] = Released</li>
+ * <li>{@link ValueType#BUTTON} [0/1] = Released/Pressed</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Encoder_V2.html">Official documentation</a></li>
  * </ul>
- * <h6>Getting rotary number example</h6>
- * <code>stack.values().rotary();</code>
+ * <h6>Getting rotary number</h6>
+ * <code>values().rotary();</code>
  */
 public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
 
@@ -40,8 +44,15 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
     @Override
     protected Sensor<BrickletRotaryEncoderV2> initListener() {
         device.addCountListener(value -> sendEvent(ROTARY, (long) value, true));
-        device.addPressedListener(() -> sendEvent(BUTTON_PRESSED, 1L));
-        device.addReleasedListener(() -> sendEvent(BUTTON_PRESSED, 0L));
+        device.addPressedListener(() -> {
+            sendEvent(BUTTON_PRESSED, 1);
+            sendEvent(BUTTON, 1);
+        });
+        device.addReleasedListener(() -> {
+            sendEvent(BUTTON_RELEASED, 1);
+            sendEvent(BUTTON, 0);
+        });
+
         refreshPeriod(1);
         return this;
     }

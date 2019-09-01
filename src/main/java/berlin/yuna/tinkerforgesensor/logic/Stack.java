@@ -19,8 +19,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static berlin.yuna.tinkerforgesensor.model.type.TimeoutExecutor.execute;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_ALREADY_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
@@ -34,6 +38,9 @@ import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.joining;
 
 /**
  * <h3>{@link Stack} implements {@link Closeable}</h3><br />
@@ -63,6 +70,7 @@ public class Stack implements Closeable {
     private final boolean ignoreConnectionError;
     private final String connectionHandlerName = getClass().getSimpleName() + "_" + UUID.randomUUID();
     private final String pingConnectionHandlerName = "Ping_" + connectionHandlerName;
+    private static final int MAX_PRINT_VALUES = 50;
 
     /**
      * <h3>Dummy Stack</h3>
@@ -174,6 +182,7 @@ public class Stack implements Closeable {
      * disconnects all {@link Sensor} from the given host and removes the sensors from {@link Stack#sensorList}
      */
     public synchronized void disconnect() {
+        sensorList.forEach(sensor -> sensor.refreshPeriod(0));
         asyncStop(pingConnectionHandlerName, connectionHandlerName);
         execute(timeoutMs + 256, () -> {
             try {
@@ -201,14 +210,20 @@ public class Stack implements Closeable {
     public String valuesToString() {
         final StringBuilder lineHead = new StringBuilder();
         final StringBuilder lineValue = new StringBuilder();
+        final List<ValueType> IGNORE_TYPES = asList(BUTTON_PRESSED, BUTTON_RELEASED);
         for (Sensor sensor : sensors()) {
             for (ValueType valueType : ValueType.values()) {
-                final Long value = sensor.values().get(valueType, null, -1);
-                if (value != null) {
-                    final int valueLength = value.toString().length();
+                if (IGNORE_TYPES.contains(valueType)) {
+                    continue;
+                }
+                final List<Long> values = sensor.values().getList(valueType, -1);
+                if (!values.isEmpty()) {
+                    String value = values.stream().map(Object::toString).collect(joining(", "));
+                    value = value.length() > MAX_PRINT_VALUES ? value.substring(0, MAX_PRINT_VALUES) : value;
+                    final int valueLength = value.length();
                     final int typeLength = valueType.toString().length();
                     final int fieldSize = (Math.max(valueLength, typeLength)) + 1;
-                    lineHead.append(format("%" + fieldSize + "s |", valueType));
+                    lineHead.append(center(" " + valueType, fieldSize)).append(" |");
                     lineValue.append(format("%" + fieldSize + "s |", value));
                 }
             }
@@ -322,5 +337,17 @@ public class Stack implements Closeable {
             localControl.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
         } catch (NetworkConnectionException ignored) {
         }
+    }
+
+    //TODO: move to utils
+    private String center(final String text, final int length) {
+        if (text.length() < length) {
+            final int left = (length - text.length()) / 2;
+            final int right = (length - text.length()) - left;
+            final String leftS = IntStream.range(0, left).mapToObj(i -> " ").collect(joining(""));
+            final String rightS = IntStream.range(0, right).mapToObj(i -> " ").collect(joining(""));
+            return leftS + text + rightS;
+        }
+        return text;
     }
 }

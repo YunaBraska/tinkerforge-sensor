@@ -68,7 +68,7 @@ public class ReactionGame extends Helper {
         }
 
         //BUTTON EVENTS
-        if (type.isButtonPressed() && value == 1L) {
+        if (type.isButtonPressed()) {
             if (sensor.compare().isRotary()) {
                 //RESET GAME
                 score = -1;

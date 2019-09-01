@@ -6,9 +6,9 @@
 ### [DisplayLcd20x4](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/DisplayLcd20x4.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/DisplayLcd20x4.java))
  *20x4 character alphanumeric display with blue backlight* 
 ### Values
- * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [10, 20, 30, 40] = Released
- * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [11, 21, 31, 41] = Pressed
- * [BUTTON_PRESSED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0/1] = Released/Pressed 
+ * [BUTTON_PRESSED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [1] = Pressed
+ * [BUTTON_RELEASED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0] = Released
+ * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0/1,0/1,0/1,0/1] = 4x Button Released/Pressed 
 ### Technical Info
  * [Official documentation](href=) 
 ###### Clear display
@@ -53,16 +53,22 @@ display.send("H ${s} O ${s} W ${s} D ${s} Y");
 display.ledAdditional_setOn;
 ```
  
-###### Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example
+###### Getting button state from second button (0=Released, 1= pressed)
  
 ```java
-stack.values().button();
+values().button(1);
 ```
  
-###### Getting button pressed example
+###### Getting button state list of 0/1 (0=Released, 1= pressed) value for each button
  
 ```java
-stack.values().buttonPressed();
+values().button_List();
+```
+ 
+###### Getting button pressed
+ 
+```java
+values().buttonPressed();
 ```
 
 --- 

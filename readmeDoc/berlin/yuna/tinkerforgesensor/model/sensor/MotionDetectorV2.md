@@ -15,10 +15,10 @@
  * [MOTION_DETECTED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0/1 cycleOff/detect] 
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html) 
-###### Getting motion detected example
+###### Getting motion detected
  
 ```java
-stack.values().motionDetected();
+values().motionDetected();
 ```
 
 --- 

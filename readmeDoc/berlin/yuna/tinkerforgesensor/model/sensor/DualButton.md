@@ -6,42 +6,64 @@
 ### [DualButton](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/DualButton.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/DualButton.java))
  *Two tactile buttons with built-in blue LEDs* 
 ### Values
- * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [10, 20] = Released
- * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [11, 21] = Pressed
- * [BUTTON_PRESSED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0/1] = Released/Pressed 
+ * [BUTTON_PRESSED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [1] = Pressed
+ * [BUTTON_RELEASED](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0] = Released
+ * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0/1,0/1] = 2x Button Released/Pressed 
 ### Technical Info
  * [Official documentation](href=) 
-###### Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example
+###### Getting button state from second button (0=Released, 1= pressed)
  
 ```java
-stack.values().button();
+values().button(1);
 ```
  
-###### Getting button pressed example
+###### Getting button state list of 0/1 (0=Released, 1= pressed) value for each button
  
 ```java
-stack.values().buttonPressed();
+values().button_List();
 ```
  
-###### Set LEDs on
+###### Switch first led on
+ 
+```java
+button.send(1);
+```
+ 
+###### Switch first led off
+ 
+```java
+button.send(-1);
+```
+ 
+###### Switch first led on and second led off
+ 
+```java
+button.send(1, -2);
+```
+ 
+```java
+button.send(true, false);
+```
+ 
+###### (Auto) Set LEDs on
  
 ```java
 button.ledAdditional_setOn();
 ```
  
-###### Set LEDs off
+###### (Auto) Set LEDs off
  
 ```java
 button.ledAdditional_setOff();
 ```
  
-###### Set LEDs active on press
+###### (Auto) Set LEDs active on press
  
 ```java
 button.setLedAdditional_Status();
 ```
  
-###### Set LEDs active on release
+###### (Auto) Set LEDs active on release
  
 ```java
 button.setLedAdditional_Heartbeat();

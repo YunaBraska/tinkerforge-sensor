@@ -36,11 +36,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
  * <li><a href="https://www.tinkerforge.com/de/doc//Hardware/Bricklets/Sound_Pressure_Level.html">Official documentation</a></li>
  * </ul>
  * <h6>Get sound spectrum</h6>
- * <code>stack.values().listSoundSpectrum();</code>
+ * <code>values().listSoundSpectrum();</code>
  * <h6>Get sound spectrum with FFT index 20</h6>
- * <code>stack.values().listSoundSpectrum(20);</code>
+ * <code>values().listSoundSpectrum(20);</code>
  * <h6>Get sound spectrum list</h6>
- * <code>stack.values().listSoundSpectrum_List();</code>
+ * <code>values().listSoundSpectrum_List();</code>
  * <h6>Setting FFT to size of 256</h6>
  * <code>send(256)</code>
  * <h6>Setting FFT to size of 256</h6>

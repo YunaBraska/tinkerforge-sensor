@@ -544,17 +544,6 @@ public abstract class Sensor<T extends Device> {
         return sendEvent(valueType, singletonList(value), unchecked);
     }
 
-    /**
-     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
-     *
-     * @param valueType type of send to send
-     * @param value     send to send
-     * @return {@link Sensor<T>#port}
-     */
-    protected Sensor<T> sendEvent(final ValueType valueType, final Long value) {
-        return sendEvent(valueType, singletonList(value), false);
-    }
-
     protected Sensor<T> sendEventUnchecked(final SensorEvent sensorEvent) {
         return sendEvent(sensorEvent.getValueType(), sensorEvent.getValues(), true);
     }

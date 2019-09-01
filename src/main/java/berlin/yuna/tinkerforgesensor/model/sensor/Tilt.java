@@ -23,7 +23,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Tilt.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting tilt examples</h6>
- * <code>stack.values().tilt();</code>
+ * <code>values().tilt();</code>
  */
 public class Tilt extends Sensor<BrickletTilt> {
 

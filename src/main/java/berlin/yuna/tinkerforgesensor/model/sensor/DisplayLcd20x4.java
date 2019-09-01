@@ -7,6 +7,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,9 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
+import static java.util.Arrays.asList;
 
 /**
  * <h3>{@link DisplayLcd20x4}</h3>
@@ -23,9 +26,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#BUTTON} [10, 20, 30, 40] = Released</li>
- * <li>{@link ValueType#BUTTON} [11, 21, 31, 41] = Pressed</li>
- * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [1] = Pressed</li>
+ * <li>{@link ValueType#BUTTON_RELEASED} [0] = Released</li>
+ * <li>{@link ValueType#BUTTON} [0/1,0/1,0/1,0/1] = 4x Button Released/Pressed</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
@@ -45,15 +48,18 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
  * <h6>Display ON</h6>
  * <code>display.ledAdditional_setOn;</code>
- * <h6>Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example</h6>
- * <code>stack.values().button();</code>
- * <h6>Getting button pressed example</h6>
- * <code>stack.values().buttonPressed();</code>
+ * <h6>Getting button state from second button (0=Released, 1= pressed)</h6>
+ * <code>values().button(1);</code>
+ * <h6>Getting button state list of 0/1 (0=Released, 1= pressed) value for each button</h6>
+ * <code>values().button_List();</code>
+ * <h6>Getting button pressed</h6>
+ * <code>values().buttonPressed();</code>
  */
 public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
     public static final String DYNAMIC_SPACE = "${s}";
     public static final int COLUMN_LIMIT = 20;
+    final Integer[] buttons = {0,0,0,0};
 
     private static final String SPLIT_LINE = System.lineSeparator();
     private final String[] cachedRows = new String[]{"", "", "", ""};
@@ -65,12 +71,14 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
     @Override
     protected Sensor<BrickletLCD20x4> initListener() {
         device.addButtonPressedListener(value -> {
-            sendEvent(BUTTON_PRESSED, 1L, true);
-            sendEvent(BUTTON, (value * 10L) + 1L, true);
+            buttons[value] = 1;
+            sendEvent(BUTTON_PRESSED, 1, true);
+            sendEvent(BUTTON, asList(buttons), true);
         });
         device.addButtonReleasedListener(value -> {
-            sendEvent(BUTTON_PRESSED, 0L, true);
-            sendEvent(BUTTON_PRESSED, (value * 10L), true);
+            buttons[value] = 0;
+            sendEvent(BUTTON_RELEASED, 0, true);
+            sendEvent(BUTTON, asList(buttons), true);
         });
         return this;
     }

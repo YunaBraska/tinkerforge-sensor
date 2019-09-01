@@ -6,6 +6,10 @@ import com.tinkerforge.BrickletDualButtonV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
@@ -16,7 +20,9 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
+import static java.util.Arrays.asList;
 
 /**
  * <h3>{@link DualButton}</h3>
@@ -24,31 +30,41 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#BUTTON} [10, 20] = Released</li>
- * <li>{@link ValueType#BUTTON} [11, 21] = Pressed</li>
- * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [1] = Pressed</li>
+ * <li>{@link ValueType#BUTTON_RELEASED} [0] = Released</li>
+ * <li>{@link ValueType#BUTTON} [0/1,0/1] = 2x Button Released/Pressed</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
  * <li><a href="href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Dual_Button.html">Official documentation</a></li>
  * </ul>
- * <h6>Getting button with pressed value (digit_1= button, digit_2 = pressed/released) example</h6>
- * <code>stack.values().button();</code>
- * <h6>Getting button pressed example</h6>
- * <code>stack.values().buttonPressed();</code>
- * <h6>Set LEDs on</h6>
+ * <h6>Getting button state from second button (0=Released, 1= pressed)</h6>
+ * <code>values().button(1);</code>
+ * <h6>Getting button state list of 0/1 (0=Released, 1= pressed) value for each button</h6>
+ * <code>values().button_List();</code>
+ * <h6>Switch first led on</h6>
+ * <code>button.send(1);</code>
+ * <h6>Switch first led off</h6>
+ * <code>button.send(-1);</code>
+ * <h6>Switch first led on and second led off</h6>
+ * <code>button.send(1, -2);</code>
+ * <code>button.send(true, false);</code>
+ * <h6>(Auto) Set LEDs on</h6>
  * <code>button.ledAdditional_setOn();</code>
- * <h6>Set LEDs off</h6>
+ * <h6>(Auto) Set LEDs off</h6>
  * <code>button.ledAdditional_setOff();</code>
- * <h6>Set LEDs active on press</h6>
+ * <h6>(Auto) Set LEDs active on press</h6>
  * <code>button.setLedAdditional_Status();</code>
- * <h6>Set LEDs active on release</h6>
+ * <h6>(Auto) Set LEDs active on release</h6>
  * <code>button.setLedAdditional_Heartbeat();</code>
  */
 public class DualButton extends Sensor<BrickletDualButtonV2> {
 
     private int buttonL;
     private int buttonR;
+
+    private int ledL;
+    private int ledR;
 
     public DualButton(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletDualButtonV2) device, uid);
@@ -64,7 +80,22 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     }
 
     @Override
+    public Sensor<BrickletDualButtonV2> send(final Object... values) {
+        if (values.length > 1 && values[0] instanceof Boolean && values[1] instanceof Boolean) {
+            final boolean ledL = (Boolean) values[0];
+            final boolean ledR = (Boolean) values[1];
+            send(ledL? 1 : -1, ledR? 2 : -2);
+        } else {
+            Arrays.stream(values).forEach(this::send);
+        }
+        return this;
+    }
+
     public Sensor<BrickletDualButtonV2> send(final Object value) {
+        if (value instanceof Number) {
+            final int led = ((Number) value).intValue();
+            setLed(led);
+        }
         return this;
     }
 
@@ -91,7 +122,6 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
         return this;
     }
 
-    //TODO: set button 1 && button 2 different
     @Override
     public Sensor<BrickletDualButtonV2> ledAdditional(final Integer value) {
         if (ledAdditional.bit == value) return this;
@@ -104,7 +134,7 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
                 device.setLEDState(2, 2);
             } else if (value == LED_STATUS_HEARTBEAT.bit) {
                 ledAdditional = LED_ADDITIONAL_HEARTBEAT;
-                device.setLEDState(0, 0); //FIXME: does this make sense [= invert status]???
+                device.setLEDState(0, 0);
             } else if (value == LED_ADDITIONAL_STATUS.bit) {
                 ledAdditional = LED_ADDITIONAL_STATUS;
                 device.setLEDState(1, 1);
@@ -135,9 +165,9 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
             Thread.sleep(128);
             ledAdditional_setOff();
             Thread.sleep(128);
-            device.setLEDState(2, 3);
+            send(true, false);
             Thread.sleep(128);
-            device.setLEDState(3, 2);
+            send(-1, 2);
             Thread.sleep(128);
             setLedAdditional_Status();
         } catch (Exception ignore) {
@@ -164,16 +194,26 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     }
 
     private void sendEvent(final int buttonL, final int buttonR) {
+        int changed = 0;
         if (this.buttonL != buttonL) {
             this.buttonL = buttonL;
-            sendEvent(BUTTON_PRESSED, buttonL == 1 ? 0L : 1L, true);
-            sendEvent(BUTTON, buttonL == 1 ? 10L : 11L, true);
+            changed = buttonL;
+        } else if (this.buttonR != buttonR) {
+            this.buttonR = buttonR;
+            changed = buttonR;
         }
 
-        if (this.buttonR != buttonR) {
-            this.buttonR = buttonR;
-            sendEvent(BUTTON_PRESSED, buttonR == 1 ? 0L : 1L, true);
-            sendEvent(BUTTON, buttonR == 1 ? 20L : 21L, true);
+        sendEvent((changed == 1 ? BUTTON_RELEASED : BUTTON_PRESSED), (changed == 1 ? 0 : 1), true);
+        sendEvent(BUTTON, asList((buttonL == 1 ? 0 : 1), (buttonR == 1 ? 0 : 1)), true);
+    }
+
+    private void setLed(final int led) {
+        try {
+            ledR = (led == 1 ? 3 : (led == -1 ? 2 : ledR));
+            ledL = (led == 2 ? 3 : (led == -2 ? 2 : ledL));
+            device.setLEDState(ledL, ledR);
+        } catch (TinkerforgeException ignored) {
+            sendEvent(DEVICE_TIMEOUT, 404L);
         }
     }
 }

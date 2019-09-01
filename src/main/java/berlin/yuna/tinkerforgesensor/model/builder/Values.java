@@ -2189,6 +2189,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.BUTTON_PRESSED, valueIndex);
     }
 
+    public Long buttonReleased() {
+        return buttonReleased(-1);
+    }
+
+    public Long buttonReleased(final Number valueIndex) {
+        return get(ValueType.BUTTON_RELEASED, -1L, valueIndex);
+    }
+
+    public List<Long> buttonReleased_List() {
+        return buttonReleased_List(-1);
+    }
+
+    public List<Long> buttonReleased_List(final Number timeIndex) {
+        return getList(ValueType.BUTTON_RELEASED, timeIndex);
+    }
+
+    public LongSummaryStatistics buttonReleased_Statistics() {
+        return buttonReleased_Statistics(-1);
+    }
+
+    public LongSummaryStatistics buttonReleased_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.BUTTON_RELEASED, valueIndex);
+    }
+
     public Long rotary() {
         return rotary(-1);
     }

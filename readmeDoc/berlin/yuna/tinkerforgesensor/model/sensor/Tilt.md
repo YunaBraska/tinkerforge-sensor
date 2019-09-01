@@ -14,7 +14,7 @@
 ###### Getting tilt examples
  
 ```java
-stack.values().tilt();
+values().tilt();
 ```
 
 --- 

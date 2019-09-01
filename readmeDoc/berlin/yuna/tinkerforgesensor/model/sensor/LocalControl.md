@@ -25,7 +25,7 @@ localControl.ledAdditional_setOn()
 ###### Key code
  
 ```java
-stack.values().keyCode()
+values().keyCode()
 ```
  
 ###### Readable Key Character

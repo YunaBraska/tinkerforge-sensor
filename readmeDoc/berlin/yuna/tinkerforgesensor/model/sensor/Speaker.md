@@ -18,7 +18,7 @@
 speaker.send(1000)
 ```
  
-###### Send 2 second beep with frequency (min 585 - max 7100)
+###### Send 2000 millisecond beep with 1000 frequency (min 585 - max 7100)
  
 ```java
 speaker.send(1000, 2000)

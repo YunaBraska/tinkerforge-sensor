@@ -14,7 +14,9 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.Color.convertToHighContrast;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
@@ -23,14 +25,16 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#BUTTON_PRESSED} [0/1] = Released/Pressed</li>
+ * <li>{@link ValueType#BUTTON_PRESSED} [1] = Pressed</li>
+ * <li>{@link ValueType#BUTTON_RELEASED} [0] = Released</li>
+ * <li>{@link ValueType#BUTTON} [0/1] = Released/Pressed</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm">Official documentation</a></li>
  * </ul>
- * <h6>Getting button pressed example</h6>
- * <code>stack.values().buttonPressed();</code>
+ * <h6>Getting button pressed</h6>
+ * <code>values().buttonPressed();</code>
  */
 public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 
@@ -42,7 +46,10 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 
     @Override
     protected Sensor<BrickletRGBLEDButton> initListener() {
-        device.addButtonStateChangedListener(value -> sendEvent(BUTTON_PRESSED, value == 1 ? 0L : 1L, true));
+        device.addButtonStateChangedListener(value -> {
+            sendEvent((value == 1 ? BUTTON_PRESSED : BUTTON_RELEASED), (value == 1 ? 0L : 1L), true);
+            sendEvent(BUTTON, (value == 1 ? 0L : 1L), true);
+        });
         return this;
     }
 

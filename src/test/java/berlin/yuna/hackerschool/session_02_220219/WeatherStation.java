@@ -7,8 +7,6 @@ import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
 
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
-
 /**
  * @author yourNames
  */

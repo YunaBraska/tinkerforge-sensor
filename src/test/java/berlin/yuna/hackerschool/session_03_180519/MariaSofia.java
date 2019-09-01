@@ -40,7 +40,7 @@ public class MariaSofia extends Helper {
     //    }
 
         //Frequenzbutton
-        if (type.isButtonPressed() && value == 1) {
+        if (type.isButtonPressed()) {
             switchbeep = !switchbeep;
 
 

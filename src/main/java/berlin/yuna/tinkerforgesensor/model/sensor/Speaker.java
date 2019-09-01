@@ -25,7 +25,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * </ul>
  * <h6>Send 1 second beep</h6>
  * <code>speaker.send(1000)</code>
- * <h6>Send 2 second beep with frequency (min 585 - max 7100)</h6>
+ * <h6>Send 2000 millisecond beep with 1000 frequency (min 585 - max 7100)</h6>
  * <code>speaker.send(1000, 2000)</code>
  * <h6>Send morse</h6>
  * <code>speaker.send("... --- ...")</code>

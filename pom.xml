@@ -51,6 +51,11 @@
             <version>2.0.0.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.apple</groupId>
+            <artifactId>AppleJavaExtensions</artifactId>
+            <version>1.4</version>
+        </dependency>
 
         <!-- CODE GENERATION -->
         <dependency>

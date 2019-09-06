@@ -5,6 +5,10 @@ import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
 /**
  * @author YOUR NAME REQUIRED
+ * Your code (http://hs.yuna.berlin)
+ * Hackerschool (https://hacker-school.de)
+ * Tinkerforge hardware (https://www.tinkerforge.com)
+ * Sensor documentation (http://sensor.yuna.berlin)
  */
 public class Template extends HackerSchoolTemplate {
 

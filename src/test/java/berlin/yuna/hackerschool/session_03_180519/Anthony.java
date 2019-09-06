@@ -35,7 +35,7 @@ public class Anthony extends Helper {
                 Knopf1.send(Color.GREEN);
                 Knopf2.send(Color.RED);
                 Knopf3.send(Color.BLUE);
-                stack.sensors().dualButton().ledAdditional_setOff();
+                stack.sensors().buttonDual().ledAdditional_setOff();
                 display.send("${clear}");
                 display.send("Grün = Messstation  Rot = Distance Game Blau = Abstands Sensor");
                 display.ledAdditional_setOn();

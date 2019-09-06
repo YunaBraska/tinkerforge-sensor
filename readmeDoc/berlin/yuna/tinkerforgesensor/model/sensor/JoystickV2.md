@@ -15,10 +15,16 @@
  * [BUTTON](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [0/1] = Released/Pressed 
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Joystick_V2.html) 
-###### Getting rotary number
+###### Getting x axis
  
 ```java
-values().rotary();
+values().mouseMoveX();
+```
+ 
+###### Getting y axis
+ 
+```java
+values().mouseMoveY();
 ```
  
 ###### Getting button pressed

@@ -27,11 +27,11 @@ public class AngelaProgram extends Helper {
         if (program_01 == null) {
             program_01 = loop("Police LED", run -> {
                 stack.sensors().iO16().send(1, -5);
-                stack.sensors().dualButton().send(-1, 2);
+                stack.sensors().buttonDual().send(-1, 2);
                 stack.sensors().speaker().send(400, 2000);
                 sleep(500);
                 stack.sensors().iO16().send(-1, 5);
-                stack.sensors().dualButton().send(1, -2);
+                stack.sensors().buttonDual().send(1, -2);
                 stack.sensors().speaker().send(400, 1000);
                 sleep(500);
             });

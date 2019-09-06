@@ -34,8 +34,10 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_Y;
  * <ul>
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Joystick_V2.html">Official documentation</a></li>
  * </ul>
- * <h6>Getting rotary number</h6>
- * <code>values().rotary();</code>
+ * <h6>Getting x axis</h6>
+ * <code>values().mouseMoveX();</code>
+ * <h6>Getting y axis</h6>
+ * <code>values().mouseMoveY();</code>
  * <h6>Getting button pressed</h6>
  * <code>values().buttonPressed();</code>
  */
@@ -48,8 +50,8 @@ public class JoystickV2 extends Sensor<BrickletJoystickV2> {
     @Override
     protected Sensor<BrickletJoystickV2> initListener() {
         device.addPositionListener((x, y) -> {
-            sendEvent(MOUSE_MOVE_X, x);
-            sendEvent(MOUSE_MOVE_Y, y);
+            sendEvent(MOUSE_MOVE_X, x,true);
+            sendEvent(MOUSE_MOVE_Y, y,true);
         });
         device.addPressedListener(pressed -> {
             if (pressed) {

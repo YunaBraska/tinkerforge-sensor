@@ -6,9 +6,7 @@ import com.tinkerforge.BrickletDualButtonV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
@@ -25,7 +23,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static java.util.Arrays.asList;
 
 /**
- * <h3>{@link DualButton}</h3>
+ * <h3>{@link ButtonDual}</h3>
  * <i>Two tactile buttons with built-in blue LEDs</i>
  *
  * <h3>Values</h3>
@@ -58,7 +56,7 @@ import static java.util.Arrays.asList;
  * <h6>(Auto) Set LEDs active on release</h6>
  * <code>button.setLedAdditional_Heartbeat();</code>
  */
-public class DualButton extends Sensor<BrickletDualButtonV2> {
+public class ButtonDual extends Sensor<BrickletDualButtonV2> {
 
     private int buttonL;
     private int buttonR;
@@ -66,7 +64,7 @@ public class DualButton extends Sensor<BrickletDualButtonV2> {
     private int ledL;
     private int ledR;
 
-    public DualButton(final Device device, final String uid) throws NetworkConnectionException {
+    public ButtonDual(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletDualButtonV2) device, uid);
     }
 

@@ -5,6 +5,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.AccelerometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.BarometerV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.ButtonDual;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.sensor.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.Default;
@@ -15,18 +16,20 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegmentV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
-import berlin.yuna.tinkerforgesensor.model.sensor.DualButton;
+import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUSV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
+import berlin.yuna.tinkerforgesensor.model.sensor.JoystickV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LedRGBV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightColor;
+import berlin.yuna.tinkerforgesensor.model.sensor.LightColorV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUv;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUvV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
@@ -34,6 +37,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.PotiLiniarV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.PotiRotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.RotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.sensor.Servo;
@@ -57,22 +62,27 @@ import com.tinkerforge.BrickletAmbientLightV3;
 import com.tinkerforge.BrickletBarometer;
 import com.tinkerforge.BrickletBarometerV2;
 import com.tinkerforge.BrickletColor;
+import com.tinkerforge.BrickletColorV2;
 import com.tinkerforge.BrickletDistanceIR;
 import com.tinkerforge.BrickletDistanceIRV2;
 import com.tinkerforge.BrickletDistanceUS;
+import com.tinkerforge.BrickletDistanceUSV2;
 import com.tinkerforge.BrickletDualButtonV2;
 import com.tinkerforge.BrickletHumidity;
 import com.tinkerforge.BrickletHumidityV2;
 import com.tinkerforge.BrickletIO16;
 import com.tinkerforge.BrickletIO16V2;
+import com.tinkerforge.BrickletJoystickV2;
 import com.tinkerforge.BrickletLCD128x64;
 import com.tinkerforge.BrickletLCD20x4;
+import com.tinkerforge.BrickletLinearPotiV2;
 import com.tinkerforge.BrickletMotionDetector;
 import com.tinkerforge.BrickletMotionDetectorV2;
 import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.BrickletRGBLEDButton;
 import com.tinkerforge.BrickletRGBLEDV2;
 import com.tinkerforge.BrickletRotaryEncoderV2;
+import com.tinkerforge.BrickletRotaryPotiV2;
 import com.tinkerforge.BrickletSegmentDisplay4x7;
 import com.tinkerforge.BrickletSegmentDisplay4x7V2;
 import com.tinkerforge.BrickletSoundIntensity;
@@ -100,6 +110,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletAirQuality} => Sensor {@link AirQuality}</li>
  * <li>Device {@link BrickletBarometer} => Sensor {@link Barometer}</li>
  * <li>Device {@link BrickletBarometerV2} => Sensor {@link BarometerV2}</li>
+ * <li>Device {@link BrickletDualButtonV2} => Sensor {@link ButtonDual}</li>
  * <li>Device {@link BrickletRGBLEDButton} => Sensor {@link ButtonRGB}</li>
  * <li>Device {@link BrickDC} => Sensor {@link DC}</li>
  * <li>Device {@link DummyDevice} => Sensor {@link Default}</li>
@@ -110,18 +121,20 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletDistanceIR} => Sensor {@link DistanceIR}</li>
  * <li>Device {@link BrickletDistanceIRV2} => Sensor {@link DistanceIRV2}</li>
  * <li>Device {@link BrickletDistanceUS} => Sensor {@link DistanceUS}</li>
- * <li>Device {@link BrickletDualButtonV2} => Sensor {@link DualButton}</li>
+ * <li>Device {@link BrickletDistanceUSV2} => Sensor {@link DistanceUSV2}</li>
  * <li>Device {@link BrickletHumidity} => Sensor {@link Humidity}</li>
  * <li>Device {@link BrickletHumidityV2} => Sensor {@link HumidityV2}</li>
  * <li>Device {@link BrickIMU} => Sensor {@link IMU}</li>
  * <li>Device {@link BrickIMUV2} => Sensor {@link IMUV2}</li>
  * <li>Device {@link BrickletIO16} => Sensor {@link IO16}</li>
  * <li>Device {@link BrickletIO16V2} => Sensor {@link IO16V2}</li>
+ * <li>Device {@link BrickletJoystickV2} => Sensor {@link JoystickV2}</li>
  * <li>Device {@link BrickletRGBLEDV2} => Sensor {@link LedRGBV2}</li>
  * <li>Device {@link BrickletAmbientLight} => Sensor {@link LightAmbient}</li>
  * <li>Device {@link BrickletAmbientLightV2} => Sensor {@link LightAmbientV2}</li>
  * <li>Device {@link BrickletAmbientLightV3} => Sensor {@link LightAmbientV3}</li>
  * <li>Device {@link BrickletColor} => Sensor {@link LightColor}</li>
+ * <li>Device {@link BrickletColorV2} => Sensor {@link LightColorV2}</li>
  * <li>Device {@link BrickletUVLight} => Sensor {@link LightUv}</li>
  * <li>Device {@link BrickletUVLightV2} => Sensor {@link LightUvV2}</li>
  * <li>Device {@link DummyDevice} => Sensor {@link LocalAudio}</li>
@@ -129,6 +142,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickMaster} => Sensor {@link Master}</li>
  * <li>Device {@link BrickletMotionDetector} => Sensor {@link MotionDetector}</li>
  * <li>Device {@link BrickletMotionDetectorV2} => Sensor {@link MotionDetectorV2}</li>
+ * <li>Device {@link BrickletLinearPotiV2} => Sensor {@link PotiLiniarV2}</li>
+ * <li>Device {@link BrickletRotaryPotiV2} => Sensor {@link PotiRotaryV2}</li>
  * <li>Device {@link BrickletRotaryEncoderV2} => Sensor {@link RotaryV2}</li>
  * <li>Device {@link BrickServo} => Sensor {@link Servo}</li>
  * <li>Device {@link BrickletSoundIntensity} => Sensor {@link SoundIntensity}</li>
@@ -164,6 +179,7 @@ public class SensorRegistry {
         registry.put(BrickletAirQuality.class, AirQuality::new);
         registry.put(BrickletBarometer.class, Barometer::new);
         registry.put(BrickletBarometerV2.class, BarometerV2::new);
+        registry.put(BrickletDualButtonV2.class, ButtonDual::new);
         registry.put(BrickletRGBLEDButton.class, ButtonRGB::new);
         registry.put(BrickDC.class, DC::new);
         registry.put(DummyDevice.class, Default::new);
@@ -174,18 +190,20 @@ public class SensorRegistry {
         registry.put(BrickletDistanceIR.class, DistanceIR::new);
         registry.put(BrickletDistanceIRV2.class, DistanceIRV2::new);
         registry.put(BrickletDistanceUS.class, DistanceUS::new);
-        registry.put(BrickletDualButtonV2.class, DualButton::new);
+        registry.put(BrickletDistanceUSV2.class, DistanceUSV2::new);
         registry.put(BrickletHumidity.class, Humidity::new);
         registry.put(BrickletHumidityV2.class, HumidityV2::new);
         registry.put(BrickIMU.class, IMU::new);
         registry.put(BrickIMUV2.class, IMUV2::new);
         registry.put(BrickletIO16.class, IO16::new);
         registry.put(BrickletIO16V2.class, IO16V2::new);
+        registry.put(BrickletJoystickV2.class, JoystickV2::new);
         registry.put(BrickletRGBLEDV2.class, LedRGBV2::new);
         registry.put(BrickletAmbientLight.class, LightAmbient::new);
         registry.put(BrickletAmbientLightV2.class, LightAmbientV2::new);
         registry.put(BrickletAmbientLightV3.class, LightAmbientV3::new);
         registry.put(BrickletColor.class, LightColor::new);
+        registry.put(BrickletColorV2.class, LightColorV2::new);
         registry.put(BrickletUVLight.class, LightUv::new);
         registry.put(BrickletUVLightV2.class, LightUvV2::new);
         registry.put(DummyDevice.class, LocalAudio::new);
@@ -193,6 +211,8 @@ public class SensorRegistry {
         registry.put(BrickMaster.class, Master::new);
         registry.put(BrickletMotionDetector.class, MotionDetector::new);
         registry.put(BrickletMotionDetectorV2.class, MotionDetectorV2::new);
+        registry.put(BrickletLinearPotiV2.class, PotiLiniarV2::new);
+        registry.put(BrickletRotaryPotiV2.class, PotiRotaryV2::new);
         registry.put(BrickletRotaryEncoderV2.class, RotaryV2::new);
         registry.put(BrickServo.class, Servo::new);
         registry.put(BrickletSoundIntensity.class, SoundIntensity::new);
@@ -211,6 +231,7 @@ public class SensorRegistry {
         registry.put(BrickletAirQuality.DEVICE_IDENTIFIER, BrickletAirQuality::new);
         registry.put(BrickletBarometer.DEVICE_IDENTIFIER, BrickletBarometer::new);
         registry.put(BrickletBarometerV2.DEVICE_IDENTIFIER, BrickletBarometerV2::new);
+        registry.put(BrickletDualButtonV2.DEVICE_IDENTIFIER, BrickletDualButtonV2::new);
         registry.put(BrickletRGBLEDButton.DEVICE_IDENTIFIER, BrickletRGBLEDButton::new);
         registry.put(BrickDC.DEVICE_IDENTIFIER, BrickDC::new);
         registry.put(DummyDevice.DEVICE_IDENTIFIER, DummyDevice::new);
@@ -221,18 +242,20 @@ public class SensorRegistry {
         registry.put(BrickletDistanceIR.DEVICE_IDENTIFIER, BrickletDistanceIR::new);
         registry.put(BrickletDistanceIRV2.DEVICE_IDENTIFIER, BrickletDistanceIRV2::new);
         registry.put(BrickletDistanceUS.DEVICE_IDENTIFIER, BrickletDistanceUS::new);
-        registry.put(BrickletDualButtonV2.DEVICE_IDENTIFIER, BrickletDualButtonV2::new);
+        registry.put(BrickletDistanceUSV2.DEVICE_IDENTIFIER, BrickletDistanceUSV2::new);
         registry.put(BrickletHumidity.DEVICE_IDENTIFIER, BrickletHumidity::new);
         registry.put(BrickletHumidityV2.DEVICE_IDENTIFIER, BrickletHumidityV2::new);
         registry.put(BrickIMU.DEVICE_IDENTIFIER, BrickIMU::new);
         registry.put(BrickIMUV2.DEVICE_IDENTIFIER, BrickIMUV2::new);
         registry.put(BrickletIO16.DEVICE_IDENTIFIER, BrickletIO16::new);
         registry.put(BrickletIO16V2.DEVICE_IDENTIFIER, BrickletIO16V2::new);
+        registry.put(BrickletJoystickV2.DEVICE_IDENTIFIER, BrickletJoystickV2::new);
         registry.put(BrickletRGBLEDV2.DEVICE_IDENTIFIER, BrickletRGBLEDV2::new);
         registry.put(BrickletAmbientLight.DEVICE_IDENTIFIER, BrickletAmbientLight::new);
         registry.put(BrickletAmbientLightV2.DEVICE_IDENTIFIER, BrickletAmbientLightV2::new);
         registry.put(BrickletAmbientLightV3.DEVICE_IDENTIFIER, BrickletAmbientLightV3::new);
         registry.put(BrickletColor.DEVICE_IDENTIFIER, BrickletColor::new);
+        registry.put(BrickletColorV2.DEVICE_IDENTIFIER, BrickletColorV2::new);
         registry.put(BrickletUVLight.DEVICE_IDENTIFIER, BrickletUVLight::new);
         registry.put(BrickletUVLightV2.DEVICE_IDENTIFIER, BrickletUVLightV2::new);
         registry.put(DummyDevice.DEVICE_IDENTIFIER, DummyDevice::new);
@@ -240,6 +263,8 @@ public class SensorRegistry {
         registry.put(BrickMaster.DEVICE_IDENTIFIER, BrickMaster::new);
         registry.put(BrickletMotionDetector.DEVICE_IDENTIFIER, BrickletMotionDetector::new);
         registry.put(BrickletMotionDetectorV2.DEVICE_IDENTIFIER, BrickletMotionDetectorV2::new);
+        registry.put(BrickletLinearPotiV2.DEVICE_IDENTIFIER, BrickletLinearPotiV2::new);
+        registry.put(BrickletRotaryPotiV2.DEVICE_IDENTIFIER, BrickletRotaryPotiV2::new);
         registry.put(BrickletRotaryEncoderV2.DEVICE_IDENTIFIER, BrickletRotaryEncoderV2::new);
         registry.put(BrickServo.DEVICE_IDENTIFIER, BrickServo::new);
         registry.put(BrickletSoundIntensity.DEVICE_IDENTIFIER, BrickletSoundIntensity::new);

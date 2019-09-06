@@ -2,7 +2,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.tinkerforge.BrickletDistanceUS;
+import com.tinkerforge.BrickletDistanceUSV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
@@ -21,56 +21,56 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
- * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_US.html">Official documentation</a></li>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Distance_US_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting distance examples</h6>
  * <code>
  * stack.values().distance();
  * </code>
  */
-public class DistanceUS extends Sensor<BrickletDistanceUS> {
+public class DistanceUSV2 extends Sensor<BrickletDistanceUSV2> {
 
-    public DistanceUS(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletDistanceUS) device, uid);
+    public DistanceUSV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletDistanceUSV2) device, uid);
     }
 
     @Override
-    protected Sensor<BrickletDistanceUS> initListener() {
+    protected Sensor<BrickletDistanceUSV2> initListener() {
         device.addDistanceListener(value -> sendEvent(DISTANCE, value * 10));
         refreshPeriod(CALLBACK_PERIOD);
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceUS> send(final Object value) {
+    public Sensor<BrickletDistanceUSV2> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceUS> setLedStatus(final Integer value) {
+    public Sensor<BrickletDistanceUSV2> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceUS> ledAdditional(final Integer value) {
+    public Sensor<BrickletDistanceUSV2> ledAdditional(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceUS> initLedConfig() {
+    public Sensor<BrickletDistanceUSV2> initLedConfig() {
         ledStatus = LED_NONE;
         ledAdditional = LED_NONE;
         return this;
     }
 
     @Override
-    public Sensor<BrickletDistanceUS> refreshPeriod(final int milliseconds) {
+    public Sensor<BrickletDistanceUSV2> refreshPeriod(final int milliseconds) {
         try {
             if (milliseconds < 1) {
-                device.setDistanceCallbackPeriod(0);
-                sendEvent(DISTANCE, device.getDistanceValue());
+                device.setDistanceCallbackConfiguration(1000, false, 'x', 0, 0);
+                sendEvent(DISTANCE, device.getDistance());
             } else {
-                device.setDistanceCallbackPeriod(milliseconds);
+                device.setDistanceCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);

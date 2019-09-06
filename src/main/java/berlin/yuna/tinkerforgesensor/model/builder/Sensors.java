@@ -6,6 +6,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.AccelerometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.BarometerV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.ButtonDual;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.sensor.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.Default;
@@ -16,18 +17,20 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DisplaySegmentV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
-import berlin.yuna.tinkerforgesensor.model.sensor.DualButton;
+import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUSV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMUV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
+import berlin.yuna.tinkerforgesensor.model.sensor.JoystickV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LedRGBV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightColor;
+import berlin.yuna.tinkerforgesensor.model.sensor.LightColorV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUv;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightUvV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
@@ -35,6 +38,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.PotiLiniarV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.PotiRotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.RotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.sensor.Servo;
@@ -149,6 +154,30 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(RotaryV2.class);
     }
 
+    public Sensor potiRotary() {
+        return potiRotary(0);
+    }
+
+    public Sensor potiRotary(final int number) {
+        return getSensor(number, PotiRotaryV2.class);
+    }
+
+    public List<Sensor> getPotiRotaryList() {
+        return getSensor(PotiRotaryV2.class);
+    }
+
+    public Sensor potiLiniar() {
+        return potiLiniar(0);
+    }
+
+    public Sensor potiLiniar(final int number) {
+        return getSensor(number, PotiLiniarV2.class);
+    }
+
+    public List<Sensor> getPotiLiniarList() {
+        return getSensor(PotiLiniarV2.class);
+    }
+
     public Sensor motionDetector() {
         return motionDetector(0);
     }
@@ -214,11 +243,11 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
     }
 
     public Sensor lightColor(final int number) {
-        return getSensor(number, LightColor.class);
+        return getSensor(number, LightColorV2.class, LightColor.class);
     }
 
     public List<Sensor> getLightColorList() {
-        return getSensor(LightColor.class);
+        return getSensor(LightColorV2.class, LightColor.class);
     }
 
     public Sensor lightAmbient() {
@@ -243,6 +272,18 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public List<Sensor> getLedRGBList() {
         return getSensor(LedRGBV2.class);
+    }
+
+    public Sensor joystick() {
+        return joystick(0);
+    }
+
+    public Sensor joystick(final int number) {
+        return getSensor(number, JoystickV2.class);
+    }
+
+    public List<Sensor> getJoystickList() {
+        return getSensor(JoystickV2.class);
     }
 
     public Sensor iO16() {
@@ -281,28 +322,16 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(HumidityV2.class, Humidity.class);
     }
 
-    public Sensor dualButton() {
-        return dualButton(0);
-    }
-
-    public Sensor dualButton(final int number) {
-        return getSensor(number, DualButton.class);
-    }
-
-    public List<Sensor> getDualButtonList() {
-        return getSensor(DualButton.class);
-    }
-
     public Sensor distanceUS() {
         return distanceUS(0);
     }
 
     public Sensor distanceUS(final int number) {
-        return getSensor(number, DistanceUS.class);
+        return getSensor(number, DistanceUSV2.class, DistanceUS.class);
     }
 
     public List<Sensor> getDistanceUSList() {
-        return getSensor(DistanceUS.class);
+        return getSensor(DistanceUSV2.class, DistanceUS.class);
     }
 
     public Sensor distanceIR() {
@@ -375,6 +404,18 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public List<Sensor> getButtonRGBList() {
         return getSensor(ButtonRGB.class);
+    }
+
+    public Sensor buttonDual() {
+        return buttonDual(0);
+    }
+
+    public Sensor buttonDual(final int number) {
+        return getSensor(number, ButtonDual.class);
+    }
+
+    public List<Sensor> getButtonDualList() {
+        return getSensor(ButtonDual.class);
     }
 
     public Sensor barometer() {

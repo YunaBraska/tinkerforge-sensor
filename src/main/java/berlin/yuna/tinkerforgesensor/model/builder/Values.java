@@ -2237,6 +2237,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.ROTARY, valueIndex);
     }
 
+    public Long percentage() {
+        return percentage(-1);
+    }
+
+    public Long percentage(final Number valueIndex) {
+        return get(ValueType.PERCENTAGE, -1L, valueIndex);
+    }
+
+    public List<Long> percentage_List() {
+        return percentage_List(-1);
+    }
+
+    public List<Long> percentage_List(final Number timeIndex) {
+        return getList(ValueType.PERCENTAGE, timeIndex);
+    }
+
+    public LongSummaryStatistics percentage_Statistics() {
+        return percentage_Statistics(-1);
+    }
+
+    public LongSummaryStatistics percentage_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.PERCENTAGE, valueIndex);
+    }
+
     public Long motor() {
         return motor(-1);
     }

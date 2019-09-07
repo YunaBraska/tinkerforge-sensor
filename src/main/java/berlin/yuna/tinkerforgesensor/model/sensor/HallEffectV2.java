@@ -2,7 +2,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.tinkerforge.BrickletCompass;
+import com.tinkerforge.BrickletHallEffectV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
@@ -12,59 +12,56 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNET_HEADING;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_X;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Y;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Z;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNET_COUNTER;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNET_DENSITY;
 
 /**
- * <h3>{@link Compass}</h3><br />
- * <i>3-axis compass with 0.1mG (milli Gauss) and 0.1° resolution</i><br />
+ * <h3>{@link HallEffectV2}</h3><br />
+ * <i>Measures magnetic flux density between -7mT and +7mT</i><br />
  *
  * <h3>Values</h3>
  * <ul>
  * <li>{@link ValueType#MAGNETIC_X} [x = number]</li>
  * <li>{@link ValueType#MAGNETIC_Y} [x = number]</li>
  * <li>{@link ValueType#MAGNETIC_Z} [x = number]</li>
- * <li>{@link ValueType#MAGNET_HEADING} [x / 10 = °]</li>
+ * <li>{@link ValueType#MAGNET_DENSITY} [x / 10 = °]</li>
+ * <li>{@link ValueType#MAGNET_COUNTER} [x = µT]</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
- * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Compass.html#compass-bricklet">Official documentation</a></li>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Hall_Effect_V2.html#hall-effect-v2-bricklet">Official documentation</a></li>
  * </ul>
- * <h6>Getting magnetic x position</h6>
- * <code>compass.values().magneticX();</code>
- * <h6>Getting position in ° (0° to 360°) (0° = north 90° = east)</h6>
- * <code>compass.values().heading() / 10;</code>
+ * <h6>Getting magnetic density (µT)</h6>
+ * <code>hallEffect.values().magneticDensity();</code>
+ * <h6>Getting counter</h6>
+ * <code>hallEffect.values().magneticCounter();</code>
  */
-public class Compass extends Sensor<BrickletCompass> {
+public class HallEffectV2 extends Sensor<BrickletHallEffectV2> {
 
-    public Compass(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletCompass) device, uid);
+    //TODO: configurable
+    public static final int HIGH_THRESHOLD = 3000;
+    public static final int LOW_THRESHOLD = -3000;
+    public static final int DEBOUNCE = 10000;
+
+    public HallEffectV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletHallEffectV2) device, uid);
     }
 
     @Override
-    protected Sensor<BrickletCompass> initListener() {
-        device.addHeadingListener(heading -> sendEvent(MAGNET_HEADING, heading));
-        device.addMagneticFluxDensityListener((x, y, z) ->
-                {
-                    sendEvent(MAGNETIC_X, x);
-                    sendEvent(MAGNETIC_Y, y);
-                    sendEvent(MAGNETIC_Z, z);
-                }
-
-        );
+    protected Sensor<BrickletHallEffectV2> initListener() {
+        device.addCounterListener(counter -> sendEvent(MAGNET_COUNTER, counter));
+        device.addMagneticFluxDensityListener(magneticFluxDensity -> sendEvent(MAGNET_DENSITY, magneticFluxDensity));
         refreshPeriod(1);
         return this;
     }
 
     @Override
-    public Sensor<BrickletCompass> send(final Object value) {
+    public Sensor<BrickletHallEffectV2> send(final Object value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletCompass> setLedStatus(final Integer value) {
+    public Sensor<BrickletHallEffectV2> setLedStatus(final Integer value) {
         if (ledStatus.bit == value) return this;
         try {
             if (value == LED_STATUS_OFF.bit) {
@@ -87,12 +84,12 @@ public class Compass extends Sensor<BrickletCompass> {
     }
 
     @Override
-    public Sensor<BrickletCompass> ledAdditional(final Integer value) {
+    public Sensor<BrickletHallEffectV2> ledAdditional(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletCompass> initLedConfig() {
+    public Sensor<BrickletHallEffectV2> initLedConfig() {
         try {
             ledStatus = LedStatusType.ledStatusTypeOf(device.getStatusLEDConfig());
             ledAdditional = LED_NONE;
@@ -103,21 +100,20 @@ public class Compass extends Sensor<BrickletCompass> {
     }
 
     @Override
-    public Sensor<BrickletCompass> refreshPeriod(final int milliseconds) {
+    public Sensor<BrickletHallEffectV2> refreshPeriod(final int milliseconds) {
         try {
+            device.setCounterConfig(HIGH_THRESHOLD, LOW_THRESHOLD, DEBOUNCE);
+
             if (milliseconds < 1) {
-                device.setHeadingCallbackConfiguration(4, false, 'x', 0, 0);
-                device.setMagneticFluxDensityCallbackConfiguration(4, false);
+                device.setCounterCallbackConfiguration(256, false);
+                device.setMagneticFluxDensityCallbackConfiguration(256, false, 'x', 0, 0);
             } else {
-                device.setHeadingCallbackConfiguration(milliseconds, true, 'x', 0, 0);
-                device.setMagneticFluxDensityCallbackConfiguration(milliseconds, true);
+                device.setCounterCallbackConfiguration(milliseconds, true);
+                device.setMagneticFluxDensityCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
 
-            final BrickletCompass.MagneticFluxDensity magneticFluxDensity = device.getMagneticFluxDensity();
-            sendEvent(MAGNETIC_X, magneticFluxDensity.x);
-            sendEvent(MAGNETIC_Y, magneticFluxDensity.y);
-            sendEvent(MAGNETIC_Z, magneticFluxDensity.z);
-            sendEvent(MAGNET_HEADING, device.getHeading());
+            sendEvent(MAGNET_DENSITY, device.getMagneticFluxDensity());
+            sendEvent(MAGNET_COUNTER, device.getCounter(true));
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

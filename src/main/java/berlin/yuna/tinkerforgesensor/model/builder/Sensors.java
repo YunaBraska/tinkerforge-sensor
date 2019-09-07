@@ -19,6 +19,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUSV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.HallEffectV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
@@ -321,6 +322,18 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public List<Sensor> getHumidityList() {
         return getSensor(HumidityV2.class, Humidity.class);
+    }
+
+    public Sensor hallEffect() {
+        return hallEffect(0);
+    }
+
+    public Sensor hallEffect(final int number) {
+        return getSensor(number, HallEffectV2.class);
+    }
+
+    public List<Sensor> getHallEffectList() {
+        return getSensor(HallEffectV2.class);
     }
 
     public Sensor distanceUS() {

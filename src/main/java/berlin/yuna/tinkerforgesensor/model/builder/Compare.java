@@ -18,6 +18,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUSV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.HallEffectV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
@@ -129,6 +130,10 @@ public class Compare {
 
     public boolean isDistanceUS() {
         return is(DistanceUSV2.class, DistanceUS.class);
+    }
+
+    public boolean isHallEffect() {
+        return is(HallEffectV2.class);
     }
 
     public boolean isHumidity() {

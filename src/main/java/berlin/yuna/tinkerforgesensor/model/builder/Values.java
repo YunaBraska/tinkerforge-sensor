@@ -1613,28 +1613,76 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.MAGNET, valueIndex);
     }
 
-    public Long heading() {
-        return heading(-1);
+    public Long magnetDensity() {
+        return magnetDensity(-1);
     }
 
-    public Long heading(final Number valueIndex) {
-        return get(ValueType.HEADING, -1L, valueIndex);
+    public Long magnetDensity(final Number valueIndex) {
+        return get(ValueType.MAGNET_DENSITY, -1L, valueIndex);
     }
 
-    public List<Long> heading_List() {
-        return heading_List(-1);
+    public List<Long> magnetDensity_List() {
+        return magnetDensity_List(-1);
     }
 
-    public List<Long> heading_List(final Number timeIndex) {
-        return getList(ValueType.HEADING, timeIndex);
+    public List<Long> magnetDensity_List(final Number timeIndex) {
+        return getList(ValueType.MAGNET_DENSITY, timeIndex);
     }
 
-    public LongSummaryStatistics heading_Statistics() {
-        return heading_Statistics(-1);
+    public LongSummaryStatistics magnetDensity_Statistics() {
+        return magnetDensity_Statistics(-1);
     }
 
-    public LongSummaryStatistics heading_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.HEADING, valueIndex);
+    public LongSummaryStatistics magnetDensity_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.MAGNET_DENSITY, valueIndex);
+    }
+
+    public Long magnetCounter() {
+        return magnetCounter(-1);
+    }
+
+    public Long magnetCounter(final Number valueIndex) {
+        return get(ValueType.MAGNET_COUNTER, -1L, valueIndex);
+    }
+
+    public List<Long> magnetCounter_List() {
+        return magnetCounter_List(-1);
+    }
+
+    public List<Long> magnetCounter_List(final Number timeIndex) {
+        return getList(ValueType.MAGNET_COUNTER, timeIndex);
+    }
+
+    public LongSummaryStatistics magnetCounter_Statistics() {
+        return magnetCounter_Statistics(-1);
+    }
+
+    public LongSummaryStatistics magnetCounter_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.MAGNET_COUNTER, valueIndex);
+    }
+
+    public Long magnetHeading() {
+        return magnetHeading(-1);
+    }
+
+    public Long magnetHeading(final Number valueIndex) {
+        return get(ValueType.MAGNET_HEADING, -1L, valueIndex);
+    }
+
+    public List<Long> magnetHeading_List() {
+        return magnetHeading_List(-1);
+    }
+
+    public List<Long> magnetHeading_List(final Number timeIndex) {
+        return getList(ValueType.MAGNET_HEADING, timeIndex);
+    }
+
+    public LongSummaryStatistics magnetHeading_Statistics() {
+        return magnetHeading_Statistics(-1);
+    }
+
+    public LongSummaryStatistics magnetHeading_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.MAGNET_HEADING, valueIndex);
     }
 
     public Long magneticX() {

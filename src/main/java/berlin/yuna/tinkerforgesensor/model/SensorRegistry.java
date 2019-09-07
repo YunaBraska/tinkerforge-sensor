@@ -18,6 +18,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIR;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceIRV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUS;
 import berlin.yuna.tinkerforgesensor.model.sensor.DistanceUSV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.HallEffectV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Humidity;
 import berlin.yuna.tinkerforgesensor.model.sensor.HumidityV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.IMU;
@@ -70,6 +71,7 @@ import com.tinkerforge.BrickletDistanceIRV2;
 import com.tinkerforge.BrickletDistanceUS;
 import com.tinkerforge.BrickletDistanceUSV2;
 import com.tinkerforge.BrickletDualButtonV2;
+import com.tinkerforge.BrickletHallEffectV2;
 import com.tinkerforge.BrickletHumidity;
 import com.tinkerforge.BrickletHumidityV2;
 import com.tinkerforge.BrickletIO16;
@@ -125,6 +127,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletDistanceIRV2} => Sensor {@link DistanceIRV2}</li>
  * <li>Device {@link BrickletDistanceUS} => Sensor {@link DistanceUS}</li>
  * <li>Device {@link BrickletDistanceUSV2} => Sensor {@link DistanceUSV2}</li>
+ * <li>Device {@link BrickletHallEffectV2} => Sensor {@link HallEffectV2}</li>
  * <li>Device {@link BrickletHumidity} => Sensor {@link Humidity}</li>
  * <li>Device {@link BrickletHumidityV2} => Sensor {@link HumidityV2}</li>
  * <li>Device {@link BrickIMU} => Sensor {@link IMU}</li>
@@ -195,6 +198,7 @@ public class SensorRegistry {
         registry.put(BrickletDistanceIRV2.class, DistanceIRV2::new);
         registry.put(BrickletDistanceUS.class, DistanceUS::new);
         registry.put(BrickletDistanceUSV2.class, DistanceUSV2::new);
+        registry.put(BrickletHallEffectV2.class, HallEffectV2::new);
         registry.put(BrickletHumidity.class, Humidity::new);
         registry.put(BrickletHumidityV2.class, HumidityV2::new);
         registry.put(BrickIMU.class, IMU::new);
@@ -248,6 +252,7 @@ public class SensorRegistry {
         registry.put(BrickletDistanceIRV2.DEVICE_IDENTIFIER, BrickletDistanceIRV2::new);
         registry.put(BrickletDistanceUS.DEVICE_IDENTIFIER, BrickletDistanceUS::new);
         registry.put(BrickletDistanceUSV2.DEVICE_IDENTIFIER, BrickletDistanceUSV2::new);
+        registry.put(BrickletHallEffectV2.DEVICE_IDENTIFIER, BrickletHallEffectV2::new);
         registry.put(BrickletHumidity.DEVICE_IDENTIFIER, BrickletHumidity::new);
         registry.put(BrickletHumidityV2.DEVICE_IDENTIFIER, BrickletHumidityV2::new);
         registry.put(BrickIMU.DEVICE_IDENTIFIER, BrickIMU::new);

@@ -19,6 +19,7 @@ com.tinkerforge.BrickletDistanceIRV2Provider
 com.tinkerforge.BrickletDistanceUSProvider
 com.tinkerforge.BrickletDistanceUSV2Provider
 com.tinkerforge.BrickletDualButtonV2Provider
+com.tinkerforge.BrickletHallEffectV2Provider
 com.tinkerforge.BrickletHumidityProvider
 com.tinkerforge.BrickletHumidityV2Provider
 com.tinkerforge.BrickletIO16Provider

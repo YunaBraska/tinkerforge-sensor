@@ -6,6 +6,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.BarometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonDual;
+import berlin.yuna.tinkerforgesensor.model.sensor.ButtonMultiTouch;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.sensor.Compass;
 import berlin.yuna.tinkerforgesensor.model.sensor.DC;
@@ -94,6 +95,10 @@ public class Compare {
 
     public boolean isButtonDual() {
         return is(ButtonDual.class);
+    }
+
+    public boolean isButtonMultiTouch() {
+        return is(ButtonMultiTouch.class);
     }
 
     public boolean isButtonRGB() {

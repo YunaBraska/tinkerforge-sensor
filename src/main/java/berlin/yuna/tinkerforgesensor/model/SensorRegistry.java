@@ -6,6 +6,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.BarometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonDual;
+import berlin.yuna.tinkerforgesensor.model.sensor.ButtonMultiTouch;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.sensor.Compass;
 import berlin.yuna.tinkerforgesensor.model.sensor.DC;
@@ -82,6 +83,7 @@ import com.tinkerforge.BrickletLCD20x4;
 import com.tinkerforge.BrickletLinearPotiV2;
 import com.tinkerforge.BrickletMotionDetector;
 import com.tinkerforge.BrickletMotionDetectorV2;
+import com.tinkerforge.BrickletMultiTouchV2;
 import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.BrickletRGBLEDButton;
 import com.tinkerforge.BrickletRGBLEDV2;
@@ -115,6 +117,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletBarometer} => Sensor {@link Barometer}</li>
  * <li>Device {@link BrickletBarometerV2} => Sensor {@link BarometerV2}</li>
  * <li>Device {@link BrickletDualButtonV2} => Sensor {@link ButtonDual}</li>
+ * <li>Device {@link BrickletMultiTouchV2} => Sensor {@link ButtonMultiTouch}</li>
  * <li>Device {@link BrickletRGBLEDButton} => Sensor {@link ButtonRGB}</li>
  * <li>Device {@link BrickletCompass} => Sensor {@link Compass}</li>
  * <li>Device {@link BrickDC} => Sensor {@link DC}</li>
@@ -186,6 +189,7 @@ public class SensorRegistry {
         registry.put(BrickletBarometer.class, Barometer::new);
         registry.put(BrickletBarometerV2.class, BarometerV2::new);
         registry.put(BrickletDualButtonV2.class, ButtonDual::new);
+        registry.put(BrickletMultiTouchV2.class, ButtonMultiTouch::new);
         registry.put(BrickletRGBLEDButton.class, ButtonRGB::new);
         registry.put(BrickletCompass.class, Compass::new);
         registry.put(BrickDC.class, DC::new);
@@ -240,6 +244,7 @@ public class SensorRegistry {
         registry.put(BrickletBarometer.DEVICE_IDENTIFIER, BrickletBarometer::new);
         registry.put(BrickletBarometerV2.DEVICE_IDENTIFIER, BrickletBarometerV2::new);
         registry.put(BrickletDualButtonV2.DEVICE_IDENTIFIER, BrickletDualButtonV2::new);
+        registry.put(BrickletMultiTouchV2.DEVICE_IDENTIFIER, BrickletMultiTouchV2::new);
         registry.put(BrickletRGBLEDButton.DEVICE_IDENTIFIER, BrickletRGBLEDButton::new);
         registry.put(BrickletCompass.DEVICE_IDENTIFIER, BrickletCompass::new);
         registry.put(BrickDC.DEVICE_IDENTIFIER, BrickDC::new);

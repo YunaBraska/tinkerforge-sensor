@@ -701,342 +701,6 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.SOUND_DECIBEL, valueIndex);
     }
 
-    public Long touch() {
-        return touch(-1);
-    }
-
-    public Long touch(final Number valueIndex) {
-        return get(ValueType.TOUCH, -1L, valueIndex);
-    }
-
-    public List<Long> touch_List() {
-        return touch_List(-1);
-    }
-
-    public List<Long> touch_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH, timeIndex);
-    }
-
-    public LongSummaryStatistics touch_Statistics() {
-        return touch_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH, valueIndex);
-    }
-
-    public Long touch1() {
-        return touch1(-1);
-    }
-
-    public Long touch1(final Number valueIndex) {
-        return get(ValueType.TOUCH_1, -1L, valueIndex);
-    }
-
-    public List<Long> touch1_List() {
-        return touch1_List(-1);
-    }
-
-    public List<Long> touch1_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_1, timeIndex);
-    }
-
-    public LongSummaryStatistics touch1_Statistics() {
-        return touch1_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch1_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_1, valueIndex);
-    }
-
-    public Long touch2() {
-        return touch2(-1);
-    }
-
-    public Long touch2(final Number valueIndex) {
-        return get(ValueType.TOUCH_2, -1L, valueIndex);
-    }
-
-    public List<Long> touch2_List() {
-        return touch2_List(-1);
-    }
-
-    public List<Long> touch2_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_2, timeIndex);
-    }
-
-    public LongSummaryStatistics touch2_Statistics() {
-        return touch2_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch2_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_2, valueIndex);
-    }
-
-    public Long touch3() {
-        return touch3(-1);
-    }
-
-    public Long touch3(final Number valueIndex) {
-        return get(ValueType.TOUCH_3, -1L, valueIndex);
-    }
-
-    public List<Long> touch3_List() {
-        return touch3_List(-1);
-    }
-
-    public List<Long> touch3_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_3, timeIndex);
-    }
-
-    public LongSummaryStatistics touch3_Statistics() {
-        return touch3_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch3_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_3, valueIndex);
-    }
-
-    public Long touch4() {
-        return touch4(-1);
-    }
-
-    public Long touch4(final Number valueIndex) {
-        return get(ValueType.TOUCH_4, -1L, valueIndex);
-    }
-
-    public List<Long> touch4_List() {
-        return touch4_List(-1);
-    }
-
-    public List<Long> touch4_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_4, timeIndex);
-    }
-
-    public LongSummaryStatistics touch4_Statistics() {
-        return touch4_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch4_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_4, valueIndex);
-    }
-
-    public Long touch5() {
-        return touch5(-1);
-    }
-
-    public Long touch5(final Number valueIndex) {
-        return get(ValueType.TOUCH_5, -1L, valueIndex);
-    }
-
-    public List<Long> touch5_List() {
-        return touch5_List(-1);
-    }
-
-    public List<Long> touch5_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_5, timeIndex);
-    }
-
-    public LongSummaryStatistics touch5_Statistics() {
-        return touch5_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch5_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_5, valueIndex);
-    }
-
-    public Long touch6() {
-        return touch6(-1);
-    }
-
-    public Long touch6(final Number valueIndex) {
-        return get(ValueType.TOUCH_6, -1L, valueIndex);
-    }
-
-    public List<Long> touch6_List() {
-        return touch6_List(-1);
-    }
-
-    public List<Long> touch6_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_6, timeIndex);
-    }
-
-    public LongSummaryStatistics touch6_Statistics() {
-        return touch6_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch6_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_6, valueIndex);
-    }
-
-    public Long touch7() {
-        return touch7(-1);
-    }
-
-    public Long touch7(final Number valueIndex) {
-        return get(ValueType.TOUCH_7, -1L, valueIndex);
-    }
-
-    public List<Long> touch7_List() {
-        return touch7_List(-1);
-    }
-
-    public List<Long> touch7_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_7, timeIndex);
-    }
-
-    public LongSummaryStatistics touch7_Statistics() {
-        return touch7_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch7_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_7, valueIndex);
-    }
-
-    public Long touch8() {
-        return touch8(-1);
-    }
-
-    public Long touch8(final Number valueIndex) {
-        return get(ValueType.TOUCH_8, -1L, valueIndex);
-    }
-
-    public List<Long> touch8_List() {
-        return touch8_List(-1);
-    }
-
-    public List<Long> touch8_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_8, timeIndex);
-    }
-
-    public LongSummaryStatistics touch8_Statistics() {
-        return touch8_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch8_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_8, valueIndex);
-    }
-
-    public Long touch9() {
-        return touch9(-1);
-    }
-
-    public Long touch9(final Number valueIndex) {
-        return get(ValueType.TOUCH_9, -1L, valueIndex);
-    }
-
-    public List<Long> touch9_List() {
-        return touch9_List(-1);
-    }
-
-    public List<Long> touch9_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_9, timeIndex);
-    }
-
-    public LongSummaryStatistics touch9_Statistics() {
-        return touch9_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch9_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_9, valueIndex);
-    }
-
-    public Long touch10() {
-        return touch10(-1);
-    }
-
-    public Long touch10(final Number valueIndex) {
-        return get(ValueType.TOUCH_10, -1L, valueIndex);
-    }
-
-    public List<Long> touch10_List() {
-        return touch10_List(-1);
-    }
-
-    public List<Long> touch10_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_10, timeIndex);
-    }
-
-    public LongSummaryStatistics touch10_Statistics() {
-        return touch10_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch10_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_10, valueIndex);
-    }
-
-    public Long touch11() {
-        return touch11(-1);
-    }
-
-    public Long touch11(final Number valueIndex) {
-        return get(ValueType.TOUCH_11, -1L, valueIndex);
-    }
-
-    public List<Long> touch11_List() {
-        return touch11_List(-1);
-    }
-
-    public List<Long> touch11_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_11, timeIndex);
-    }
-
-    public LongSummaryStatistics touch11_Statistics() {
-        return touch11_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch11_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_11, valueIndex);
-    }
-
-    public Long touch12() {
-        return touch12(-1);
-    }
-
-    public Long touch12(final Number valueIndex) {
-        return get(ValueType.TOUCH_12, -1L, valueIndex);
-    }
-
-    public List<Long> touch12_List() {
-        return touch12_List(-1);
-    }
-
-    public List<Long> touch12_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_12, timeIndex);
-    }
-
-    public LongSummaryStatistics touch12_Statistics() {
-        return touch12_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touch12_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_12, valueIndex);
-    }
-
-    public Long touchProximity() {
-        return touchProximity(-1);
-    }
-
-    public Long touchProximity(final Number valueIndex) {
-        return get(ValueType.TOUCH_PROXIMITY, -1L, valueIndex);
-    }
-
-    public List<Long> touchProximity_List() {
-        return touchProximity_List(-1);
-    }
-
-    public List<Long> touchProximity_List(final Number timeIndex) {
-        return getList(ValueType.TOUCH_PROXIMITY, timeIndex);
-    }
-
-    public LongSummaryStatistics touchProximity_Statistics() {
-        return touchProximity_Statistics(-1);
-    }
-
-    public LongSummaryStatistics touchProximity_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.TOUCH_PROXIMITY, valueIndex);
-    }
-
     public Long light() {
         return light(-1);
     }
@@ -2307,6 +1971,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
 
     public LongSummaryStatistics button_Statistics(final Number valueIndex) {
         return getStatistics(ValueType.BUTTON, valueIndex);
+    }
+
+    public Long buttonTouch() {
+        return buttonTouch(-1);
+    }
+
+    public Long buttonTouch(final Number valueIndex) {
+        return get(ValueType.BUTTON_TOUCH, -1L, valueIndex);
+    }
+
+    public List<Long> buttonTouch_List() {
+        return buttonTouch_List(-1);
+    }
+
+    public List<Long> buttonTouch_List(final Number timeIndex) {
+        return getList(ValueType.BUTTON_TOUCH, timeIndex);
+    }
+
+    public LongSummaryStatistics buttonTouch_Statistics() {
+        return buttonTouch_Statistics(-1);
+    }
+
+    public LongSummaryStatistics buttonTouch_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.BUTTON_TOUCH, valueIndex);
     }
 
     public Long buttonPressed() {

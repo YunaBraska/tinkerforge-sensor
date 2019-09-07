@@ -7,7 +7,7 @@ package berlin.yuna.tinkerforgesensor.model.type;
  * You can add new enumTypes without harm</i>
  *
  * ---
- * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>TOUCH</li><li>TOUCH_1</li><li>TOUCH_2</li><li>TOUCH_3</li><li>TOUCH_4</li><li>TOUCH_5</li><li>TOUCH_6</li><li>TOUCH_7</li><li>TOUCH_8</li><li>TOUCH_9</li><li>TOUCH_10</li><li>TOUCH_11</li><li>TOUCH_12</li><li>TOUCH_PROXIMITY</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>IMU</li><li>CALIBRATION</li><li>ORIENTATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>MOUSE_INPUT</li><li>MOUSE_CLICK_COUNT</li><li>MOUSE_PRESSED</li><li>MOUSE_RELEASED</li><li>MOUSE_ENTERED</li><li>MOUSE_EXITED</li><li>MOUSE_DRAGGED</li><li>MOUSE_MOVED</li><li>MOUSE_MOVE_X</li><li>MOUSE_MOVE_Y</li><li>MOUSE_WHEEL_MOVED</li></ul> */
+ * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>IMU</li><li>CALIBRATION</li><li>ORIENTATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_TOUCH</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>MOUSE_INPUT</li><li>MOUSE_CLICK_COUNT</li><li>MOUSE_PRESSED</li><li>MOUSE_RELEASED</li><li>MOUSE_ENTERED</li><li>MOUSE_EXITED</li><li>MOUSE_DRAGGED</li><li>MOUSE_MOVED</li><li>MOUSE_MOVE_X</li><li>MOUSE_MOVE_Y</li><li>MOUSE_WHEEL_MOVED</li></ul> */
 public enum ValueType {
     ALL(null),
 
@@ -60,34 +60,6 @@ public enum ValueType {
     SOUND_INTENSITY(SOUND),
 
     SOUND_DECIBEL(SOUND),
-
-    TOUCH(ALL),
-
-    TOUCH_1(TOUCH),
-
-    TOUCH_2(TOUCH),
-
-    TOUCH_3(TOUCH),
-
-    TOUCH_4(TOUCH),
-
-    TOUCH_5(TOUCH),
-
-    TOUCH_6(TOUCH),
-
-    TOUCH_7(TOUCH),
-
-    TOUCH_8(TOUCH),
-
-    TOUCH_9(TOUCH),
-
-    TOUCH_10(TOUCH),
-
-    TOUCH_11(TOUCH),
-
-    TOUCH_12(TOUCH),
-
-    TOUCH_PROXIMITY(TOUCH),
 
     LIGHT(ALL),
 
@@ -194,6 +166,8 @@ public enum ValueType {
     CURRENT(ENERGY),
 
     BUTTON(ALL),
+
+    BUTTON_TOUCH(ALL),
 
     BUTTON_PRESSED(BUTTON),
 
@@ -453,118 +427,6 @@ public enum ValueType {
 
     public boolean containsSoundDecibel() {
         return this.is(SOUND_DECIBEL) || (this.parent != null && this.parent.contains(SOUND_DECIBEL));
-    }
-
-    public boolean isTouch() {
-        return this == TOUCH;
-    }
-
-    public boolean containsTouch() {
-        return this.is(TOUCH) || (this.parent != null && this.parent.contains(TOUCH));
-    }
-
-    public boolean isTouch1() {
-        return this == TOUCH_1;
-    }
-
-    public boolean containsTouch1() {
-        return this.is(TOUCH_1) || (this.parent != null && this.parent.contains(TOUCH_1));
-    }
-
-    public boolean isTouch2() {
-        return this == TOUCH_2;
-    }
-
-    public boolean containsTouch2() {
-        return this.is(TOUCH_2) || (this.parent != null && this.parent.contains(TOUCH_2));
-    }
-
-    public boolean isTouch3() {
-        return this == TOUCH_3;
-    }
-
-    public boolean containsTouch3() {
-        return this.is(TOUCH_3) || (this.parent != null && this.parent.contains(TOUCH_3));
-    }
-
-    public boolean isTouch4() {
-        return this == TOUCH_4;
-    }
-
-    public boolean containsTouch4() {
-        return this.is(TOUCH_4) || (this.parent != null && this.parent.contains(TOUCH_4));
-    }
-
-    public boolean isTouch5() {
-        return this == TOUCH_5;
-    }
-
-    public boolean containsTouch5() {
-        return this.is(TOUCH_5) || (this.parent != null && this.parent.contains(TOUCH_5));
-    }
-
-    public boolean isTouch6() {
-        return this == TOUCH_6;
-    }
-
-    public boolean containsTouch6() {
-        return this.is(TOUCH_6) || (this.parent != null && this.parent.contains(TOUCH_6));
-    }
-
-    public boolean isTouch7() {
-        return this == TOUCH_7;
-    }
-
-    public boolean containsTouch7() {
-        return this.is(TOUCH_7) || (this.parent != null && this.parent.contains(TOUCH_7));
-    }
-
-    public boolean isTouch8() {
-        return this == TOUCH_8;
-    }
-
-    public boolean containsTouch8() {
-        return this.is(TOUCH_8) || (this.parent != null && this.parent.contains(TOUCH_8));
-    }
-
-    public boolean isTouch9() {
-        return this == TOUCH_9;
-    }
-
-    public boolean containsTouch9() {
-        return this.is(TOUCH_9) || (this.parent != null && this.parent.contains(TOUCH_9));
-    }
-
-    public boolean isTouch10() {
-        return this == TOUCH_10;
-    }
-
-    public boolean containsTouch10() {
-        return this.is(TOUCH_10) || (this.parent != null && this.parent.contains(TOUCH_10));
-    }
-
-    public boolean isTouch11() {
-        return this == TOUCH_11;
-    }
-
-    public boolean containsTouch11() {
-        return this.is(TOUCH_11) || (this.parent != null && this.parent.contains(TOUCH_11));
-    }
-
-    public boolean isTouch12() {
-        return this == TOUCH_12;
-    }
-
-    public boolean containsTouch12() {
-        return this.is(TOUCH_12) || (this.parent != null && this.parent.contains(TOUCH_12));
-    }
-
-    public boolean isTouchProximity() {
-        return this == TOUCH_PROXIMITY;
-    }
-
-    public boolean containsTouchProximity() {
-        return this.is(TOUCH_PROXIMITY) || (this.parent != null && this.parent.contains(TOUCH_PROXIMITY));
     }
 
     public boolean isLight() {
@@ -989,6 +851,14 @@ public enum ValueType {
 
     public boolean containsButton() {
         return this.is(BUTTON) || (this.parent != null && this.parent.contains(BUTTON));
+    }
+
+    public boolean isButtonTouch() {
+        return this == BUTTON_TOUCH;
+    }
+
+    public boolean containsButtonTouch() {
+        return this.is(BUTTON_TOUCH) || (this.parent != null && this.parent.contains(BUTTON_TOUCH));
     }
 
     public boolean isButtonPressed() {

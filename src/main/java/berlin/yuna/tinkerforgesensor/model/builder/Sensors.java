@@ -7,6 +7,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.AirQuality;
 import berlin.yuna.tinkerforgesensor.model.sensor.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.BarometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonDual;
+import berlin.yuna.tinkerforgesensor.model.sensor.ButtonMultiTouch;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonRGB;
 import berlin.yuna.tinkerforgesensor.model.sensor.Compass;
 import berlin.yuna.tinkerforgesensor.model.sensor.DC;
@@ -430,6 +431,18 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public List<Sensor> getButtonRGBList() {
         return getSensor(ButtonRGB.class);
+    }
+
+    public Sensor buttonMultiTouch() {
+        return buttonMultiTouch(0);
+    }
+
+    public Sensor buttonMultiTouch(final int number) {
+        return getSensor(number, ButtonMultiTouch.class);
+    }
+
+    public List<Sensor> getButtonMultiTouchList() {
+        return getSensor(ButtonMultiTouch.class);
     }
 
     public Sensor buttonDual() {

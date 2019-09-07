@@ -12,6 +12,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PERCENTAGE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
 
 /**
@@ -21,6 +22,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
  * <h3>Values</h3>
  * <ul>
  * <li>{@link ValueType#ROTARY} [x = number]</li>
+ * <li>{@link ValueType#PERCENTAGE} [x = number]</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
@@ -28,6 +30,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
  * </ul>
  * <h6>Getting position in % (-150 to 150)</h6>
  * <code>values().rotary();</code>
+ * <h6>Getting position in % (0-100)</h6>
+ * <code>values().percentage();</code>
  */
 public class PotiRotaryV2 extends Sensor<BrickletRotaryPotiV2> {
 
@@ -37,7 +41,10 @@ public class PotiRotaryV2 extends Sensor<BrickletRotaryPotiV2> {
 
     @Override
     protected Sensor<BrickletRotaryPotiV2> initListener() {
-        device.addPositionListener(value -> sendEvent(ROTARY, value, true));
+        device.addPositionListener(value -> {
+            sendEvent(ROTARY, value, true);
+            sendEvent(PERCENTAGE, ((value + 150) * 100) / 300, true);
+        });
         refreshPeriod(1);
         return this;
     }
@@ -94,7 +101,8 @@ public class PotiRotaryV2 extends Sensor<BrickletRotaryPotiV2> {
             } else {
                 device.setPositionCallbackConfiguration(milliseconds, true, 'x', 0, 0);
             }
-            sendEvent(ROTARY, (long) device.getPosition(), true);
+            sendEvent(ROTARY, device.getPosition(), true);
+            sendEvent(PERCENTAGE, ((device.getPosition() + 150) * 100) / 300, true);
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

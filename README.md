@@ -120,6 +120,3 @@ try (Stack stack = new Stack("host", 4223, "optionalPassword")) {
 
 * Sensors
 - [ ] Get Additional Sensor information like "ChipTemperature"
-
-* Connections
-- [ ] Tinkerforge Auto-reconnect is not working properly - reconnected devices are getting timeouts

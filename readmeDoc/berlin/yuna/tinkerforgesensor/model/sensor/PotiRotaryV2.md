@@ -8,13 +8,20 @@
  *300° rotary potentiometer*
  
 ### Values
- * [ROTARY](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x = number] 
+ * [ROTARY](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x = number]
+ * [PERCENTAGE](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/type/ValueType.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/ValueType.java))  [x = number] 
 ### Technical Info
  * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Poti_V2.html) 
 ###### Getting position in % (-150 to 150)
  
 ```java
 values().rotary();
+```
+ 
+###### Getting position in % (0-100)
+ 
+```java
+values().percentage();
 ```
 
 --- 

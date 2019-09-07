@@ -49,6 +49,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
  * <li>{@link ValueType#ACCELERATION_X} [x - number]</li>
  * <li>{@link ValueType#ACCELERATION_Y} [x = number]</li>
  * <li>{@link ValueType#ACCELERATION_Z} [x = number]</li>
+ * <li>{@link ValueType#LINEAR_ACCELERATION_X} [x = number]</li>
+ * <li>{@link ValueType#LINEAR_ACCELERATION_Y} [x = number]</li>
+ * <li>{@link ValueType#LINEAR_ACCELERATION_Z} [x = number]</li>
  * <li>{@link ValueType#MAGNETIC_X} [x = number]</li>
  * <li>{@link ValueType#MAGNETIC_Y} [x = number]</li>
  * <li>{@link ValueType#MAGNETIC_Y} [x = number]</li>
@@ -58,6 +61,16 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
  * <li>{@link ValueType#ORIENTATION_HEADING} [x = number]</li>
  * <li>{@link ValueType#ORIENTATION_ROLL} [x = number]</li>
  * <li>{@link ValueType#ORIENTATION_PITCH} [x = number]</li>
+ * <li>{@link ValueType#EULER_ANGLE_X} [x = number]</li>
+ * <li>{@link ValueType#EULER_ANGLE_Y} [x = number]</li>
+ * <li>{@link ValueType#EULER_ANGLE_Z} [x = number]</li>
+ * <li>{@link ValueType#GRAVITY_VECTOR_X} [x = number]</li>
+ * <li>{@link ValueType#GRAVITY_VECTOR_Y} [x = number]</li>
+ * <li>{@link ValueType#GRAVITY_VECTOR_Z} [x = number]</li>
+ * <li>{@link ValueType#QUATERNION_W} [x = number]</li>
+ * <li>{@link ValueType#QUATERNION_X} [x = number]</li>
+ * <li>{@link ValueType#QUATERNION_Y} [x = number]</li>
+ * <li>{@link ValueType#QUATERNION_Z} [x = number]</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
@@ -99,15 +112,12 @@ public class IMUV2 extends Sensor<BrickIMUV2> {
                     sendEvent(GRAVITY_VECTOR_Y, (long) gravityVector[1]);
                     sendEvent(GRAVITY_VECTOR_Z, (long) gravityVector[2]);
                     sendEvent(CALIBRATION, (long) calibrationStatus);
-                    //sendEventUnchecked( TEMPERATURE, (long) temperature);
-                    sendEvent(ValueType.IMU, 2L);
                 }
         );
         device.addOrientationListener((heading, roll, pitch) -> {
                     sendEvent(ORIENTATION_HEADING, (long) heading);
                     sendEvent(ORIENTATION_ROLL, (long) roll);
                     sendEvent(ORIENTATION_PITCH, (long) pitch);
-                    sendEvent(ValueType.IMU, 2L);
                 }
         );
         refreshPeriod(CALLBACK_PERIOD);

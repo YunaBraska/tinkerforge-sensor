@@ -7,7 +7,7 @@ package berlin.yuna.tinkerforgesensor.model.type;
  * You can add new enumTypes without harm</i>
  *
  * ---
- * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>IMU</li><li>CALIBRATION</li><li>ORIENTATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_TOUCH</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>MOUSE_INPUT</li><li>MOUSE_CLICK_COUNT</li><li>MOUSE_PRESSED</li><li>MOUSE_RELEASED</li><li>MOUSE_ENTERED</li><li>MOUSE_EXITED</li><li>MOUSE_DRAGGED</li><li>MOUSE_MOVED</li><li>MOUSE_MOVE_X</li><li>MOUSE_MOVE_Y</li><li>MOUSE_WHEEL_MOVED</li></ul> */
+ * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>ORIENTATION</li><li>CALIBRATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_TOUCH</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>MOUSE_INPUT</li><li>MOUSE_CLICK_COUNT</li><li>MOUSE_PRESSED</li><li>MOUSE_RELEASED</li><li>MOUSE_ENTERED</li><li>MOUSE_EXITED</li><li>MOUSE_DRAGGED</li><li>MOUSE_MOVED</li><li>MOUSE_MOVE_X</li><li>MOUSE_MOVE_Y</li><li>MOUSE_WHEEL_MOVED</li></ul> */
 public enum ValueType {
     ALL(null),
 
@@ -87,11 +87,9 @@ public enum ValueType {
 
     COLOR_TEMPERATURE(COLOR),
 
-    IMU(ALL),
-
-    CALIBRATION(IMU),
-
     ORIENTATION(ALL),
+
+    CALIBRATION(ORIENTATION),
 
     ORIENTATION_HEADING(ORIENTATION),
 
@@ -121,37 +119,45 @@ public enum ValueType {
 
     MAGNETIC_Z(ACCELERATION_Z),
 
-    ANGULAR_VELOCITY_X(IMU),
+    ANGULAR_VELOCITY(ALL),
 
-    ANGULAR_VELOCITY_Y(IMU),
+    ANGULAR_VELOCITY_X(ANGULAR_VELOCITY),
 
-    ANGULAR_VELOCITY_Z(IMU),
+    ANGULAR_VELOCITY_Y(ANGULAR_VELOCITY),
 
-    EULER_ANGLE_X(IMU),
+    ANGULAR_VELOCITY_Z(ANGULAR_VELOCITY),
 
-    EULER_ANGLE_Y(IMU),
+    EULER_ANGLE(ALL),
 
-    EULER_ANGLE_Z(IMU),
+    EULER_ANGLE_X(EULER_ANGLE),
 
-    QUATERNION_W(IMU),
+    EULER_ANGLE_Y(EULER_ANGLE),
 
-    QUATERNION_X(IMU),
+    EULER_ANGLE_Z(EULER_ANGLE),
 
-    QUATERNION_Y(IMU),
+    QUATERNION(ALL),
 
-    QUATERNION_Z(IMU),
+    QUATERNION_W(QUATERNION),
 
-    LINEAR_ACCELERATION_X(IMU),
+    QUATERNION_X(QUATERNION),
 
-    LINEAR_ACCELERATION_Y(IMU),
+    QUATERNION_Y(QUATERNION),
 
-    LINEAR_ACCELERATION_Z(IMU),
+    QUATERNION_Z(QUATERNION),
 
-    GRAVITY_VECTOR_X(IMU),
+    LINEAR_ACCELERATION_X(ACCELERATION),
 
-    GRAVITY_VECTOR_Y(IMU),
+    LINEAR_ACCELERATION_Y(ACCELERATION),
 
-    GRAVITY_VECTOR_Z(IMU),
+    LINEAR_ACCELERATION_Z(ACCELERATION),
+
+    GRAVITY(ALL),
+
+    GRAVITY_VECTOR_X(GRAVITY),
+
+    GRAVITY_VECTOR_Y(GRAVITY),
+
+    GRAVITY_VECTOR_Z(GRAVITY),
 
     ENERGY(ALL),
 
@@ -533,12 +539,12 @@ public enum ValueType {
         return this.is(COLOR_TEMPERATURE) || (this.parent != null && this.parent.contains(COLOR_TEMPERATURE));
     }
 
-    public boolean isImu() {
-        return this == IMU;
+    public boolean isOrientation() {
+        return this == ORIENTATION;
     }
 
-    public boolean containsImu() {
-        return this.is(IMU) || (this.parent != null && this.parent.contains(IMU));
+    public boolean containsOrientation() {
+        return this.is(ORIENTATION) || (this.parent != null && this.parent.contains(ORIENTATION));
     }
 
     public boolean isCalibration() {
@@ -547,14 +553,6 @@ public enum ValueType {
 
     public boolean containsCalibration() {
         return this.is(CALIBRATION) || (this.parent != null && this.parent.contains(CALIBRATION));
-    }
-
-    public boolean isOrientation() {
-        return this == ORIENTATION;
-    }
-
-    public boolean containsOrientation() {
-        return this.is(ORIENTATION) || (this.parent != null && this.parent.contains(ORIENTATION));
     }
 
     public boolean isOrientationHeading() {
@@ -669,6 +667,14 @@ public enum ValueType {
         return this.is(MAGNETIC_Z) || (this.parent != null && this.parent.contains(MAGNETIC_Z));
     }
 
+    public boolean isAngularVelocity() {
+        return this == ANGULAR_VELOCITY;
+    }
+
+    public boolean containsAngularVelocity() {
+        return this.is(ANGULAR_VELOCITY) || (this.parent != null && this.parent.contains(ANGULAR_VELOCITY));
+    }
+
     public boolean isAngularVelocityX() {
         return this == ANGULAR_VELOCITY_X;
     }
@@ -693,6 +699,14 @@ public enum ValueType {
         return this.is(ANGULAR_VELOCITY_Z) || (this.parent != null && this.parent.contains(ANGULAR_VELOCITY_Z));
     }
 
+    public boolean isEulerAngle() {
+        return this == EULER_ANGLE;
+    }
+
+    public boolean containsEulerAngle() {
+        return this.is(EULER_ANGLE) || (this.parent != null && this.parent.contains(EULER_ANGLE));
+    }
+
     public boolean isEulerAngleX() {
         return this == EULER_ANGLE_X;
     }
@@ -715,6 +729,14 @@ public enum ValueType {
 
     public boolean containsEulerAngleZ() {
         return this.is(EULER_ANGLE_Z) || (this.parent != null && this.parent.contains(EULER_ANGLE_Z));
+    }
+
+    public boolean isQuaternion() {
+        return this == QUATERNION;
+    }
+
+    public boolean containsQuaternion() {
+        return this.is(QUATERNION) || (this.parent != null && this.parent.contains(QUATERNION));
     }
 
     public boolean isQuaternionW() {
@@ -771,6 +793,14 @@ public enum ValueType {
 
     public boolean containsLinearAccelerationZ() {
         return this.is(LINEAR_ACCELERATION_Z) || (this.parent != null && this.parent.contains(LINEAR_ACCELERATION_Z));
+    }
+
+    public boolean isGravity() {
+        return this == GRAVITY;
+    }
+
+    public boolean containsGravity() {
+        return this.is(GRAVITY) || (this.parent != null && this.parent.contains(GRAVITY));
     }
 
     public boolean isGravityVectorX() {

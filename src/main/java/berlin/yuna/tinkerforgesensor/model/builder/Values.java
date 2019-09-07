@@ -1013,28 +1013,28 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.COLOR_TEMPERATURE, valueIndex);
     }
 
-    public Long imu() {
-        return imu(-1);
+    public Long orientation() {
+        return orientation(-1);
     }
 
-    public Long imu(final Number valueIndex) {
-        return get(ValueType.IMU, -1L, valueIndex);
+    public Long orientation(final Number valueIndex) {
+        return get(ValueType.ORIENTATION, -1L, valueIndex);
     }
 
-    public List<Long> imu_List() {
-        return imu_List(-1);
+    public List<Long> orientation_List() {
+        return orientation_List(-1);
     }
 
-    public List<Long> imu_List(final Number timeIndex) {
-        return getList(ValueType.IMU, timeIndex);
+    public List<Long> orientation_List(final Number timeIndex) {
+        return getList(ValueType.ORIENTATION, timeIndex);
     }
 
-    public LongSummaryStatistics imu_Statistics() {
-        return imu_Statistics(-1);
+    public LongSummaryStatistics orientation_Statistics() {
+        return orientation_Statistics(-1);
     }
 
-    public LongSummaryStatistics imu_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.IMU, valueIndex);
+    public LongSummaryStatistics orientation_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.ORIENTATION, valueIndex);
     }
 
     public Long calibration() {
@@ -1059,30 +1059,6 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
 
     public LongSummaryStatistics calibration_Statistics(final Number valueIndex) {
         return getStatistics(ValueType.CALIBRATION, valueIndex);
-    }
-
-    public Long orientation() {
-        return orientation(-1);
-    }
-
-    public Long orientation(final Number valueIndex) {
-        return get(ValueType.ORIENTATION, -1L, valueIndex);
-    }
-
-    public List<Long> orientation_List() {
-        return orientation_List(-1);
-    }
-
-    public List<Long> orientation_List(final Number timeIndex) {
-        return getList(ValueType.ORIENTATION, timeIndex);
-    }
-
-    public LongSummaryStatistics orientation_Statistics() {
-        return orientation_Statistics(-1);
-    }
-
-    public LongSummaryStatistics orientation_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.ORIENTATION, valueIndex);
     }
 
     public Long orientationHeading() {
@@ -1421,6 +1397,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.MAGNETIC_Z, valueIndex);
     }
 
+    public Long angularVelocity() {
+        return angularVelocity(-1);
+    }
+
+    public Long angularVelocity(final Number valueIndex) {
+        return get(ValueType.ANGULAR_VELOCITY, -1L, valueIndex);
+    }
+
+    public List<Long> angularVelocity_List() {
+        return angularVelocity_List(-1);
+    }
+
+    public List<Long> angularVelocity_List(final Number timeIndex) {
+        return getList(ValueType.ANGULAR_VELOCITY, timeIndex);
+    }
+
+    public LongSummaryStatistics angularVelocity_Statistics() {
+        return angularVelocity_Statistics(-1);
+    }
+
+    public LongSummaryStatistics angularVelocity_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.ANGULAR_VELOCITY, valueIndex);
+    }
+
     public Long angularVelocityX() {
         return angularVelocityX(-1);
     }
@@ -1493,6 +1493,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.ANGULAR_VELOCITY_Z, valueIndex);
     }
 
+    public Long eulerAngle() {
+        return eulerAngle(-1);
+    }
+
+    public Long eulerAngle(final Number valueIndex) {
+        return get(ValueType.EULER_ANGLE, -1L, valueIndex);
+    }
+
+    public List<Long> eulerAngle_List() {
+        return eulerAngle_List(-1);
+    }
+
+    public List<Long> eulerAngle_List(final Number timeIndex) {
+        return getList(ValueType.EULER_ANGLE, timeIndex);
+    }
+
+    public LongSummaryStatistics eulerAngle_Statistics() {
+        return eulerAngle_Statistics(-1);
+    }
+
+    public LongSummaryStatistics eulerAngle_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.EULER_ANGLE, valueIndex);
+    }
+
     public Long eulerAngleX() {
         return eulerAngleX(-1);
     }
@@ -1563,6 +1587,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
 
     public LongSummaryStatistics eulerAngleZ_Statistics(final Number valueIndex) {
         return getStatistics(ValueType.EULER_ANGLE_Z, valueIndex);
+    }
+
+    public Long quaternion() {
+        return quaternion(-1);
+    }
+
+    public Long quaternion(final Number valueIndex) {
+        return get(ValueType.QUATERNION, -1L, valueIndex);
+    }
+
+    public List<Long> quaternion_List() {
+        return quaternion_List(-1);
+    }
+
+    public List<Long> quaternion_List(final Number timeIndex) {
+        return getList(ValueType.QUATERNION, timeIndex);
+    }
+
+    public LongSummaryStatistics quaternion_Statistics() {
+        return quaternion_Statistics(-1);
+    }
+
+    public LongSummaryStatistics quaternion_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.QUATERNION, valueIndex);
     }
 
     public Long quaternionW() {
@@ -1731,6 +1779,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
 
     public LongSummaryStatistics linearAccelerationZ_Statistics(final Number valueIndex) {
         return getStatistics(ValueType.LINEAR_ACCELERATION_Z, valueIndex);
+    }
+
+    public Long gravity() {
+        return gravity(-1);
+    }
+
+    public Long gravity(final Number valueIndex) {
+        return get(ValueType.GRAVITY, -1L, valueIndex);
+    }
+
+    public List<Long> gravity_List() {
+        return gravity_List(-1);
+    }
+
+    public List<Long> gravity_List(final Number timeIndex) {
+        return getList(ValueType.GRAVITY, timeIndex);
+    }
+
+    public LongSummaryStatistics gravity_Statistics() {
+        return gravity_Statistics(-1);
+    }
+
+    public LongSummaryStatistics gravity_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.GRAVITY, valueIndex);
     }
 
     public Long gravityVectorX() {

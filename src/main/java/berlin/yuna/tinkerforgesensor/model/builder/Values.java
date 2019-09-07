@@ -1397,6 +1397,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.CALIBRATION, valueIndex);
     }
 
+    public Long orientation() {
+        return orientation(-1);
+    }
+
+    public Long orientation(final Number valueIndex) {
+        return get(ValueType.ORIENTATION, -1L, valueIndex);
+    }
+
+    public List<Long> orientation_List() {
+        return orientation_List(-1);
+    }
+
+    public List<Long> orientation_List(final Number timeIndex) {
+        return getList(ValueType.ORIENTATION, timeIndex);
+    }
+
+    public LongSummaryStatistics orientation_Statistics() {
+        return orientation_Statistics(-1);
+    }
+
+    public LongSummaryStatistics orientation_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.ORIENTATION, valueIndex);
+    }
+
     public Long orientationHeading() {
         return orientationHeading(-1);
     }
@@ -1469,6 +1493,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.ORIENTATION_PITCH, valueIndex);
     }
 
+    public Long acceleration() {
+        return acceleration(-1);
+    }
+
+    public Long acceleration(final Number valueIndex) {
+        return get(ValueType.ACCELERATION, -1L, valueIndex);
+    }
+
+    public List<Long> acceleration_List() {
+        return acceleration_List(-1);
+    }
+
+    public List<Long> acceleration_List(final Number timeIndex) {
+        return getList(ValueType.ACCELERATION, timeIndex);
+    }
+
+    public LongSummaryStatistics acceleration_Statistics() {
+        return acceleration_Statistics(-1);
+    }
+
+    public LongSummaryStatistics acceleration_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.ACCELERATION, valueIndex);
+    }
+
     public Long accelerationX() {
         return accelerationX(-1);
     }
@@ -1539,6 +1587,54 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
 
     public LongSummaryStatistics accelerationZ_Statistics(final Number valueIndex) {
         return getStatistics(ValueType.ACCELERATION_Z, valueIndex);
+    }
+
+    public Long magnet() {
+        return magnet(-1);
+    }
+
+    public Long magnet(final Number valueIndex) {
+        return get(ValueType.MAGNET, -1L, valueIndex);
+    }
+
+    public List<Long> magnet_List() {
+        return magnet_List(-1);
+    }
+
+    public List<Long> magnet_List(final Number timeIndex) {
+        return getList(ValueType.MAGNET, timeIndex);
+    }
+
+    public LongSummaryStatistics magnet_Statistics() {
+        return magnet_Statistics(-1);
+    }
+
+    public LongSummaryStatistics magnet_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.MAGNET, valueIndex);
+    }
+
+    public Long heading() {
+        return heading(-1);
+    }
+
+    public Long heading(final Number valueIndex) {
+        return get(ValueType.HEADING, -1L, valueIndex);
+    }
+
+    public List<Long> heading_List() {
+        return heading_List(-1);
+    }
+
+    public List<Long> heading_List(final Number timeIndex) {
+        return getList(ValueType.HEADING, timeIndex);
+    }
+
+    public LongSummaryStatistics heading_Statistics() {
+        return heading_Statistics(-1);
+    }
+
+    public LongSummaryStatistics heading_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.HEADING, valueIndex);
     }
 
     public Long magneticX() {

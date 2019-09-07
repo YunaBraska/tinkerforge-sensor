@@ -7,6 +7,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.BarometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonDual;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonRGB;
+import berlin.yuna.tinkerforgesensor.model.sensor.Compass;
 import berlin.yuna.tinkerforgesensor.model.sensor.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.Default;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd128x64;
@@ -96,6 +97,10 @@ public class Compare {
 
     public boolean isButtonRGB() {
         return is(ButtonRGB.class);
+    }
+
+    public boolean isCompass() {
+        return is(Compass.class);
     }
 
     public boolean isDC() {

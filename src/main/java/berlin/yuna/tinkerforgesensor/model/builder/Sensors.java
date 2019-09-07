@@ -8,6 +8,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Barometer;
 import berlin.yuna.tinkerforgesensor.model.sensor.BarometerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonDual;
 import berlin.yuna.tinkerforgesensor.model.sensor.ButtonRGB;
+import berlin.yuna.tinkerforgesensor.model.sensor.Compass;
 import berlin.yuna.tinkerforgesensor.model.sensor.DC;
 import berlin.yuna.tinkerforgesensor.model.sensor.Default;
 import berlin.yuna.tinkerforgesensor.model.sensor.DisplayLcd128x64;
@@ -392,6 +393,18 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
 
     public List<Sensor> getDCList() {
         return getSensor(DC.class);
+    }
+
+    public Sensor compass() {
+        return compass(0);
+    }
+
+    public Sensor compass(final int number) {
+        return getSensor(number, Compass.class);
+    }
+
+    public List<Sensor> getCompassList() {
+        return getSensor(Compass.class);
     }
 
     public Sensor buttonRGB() {

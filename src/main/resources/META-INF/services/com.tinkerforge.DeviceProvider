@@ -13,6 +13,7 @@ com.tinkerforge.BrickletBarometerProvider
 com.tinkerforge.BrickletBarometerV2Provider
 com.tinkerforge.BrickletColorProvider
 com.tinkerforge.BrickletColorV2Provider
+com.tinkerforge.BrickletCompassProvider
 com.tinkerforge.BrickletDistanceIRProvider
 com.tinkerforge.BrickletDistanceIRV2Provider
 com.tinkerforge.BrickletDistanceUSProvider

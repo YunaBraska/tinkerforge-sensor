@@ -2,7 +2,6 @@ package berlin.yuna.tinkerforgesensor.logic;
 
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.apple.eawt.Application;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -111,7 +110,7 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
 
     private void setIcon() {
         final Image image = new ImageIcon(requireNonNull(getClass().getClassLoader().getResource("humanInput.png"))).getImage();
-        Application.getApplication().setDockIconImage(image);
+//        Application.getApplication().setDockIconImage(image);
         setIconImage(image);
     }
 

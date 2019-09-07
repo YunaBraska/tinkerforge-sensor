@@ -25,7 +25,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
  * </ul>
  * <h6>Getting distance examples</h6>
  * <code>
- * stack.values().distance();
+ * sensor.values().distance();
  * </code>
  */
 public class DistanceUS extends Sensor<BrickletDistanceUS> {

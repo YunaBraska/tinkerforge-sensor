@@ -28,11 +28,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  * </ul>
  * <h6>Getting temperature examples</h6>
  * <code>
- * stack.values().temperature();
- * stack.values().temperature_Avg();
- * stack.values().temperature_Min();
- * stack.values().temperature_Max();
- * stack.values().temperature_Sum();
+ * sensor.values().temperature();
+ * sensor.values().temperature_Avg();
+ * sensor.values().temperature_Min();
+ * sensor.values().temperature_Max();
+ * sensor.values().temperature_Sum();
  * </code>
  */
 public class TemperatureV2 extends Sensor<BrickletTemperatureV2> {

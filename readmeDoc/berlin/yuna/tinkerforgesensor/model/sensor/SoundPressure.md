@@ -16,43 +16,43 @@
 ###### Get sound spectrum
  
 ```java
-values().listSoundSpectrum();
+sensor.values().listSoundSpectrum();
 ```
  
 ###### Get sound spectrum with FFT index 20
  
 ```java
-values().listSoundSpectrum(20);
+sensor.values().listSoundSpectrum(20);
 ```
  
 ###### Get sound spectrum list
  
 ```java
-values().listSoundSpectrum_List();
+sensor.values().listSoundSpectrum_List();
 ```
  
 ###### Setting FFT to size of 256
  
 ```java
-send(256)
+sensor.send(256)
 ```
  
 ###### Setting FFT to size of 256
  *Allowed: 128, 256, 512, 1024* 
 ```java
-send(256)
+sensor.send(256)
 ```
  
 ###### Setting weighting
  *Allowed: A, B, C, D, Z* 
 ```java
-send("A")
+sensor.send("A")
 ```
  
 ###### Setting FFT and weighting
  
 ```java
-send("A", 256)
+sensor.end("A", 256)
 ```
 
 --- 

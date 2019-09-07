@@ -14,61 +14,61 @@
 ###### Clear display
  
 ```java
-display.send(true);
+sensor.send(true);
 ```
  
 ###### Send text
  
 ```java
-display.send("Howdy");
+sensor.send("Howdy");
 ```
  
 ###### Send text centered
  
 ```java
-display.send("Line1 center", true);
+sensor.send("Line1 center", true);
 ```
  
 ###### Send text centered on row 2
  
 ```java
-display.send("Line2 center", true, 1);
+sensor.send("Line2 center", true, 1);
 ```
  
 ###### Send text on position 5 and row 3
  
 ```java
-display.send("Line3 posX=5", 4, 2);
+sensor.send("Line3 posX=5", 4, 2);
 ```
  
 ###### Send text with dynamic spaces between)
  
 ```java
-display.send("H ${s} O ${s} W ${s} D ${s} Y");
+sensor.send("H ${s} O ${s} W ${s} D ${s} Y");
 ```
  
 ###### Display ON
  
 ```java
-display.ledAdditional_setOn;
+sensor.ledAdditional_setOn;
 ```
  
 ###### Getting button state from second button (0=Released, 1= pressed)
  
 ```java
-values().button(1);
+sensor.values().button(1);
 ```
  
 ###### Getting button state list of 0/1 (0=Released, 1= pressed) value for each button
  
 ```java
-values().button_List();
+sensor.values().button_List();
 ```
  
 ###### Getting button pressed
  
 ```java
-values().buttonPressed();
+sensor.values().buttonPressed();
 ```
 
 --- 

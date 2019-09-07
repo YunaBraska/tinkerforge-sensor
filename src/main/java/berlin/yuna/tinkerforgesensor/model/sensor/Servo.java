@@ -38,23 +38,23 @@ import static java.util.Collections.singletonList;
  * <li><a href="href="https://www.tinkerforge.com/en/doc/Hardware/Bricks/Servo_Brick.html#servo-brick">Official documentation</a></li>
  * </ul>
  * <h6>Set servo voltage 5V</h6>
- * <code>servo.send(-99, 5000);</code>
+ * <code>sensor.send(-99, 5000);</code>
  * <h6>Set servo voltage 7V, minimal voltage 6V</h6>
- * <code>servo.send(-99, 7000, 6000);</code>
+ * <code>sensor.send(-99, 7000, 6000);</code>
  * <h6>Turn on servo 3</h6>
- * <code>servo.send(2, true);</code>
+ * <code>sensor.send(2, true);</code>
  * <h6>Turn on servo 4 and invert position</h6>
- * <code>servo.send(3, true, true);</code>
+ * <code>sensor.send(3, true, true);</code>
  * <h6>Turn on all Servos</h6>
- * <code>servo.send(-1, true);</code>
+ * <code>sensor.send(-1, true);</code>
  * <h6>Set servo 2 to position/degree 3000 (min -9000 max 9000)</h6>
- * <code>servo.send(1, 3000);</code>
+ * <code>sensor.send(1, 3000);</code>
  * <h6>Set servo 3 to position 4000, velocity 10000</h6>
- * <code>servo.send(2, 3000, 10000);</code>
+ * <code>sensor.send(2, 3000, 10000);</code>
  * <h6>Set servo 4 to position 5000, velocity 20000, acceleration 10000</h6>
- * <code>servo.send(3, 5000, 20000, 10000);</code>
+ * <code>sensor.send(3, 5000, 20000, 10000);</code>
  * <h6>Set servo 5 to position 5000, velocity 20000, acceleration 10000. period 19500</h6>
- * <code>servo.send(4, 5000, 20000, 10000, 19500);</code>
+ * <code>sensor.send(4, 5000, 20000, 10000, 19500);</code>
  */
 public class Servo extends Sensor<BrickServo> {
 

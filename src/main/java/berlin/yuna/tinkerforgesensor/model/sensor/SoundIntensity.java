@@ -23,7 +23,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Sound_Intensity.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting sound intensity</h6>
- * <code>values().soundIntensity();</code>
+ * <code>sensor.values().soundIntensity();</code>
  */
 public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 

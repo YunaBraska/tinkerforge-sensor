@@ -14,7 +14,7 @@
 ###### Getting tilt examples
  
 ```java
-values().tilt();
+sensor.values().tilt();
 ```
 
 --- 

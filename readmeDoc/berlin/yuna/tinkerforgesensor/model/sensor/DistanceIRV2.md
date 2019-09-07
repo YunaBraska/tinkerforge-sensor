@@ -18,11 +18,11 @@
 ###### Getting distance examples
  
 ```java
-stack.values().distance();
-stack.values().distance();
-stack.values().distance();
-stack.values().distance();
-stack.values().distance();
+sensor.values().distance();
+sensor.values().distance();
+sensor.values().distance();
+sensor.values().distance();
+sensor.values().distance();
 ```
 
 --- 

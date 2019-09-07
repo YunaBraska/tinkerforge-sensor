@@ -33,9 +33,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Z;
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Compass.html#compass-bricklet">Official documentation</a></li>
  * </ul>
  * <h6>Getting magnetic x position</h6>
- * <code>compass.values().magneticX();</code>
+ * <code>sensor.values().magneticX();</code>
  * <h6>Getting position in ° (0° to 360°) (0° = north 90° = east)</h6>
- * <code>compass.values().heading() / 10;</code>
+ * <code>sensor.values().heading() / 10;</code>
  */
 public class Compass extends Sensor<BrickletCompass> {
 

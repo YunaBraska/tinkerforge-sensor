@@ -41,11 +41,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <code>color.ledAdditional_setOn();</code>
  * <h6>Getting color examples</h6>
  * <code>
- * stack.values().color();
- * stack.values().color_Avg();
- * stack.values().color_Min();
- * stack.values().color_Max();
- * stack.values().color_Sum();
+ * sensor.values().color();
+ * sensor.values().color_Avg();
+ * sensor.values().color_Min();
+ * sensor.values().color_Max();
+ * sensor.values().color_Sum();
  * </code>
  */
 public class LightColor extends Sensor<BrickletColor> {

@@ -32,9 +32,9 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNET_DENSITY;
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Hall_Effect_V2.html#hall-effect-v2-bricklet">Official documentation</a></li>
  * </ul>
  * <h6>Getting magnetic density (µT)</h6>
- * <code>hallEffect.values().magneticDensity();</code>
+ * <code>sensor.values().magneticDensity();</code>
  * <h6>Getting counter</h6>
- * <code>hallEffect.values().magneticCounter();</code>
+ * <code>sensor.values().magneticCounter();</code>
  */
 public class HallEffectV2 extends Sensor<BrickletHallEffectV2> {
 

@@ -28,7 +28,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * </code>
  * <h6>Set auto contrast on=true off=false</h6>
  * <code>
- * sensor.send(true);
+ * ledRgb.send(true);
  * </code>
  */
 public class LedRGBV2 extends Sensor<BrickletRGBLEDV2> {

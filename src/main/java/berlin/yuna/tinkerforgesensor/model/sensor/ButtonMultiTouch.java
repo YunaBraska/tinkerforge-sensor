@@ -35,7 +35,7 @@ import static java.util.stream.Collectors.toList;
  * <li><a href="href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Multi_Touch_V2.html#multi-touch-v2-bricklet">Official documentation</a></li>
  * </ul>
  * <h6>Getting button state from second button (0=Released, 1= pressed)</h6>
- * <code>multiTouch.values().buttonTouch(1);</code>
+ * <code>sensor.values().buttonTouch(1);</code>
  */
 public class ButtonMultiTouch extends Sensor<BrickletMultiTouchV2> {
 

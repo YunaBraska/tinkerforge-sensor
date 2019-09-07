@@ -31,17 +31,17 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  * <li><a href="https://en.wikichip.org/wiki/seven-segment_display/representing_letters">Representing Letters</a></li>
  * </ul>
  * <h6>Send text to display</h6>
- * <code>display.send("1.2.:3.‘4.");</code>
+ * <code>sensor.send("1.2.:3.‘4.");</code>
  * <h6>Send current time</h6>
  * <i>(use {@link TemporalAccessor})</i><br/>
- * <code>display.send(LocalDateTime#now());</code>
+ * <code>sensor.send(LocalDateTime#now());</code>
  * <h6>Send own time format</h6>
  * <i>(use {@link DateTimeFormatter})</i><br/>
- * <code>display.send(DateTimeFormatter.ofPattern("HH:mm"));</code>
+ * <code>sensor.send(DateTimeFormatter.ofPattern("HH:mm"));</code>
  * <h6>LED Brightness (2-9)</h6>
- * <code>display.ledAdditional(7);</code>
+ * <code>sensor.ledAdditional(7);</code>
  * <h6>Display ON</h6>
- * <code>display.ledAdditional_setOn;</code>
+ * <code>sensor.ledAdditional_setOn;</code>
  */
 public class DisplaySegmentV2 extends Sensor<BrickletSegmentDisplay4x7V2> {
 

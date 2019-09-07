@@ -18,7 +18,7 @@
 ###### Getting motion detected
  
 ```java
-values().motionDetected();
+sensor.values().motionDetected();
 ```
 
 --- 

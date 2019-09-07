@@ -26,11 +26,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/IO16_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Set all LEDs on</h6>
- * <code>io16.ledAdditional_setOn();</code>
+ * <code>sensor.ledAdditional_setOn();</code>
  * <h6>Turn on LED 4</h6>
- * <code>io16.send(4);</code>
+ * <code>sensor.send(4);</code>
  * <h6>Turn off LED 12</h6>
- * <code>io16.send(-12);</code>
+ * <code>sensor.send(-12);</code>
  */
 public class IO16V2 extends Sensor<BrickletIO16V2> {
 

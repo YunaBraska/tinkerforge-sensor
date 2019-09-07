@@ -19,13 +19,13 @@
 ###### Activation
  
 ```java
-localControl.ledAdditional_setOn()
+sensor.ledAdditional_setOn()
 ```
  
 ###### Key code
  
 ```java
-values().keyCode()
+sensor.values().keyCode()
 ```
  
 ###### Readable Key Character

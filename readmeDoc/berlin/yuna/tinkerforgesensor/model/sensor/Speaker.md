@@ -15,31 +15,31 @@
 ###### Send 1 second beep
  
 ```java
-speaker.send(1000)
+sensor.send(1000)
 ```
  
 ###### Send 2000 millisecond beep with 1000 frequency (min 585 - max 7100)
  
 ```java
-speaker.send(1000, 2000)
+sensor.send(1000, 2000)
 ```
  
 ###### Send morse
  
 ```java
-speaker.send("... --- ...")
+sensor.send("... --- ...")
 ```
  
 ###### Send morse with frequency (min 585 - max 7100)
  
 ```java
-speaker.send("... --- ...", 3000)
+sensor.send("... --- ...", 3000)
 ```
  
 ###### Wait until sound is finished
  
 ```java
-speaker.send(256, 4000, true)
+sensor.send(256, 4000, true)
 ```
 
 --- 

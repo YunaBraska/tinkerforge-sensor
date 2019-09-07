@@ -18,7 +18,7 @@ sensor.send(12367);
 ###### Set auto contrast on=true off=false
  
 ```java
-sensor.send(true);
+ledRgb.send(true);
 ```
 
 --- 

@@ -31,7 +31,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
  * <h6>Getting position in % (-150 to 150)</h6>
  * <code>values().rotary();</code>
  * <h6>Getting position in % (0-100)</h6>
- * <code>values().percentage();</code>
+ * <code>sensor.values().percentage();</code>
  */
 public class PotiRotaryV2 extends Sensor<BrickletRotaryPotiV2> {
 

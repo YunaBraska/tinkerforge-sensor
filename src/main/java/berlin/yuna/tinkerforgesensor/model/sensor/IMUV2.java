@@ -41,7 +41,30 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Y;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
 
 /**
- * Full fledged AHRS with 9 degrees of freedom
+ * <h3>{@link IMUV2}</h3><br />
+ * <i>Full fledged AHRS with 9 degrees of freedom</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#ACCELERATION_X} [x - number]</li>
+ * <li>{@link ValueType#ACCELERATION_Y} [x = number]</li>
+ * <li>{@link ValueType#ACCELERATION_Z} [x = number]</li>
+ * <li>{@link ValueType#MAGNETIC_X} [x = number]</li>
+ * <li>{@link ValueType#MAGNETIC_Y} [x = number]</li>
+ * <li>{@link ValueType#MAGNETIC_Y} [x = number]</li>
+ * <li>{@link ValueType#ANGULAR_VELOCITY_X} [x = number]</li>
+ * <li>{@link ValueType#ANGULAR_VELOCITY_Y} [x = number]</li>
+ * <li>{@link ValueType#ANGULAR_VELOCITY_Z} [x = number]</li>
+ * <li>{@link ValueType#ORIENTATION_HEADING} [x = number]</li>
+ * <li>{@link ValueType#ORIENTATION_ROLL} [x = number]</li>
+ * <li>{@link ValueType#ORIENTATION_PITCH} [x = number]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricks/IMU_V2_Brick.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting acceleration x example</h6>
+ * <code>sensor.values().accelerationX();</code>
  */
 public class IMUV2 extends Sensor<BrickIMUV2> {
 

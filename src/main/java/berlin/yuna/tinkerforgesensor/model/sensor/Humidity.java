@@ -24,11 +24,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
  * </ul>
  * <h6>Getting humidity examples</h6>
  * <code>
- * stack.values().humidity();
- * stack.values().humidity_Avg();
- * stack.values().humidity_Min();
- * stack.values().humidity_Max();
- * stack.values().humidity_Sum();
+ * sensor.values().humidity();
+ * sensor.values().humidity_Avg();
+ * sensor.values().humidity_Min();
+ * sensor.values().humidity_Max();
+ * sensor.values().humidity_Sum();
  * </code>
  */
 public class Humidity extends Sensor<BrickletHumidity> {

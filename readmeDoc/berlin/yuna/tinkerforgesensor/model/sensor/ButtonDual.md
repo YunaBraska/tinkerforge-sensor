@@ -14,59 +14,59 @@
 ###### Getting button state from second button (0=Released, 1= pressed)
  
 ```java
-values().button(1);
+sensor.values().button(1);
 ```
  
 ###### Getting button state list of 0/1 (0=Released, 1= pressed) value for each button
  
 ```java
-values().button_List();
+sensor.values().button_List();
 ```
  
 ###### Switch first led on
  
 ```java
-button.send(1);
+sensor.send(1);
 ```
  
 ###### Switch first led off
  
 ```java
-button.send(-1);
+sensor.send(-1);
 ```
  
 ###### Switch first led on and second led off
  
 ```java
-button.send(1, -2);
+sensor.send(1, -2);
 ```
  
 ```java
-button.send(true, false);
+sensor.send(true, false);
 ```
  
 ###### (Auto) Set LEDs on
  
 ```java
-button.ledAdditional_setOn();
+sensor.ledAdditional_setOn();
 ```
  
 ###### (Auto) Set LEDs off
  
 ```java
-button.ledAdditional_setOff();
+sensor.ledAdditional_setOff();
 ```
  
 ###### (Auto) Set LEDs active on press
  
 ```java
-button.setLedAdditional_Status();
+sensor.setLedAdditional_Status();
 ```
  
 ###### (Auto) Set LEDs active on release
  
 ```java
-button.setLedAdditional_Heartbeat();
+sensor.setLedAdditional_Heartbeat();
 ```
 
 --- 

@@ -12,63 +12,63 @@
 ###### Play file (allowed = STRING/FILE/PATH/URL/URI)
  
 ```java
-localAudio.send("/Downloads/mySoundFile.wav");
+sensor.send("/Downloads/mySoundFile.wav");
 ```
  
 ###### Set volume to 50% (0-100)
  
 ```java
-localAudio.send(50);
+sensor.send(50);
 ```
  
 ###### Mute
  
 ```java
-localAudio.send(true);
+sensor.send(true);
 ```
  
 ###### Play file, volume 20%, unmuted
  
 ```java
-localAudio.send("/Downloads/mySoundFile.wav", 20, false, PLAY);
+sensor.send("/Downloads/mySoundFile.wav", 20, false, PLAY);
 ```
  
 ### Audio commands [AudioCmd](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/AudioCmd.java)
  *One can be added anytime at sending the commands from above*
  
 ```java
-localAudio.send(PLAY);
+sensor.send(PLAY);
 ```
  
 ```java
-localAudio.send(REPLAY);
+sensor.send(REPLAY);
 ```
  
 ```java
-localAudio.send(PAUSE);
+sensor.send(PAUSE);
 ```
  
 ```java
-localAudio.send(STOP);
+sensor.send(STOP);
 ```
  
 ```java
-localAudio.send(MUTE);
+sensor.send(MUTE);
 ```
  
 ```java
-localAudio.send(UNMUTE);
+sensor.send(UNMUTE);
 ```
  
 ### Parallel sounds
  *Can be done by adding different playerIds at the start of the command*
  
 ```java
-localAudio.send(1, "/Downloads/mySoundFile.wav");
+sensor.send(1, "/Downloads/mySoundFile.wav");
 ```
  
 ```java
-localAudio.send(2, "/Downloads/mySoundFile.wav");
+sensor.send(2, "/Downloads/mySoundFile.wav");
 ```
 
 --- 

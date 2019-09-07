@@ -24,15 +24,15 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <li><a href="https://morsecode.scphillips.com/translator.html">Morse generator</a></li>
  * </ul>
  * <h6>Send 1 second beep</h6>
- * <code>speaker.send(1000)</code>
+ * <code>sensor.send(1000)</code>
  * <h6>Send 2000 millisecond beep with 1000 frequency (min 585 - max 7100)</h6>
- * <code>speaker.send(1000, 2000)</code>
+ * <code>sensor.send(1000, 2000)</code>
  * <h6>Send morse</h6>
- * <code>speaker.send("... --- ...")</code>
+ * <code>sensor.send("... --- ...")</code>
  * <h6>Send morse with frequency (min 585 - max 7100)</h6>
- * <code>speaker.send("... --- ...", 3000)</code>
+ * <code>sensor.send("... --- ...", 3000)</code>
  * <h6>Wait until sound is finished</h6>
- * <code>speaker.send(256, 4000, true)</code>
+ * <code>sensor.send(256, 4000, true)</code>
  */
 public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 

@@ -14,7 +14,7 @@
 ###### Getting sound intensity
  
 ```java
-values().soundIntensity();
+sensor.values().soundIntensity();
 ```
 
 --- 

@@ -29,11 +29,11 @@ color.ledAdditional_setOn();
 ###### Getting color examples
  
 ```java
-stack.values().color();
-stack.values().color_Avg();
-stack.values().color_Min();
-stack.values().color_Max();
-stack.values().color_Sum();
+sensor.values().color();
+sensor.values().color_Avg();
+sensor.values().color_Min();
+sensor.values().color_Max();
+sensor.values().color_Sum();
 ```
 
 --- 

@@ -7,7 +7,7 @@
 
 
 ---
-### [Humidity](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/Humidity.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/Humidity.java))
+### [HumidityV2](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/HumidityV2.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/HumidityV2.java))
 
  *Measures relative humidity*
  
@@ -19,11 +19,11 @@
 ###### Getting humidity examples
  
 ```java
-stack.values().humidity();
-stack.values().humidity_Avg();
-stack.values().humidity_Min();
-stack.values().humidity_Max();
-stack.values().humidity_Sum();
+sensor.values().humidity();
+sensor.values().humidity_Avg();
+sensor.values().humidity_Min();
+sensor.values().humidity_Max();
+sensor.values().humidity_Sum();
 ```
 
 --- 

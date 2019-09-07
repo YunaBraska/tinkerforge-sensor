@@ -14,7 +14,7 @@
 ###### Getting position in % (0-100)
  
 ```java
-values().percentage();
+sensor.values().percentage();
 ```
 
 --- 

@@ -28,11 +28,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
  * </ul>
  * <h6>Getting distance examples</h6>
  * <code>
- * stack.values().distance();
- * stack.values().distance();
- * stack.values().distance();
- * stack.values().distance();
- * stack.values().distance();
+ * sensor.values().distance();
+ * sensor.values().distance();
+ * sensor.values().distance();
+ * sensor.values().distance();
+ * sensor.values().distance();
  * </code>
  */
 public class DistanceIRV2 extends Sensor<BrickletDistanceIRV2> {

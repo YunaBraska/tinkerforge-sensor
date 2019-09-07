@@ -34,7 +34,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
  * <li><a href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/RGB_LED_Button.htm">Official documentation</a></li>
  * </ul>
  * <h6>Getting button pressed</h6>
- * <code>values().buttonPressed();</code>
+ * <code>sensor.values().button(0);</code>
+ * <code>sensor.values().buttonPressed();</code>
  */
 public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
 

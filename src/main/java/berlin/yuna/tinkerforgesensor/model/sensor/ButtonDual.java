@@ -37,24 +37,24 @@ import static java.util.Arrays.asList;
  * <li><a href="href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/Dual_Button.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting button state from second button (0=Released, 1= pressed)</h6>
- * <code>values().button(1);</code>
+ * <code>sensor.values().button(1);</code>
  * <h6>Getting button state list of 0/1 (0=Released, 1= pressed) value for each button</h6>
- * <code>values().button_List();</code>
+ * <code>sensor.values().button_List();</code>
  * <h6>Switch first led on</h6>
- * <code>button.send(1);</code>
+ * <code>sensor.send(1);</code>
  * <h6>Switch first led off</h6>
- * <code>button.send(-1);</code>
+ * <code>sensor.send(-1);</code>
  * <h6>Switch first led on and second led off</h6>
- * <code>button.send(1, -2);</code>
- * <code>button.send(true, false);</code>
+ * <code>sensor.send(1, -2);</code>
+ * <code>sensor.send(true, false);</code>
  * <h6>(Auto) Set LEDs on</h6>
- * <code>button.ledAdditional_setOn();</code>
+ * <code>sensor.ledAdditional_setOn();</code>
  * <h6>(Auto) Set LEDs off</h6>
- * <code>button.ledAdditional_setOff();</code>
+ * <code>sensor.ledAdditional_setOff();</code>
  * <h6>(Auto) Set LEDs active on press</h6>
- * <code>button.setLedAdditional_Status();</code>
+ * <code>sensor.setLedAdditional_Status();</code>
  * <h6>(Auto) Set LEDs active on release</h6>
- * <code>button.setLedAdditional_Heartbeat();</code>
+ * <code>sensor.setLedAdditional_Heartbeat();</code>
  */
 public class ButtonDual extends Sensor<BrickletDualButtonV2> {
 

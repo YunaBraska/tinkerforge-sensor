@@ -35,25 +35,25 @@ import static java.util.Arrays.asList;
  * <li><a href="href="https://www.tinkerforge.com/en/doc/Hardware/Bricklets/LCD_20x4.html">Official documentation</a></li>
  * </ul>
  * <h6>Clear display</h6>
- * <code>display.send(true);</code>
+ * <code>sensor.send(true);</code>
  * <h6>Send text</h6>
- * <code>display.send("Howdy");</code>
+ * <code>sensor.send("Howdy");</code>
  * <h6>Send text centered</h6>
- * <code>display.send("Line1 center", true);</code>
+ * <code>sensor.send("Line1 center", true);</code>
  * <h6>Send text centered on row 2</h6>
- * <code>display.send("Line2 center", true, 1);</code>
+ * <code>sensor.send("Line2 center", true, 1);</code>
  * <h6>Send text on position 5 and row 3</h6>
- * <code>display.send("Line3 posX=5", 4, 2);</code>
+ * <code>sensor.send("Line3 posX=5", 4, 2);</code>
  * <h6>Send text with dynamic spaces between)</h6>
- * <code>display.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
+ * <code>sensor.send("H ${s} O ${s} W ${s} D ${s} Y");</code>
  * <h6>Display ON</h6>
- * <code>display.ledAdditional_setOn;</code>
+ * <code>sensor.ledAdditional_setOn;</code>
  * <h6>Getting button state from second button (0=Released, 1= pressed)</h6>
- * <code>values().button(1);</code>
+ * <code>sensor.values().button(1);</code>
  * <h6>Getting button state list of 0/1 (0=Released, 1= pressed) value for each button</h6>
- * <code>values().button_List();</code>
+ * <code>sensor.values().button_List();</code>
  * <h6>Getting button pressed</h6>
- * <code>values().buttonPressed();</code>
+ * <code>sensor.values().buttonPressed();</code>
  */
 public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 

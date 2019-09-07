@@ -34,11 +34,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
  * </ul>
  * <h6>Getting air pressure examples</h6>
  * <code>
- * stack.values().airPressure();
- * stack.values().airPressure_Avg();
- * stack.values().airPressure_Min();
- * stack.values().airPressure_Max();
- * stack.values().airPressure_Sum();
+ * sensor.values().airPressure();
+ * sensor.values().airPressure_Avg();
+ * sensor.values().airPressure_Min();
+ * sensor.values().airPressure_Max();
+ * sensor.values().airPressure_Sum();
  * </code>
  */
 public class AirQuality extends Sensor<BrickletAirQuality> {

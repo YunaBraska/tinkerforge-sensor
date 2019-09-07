@@ -27,7 +27,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Motion_Detector_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting motion detected</h6>
- * <code>values().motionDetected();</code>
+ * <code>sensor.values().motionDetected();</code>
  */
 public class MotionDetectorV2 extends Sensor<BrickletMotionDetectorV2> {
 

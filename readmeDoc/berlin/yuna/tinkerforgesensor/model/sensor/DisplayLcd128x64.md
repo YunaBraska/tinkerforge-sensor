@@ -16,55 +16,55 @@
 ###### Clear display
  
 ```java
-display.send(true);
+sensor.send(true);
 ```
  
 ###### Send text
  
 ```java
-display.send("Howdy");
+sensor.send("Howdy");
 ```
  
 ###### Send text centered
  
 ```java
-display.send("Line1 center", true);
+sensor.send("Line1 center", true);
 ```
  
 ###### Send text centered on row 2
  
 ```java
-display.send("Line2 center", true, 1);
+sensor.send("Line2 center", true, 1);
 ```
  
 ###### Send text on position 5 and row 3
  
 ```java
-display.send("Line3 posX=5", 4, 2);
+sensor.send("Line3 posX=5", 4, 2);
 ```
  
 ###### Send text on position 9 and row 4 with font (0-9)
  
 ```java
-display.send("Line4 posX=8 font=2", 8, 3, 2);
+sensor.send("Line4 posX=8 font=2", 8, 3, 2);
 ```
  
 ###### Send text with dynamic spaces between)
  
 ```java
-display.send("H ${s} O ${s} W ${s} D ${s} Y");
+sensor.send("H ${s} O ${s} W ${s} D ${s} Y");
 ```
  
 ###### LED Brightness (2-100)
  
 ```java
-display.ledAdditional(7);
+sensor.ledAdditional(7);
 ```
  
 ###### Display ON
  
 ```java
-display.ledAdditional_setOn;
+sensor.ledAdditional_setOn;
 ```
 
 --- 

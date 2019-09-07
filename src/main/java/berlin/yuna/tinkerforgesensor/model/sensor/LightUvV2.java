@@ -32,11 +32,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UVB;
  * </ul>
  * <h6>Getting lightUv examples</h6>
  * <code>
- * stack.values().lightUv();
- * stack.values().lightUv_Avg();
- * stack.values().lightUv_Min();
- * stack.values().lightUv_Max();
- * stack.values().lightUv_Sum();
+ * sensor.values().lightUv();
+ * sensor.values().lightUv_Avg();
+ * sensor.values().lightUv_Min();
+ * sensor.values().lightUv_Max();
+ * sensor.values().lightUv_Sum();
  * </code>
  */
 public class LightUvV2 extends Sensor<BrickletUVLightV2> {

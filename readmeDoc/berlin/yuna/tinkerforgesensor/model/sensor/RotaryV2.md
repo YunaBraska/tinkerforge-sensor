@@ -17,7 +17,7 @@
 ###### Getting rotary number
  
 ```java
-values().rotary();
+sensor.values().rotary();
 ```
 
 --- 

@@ -26,27 +26,27 @@ import static java.util.Arrays.asList;
  *
  * <h3>Technical Info</h3>
  * <h6>Play file (allowed = STRING/FILE/PATH/URL/URI)</h6>
- * <code>localAudio.send("/Downloads/mySoundFile.wav");</code>
+ * <code>sensor.send("/Downloads/mySoundFile.wav");</code>
  * <h6>Set volume to 50% (0-100)</h6>
- * <code>localAudio.send(50);</code>
+ * <code>sensor.send(50);</code>
  * <h6>Mute</h6>
- * <code>localAudio.send(true);</code>
+ * <code>sensor.send(true);</code>
  * <h6>Play file, volume 20%, unmuted</h6>
- * <code>localAudio.send("/Downloads/mySoundFile.wav", 20, false, PLAY);</code>
+ * <code>sensor.send("/Downloads/mySoundFile.wav", 20, false, PLAY);</code>
  *
  * <h3>Audio commands {@link AudioCmd}</h3>
  * <i>One can be added anytime at sending the commands from above</i><br />
- * <code>localAudio.send(PLAY);</code>
- * <code>localAudio.send(REPLAY);</code>
- * <code>localAudio.send(PAUSE);</code>
- * <code>localAudio.send(STOP);</code>
- * <code>localAudio.send(MUTE);</code>
- * <code>localAudio.send(UNMUTE);</code>
+ * <code>sensor.send(PLAY);</code>
+ * <code>sensor.send(REPLAY);</code>
+ * <code>sensor.send(PAUSE);</code>
+ * <code>sensor.send(STOP);</code>
+ * <code>sensor.send(MUTE);</code>
+ * <code>sensor.send(UNMUTE);</code>
  *
  * <h3>Parallel sounds</h3>
  * <i>Can be done by adding different playerIds at the start of the command</i><br />
- * <code>localAudio.send(1, "/Downloads/mySoundFile.wav");</code>
- * <code>localAudio.send(2, "/Downloads/mySoundFile.wav");</code>
+ * <code>sensor.send(1, "/Downloads/mySoundFile.wav");</code>
+ * <code>sensor.send(2, "/Downloads/mySoundFile.wav");</code>
  */
 public class LocalAudio extends Sensor<DummyDevice> {
 

@@ -33,7 +33,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Rotary_Encoder_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting rotary number</h6>
- * <code>values().rotary();</code>
+ * <code>sensor.values().rotary();</code>
  */
 public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
 

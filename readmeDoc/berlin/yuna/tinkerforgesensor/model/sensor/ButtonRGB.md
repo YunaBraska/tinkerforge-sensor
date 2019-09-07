@@ -16,7 +16,11 @@
 ###### Getting button pressed
  
 ```java
-values().buttonPressed();
+sensor.values().button(0);
+```
+ 
+```java
+sensor.values().buttonPressed();
 ```
 
 --- 

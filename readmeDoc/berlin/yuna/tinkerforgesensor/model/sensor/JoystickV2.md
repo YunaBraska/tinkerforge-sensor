@@ -18,19 +18,19 @@
 ###### Getting x axis
  
 ```java
-values().mouseMoveX();
+sensor.values().mouseMoveX();
 ```
  
 ###### Getting y axis
  
 ```java
-values().mouseMoveY();
+sensor.values().mouseMoveY();
 ```
  
 ###### Getting button pressed
  
 ```java
-values().buttonPressed();
+sensor.values().buttonPressed();
 ```
 
 --- 

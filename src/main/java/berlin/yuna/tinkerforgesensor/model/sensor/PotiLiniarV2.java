@@ -27,7 +27,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PERCENTAGE;
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Linear_Poti_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Getting position in % (0-100)</h6>
- * <code>values().percentage();</code>
+ * <code>sensor.values().percentage();</code>
  */
 public class PotiLiniarV2 extends Sensor<BrickletLinearPotiV2> {
 

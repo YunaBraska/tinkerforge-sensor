@@ -17,33 +17,33 @@
 ###### Send text to display
  
 ```java
-display.send("1.2.:3.‘4.");
+sensor.send("1.2.:3.‘4.");
 ```
  
 ###### Send current time
  *(use [TemporalAccessor](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/TemporalAccessor.html) )*
  
 ```java
-display.send(LocalDateTime#now());
+sensor.send(LocalDateTime#now());
 ```
  
 ###### Send own time format
  *(use [DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) )*
  
 ```java
-display.send(DateTimeFormatter.ofPattern("HH:mm"));
+sensor.send(DateTimeFormatter.ofPattern("HH:mm"));
 ```
  
 ###### LED Brightness (2-9)
  
 ```java
-display.ledAdditional(7);
+sensor.ledAdditional(7);
 ```
  
 ###### Display ON
  
 ```java
-display.ledAdditional_setOn;
+sensor.ledAdditional_setOn;
 ```
 
 --- 

@@ -13,7 +13,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 
 /**
  * <h3>{@link DistanceIR}</h3><br />
- * <i>Measures distance between 2cm and 400cm with ultrasound</i><br />
+ * <i>Measures distance between 30cm and 500cm with ultrasound</i><br />
  *
  * <h3>Values</h3>
  * <ul>
@@ -25,7 +25,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
  * </ul>
  * <h6>Getting distance examples</h6>
  * <code>
- * stack.values().distance();
+ * sensor.values().distance();
  * </code>
  */
 public class DistanceUSV2 extends Sensor<BrickletDistanceUSV2> {

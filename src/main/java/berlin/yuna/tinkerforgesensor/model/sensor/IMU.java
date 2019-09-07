@@ -1,7 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.BrickIMU;
 import com.tinkerforge.Device;
@@ -26,6 +25,32 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_HEA
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_PITCH;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_ROLL;
 
+/**
+ * <h3>{@link IMU}</h3><br />
+ * <i>Full fledged AHRS with 9 degrees of freedom</i><br />
+ *
+ * <h3>Values</h3>
+ * <ul>
+ * <li>{@link ValueType#ACCELERATION_X} [x - number]</li>
+ * <li>{@link ValueType#ACCELERATION_Y} [x = number]</li>
+ * <li>{@link ValueType#ACCELERATION_Z} [x = number]</li>
+ * <li>{@link ValueType#MAGNETIC_X} [x = number]</li>
+ * <li>{@link ValueType#MAGNETIC_Y} [x = number]</li>
+ * <li>{@link ValueType#MAGNETIC_Y} [x = number]</li>
+ * <li>{@link ValueType#ANGULAR_VELOCITY_X} [x = number]</li>
+ * <li>{@link ValueType#ANGULAR_VELOCITY_Y} [x = number]</li>
+ * <li>{@link ValueType#ANGULAR_VELOCITY_Z} [x = number]</li>
+ * <li>{@link ValueType#ORIENTATION_HEADING} [x = number]</li>
+ * <li>{@link ValueType#ORIENTATION_ROLL} [x = number]</li>
+ * <li>{@link ValueType#ORIENTATION_PITCH} [x = number]</li>
+ * </ul>
+ * <h3>Technical Info</h3>
+ * <ul>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricks/IMU_Brick.html">Official documentation</a></li>
+ * </ul>
+ * <h6>Getting acceleration x example</h6>
+ * <code>sensor.values().accelerationX();</code>
+ */
 public class IMU extends Sensor<BrickIMU> {
 
     /**
@@ -48,15 +73,12 @@ public class IMU extends Sensor<BrickIMU> {
                     sendEvent(ANGULAR_VELOCITY_X, (long) angX);
                     sendEvent(ANGULAR_VELOCITY_Y, (long) angY);
                     sendEvent(ANGULAR_VELOCITY_Z, (long) angZ);
-                    //sendEventUnchecked( TEMPERATURE, (long) temperature);
-                    sendEvent(ValueType.IMU, 1L);
                 }
         );
         device.addOrientationListener((heading, roll, pitch) -> {
                     sendEvent(ORIENTATION_HEADING, (long) heading);
                     sendEvent(ORIENTATION_ROLL, (long) roll);
                     sendEvent(ORIENTATION_PITCH, (long) pitch);
-                    sendEvent(ValueType.IMU, 1L);
                 }
         );
         refreshPeriod(CALLBACK_PERIOD);

@@ -64,7 +64,7 @@ public class LocalAudio extends Sensor<DummyDevice> {
     private AudioDevice getPlayer(final int playerId) {
         if (playerId == -1) {
             return new AudioControl().getDefaultDevice();
-        } else if (players.size() - 1 >= playerId) {
+        } else if (players.containsKey(playerId)) {
             return players.get(playerId);
         }
         final AudioDevice player = new AudioDevice();

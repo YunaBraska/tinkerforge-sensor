@@ -1,23 +1,30 @@
 # TINKERFORGE SENSOR API
-
-![logo](https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Tinkerforge_logo.svg/1599px-Tinkerforge_logo.svg.png "Tinkerforge logo")
-
 ![logo](pictureEx_01.jpg "pictureEx_01")
-![logo](pictureEx_02.jpg "pictureEx_02")
 
-### Description
-This project is an example to get a feeling how the world of smart home works.
-From putting sensors together up to programming the logic/behavior.
+### Hardware Requirements
+* Tinkerforge Elements [https://www.tinkerforge.com](https://www.tinkerforge.com)
+* Tinkerforge Driver [Brick Daemon](https://www.tinkerforge.com/en/doc/Software/Brickd.html#brickd)
 
-### Requirements
-* Tinkerforge Elements (https://www.tinkerforge.com)
-* Tinkerforge Brick Daemon (https://www.tinkerforge.com/en/doc/Software/Brickd.html#brickd)
-* IntelliJ IDEA for programming (https://www.jetbrains.com/idea/download/)
-* Java 8 or higher
-* Maven
+### Installation (Mac) via [Brew](https://brew.sh/) \[Java, Maven, Git, Intellij]
+* Install [Brew](https://brew.sh/)
+* brew tap homebrew/cask-versions
+* brew tap adoptopenjdk/openjdk
+* brew install maven
+* brew install git
+* brew cask install intellij-idea-ce
+* git clone [https://github.com/YunaBraska/tinkerforge-sensor.git](https://github.com/YunaBraska/tinkerforge-sensor.git)
+* Now just open this downloaded folder with Intellij
 
-### Hackerschool Helper
-* of curse there are some helping methods for faster programming and don't thinking about it.
+### Installation (Windows) via [Chocolatey](https://chocolatey.org/) \[Java, Maven, Git, Intellij]
+* Install [Chocolatey](https://chocolatey.org/install)
+* choco install openjdk
+* choco install maven
+* choco install git
+* choco install intellijidea-community
+* git clone [https://github.com/YunaBraska/tinkerforge-sensor.git](https://github.com/YunaBraska/tinkerforge-sensor.git)
+* Now just open this downloaded folder with Intellij
+
+### Hackerschool Helper methods
 #### timePassed(milliseconds)
 * Will return true if the last call at this lime has passed the time
 ```java
@@ -126,3 +133,5 @@ String time = date()
 String date = date()
 ```
 * result: "18.05.19 11:22:33"
+
+![logo](https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Tinkerforge_logo.svg/1599px-Tinkerforge_logo.svg.png "Tinkerforge logo")

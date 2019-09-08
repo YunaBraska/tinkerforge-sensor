@@ -1,11 +1,13 @@
 package berlin.yuna.hackerschool.session_04_070919;
 
+import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
-import static berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example.connect;
+import static java.lang.String.format;
 
 
 public class Marvin_Antony extends Helper {
@@ -14,14 +16,65 @@ public class Marvin_Antony extends Helper {
     private static Stack stackRemote;
     private static Stack stackRobot;
 
+    static boolean sirene = false;
+    static long distance = 300;
+
     static void onStart() {
         loop("PoliceLED", run -> {
-            stackRobot.sensors().buttonDual().send(false, true);
-            stackRobot.sensors().speaker().send(700, 600);
-            sleep(700);
-            stackRobot.sensors().buttonDual().send(true, false);
-            stackRobot.sensors().speaker().send(700, 630);
-            sleep(700);
+            stackRobot.sensors().iO16().send(4, 5, 6);
+            sleep(150);
+            stackRobot.sensors().iO16().send(-4, -5, -6);
+            sleep(150);
+            stackRobot.sensors().iO16().send(4, 5, 6);
+            sleep(150);
+
+            stackRobot.sensors().iO16().send(12, 13, 11, -4, -5, -6);
+            sleep(150);
+            stackRobot.sensors().iO16().send(-11, -12, -13);
+            sleep(150);
+            stackRobot.sensors().iO16().send(11, 12, 13);
+            sleep(150);
+            stackRobot.sensors().iO16().send(-11, -12, -13);
+        });
+
+        loop("Blinker", run -> {
+            if (stackRemote.values().rotary() < 0) {
+                stackRobot.sensors().iO16().send(9, 10);
+                sleep(425);
+                stackRobot.sensors().iO16().send(-9, -10);
+                sleep(425);
+            } else if (stackRemote.values().rotary() > 0) {
+                stackRobot.sensors().iO16().send(7, 8);
+                sleep(425);
+                stackRobot.sensors().iO16().send(-7, -8);
+                sleep(425);
+            }
+        });
+
+        loop("distance", run -> {
+            distance = stackRobot.values().distance();
+            if (distance < 200) {
+                stackRobot.sensors().iO16().send(14, 15, 16);
+            } else if (distance > 200) {
+                stackRobot.sensors().iO16().send(-14, -15, -16);
+            }
+            if (distance < 150) {
+                move(0, 0);
+            }
+
+        });
+
+
+        loop("Sirene", run -> {
+            if (sirene == true) {
+                //stackRobot.sensors().speaker().send(1000, 600);
+
+                stackRobot.sensors().speaker().send(550, 600);
+                sleep(550);
+                stackRobot.sensors().speaker().send(550, 745);
+                sleep(550);
+
+            }
         });
     }
 
@@ -30,11 +83,17 @@ public class Marvin_Antony extends Helper {
 
     //CODE FUNCTION
     static void onSensorEvent(final SensorEvent event) {
+
+        if (distance < 200 && timePassed(distance)) {
+            stackRobot.sensors().speaker().send(100, 9000);
+
+        }
+
         if (event.getValueType().isRotary()) {
             if (event.getValue() > 0) {
-                right = event.getValue() * 5;
+                right = event.getValue() * 10;
             } else if (event.getValue() < 0) {
-                left = event.getValue() * 5;
+                left = event.getValue() * 10;
             }
 
             final Long percentage = stackRemote.values().percentage();
@@ -45,14 +104,36 @@ public class Marvin_Antony extends Helper {
             final Long percentage = event.getValue();
             move((-100 + right) * percentage, (100 + left) * percentage);
         }
+
+        if (event.getValueType().isButtonPressed()) {
+            sirene = !sirene;
+        }
+
     }
 
     //START FUNCTION
     public static void main(final String[] args) {
-        stackRemote = connect("localhost", 4223);
-        stackRobot = connect("100.100.0.2", 4223);
-        onStart();
+        stackRemote = ConnectionAndPrintValues_Example.connect();
+        stackRemote.sensorEventConsumerList.add(Marvin_Antony::onSensorEvent);
+
+        try {
+            stackRobot = new Stack("100.100.0.2", 4223, true);
+            stackRobot.sensorEventConsumerList.add(Marvin_Antony::printAllValues);
+            onStart();
+        } catch (NetworkConnectionException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    private static void printAllValues(final SensorEvent sensorEvent) {
+        if (sensorEvent.getValueType().containsDeviceStatus()) {
+            System.out.println(format("Sensor [%s] type [%s] send [%s]", sensorEvent.sensor().name, sensorEvent.getValueType(), sensorEvent.getValue()));
+        } else if (!timePassed(256)) {
+            return;
+        }
+        System.out.println(stackRobot.valuesToString());
+    }
+
 
     private static void move(final long speedLeft, final long speedRight) {
         if (stackRobot == null) {

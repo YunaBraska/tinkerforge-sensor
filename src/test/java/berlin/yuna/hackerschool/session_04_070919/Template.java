@@ -1,31 +1,34 @@
 package berlin.yuna.hackerschool.session_04_070919;
 
-import berlin.yuna.hackerschool.example.HackerSchoolTemplate;
+import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
+import berlin.yuna.hackerschool.example.Helper;
+import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
-/**
- * @author YOUR NAME REQUIRED
- * Your code (http://hs.yuna.berlin)
- * Hackerschool (https://hacker-school.de)
- * Tinkerforge hardware (https://www.tinkerforge.com)
- * Sensor documentation (http://sensor.yuna.berlin)
- */
-public class Template extends HackerSchoolTemplate {
+
+public class Template extends Helper {
 
     //VARIABLES
+    private static Stack stack;
 
-    //CODE FUNCTION ON START
-    public void onStart() {
-
+    static void onStart() {
+        loop("PoliceLED", run -> {
+            stack.sensors().buttonDual().send(-1, 2);
+        });
     }
 
-    //CODE FUNCTION ON EVENT
-    public void onSensorEvent(final SensorEvent event) {
+    //CODE FUNCTION
+    static void onSensorEvent(final SensorEvent event) {
+
 
     }
 
     //START FUNCTION
     public static void main(final String[] args) {
-        new Template();
+        stack = ConnectionAndPrintValues_Example.connect();
+        stack.sensorEventConsumerList.add(Template::onSensorEvent);
+        onStart();
     }
+
+
 }

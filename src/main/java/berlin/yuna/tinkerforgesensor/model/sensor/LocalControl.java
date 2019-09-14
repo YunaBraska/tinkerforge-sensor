@@ -30,10 +30,10 @@ import static java.util.Arrays.asList;
  * <ul>
  * <li>{@link ValueType#KEY_PRESSED}</li>
  * <li>{@link ValueType#KEY_CHAR}</li>
- * <li>{@link ValueType#MOUSE_PRESSED}</li>
- * <li>{@link ValueType#MOUSE_CLICK_COUNT}</li>
- * <li>{@link ValueType#MOUSE_MOVE_X}</li>
- * <li>{@link ValueType#MOUSE_MOVE_Y}</li>
+ * <li>{@link ValueType#CURSOR_PRESSED}</li>
+ * <li>{@link ValueType#CURSOR_CLICK_COUNT}</li>
+ * <li>{@link ValueType#CURSOR_MOVE_X}</li>
+ * <li>{@link ValueType#CURSOR_MOVE_Y}</li>
  * </ul>
  *
  * <h3>Technical Info</h3>

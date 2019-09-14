@@ -14,9 +14,11 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVE_X;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVE_Y;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_X;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_Y;
 
 /**
  * <h3>{@link JoystickV2}</h3><br />
@@ -24,9 +26,11 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_Y;
  *
  * <h3>Values</h3>
  * <ul>
- * <li>{@link ValueType#MOUSE_MOVE_X} [x] = number</li>
- * <li>{@link ValueType#MOUSE_MOVE_Y} [y] = number</li>
- * <li>{@link ValueType#BUTTON_PRESSED} [1] = Pressed</li>
+ * <li>{@link ValueType#CURSOR_MOVE_X} [x] = number</li>
+ * <li>{@link ValueType#CURSOR_MOVE_Y} [y] = number</li>
+ * <li>{@link ValueType#CURSOR_PRESSED} [1] = Pressed</li>
+ * <li>{@link ValueType#CURSOR_RELEASED} [0] = Released</li>
+ * <li>{@link ValueType#BUTTON_PRESSED}  [1] = Pressed</li>
  * <li>{@link ValueType#BUTTON_RELEASED} [0] = Released</li>
  * <li>{@link ValueType#BUTTON} [0/1] = Released/Pressed</li>
  * </ul>
@@ -50,16 +54,18 @@ public class JoystickV2 extends Sensor<BrickletJoystickV2> {
     @Override
     protected Sensor<BrickletJoystickV2> initListener() {
         device.addPositionListener((x, y) -> {
-            sendEvent(MOUSE_MOVE_X, x,true);
-            sendEvent(MOUSE_MOVE_Y, y,true);
+            sendEvent(CURSOR_MOVE_X, x, true);
+            sendEvent(CURSOR_MOVE_Y, y, true);
         });
         device.addPressedListener(pressed -> {
             if (pressed) {
-                sendEvent(BUTTON_PRESSED, 1,true);
-                sendEvent(BUTTON, 1,true);
+                sendEvent(CURSOR_PRESSED, 1, true);
+                sendEvent(BUTTON_PRESSED, 1, true);
+                sendEvent(BUTTON, 1, true);
             } else {
-                sendEvent(BUTTON_RELEASED, 1,true);
-                sendEvent(BUTTON, 0,true);
+                sendEvent(CURSOR_RELEASED, 0, true);
+                sendEvent(BUTTON_RELEASED, 0, true);
+                sendEvent(BUTTON, 0, true);
             }
         });
         refreshPeriod(1);
@@ -122,8 +128,8 @@ public class JoystickV2 extends Sensor<BrickletJoystickV2> {
             }
 
             final BrickletJoystickV2.Position position = device.getPosition();
-            sendEvent(MOUSE_MOVE_X, position.x, true);
-            sendEvent(MOUSE_MOVE_Y, position.y, true);
+            sendEvent(CURSOR_MOVE_X, position.x, true);
+            sendEvent(CURSOR_MOVE_Y, position.y, true);
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

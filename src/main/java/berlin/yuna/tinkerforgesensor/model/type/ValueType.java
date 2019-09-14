@@ -7,7 +7,7 @@ package berlin.yuna.tinkerforgesensor.model.type;
  * You can add new enumTypes without harm</i>
  *
  * ---
- * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>ORIENTATION</li><li>CALIBRATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_TOUCH</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>MOUSE_INPUT</li><li>MOUSE_CLICK_COUNT</li><li>MOUSE_PRESSED</li><li>MOUSE_RELEASED</li><li>MOUSE_ENTERED</li><li>MOUSE_EXITED</li><li>MOUSE_DRAGGED</li><li>MOUSE_MOVED</li><li>MOUSE_MOVE_X</li><li>MOUSE_MOVE_Y</li><li>MOUSE_WHEEL_MOVED</li></ul> */
+ * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>ORIENTATION</li><li>CALIBRATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_TOUCH</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>CURSOR_INPUT</li><li>CURSOR_CLICK_COUNT</li><li>CURSOR_PRESSED</li><li>CURSOR_RELEASED</li><li>CURSOR_ENTERED</li><li>CURSOR_EXITED</li><li>CURSOR_DRAGGED</li><li>CURSOR_MOVED</li><li>CURSOR_MOVE_X</li><li>CURSOR_MOVE_Y</li><li>CURSOR_WHEEL_MOVED</li></ul> */
 public enum ValueType {
     ALL(null),
 
@@ -199,27 +199,27 @@ public enum ValueType {
 
     KEY_CHAR(KEY_INPUT),
 
-    MOUSE_INPUT(HUMAN_INPUT),
+    CURSOR_INPUT(HUMAN_INPUT),
 
-    MOUSE_CLICK_COUNT(MOUSE_INPUT),
+    CURSOR_CLICK_COUNT(CURSOR_INPUT),
 
-    MOUSE_PRESSED(MOUSE_INPUT),
+    CURSOR_PRESSED(CURSOR_INPUT),
 
-    MOUSE_RELEASED(MOUSE_INPUT),
+    CURSOR_RELEASED(CURSOR_INPUT),
 
-    MOUSE_ENTERED(MOUSE_INPUT),
+    CURSOR_ENTERED(CURSOR_INPUT),
 
-    MOUSE_EXITED(MOUSE_INPUT),
+    CURSOR_EXITED(CURSOR_INPUT),
 
-    MOUSE_DRAGGED(MOUSE_INPUT),
+    CURSOR_DRAGGED(CURSOR_INPUT),
 
-    MOUSE_MOVED(MOUSE_INPUT),
+    CURSOR_MOVED(CURSOR_INPUT),
 
-    MOUSE_MOVE_X(MOUSE_INPUT),
+    CURSOR_MOVE_X(CURSOR_INPUT),
 
-    MOUSE_MOVE_Y(MOUSE_INPUT),
+    CURSOR_MOVE_Y(CURSOR_INPUT),
 
-    MOUSE_WHEEL_MOVED(MOUSE_INPUT);
+    CURSOR_WHEEL_MOVED(CURSOR_INPUT);
 
     public final ValueType parent;
 
@@ -987,92 +987,92 @@ public enum ValueType {
         return this.is(KEY_CHAR) || (this.parent != null && this.parent.contains(KEY_CHAR));
     }
 
-    public boolean isMouseInput() {
-        return this == MOUSE_INPUT;
+    public boolean isCursorInput() {
+        return this == CURSOR_INPUT;
     }
 
-    public boolean containsMouseInput() {
-        return this.is(MOUSE_INPUT) || (this.parent != null && this.parent.contains(MOUSE_INPUT));
+    public boolean containsCursorInput() {
+        return this.is(CURSOR_INPUT) || (this.parent != null && this.parent.contains(CURSOR_INPUT));
     }
 
-    public boolean isMouseClickCount() {
-        return this == MOUSE_CLICK_COUNT;
+    public boolean isCursorClickCount() {
+        return this == CURSOR_CLICK_COUNT;
     }
 
-    public boolean containsMouseClickCount() {
-        return this.is(MOUSE_CLICK_COUNT) || (this.parent != null && this.parent.contains(MOUSE_CLICK_COUNT));
+    public boolean containsCursorClickCount() {
+        return this.is(CURSOR_CLICK_COUNT) || (this.parent != null && this.parent.contains(CURSOR_CLICK_COUNT));
     }
 
-    public boolean isMousePressed() {
-        return this == MOUSE_PRESSED;
+    public boolean isCursorPressed() {
+        return this == CURSOR_PRESSED;
     }
 
-    public boolean containsMousePressed() {
-        return this.is(MOUSE_PRESSED) || (this.parent != null && this.parent.contains(MOUSE_PRESSED));
+    public boolean containsCursorPressed() {
+        return this.is(CURSOR_PRESSED) || (this.parent != null && this.parent.contains(CURSOR_PRESSED));
     }
 
-    public boolean isMouseReleased() {
-        return this == MOUSE_RELEASED;
+    public boolean isCursorReleased() {
+        return this == CURSOR_RELEASED;
     }
 
-    public boolean containsMouseReleased() {
-        return this.is(MOUSE_RELEASED) || (this.parent != null && this.parent.contains(MOUSE_RELEASED));
+    public boolean containsCursorReleased() {
+        return this.is(CURSOR_RELEASED) || (this.parent != null && this.parent.contains(CURSOR_RELEASED));
     }
 
-    public boolean isMouseEntered() {
-        return this == MOUSE_ENTERED;
+    public boolean isCursorEntered() {
+        return this == CURSOR_ENTERED;
     }
 
-    public boolean containsMouseEntered() {
-        return this.is(MOUSE_ENTERED) || (this.parent != null && this.parent.contains(MOUSE_ENTERED));
+    public boolean containsCursorEntered() {
+        return this.is(CURSOR_ENTERED) || (this.parent != null && this.parent.contains(CURSOR_ENTERED));
     }
 
-    public boolean isMouseExited() {
-        return this == MOUSE_EXITED;
+    public boolean isCursorExited() {
+        return this == CURSOR_EXITED;
     }
 
-    public boolean containsMouseExited() {
-        return this.is(MOUSE_EXITED) || (this.parent != null && this.parent.contains(MOUSE_EXITED));
+    public boolean containsCursorExited() {
+        return this.is(CURSOR_EXITED) || (this.parent != null && this.parent.contains(CURSOR_EXITED));
     }
 
-    public boolean isMouseDragged() {
-        return this == MOUSE_DRAGGED;
+    public boolean isCursorDragged() {
+        return this == CURSOR_DRAGGED;
     }
 
-    public boolean containsMouseDragged() {
-        return this.is(MOUSE_DRAGGED) || (this.parent != null && this.parent.contains(MOUSE_DRAGGED));
+    public boolean containsCursorDragged() {
+        return this.is(CURSOR_DRAGGED) || (this.parent != null && this.parent.contains(CURSOR_DRAGGED));
     }
 
-    public boolean isMouseMoved() {
-        return this == MOUSE_MOVED;
+    public boolean isCursorMoved() {
+        return this == CURSOR_MOVED;
     }
 
-    public boolean containsMouseMoved() {
-        return this.is(MOUSE_MOVED) || (this.parent != null && this.parent.contains(MOUSE_MOVED));
+    public boolean containsCursorMoved() {
+        return this.is(CURSOR_MOVED) || (this.parent != null && this.parent.contains(CURSOR_MOVED));
     }
 
-    public boolean isMouseMoveX() {
-        return this == MOUSE_MOVE_X;
+    public boolean isCursorMoveX() {
+        return this == CURSOR_MOVE_X;
     }
 
-    public boolean containsMouseMoveX() {
-        return this.is(MOUSE_MOVE_X) || (this.parent != null && this.parent.contains(MOUSE_MOVE_X));
+    public boolean containsCursorMoveX() {
+        return this.is(CURSOR_MOVE_X) || (this.parent != null && this.parent.contains(CURSOR_MOVE_X));
     }
 
-    public boolean isMouseMoveY() {
-        return this == MOUSE_MOVE_Y;
+    public boolean isCursorMoveY() {
+        return this == CURSOR_MOVE_Y;
     }
 
-    public boolean containsMouseMoveY() {
-        return this.is(MOUSE_MOVE_Y) || (this.parent != null && this.parent.contains(MOUSE_MOVE_Y));
+    public boolean containsCursorMoveY() {
+        return this.is(CURSOR_MOVE_Y) || (this.parent != null && this.parent.contains(CURSOR_MOVE_Y));
     }
 
-    public boolean isMouseWheelMoved() {
-        return this == MOUSE_WHEEL_MOVED;
+    public boolean isCursorWheelMoved() {
+        return this == CURSOR_WHEEL_MOVED;
     }
 
-    public boolean containsMouseWheelMoved() {
-        return this.is(MOUSE_WHEEL_MOVED) || (this.parent != null && this.parent.contains(MOUSE_WHEEL_MOVED));
+    public boolean containsCursorWheelMoved() {
+        return this.is(CURSOR_WHEEL_MOVED) || (this.parent != null && this.parent.contains(CURSOR_WHEEL_MOVED));
     }
 
     public boolean is(final ValueType valueType) {

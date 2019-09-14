@@ -2357,267 +2357,267 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.KEY_CHAR, valueIndex);
     }
 
-    public Long mouseInput() {
-        return mouseInput(-1);
+    public Long cursorInput() {
+        return cursorInput(-1);
     }
 
-    public Long mouseInput(final Number valueIndex) {
-        return get(ValueType.MOUSE_INPUT, -1L, valueIndex);
+    public Long cursorInput(final Number valueIndex) {
+        return get(ValueType.CURSOR_INPUT, -1L, valueIndex);
     }
 
-    public List<Long> mouseInput_List() {
-        return mouseInput_List(-1);
+    public List<Long> cursorInput_List() {
+        return cursorInput_List(-1);
     }
 
-    public List<Long> mouseInput_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_INPUT, timeIndex);
+    public List<Long> cursorInput_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_INPUT, timeIndex);
     }
 
-    public LongSummaryStatistics mouseInput_Statistics() {
-        return mouseInput_Statistics(-1);
+    public LongSummaryStatistics cursorInput_Statistics() {
+        return cursorInput_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseInput_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_INPUT, valueIndex);
+    public LongSummaryStatistics cursorInput_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_INPUT, valueIndex);
     }
 
-    public Long mouseClickCount() {
-        return mouseClickCount(-1);
+    public Long cursorClickCount() {
+        return cursorClickCount(-1);
     }
 
-    public Long mouseClickCount(final Number valueIndex) {
-        return get(ValueType.MOUSE_CLICK_COUNT, -1L, valueIndex);
+    public Long cursorClickCount(final Number valueIndex) {
+        return get(ValueType.CURSOR_CLICK_COUNT, -1L, valueIndex);
     }
 
-    public List<Long> mouseClickCount_List() {
-        return mouseClickCount_List(-1);
+    public List<Long> cursorClickCount_List() {
+        return cursorClickCount_List(-1);
     }
 
-    public List<Long> mouseClickCount_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_CLICK_COUNT, timeIndex);
+    public List<Long> cursorClickCount_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_CLICK_COUNT, timeIndex);
     }
 
-    public LongSummaryStatistics mouseClickCount_Statistics() {
-        return mouseClickCount_Statistics(-1);
+    public LongSummaryStatistics cursorClickCount_Statistics() {
+        return cursorClickCount_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseClickCount_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_CLICK_COUNT, valueIndex);
+    public LongSummaryStatistics cursorClickCount_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_CLICK_COUNT, valueIndex);
     }
 
-    public Long mousePressed() {
-        return mousePressed(-1);
+    public Long cursorPressed() {
+        return cursorPressed(-1);
     }
 
-    public Long mousePressed(final Number valueIndex) {
-        return get(ValueType.MOUSE_PRESSED, -1L, valueIndex);
+    public Long cursorPressed(final Number valueIndex) {
+        return get(ValueType.CURSOR_PRESSED, -1L, valueIndex);
     }
 
-    public List<Long> mousePressed_List() {
-        return mousePressed_List(-1);
+    public List<Long> cursorPressed_List() {
+        return cursorPressed_List(-1);
     }
 
-    public List<Long> mousePressed_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_PRESSED, timeIndex);
+    public List<Long> cursorPressed_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_PRESSED, timeIndex);
     }
 
-    public LongSummaryStatistics mousePressed_Statistics() {
-        return mousePressed_Statistics(-1);
+    public LongSummaryStatistics cursorPressed_Statistics() {
+        return cursorPressed_Statistics(-1);
     }
 
-    public LongSummaryStatistics mousePressed_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_PRESSED, valueIndex);
+    public LongSummaryStatistics cursorPressed_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_PRESSED, valueIndex);
     }
 
-    public Long mouseReleased() {
-        return mouseReleased(-1);
+    public Long cursorReleased() {
+        return cursorReleased(-1);
     }
 
-    public Long mouseReleased(final Number valueIndex) {
-        return get(ValueType.MOUSE_RELEASED, -1L, valueIndex);
+    public Long cursorReleased(final Number valueIndex) {
+        return get(ValueType.CURSOR_RELEASED, -1L, valueIndex);
     }
 
-    public List<Long> mouseReleased_List() {
-        return mouseReleased_List(-1);
+    public List<Long> cursorReleased_List() {
+        return cursorReleased_List(-1);
     }
 
-    public List<Long> mouseReleased_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_RELEASED, timeIndex);
+    public List<Long> cursorReleased_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_RELEASED, timeIndex);
     }
 
-    public LongSummaryStatistics mouseReleased_Statistics() {
-        return mouseReleased_Statistics(-1);
+    public LongSummaryStatistics cursorReleased_Statistics() {
+        return cursorReleased_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseReleased_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_RELEASED, valueIndex);
+    public LongSummaryStatistics cursorReleased_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_RELEASED, valueIndex);
     }
 
-    public Long mouseEntered() {
-        return mouseEntered(-1);
+    public Long cursorEntered() {
+        return cursorEntered(-1);
     }
 
-    public Long mouseEntered(final Number valueIndex) {
-        return get(ValueType.MOUSE_ENTERED, -1L, valueIndex);
+    public Long cursorEntered(final Number valueIndex) {
+        return get(ValueType.CURSOR_ENTERED, -1L, valueIndex);
     }
 
-    public List<Long> mouseEntered_List() {
-        return mouseEntered_List(-1);
+    public List<Long> cursorEntered_List() {
+        return cursorEntered_List(-1);
     }
 
-    public List<Long> mouseEntered_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_ENTERED, timeIndex);
+    public List<Long> cursorEntered_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_ENTERED, timeIndex);
     }
 
-    public LongSummaryStatistics mouseEntered_Statistics() {
-        return mouseEntered_Statistics(-1);
+    public LongSummaryStatistics cursorEntered_Statistics() {
+        return cursorEntered_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseEntered_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_ENTERED, valueIndex);
+    public LongSummaryStatistics cursorEntered_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_ENTERED, valueIndex);
     }
 
-    public Long mouseExited() {
-        return mouseExited(-1);
+    public Long cursorExited() {
+        return cursorExited(-1);
     }
 
-    public Long mouseExited(final Number valueIndex) {
-        return get(ValueType.MOUSE_EXITED, -1L, valueIndex);
+    public Long cursorExited(final Number valueIndex) {
+        return get(ValueType.CURSOR_EXITED, -1L, valueIndex);
     }
 
-    public List<Long> mouseExited_List() {
-        return mouseExited_List(-1);
+    public List<Long> cursorExited_List() {
+        return cursorExited_List(-1);
     }
 
-    public List<Long> mouseExited_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_EXITED, timeIndex);
+    public List<Long> cursorExited_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_EXITED, timeIndex);
     }
 
-    public LongSummaryStatistics mouseExited_Statistics() {
-        return mouseExited_Statistics(-1);
+    public LongSummaryStatistics cursorExited_Statistics() {
+        return cursorExited_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseExited_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_EXITED, valueIndex);
+    public LongSummaryStatistics cursorExited_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_EXITED, valueIndex);
     }
 
-    public Long mouseDragged() {
-        return mouseDragged(-1);
+    public Long cursorDragged() {
+        return cursorDragged(-1);
     }
 
-    public Long mouseDragged(final Number valueIndex) {
-        return get(ValueType.MOUSE_DRAGGED, -1L, valueIndex);
+    public Long cursorDragged(final Number valueIndex) {
+        return get(ValueType.CURSOR_DRAGGED, -1L, valueIndex);
     }
 
-    public List<Long> mouseDragged_List() {
-        return mouseDragged_List(-1);
+    public List<Long> cursorDragged_List() {
+        return cursorDragged_List(-1);
     }
 
-    public List<Long> mouseDragged_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_DRAGGED, timeIndex);
+    public List<Long> cursorDragged_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_DRAGGED, timeIndex);
     }
 
-    public LongSummaryStatistics mouseDragged_Statistics() {
-        return mouseDragged_Statistics(-1);
+    public LongSummaryStatistics cursorDragged_Statistics() {
+        return cursorDragged_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseDragged_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_DRAGGED, valueIndex);
+    public LongSummaryStatistics cursorDragged_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_DRAGGED, valueIndex);
     }
 
-    public Long mouseMoved() {
-        return mouseMoved(-1);
+    public Long cursorMoved() {
+        return cursorMoved(-1);
     }
 
-    public Long mouseMoved(final Number valueIndex) {
-        return get(ValueType.MOUSE_MOVED, -1L, valueIndex);
+    public Long cursorMoved(final Number valueIndex) {
+        return get(ValueType.CURSOR_MOVED, -1L, valueIndex);
     }
 
-    public List<Long> mouseMoved_List() {
-        return mouseMoved_List(-1);
+    public List<Long> cursorMoved_List() {
+        return cursorMoved_List(-1);
     }
 
-    public List<Long> mouseMoved_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_MOVED, timeIndex);
+    public List<Long> cursorMoved_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_MOVED, timeIndex);
     }
 
-    public LongSummaryStatistics mouseMoved_Statistics() {
-        return mouseMoved_Statistics(-1);
+    public LongSummaryStatistics cursorMoved_Statistics() {
+        return cursorMoved_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseMoved_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_MOVED, valueIndex);
+    public LongSummaryStatistics cursorMoved_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_MOVED, valueIndex);
     }
 
-    public Long mouseMoveX() {
-        return mouseMoveX(-1);
+    public Long cursorMoveX() {
+        return cursorMoveX(-1);
     }
 
-    public Long mouseMoveX(final Number valueIndex) {
-        return get(ValueType.MOUSE_MOVE_X, -1L, valueIndex);
+    public Long cursorMoveX(final Number valueIndex) {
+        return get(ValueType.CURSOR_MOVE_X, -1L, valueIndex);
     }
 
-    public List<Long> mouseMoveX_List() {
-        return mouseMoveX_List(-1);
+    public List<Long> cursorMoveX_List() {
+        return cursorMoveX_List(-1);
     }
 
-    public List<Long> mouseMoveX_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_MOVE_X, timeIndex);
+    public List<Long> cursorMoveX_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_MOVE_X, timeIndex);
     }
 
-    public LongSummaryStatistics mouseMoveX_Statistics() {
-        return mouseMoveX_Statistics(-1);
+    public LongSummaryStatistics cursorMoveX_Statistics() {
+        return cursorMoveX_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseMoveX_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_MOVE_X, valueIndex);
+    public LongSummaryStatistics cursorMoveX_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_MOVE_X, valueIndex);
     }
 
-    public Long mouseMoveY() {
-        return mouseMoveY(-1);
+    public Long cursorMoveY() {
+        return cursorMoveY(-1);
     }
 
-    public Long mouseMoveY(final Number valueIndex) {
-        return get(ValueType.MOUSE_MOVE_Y, -1L, valueIndex);
+    public Long cursorMoveY(final Number valueIndex) {
+        return get(ValueType.CURSOR_MOVE_Y, -1L, valueIndex);
     }
 
-    public List<Long> mouseMoveY_List() {
-        return mouseMoveY_List(-1);
+    public List<Long> cursorMoveY_List() {
+        return cursorMoveY_List(-1);
     }
 
-    public List<Long> mouseMoveY_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_MOVE_Y, timeIndex);
+    public List<Long> cursorMoveY_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_MOVE_Y, timeIndex);
     }
 
-    public LongSummaryStatistics mouseMoveY_Statistics() {
-        return mouseMoveY_Statistics(-1);
+    public LongSummaryStatistics cursorMoveY_Statistics() {
+        return cursorMoveY_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseMoveY_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_MOVE_Y, valueIndex);
+    public LongSummaryStatistics cursorMoveY_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_MOVE_Y, valueIndex);
     }
 
-    public Long mouseWheelMoved() {
-        return mouseWheelMoved(-1);
+    public Long cursorWheelMoved() {
+        return cursorWheelMoved(-1);
     }
 
-    public Long mouseWheelMoved(final Number valueIndex) {
-        return get(ValueType.MOUSE_WHEEL_MOVED, -1L, valueIndex);
+    public Long cursorWheelMoved(final Number valueIndex) {
+        return get(ValueType.CURSOR_WHEEL_MOVED, -1L, valueIndex);
     }
 
-    public List<Long> mouseWheelMoved_List() {
-        return mouseWheelMoved_List(-1);
+    public List<Long> cursorWheelMoved_List() {
+        return cursorWheelMoved_List(-1);
     }
 
-    public List<Long> mouseWheelMoved_List(final Number timeIndex) {
-        return getList(ValueType.MOUSE_WHEEL_MOVED, timeIndex);
+    public List<Long> cursorWheelMoved_List(final Number timeIndex) {
+        return getList(ValueType.CURSOR_WHEEL_MOVED, timeIndex);
     }
 
-    public LongSummaryStatistics mouseWheelMoved_Statistics() {
-        return mouseWheelMoved_Statistics(-1);
+    public LongSummaryStatistics cursorWheelMoved_Statistics() {
+        return cursorWheelMoved_Statistics(-1);
     }
 
-    public LongSummaryStatistics mouseWheelMoved_Statistics(final Number valueIndex) {
-        return getStatistics(ValueType.MOUSE_WHEEL_MOVED, valueIndex);
+    public LongSummaryStatistics cursorWheelMoved_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.CURSOR_WHEEL_MOVED, valueIndex);
     }
 }

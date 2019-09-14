@@ -48,7 +48,7 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
     @Override
     protected Sensor<BrickletRGBLEDButton> initListener() {
         device.addButtonStateChangedListener(value -> {
-            sendEvent((value == 1 ? BUTTON_PRESSED : BUTTON_RELEASED), (value == 1 ? 0L : 1L), true);
+            sendEvent((value == 1 ? BUTTON_RELEASED : BUTTON_PRESSED), (value == 1 ? 0L : 1L), true);
             sendEvent(BUTTON, (value == 1 ? 0L : 1L), true);
         });
         return this;

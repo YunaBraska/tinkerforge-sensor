@@ -49,7 +49,7 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
             sendEvent(BUTTON, 1,true);
         });
         device.addReleasedListener(() -> {
-            sendEvent(BUTTON_RELEASED, 1,true);
+            sendEvent(BUTTON_RELEASED, 0,true);
             sendEvent(BUTTON, 0,true);
         });
 

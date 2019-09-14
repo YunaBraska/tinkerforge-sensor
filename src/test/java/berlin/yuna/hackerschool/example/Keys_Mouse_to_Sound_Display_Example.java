@@ -25,7 +25,7 @@ public class Keys_Mouse_to_Sound_Display_Example {
             stack.sensors().display().send(value + " [" + type + "]", true);
         }
 
-        if (type.isButtonPressed() || (type.isMouseClickCount() && value >= 2)) {
+        if (type.isButtonPressed() || (type.isCursorClickCount() && value >= 2)) {
             //Play sound
             stack.sensors().localAudio().send(sound);
         }

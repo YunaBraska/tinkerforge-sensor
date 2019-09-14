@@ -27,16 +27,16 @@ import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_RELEASED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_CLICK_COUNT;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_DRAGGED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_ENTERED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_EXITED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_X;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_MOVE_Y;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_RELEASED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOUSE_WHEEL_MOVED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_CLICK_COUNT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_DRAGGED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_ENTERED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_EXITED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVE_X;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVE_Y;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_RELEASED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_WHEEL_MOVED;
 import static java.util.Objects.requireNonNull;
 
 public class HumanInput extends JFrame implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -146,54 +146,54 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
 
     @Override
     public void mouseClicked(final MouseEvent event) {
-        onMouseEvent(MOUSE_CLICK_COUNT, event);
+        onMouseEvent(CURSOR_CLICK_COUNT, event);
     }
 
     @Override
     public void mousePressed(final MouseEvent event) {
-        onMouseEvent(MOUSE_PRESSED, event);
+        onMouseEvent(CURSOR_PRESSED, event);
     }
 
     @Override
     public void mouseReleased(final MouseEvent event) {
-        onMouseEvent(MOUSE_RELEASED, event);
+        onMouseEvent(CURSOR_RELEASED, event);
     }
 
     @Override
     public void mouseEntered(final MouseEvent event) {
-        onMouseEvent(MOUSE_ENTERED, event);
+        onMouseEvent(CURSOR_ENTERED, event);
     }
 
     @Override
     public void mouseExited(final MouseEvent event) {
-        onMouseEvent(MOUSE_EXITED, event);
+        onMouseEvent(CURSOR_EXITED, event);
     }
 
     @Override
     public void mouseDragged(final MouseEvent event) {
-        onMouseEvent(MOUSE_DRAGGED, event);
+        onMouseEvent(CURSOR_DRAGGED, event);
     }
 
     @Override
     public void mouseMoved(final MouseEvent event) {
-        onMouseEvent(MOUSE_MOVED, event);
+        onMouseEvent(CURSOR_MOVED, event);
     }
 
     @Override
     public void mouseWheelMoved(final MouseWheelEvent event) {
-        onMouseEvent(MOUSE_WHEEL_MOVED, event);
+        onMouseEvent(CURSOR_WHEEL_MOVED, event);
     }
 
     private void onMouseEvent(final ValueType type, final MouseEvent event) {
         mouseType.setText(type.toString());
         mouseMods.setText(String.valueOf(event.getModifiers()));
-        sendEventToConsumer(mouseX, MOUSE_MOVE_X, (long) event.getX());
-        sendEventToConsumer(mouseY, MOUSE_MOVE_Y, (long) event.getY());
-        sendEventToConsumer(mouseClickCount, MOUSE_CLICK_COUNT, (long) event.getClickCount());
-        if (type.isMouseClickCount()) {
-            sendEventToConsumer(mouseButton, MOUSE_PRESSED, 0L);
+        sendEventToConsumer(mouseX, CURSOR_MOVE_X, (long) event.getX());
+        sendEventToConsumer(mouseY, CURSOR_MOVE_Y, (long) event.getY());
+        sendEventToConsumer(mouseClickCount, CURSOR_CLICK_COUNT, (long) event.getClickCount());
+        if (type.isCursorClickCount()) {
+            sendEventToConsumer(mouseButton, CURSOR_PRESSED, 0L);
         } else {
-            sendEventToConsumer(mouseButton, MOUSE_PRESSED, (long) event.getButton());
+            sendEventToConsumer(mouseButton, CURSOR_PRESSED, (long) event.getButton());
         }
 
     }

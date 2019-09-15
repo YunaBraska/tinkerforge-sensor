@@ -18,6 +18,7 @@ import java.util.List;
 
 import static berlin.yuna.tinkerforgesensor.model.AudioCmd.REPLAY;
 import static berlin.yuna.tinkerforgesensor.model.AudioCmd.UNKNOWN;
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 /**
@@ -105,11 +106,15 @@ public class LocalAudio extends Sensor<DummyDevice> {
                     final File file = new File((String) value);
                     if (file.exists()) {
                         setAudioFile(playerId, file.toURI().toURL());
+                    } else {
+                        System.err.println(format("File not found [%s]", file));
                     }
                 } else if (value instanceof File) {
                     final File file = (File) value;
                     if (file.exists()) {
                         setAudioFile(playerId, file.toURI().toURL());
+                    } else {
+                        System.err.println(format("File not found [%s]", file));
                     }
                 } else if (value instanceof Path) {
                     final Path path = (Path) value;

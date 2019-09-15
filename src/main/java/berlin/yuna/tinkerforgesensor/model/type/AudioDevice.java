@@ -128,7 +128,7 @@ public class AudioDevice {
     }
 
     public void play() {
-        if (playback) {
+        if (playback && source != null) {
             openClip(clip -> {
                 clip.setFramePosition(0);
                 clip.setMicrosecondPosition(microsecondPosition);
@@ -138,7 +138,7 @@ public class AudioDevice {
     }
 
     public void pause() {
-        if (playback) {
+        if (playback && source != null) {
             openLine(open -> {
                 final Clip clip = (Clip) line;
                 microsecondPosition = clip.getMicrosecondPosition();
@@ -148,7 +148,7 @@ public class AudioDevice {
     }
 
     public void replay() {
-        if (playback) {
+        if (playback && source != null) {
             microsecondPosition = 0;
 //                clip.setFramePosition(0);  // Must always rewind!
             play();
@@ -156,7 +156,7 @@ public class AudioDevice {
     }
 
     public void stop() {
-        if (playback) {
+        if (playback && source != null) {
             openLine(open -> {
                 final Clip clip = (Clip) line;
                 clip.stop();

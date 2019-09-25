@@ -29,18 +29,18 @@ import static java.util.Collections.nCopies;
 
 /**
  * <h3>{@link LedStripV2}</h3><br />
- * <i>16-channel digital input/output</i><br />
+ * <i>Controls up to 2048 RGB(W) LEDs</i><br />
  *
- * <h3>Values</h3>
- * <i>input values coming soon</i><br />
+ * <h3>Before the start</h3>
+ * <i>This bricklet is not starting without knowing the number of LEDs and the ChipType</i><br />
+ * <h6>[Setup] Setting number of leds to 30 and chip type to "WS2812" {@link LedChipType}</h6>
+ * <code>sensor.send(30, "WS2812");</code>
+ * <code>sensor.send(30, LED_TYPE_WS2812);</code>
  *
  * <h3>Technical Info</h3>
  * <ul>
  * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/LED_Strip_V2.html">Official documentation</a></li>
  * </ul>
- * <h6>[Setup] Setting number of leds to 30 and chip type to "WS2812" {@link LedChipType}</h6>
- * <code>sensor.send(30, "WS2812");</code>
- * <code>sensor.send(30, LED_TYPE_WS2812);</code>
  * <h6>Set led 1 to magenta</h6>
  * <code>sensor.send(Color.Magenta);</code>
  * <h6>Set led 1 to magenta and led 2 to green</h6>

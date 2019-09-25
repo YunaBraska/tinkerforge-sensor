@@ -5,13 +5,11 @@
 ---
 ### [LedStripV2](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/LedStripV2.md) ([source](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/sensor/LedStripV2.java))
 
- *16-channel digital input/output*
+ *Controls up to 2048 RGB(W) LEDs*
  
-### Values
- *input values coming soon*
+### Before the start
+ *This bricklet is not starting without knowing the number of LEDs and the ChipType*
  
-### Technical Info
- * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/LED_Strip_V2.html) 
 ###### [Setup] Setting number of leds to 30 and chip type to "WS2812" [LedChipType](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/LedChipType.java)
  
 ```java
@@ -22,6 +20,8 @@ sensor.send(30, "WS2812");
 sensor.send(30, LED_TYPE_WS2812);
 ```
  
+### Technical Info
+ * [Official documentation](https://www.tinkerforge.com/de/doc/Hardware/Bricklets/LED_Strip_V2.html) 
 ###### Set led 1 to magenta
  
 ```java

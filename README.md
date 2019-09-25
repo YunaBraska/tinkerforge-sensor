@@ -1,6 +1,40 @@
 Tinkerforge Sensor Library
 ------------------
 
+![Build][Build-shield] 
+[![Maintainable][Maintainable-image]][Maintainable-Url]
+![Central][Central-shield] 
+![Tag][Tag-shield]
+![Issues][Issues-shield] 
+![Commit][Commit-shield] 
+![Size][Size-shield] 
+![Dependency][Dependency-shield]
+![License][License-shield]
+![Label][Label-shield]
+
+[License-Url]: https://www.apache.org/licenses/LICENSE-2.0
+[Build-Status-Url]: https://travis-ci.org/YunaBraska/tinkerforge-sensor
+[Build-Status-Image]: https://travis-ci.org/YunaBraska/tinkerforge-sensor.svg?branch=master
+[Coverage-Url]: https://codecov.io/gh/YunaBraska/tinkerforge-sensor?branch=master
+[Coverage-image]: https://img.shields.io/codecov/c/github/YunaBraska/tinkerforge-sensor?style=flat-square
+[Maintainable-Url]: https://codeclimate.com/github/YunaBraska/tinkerforge-sensor/maintainability
+[Maintainable-image]: https://img.shields.io/codeclimate/maintainability/YunaBraska/tinkerforge-sensor?style=flat-square
+[Javadoc-url]: http://javadoc.io/doc/berlin.yuna/tinkerforge-sensor
+[Javadoc-image]: http://javadoc.io/badge/berlin.yuna/tinkerforge-sensor.svg
+[Gitter-Url]: https://gitter.im/nats-streaming-server-embedded/Lobby
+[Gitter-image]: https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg
+
+[Dependency-shield]: https://img.shields.io/librariesio/github/YunaBraska/tinkerforge-sensor?style=flat-square
+[Tag-shield]: https://img.shields.io/github/v/tag/YunaBraska/tinkerforge-sensor?style=flat-square
+[Central-shield]: https://img.shields.io/maven-central/v/berlin.yuna/tinkerforge-sensor?style=flat-square
+[Size-shield]: https://img.shields.io/github/repo-size/YunaBraska/tinkerforge-sensor?style=flat-square
+[Issues-shield]: https://img.shields.io/github/issues/YunaBraska/tinkerforge-sensor?style=flat-square
+[License-shield]: https://img.shields.io/github/license/YunaBraska/tinkerforge-sensor?style=flat-square
+[Commit-shield]: https://img.shields.io/github/last-commit/YunaBraska/tinkerforge-sensor?style=flat-square
+[Label-shield]: https://img.shields.io/badge/Yuna-QueenInside-blueviolet?style=flat-square
+[Build-shield]: https://img.shields.io/travis/YunaBraska/tinkerforge-sensor/master?style=flat-square
+
+
 This library simplifies Tinkerforge's sensor API.
 It Removes the pain of sensor UIDs, sensor versions, ports and provides a generic API for every sensor.
 

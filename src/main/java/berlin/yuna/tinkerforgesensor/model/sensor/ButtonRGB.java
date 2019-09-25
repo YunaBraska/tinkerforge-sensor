@@ -7,6 +7,8 @@ import com.tinkerforge.BrickletRGBLEDButton;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
+import java.util.Optional;
+
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS;
@@ -14,6 +16,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
 import static berlin.yuna.tinkerforgesensor.model.type.Color.convertToHighContrast;
+import static berlin.yuna.tinkerforgesensor.model.type.Color.toRGB;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
@@ -72,12 +75,11 @@ public class ButtonRGB extends Sensor<BrickletRGBLEDButton> {
         try {
             if (value instanceof Boolean) {
                 highContrast = (Boolean) value;
-            } else if (value instanceof Color) {
-                return send(((Color) value).getRGB());
-            } else if (value instanceof java.awt.Color) {
-                return send(((java.awt.Color) value).getRGB());
-            } else if (value instanceof Number) {
-                Color color = new Color(((Number) value).intValue());
+                return this;
+            }
+            final Optional<Integer> rgbValue = toRGB(value);
+            if (rgbValue.isPresent()) {
+                Color color = new Color(rgbValue.get());
                 color = highContrast ? convertToHighContrast(color) : color;
                 device.setColor(color.getRed(), color.getGreen(), color.getBlue());
             }

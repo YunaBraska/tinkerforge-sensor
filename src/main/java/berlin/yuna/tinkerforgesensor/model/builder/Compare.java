@@ -28,6 +28,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.IO16;
 import berlin.yuna.tinkerforgesensor.model.sensor.IO16V2;
 import berlin.yuna.tinkerforgesensor.model.sensor.JoystickV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LedRGBV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.LedStripV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbient;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.LightAmbientV3;
@@ -159,6 +160,10 @@ public class Compare {
 
     public boolean isLedRGB() {
         return is(LedRGBV2.class);
+    }
+
+    public boolean isLedStrip() {
+        return is(LedStripV2.class);
     }
 
     public boolean isLightAmbient() {

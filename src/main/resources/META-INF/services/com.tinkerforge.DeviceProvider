@@ -27,6 +27,7 @@ com.tinkerforge.BrickletIO16V2Provider
 com.tinkerforge.BrickletJoystickV2Provider
 com.tinkerforge.BrickletLCD128x64Provider
 com.tinkerforge.BrickletLCD20x4Provider
+com.tinkerforge.BrickletLEDStripV2Provider
 com.tinkerforge.BrickletLinearPotiV2Provider
 com.tinkerforge.BrickletMotionDetectorProvider
 com.tinkerforge.BrickletMotionDetectorV2Provider

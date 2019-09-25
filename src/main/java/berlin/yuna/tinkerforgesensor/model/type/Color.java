@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class Color implements Serializable {
 
@@ -275,6 +276,22 @@ public class Color implements Serializable {
         return value;
     }
 
+    public static Optional<Color> toColor(final Object object) {
+        return toRGB(object).map(Color::new);
+    }
+
+    public static Optional<Integer> toRGB(final Object object) {
+        if (object instanceof Color) {
+            return Optional.of(((Color) object).getRGB());
+        } else if (object instanceof java.awt.Color) {
+            return Optional.of(((java.awt.Color) object).getRGB());
+        } else if (object instanceof Number) {
+            return Optional.of(((Number) object).intValue());
+        } else {
+            return Optional.empty();
+        }
+    }
+
     private static final double FACTOR = 0.7;
 
     /**
@@ -372,7 +389,8 @@ public class Color implements Serializable {
      * @since JDK1.0
      */
     public boolean equals(final Object obj) {
-        return obj instanceof Color && ((Color) obj).getRGB() == this.getRGB();
+        final Optional<Integer> rgbValue = toRGB(obj);
+        return rgbValue.isPresent() && rgbValue.get() == this.getRGB();
     }
 
     /**

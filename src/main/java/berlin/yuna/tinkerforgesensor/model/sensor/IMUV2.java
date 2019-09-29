@@ -41,8 +41,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Y;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.QUATERNION_Z;
 
 /**
- * <h3>{@link IMUV2}</h3><br />
- * <i>Full fledged AHRS with 9 degrees of freedom</i><br />
+ * <h3>{@link IMUV2}</h3><br>
+ * <i>Full fledged AHRS with 9 degrees of freedom</i><br>
  *
  * <h3>Values</h3>
  * <ul>

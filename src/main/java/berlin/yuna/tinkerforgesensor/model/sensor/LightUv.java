@@ -11,8 +11,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UV;
 
 /**
- * <h3>{@link LightUv}</h3><br />
- * <i>Measures ambient light up to 64000lux</i><br />
+ * <h3>{@link LightUv}</h3><br>
+ * <i>Measures ambient light up to 64000lux</i><br>
  *
  * <h3>Values</h3>
  * <ul>

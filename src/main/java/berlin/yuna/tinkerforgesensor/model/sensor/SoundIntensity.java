@@ -11,8 +11,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY;
 
 /**
- * <h3>{@link SoundIntensity}</h3><br />
- * <i>Measures sound intensity</i><br />
+ * <h3>{@link SoundIntensity}</h3><br>
+ * <i>Measures sound intensity</i><br>
  *
  * <h3>Values</h3>
  * <ul>

@@ -16,8 +16,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNET_COUNTER;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNET_DENSITY;
 
 /**
- * <h3>{@link HallEffectV2}</h3><br />
- * <i>Measures magnetic flux density between -7mT and +7mT</i><br />
+ * <h3>{@link HallEffectV2}</h3><br>
+ * <i>Measures magnetic flux density between -7mT and +7mT</i><br>
  *
  * <h3>Values</h3>
  * <ul>

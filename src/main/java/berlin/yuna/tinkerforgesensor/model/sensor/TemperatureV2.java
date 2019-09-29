@@ -15,8 +15,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 /**
- * <h3>{@link TemperatureV2}</h3><br />
- * <i>Measures ambient temperature with 0.2°C accuracy</i><br />
+ * <h3>{@link TemperatureV2}</h3><br>
+ * <i>Measures ambient temperature with 0.2°C accuracy</i><br>
  *
  * <h3>Values</h3>
  * <ul>

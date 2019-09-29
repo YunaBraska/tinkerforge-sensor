@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UVA;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_UVB;
 
 /**
- * <h3>{@link LightUvV2}</h3><br />
- * <i>Measures UV-A, UV-B and UV index</i><br />
+ * <h3>{@link LightUvV2}</h3><br>
+ * <i>Measures UV-A, UV-B and UV index</i><br>
  *
  * <h3>Values</h3>
  * <ul>

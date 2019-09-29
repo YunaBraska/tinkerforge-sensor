@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.Color.convertToHighContra
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link LedRGBV2}</h3><br />
- * <i>Controls one RGB LED</i><br />
+ * <h3>{@link LedRGBV2}</h3><br>
+ * <i>Controls one RGB LED</i><br>
  *
  * <h6>Set LED color</h6>
  * <code>

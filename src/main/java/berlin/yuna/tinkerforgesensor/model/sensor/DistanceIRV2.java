@@ -15,8 +15,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DISTANCE;
 
 /**
- * <h3>{@link DistanceIRV2}</h3><br />
- * <i>Measures distance up to 150cm with infrared light</i><br />
+ * <h3>{@link DistanceIRV2}</h3><br>
+ * <i>Measures distance up to 150cm with infrared light</i><br>
  *
  * <h3>Values</h3>
  * <ul>

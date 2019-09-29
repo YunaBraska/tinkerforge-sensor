@@ -42,7 +42,7 @@ import static java.util.Collections.singletonList;
 /**
  * Generic wrapper for {@link Device} to have generic methods and behavior on all sensors
  *
- * @param <T> sensor type like a driver to tell the sensor how to handle the {@link Device} - important are methods like {@link Sensor<T>#initListener()}
+ * @param <T> sensor type like a driver to tell the sensor how to handle the {@link Device} - important are methods like {@link Sensor#initListener()}
  */
 public abstract class Sensor<T extends Device> {
 
@@ -65,7 +65,7 @@ public abstract class Sensor<T extends Device> {
     private long lastCall = nanoTime();
 
     /**
-     * List of {@link Consumer} for getting all {@link Sensor<T>Event}
+     * List of {@link Consumer} for getting all {@link SensorEvent}
      */
     public final CopyOnWriteArrayList<Consumer<SensorEvent>> consumerList = new CopyOnWriteArrayList<>();
 
@@ -73,8 +73,8 @@ public abstract class Sensor<T extends Device> {
     protected final int SENSOR_VALUE_LIMIT = 99;
 
     /**
-     * @param consumer to notify {@link Consumer} with {@link Sensor<T>Event} at {@link Sensor<T>#sendEventUnchecked(ValueType, Long)}
-     * @return {@link Sensor<T>}
+     * @param consumer to notify {@link Consumer} with {@link SensorEvent} at {@link Sensor#sendEventUnchecked(SensorEvent)}
+     * @return {@link Sensor}
      */
     public Sensor<T> addListener(final Consumer<SensorEvent> consumer) {
         consumerList.add(consumer);
@@ -175,7 +175,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Tells if the Sensor is a brick or bricklet calculated from {@link Sensor<T>#refreshPortE()}
+     * Tells if the Sensor is a brick or bricklet calculated from {@link Sensor#initPort}
      *
      * @return true if sensor is a brick
      */
@@ -188,7 +188,7 @@ public abstract class Sensor<T extends Device> {
      *
      * @param limitPerSec sets message limit per seconds (hast to be > 0 and < 1000000000) else default method {@link Sensor#send(Object...)} will be called
      * @param values      some objects like a "howdy", 123, Color.GREEN which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public synchronized Sensor<T> sendLimit(final long limitPerSec, final Object... values) {
         if (limitPerSec < 1 || limitPerSec > 1000000000) {
@@ -202,7 +202,7 @@ public abstract class Sensor<T extends Device> {
 
     /**
      * @param value some object like a "howdy" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public abstract Sensor<T> send(final Object value);
 
@@ -210,8 +210,8 @@ public abstract class Sensor<T extends Device> {
      * Sets the refresh rate for the sensor values (e.g. for power issues)
      *
      * @param perSec hast to be in range of 0 to 1000 (0 = listen only on changes)
-     *               <br /> Some old {@link Device} does't have the option 0 and will fall back to period callback
-     * @return current {@link Sensor<T>}
+     *               <br> Some old {@link Device} does't have the option 0 and will fall back to period callback
+     * @return current {@link Sensor}
      */
     public synchronized Sensor<T> refreshLimit(final int perSec) {
         if (perSec > 0 && perSec <= 1000) {
@@ -224,13 +224,13 @@ public abstract class Sensor<T extends Device> {
      * Sets the refresh period directly to the {@link Device} - its safer to use the method {@link Sensor#refreshLimit(int)}
      *
      * @param milliseconds callBack period
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public abstract Sensor<T> refreshPeriod(final int milliseconds);
 
     /**
      * @param values some objects like a "howdy", "howdy2" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> send(final Object... values) {
         for (Object value : values) {
@@ -328,7 +328,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * Loads the led configurations for ledStatus_setStatus and ledAdditional
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public abstract Sensor<T> initLedConfig();
 
@@ -348,7 +348,7 @@ public abstract class Sensor<T extends Device> {
 
     /**
      * @param ledStatusType for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> setLedStatus(final LedStatusType ledStatusType) {
         return setLedStatus(ledStatusType.bit);
@@ -356,13 +356,13 @@ public abstract class Sensor<T extends Device> {
 
     /**
      * @param value for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public abstract Sensor<T> setLedStatus(final Integer value);
 
     /**
      * @param ledStatusType additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> ledAdditional(final LedStatusType ledStatusType) {
         return ledAdditional(ledStatusType.bit);
@@ -370,14 +370,14 @@ public abstract class Sensor<T extends Device> {
 
     /**
      * @param value additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public abstract Sensor<T> ledAdditional(final Integer value);
 
     /**
      * Status led try to show {@link LedStatusType#LED_STATUS} like the {@link com.tinkerforge.BrickletMotionDetectorV2} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> ledStatus_setStatus() {
         return setLedStatus(LED_STATUS);
@@ -386,7 +386,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * Status led try to show {@link LedStatusType#LED_STATUS_HEARTBEAT} like the {@link com.tinkerforge.BrickletRGBLEDButton} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> ledStatus_setHeartbeat() {
         return setLedStatus(LED_STATUS_HEARTBEAT);
@@ -395,7 +395,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * Status led try to show {@link LedStatusType#LED_STATUS_ON} like the {@link com.tinkerforge.BrickMaster} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> ledStatus_setOn() {
         return setLedStatus(LED_STATUS_ON);
@@ -404,7 +404,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * Status led try to show {@link LedStatusType#LED_STATUS_OFF} like the {@link com.tinkerforge.BrickMaster} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> ledStatus_setOff() {
         return setLedStatus(LED_STATUS_OFF);
@@ -413,7 +413,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * led try to show {@link LedStatusType#LED_ADDITIONAL_ON} like the display of {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> ledAdditional_setOn() {
         return ledAdditional(LED_ADDITIONAL_ON);
@@ -422,7 +422,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * led try to show {@link LedStatusType#LED_ADDITIONAL_HEARTBEAT} like the flash led of {@link com.tinkerforge.BrickletColor} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> ledAdditional_setOff() {
         return ledAdditional(LED_ADDITIONAL_OFF);
@@ -431,7 +431,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * Additional led try to show {@link LedStatusType#LED_ADDITIONAL_HEARTBEAT} like the {@link com.tinkerforge.BrickletDualButtonV2} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> setLedAdditional_Heartbeat() {
         return ledAdditional(LED_ADDITIONAL_HEARTBEAT);
@@ -440,7 +440,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * Additional led try to show {@link LedStatusType#LED_ADDITIONAL_STATUS} like the {@link com.tinkerforge.BrickletDualButtonV2} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> setLedAdditional_Status() {
         return ledAdditional(LED_ADDITIONAL_STATUS);
@@ -449,7 +449,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * led try to show {@link LedStatusType#LED_ADDITIONAL_ON} like display of {@link com.tinkerforge.BrickletSegmentDisplay4x7} which the sensor could process - else it just should ignore it
      *
-     * @return current {@link Sensor<T>}
+     * @return current {@link Sensor}
      */
     public Sensor<T> setLedBrightness(final Integer value) {
         return ledAdditional(value);
@@ -465,7 +465,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Refreshes/Searches the {@link Sensor<T>#port} by calculating from parent {@link Sensor<T>#refreshPortE()}
+     * Refreshes/Searches the {@link Sensor#port} by calculating from parent {@link Sensor#initPort()}
      * Should not be called to often to not interrupt the sensors
      */
     private void initPort() {
@@ -506,12 +506,12 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     * Internal api to send {@link SensorEvent} to the listeners and calculates peaks
      *
      * @param valueType type of send to send
      * @param values    send to send
      * @param unchecked send without any checks
-     * @return {@link Sensor<T>#port}
+     * @return {@link Sensor#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final List<Number> values, final boolean unchecked) {
         final RollingList<List<Number>> timeSeries = valueMap.computeIfAbsent(valueType, item -> new RollingList<>(SENSOR_VALUE_LIMIT));
@@ -522,23 +522,23 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     * Internal api to send {@link SensorEvent} to the listeners and calculates peaks
      *
      * @param valueType type of send to send
      * @param value     to send
-     * @return {@link Sensor<T>#port}
+     * @return {@link Sensor#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final Number value) {
         return sendEvent(valueType, singletonList(value), false);
     }
 
     /**
-     * Internal api to send {@link Sensor<T>Event} to the listeners and calculates {@link Sensor<T>#percentageOccur(ArrayList, Long)} from send if the event should be send
+     * Internal api to send {@link SensorEvent} to the listeners and calculates peaks
      *
      * @param valueType type of send to send
      * @param value     to send
      * @param unchecked send without any checks
-     * @return {@link Sensor<T>#port}
+     * @return {@link Sensor#port}
      */
     protected Sensor<T> sendEvent(final ValueType valueType, final Number value, final boolean unchecked) {
         return sendEvent(valueType, singletonList(value), unchecked);
@@ -560,9 +560,9 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Compares the sensor with {@link Sensor<T>}
+     * Compares the sensor with {@link Sensor}
      *
-     * @return true if the is a type of {@link Sensor<T>}
+     * @return true if the is a type of {@link Sensor}
      */
     protected boolean isSensor(final Class<? extends Sensor> sensor) {
         return this.getClass() == sensor;
@@ -579,7 +579,7 @@ public abstract class Sensor<T extends Device> {
     /**
      * Flashing status led
      *
-     * @return {@link Sensor<T>}
+     * @return {@link Sensor}
      */
     public Sensor<T> flashLed() {
         try {

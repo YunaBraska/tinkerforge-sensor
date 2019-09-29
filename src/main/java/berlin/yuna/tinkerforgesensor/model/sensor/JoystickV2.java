@@ -21,8 +21,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_RELEASED
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link JoystickV2}</h3><br />
- * <i>2-axis joystick with push-button</i><br />
+ * <h3>{@link JoystickV2}</h3><br>
+ * <i>2-axis joystick with push-button</i><br>
  *
  * <h3>Values</h3>
  * <ul>

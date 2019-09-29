@@ -18,8 +18,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.IAQ_INDEX;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 /**
- * <h3>{@link AirQuality}</h3><br />
- * <i>Measures acceleration in three axis</i><br />
+ * <h3>{@link AirQuality}</h3><br>
+ * <i>Measures acceleration in three axis</i><br>
  *
  * <h3>Values</h3>
  * <ul>

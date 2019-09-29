@@ -10,8 +10,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 import static java.util.stream.Collectors.toList;
 
 /**
- * <h3>{@link RollingList} extends {@link LinkedList}</h3><br />
- * <i>Rolling list with limited capacity</i><br />
+ * <h3>{@link RollingList} extends {@link LinkedList}</h3><br>
+ * <i>Rolling list with limited capacity</i><br>
  */
 public class RollingList<T> extends LinkedBlockingDeque<T> {
 
@@ -47,9 +47,9 @@ public class RollingList<T> extends LinkedBlockingDeque<T> {
     }
 
     /**
-     * <h3>addAndCheckIfItsNewPeak</h3><br />
+     * <h3>addAndCheckIfItsNewPeak</h3><br>
      * To check if its a new peak you will have to add the send first
-     * <i>Rolling list with limited capacity</i><br />
+     * <i>Rolling list with limited capacity</i><br>
      *
      * @param valueToCheck value to check for
      * @return returns true if its a new peak
@@ -62,7 +62,7 @@ public class RollingList<T> extends LinkedBlockingDeque<T> {
     }
 
     /**
-     * <h3>getLastPeaks</h3><br />
+     * <h3>getLastPeaks</h3><br>
      *
      * @return {@link List} of peaks
      */

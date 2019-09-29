@@ -16,8 +16,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PERCENTAGE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
 
 /**
- * <h3>{@link PotiRotaryV2}</h3><br />
- * <i>300° rotary potentiometer</i><br />
+ * <h3>{@link PotiRotaryV2}</h3><br>
+ * <i>300° rotary potentiometer</i><br>
  *
  * <h3>Values</h3>
  * <ul>

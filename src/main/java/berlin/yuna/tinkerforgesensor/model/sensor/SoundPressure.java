@@ -22,8 +22,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
 
 /**
- * <h3>{@link SoundPressure}</h3><br />
- * <i>Measures Sound Pressure Level in dB(A/B/C/D/Z)</i><br />
+ * <h3>{@link SoundPressure}</h3><br>
+ * <i>Measures Sound Pressure Level in dB(A/B/C/D/Z)</i><br>
  *
  * <h3>Values</h3>
  * <ul>

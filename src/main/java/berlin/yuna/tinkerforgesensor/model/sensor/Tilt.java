@@ -11,8 +11,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TILT;
 
 /**
- * <h3>{@link Tilt}</h3><br />
- * <i>Detects inclination of Bricklet (tilt switch open/closed)</i><br />
+ * <h3>{@link Tilt}</h3><br>
+ * <i>Detects inclination of Bricklet (tilt switch open/closed)</i><br>
  *
  * <h3>Values</h3>
  * <ul>

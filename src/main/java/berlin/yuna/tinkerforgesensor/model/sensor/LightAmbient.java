@@ -12,8 +12,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.LIGHT_LUX;
 
 /**
- * <h3>{@link LightAmbient}</h3><br />
- * <i>Measures ambient light up to 900lux</i><br />
+ * <h3>{@link LightAmbient}</h3><br>
+ * <i>Measures ambient light up to 900lux</i><br>
  *
  * <h3>Values</h3>
  * <ul>

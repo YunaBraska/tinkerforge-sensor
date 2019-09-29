@@ -28,11 +28,11 @@ import static java.util.Arrays.stream;
 import static java.util.Collections.nCopies;
 
 /**
- * <h3>{@link LedStripV2}</h3><br />
- * <i>Controls up to 2048 RGB(W) LEDs</i><br />
+ * <h3>{@link LedStripV2}</h3><br>
+ * <i>Controls up to 2048 RGB(W) LEDs</i><br>
  *
  * <h3>Before the start</h3>
- * <i>This bricklet is not starting without knowing the number of LEDs and the ChipType</i><br />
+ * <i>This bricklet is not starting without knowing the number of LEDs and the ChipType</i><br>
  * <h6>[Setup] Setting number of leds to 30 and chip type to "WS2812" {@link LedChipType}</h6>
  * <code>sensor.send(30, "WS2812");</code>
  * <code>sensor.send(30, LED_TYPE_WS2812);</code>

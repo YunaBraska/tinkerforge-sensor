@@ -21,8 +21,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.COLOR_TEMPERATU
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link LightColor}</h3><br />
- * <i>Measures color (RGB send), illuminance and color temperature</i><br />
+ * <h3>{@link LightColor}</h3><br>
+ * <i>Measures color (RGB send), illuminance and color temperature</i><br>
  *
  * <h3>Values</h3>
  * <ul>

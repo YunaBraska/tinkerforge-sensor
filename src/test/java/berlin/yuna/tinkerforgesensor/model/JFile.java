@@ -1,6 +1,5 @@
 package berlin.yuna.tinkerforgesensor.model;
 
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +63,7 @@ public class JFile {
             final String typeName = genericSuperclass.getTypeName();
             superClass = typeName.contains("<") ? Class.forName(typeName.substring(0, typeName.indexOf("<"))) : null;
 
-            final String genericClassName = clazz.getGenericSuperclass() instanceof ParameterizedTypeImpl ? ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0].getTypeName() : "";
+            final String genericClassName = clazz.getGenericSuperclass() instanceof ParameterizedType ? ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0].getTypeName() : "";
             genericClass = genericClassName.length() > 2 ? Class.forName(genericClassName) : null;
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Unable to read file [" + path.toString() + "]", e);

@@ -15,8 +15,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MOTION_DETECTED;
 
 /**
- * <h3>{@link MotionDetector}</h3><br />
- * <i>Passive infrared (PIR) motion sensor, 7m range with 100° angle</i><br />
+ * <h3>{@link MotionDetector}</h3><br>
+ * <i>Passive infrared (PIR) motion sensor, 7m range with 100° angle</i><br>
  *
  * <h3>Values</h3>
  * <ul>

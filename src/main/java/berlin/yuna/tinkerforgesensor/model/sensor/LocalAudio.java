@@ -22,8 +22,8 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 /**
- * <h3>{@link LocalAudio}</h3><br />
- * <i>Mini audio player plays wav only</i><br />
+ * <h3>{@link LocalAudio}</h3><br>
+ * <i>Mini audio player plays wav only</i><br>
  *
  * <h3>Technical Info</h3>
  * <h6>Play file (allowed = STRING/FILE/PATH/URL/URI)</h6>
@@ -36,7 +36,7 @@ import static java.util.Arrays.asList;
  * <code>sensor.send("/Downloads/mySoundFile.wav", 20, false, PLAY);</code>
  *
  * <h3>Audio commands {@link AudioCmd}</h3>
- * <i>One can be added anytime at sending the commands from above</i><br />
+ * <i>One can be added anytime at sending the commands from above</i><br>
  * <code>sensor.send(PLAY);</code>
  * <code>sensor.send(REPLAY);</code>
  * <code>sensor.send(PAUSE);</code>
@@ -45,7 +45,7 @@ import static java.util.Arrays.asList;
  * <code>sensor.send(UNMUTE);</code>
  *
  * <h3>Parallel sounds</h3>
- * <i>Can be done by adding different playerIds at the start of the command</i><br />
+ * <i>Can be done by adding different playerIds at the start of the command</i><br>
  * <code>sensor.send(1, "/Downloads/mySoundFile.wav");</code>
  * <code>sensor.send(2, "/Downloads/mySoundFile.wav");</code>
  */

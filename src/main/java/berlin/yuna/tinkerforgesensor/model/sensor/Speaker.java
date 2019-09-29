@@ -11,8 +11,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link Speaker}</h3><br />
- * <i>Creates beep with configurable frequency</i><br />
+ * <h3>{@link Speaker}</h3><br>
+ * <i>Creates beep with configurable frequency</i><br>
  *
  * <h3>Values</h3>
  * <ul>

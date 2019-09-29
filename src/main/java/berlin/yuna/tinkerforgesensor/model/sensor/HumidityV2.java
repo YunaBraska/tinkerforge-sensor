@@ -16,8 +16,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.TEMPERATURE;
 
 /**
- * <h3>{@link HumidityV2}</h3><br />
- * <i>Measures relative humidity</i><br />
+ * <h3>{@link HumidityV2}</h3><br>
+ * <i>Measures relative humidity</i><br>
  *
  * <h3>Values</h3>
  * <ul>

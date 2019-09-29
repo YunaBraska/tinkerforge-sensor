@@ -18,8 +18,8 @@ import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.toList;
 
 /**
- * <h3>{@link SensorList} extends {@link CopyOnWriteArrayList}</h3><br />
- * <i>List of sensors and filter functions</i><br />
+ * <h3>{@link SensorList} extends {@link CopyOnWriteArrayList}</h3><br>
+ * <i>List of sensors and filter functions</i><br>
  */
 public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
 

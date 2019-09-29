@@ -17,8 +17,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 /**
- * <h3>{@link DisplaySegment}</h3><br />
- * <i>Four 7-segment displays with switchable colon</i><br />
+ * <h3>{@link DisplaySegment}</h3><br>
+ * <i>Four 7-segment displays with switchable colon</i><br>
  *
  * <h3>Technical Info</h3>
  * <ul>
@@ -29,10 +29,10 @@ import static java.time.format.DateTimeFormatter.ofPattern;
  * <h6>Send text to display</h6>
  * <code>sensor.send("GIRL");</code>
  * <h6>Send current time</h6>
- * <i>(use {@link TemporalAccessor})</i><br/>
+ * <i>(use {@link TemporalAccessor})</i><br>
  * <code>sensor.send(LocalDateTime#now());</code>
  * <h6>Send own time format</h6>
- * <i>(use {@link DateTimeFormatter})</i><br/>
+ * <i>(use {@link DateTimeFormatter})</i><br>
  * <code>sensor.send(DateTimeFormatter.ofPattern("HH:mm"));</code>
  * <h6>LED Brightness (2-9)</h6>
  * <code>sensor.ledAdditional(7);</code>

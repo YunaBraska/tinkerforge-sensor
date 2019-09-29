@@ -26,8 +26,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_PIT
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ORIENTATION_ROLL;
 
 /**
- * <h3>{@link IMU}</h3><br />
- * <i>Full fledged AHRS with 9 degrees of freedom</i><br />
+ * <h3>{@link IMU}</h3><br>
+ * <i>Full fledged AHRS with 9 degrees of freedom</i><br>
  *
  * <h3>Values</h3>
  * <ul>

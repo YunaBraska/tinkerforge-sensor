@@ -11,8 +11,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.HUMIDITY;
 
 /**
- * <h3>{@link Humidity}</h3><br />
- * <i>Measures relative humidity</i><br />
+ * <h3>{@link Humidity}</h3><br>
+ * <i>Measures relative humidity</i><br>
  *
  * <h3>Values</h3>
  * <ul>

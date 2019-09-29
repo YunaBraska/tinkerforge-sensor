@@ -13,8 +13,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ALTITUDE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link Barometer}</h3><br />
- * <i>Measures air pressure and altitude changes</i><br />
+ * <h3>{@link Barometer}</h3><br>
+ * <i>Measures air pressure and altitude changes</i><br>
  *
  * <h3>Values</h3>
  * <ul>

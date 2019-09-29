@@ -15,8 +15,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PERCENTAGE;
 
 /**
- * <h3>{@link PotiLiniarV2}</h3><br />
- * <i>59mm linear potentiometer</i><br />
+ * <h3>{@link PotiLiniarV2}</h3><br>
+ * <i>59mm linear potentiometer</i><br>
  *
  * <h3>Values</h3>
  * <ul>

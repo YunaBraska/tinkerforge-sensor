@@ -43,8 +43,8 @@ import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.joining;
 
 /**
- * <h3>{@link Stack} implements {@link Closeable}</h3><br />
- * <i>Stack connection and event handler</i><br />
+ * <h3>{@link Stack} implements {@link Closeable}</h3><br>
+ * <i>Stack connection and event handler</i><br>
  */
 public class Stack implements Closeable {
 

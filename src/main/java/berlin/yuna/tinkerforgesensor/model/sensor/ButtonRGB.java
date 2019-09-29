@@ -23,8 +23,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 
 /**
- * <h3>{@link ButtonRGB}</h3><br />
- * <i>Push button with built-in RGB LED</i><br />
+ * <h3>{@link ButtonRGB}</h3><br>
+ * <i>Push button with built-in RGB LED</i><br>
  *
  * <h3>Values</h3>
  * <ul>

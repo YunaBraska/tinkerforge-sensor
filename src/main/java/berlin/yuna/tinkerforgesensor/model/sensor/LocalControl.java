@@ -23,8 +23,8 @@ import static berlin.yuna.tinkerforgesensor.model.AudioCmd.UNKNOWN;
 import static java.util.Arrays.asList;
 
 /**
- * <h3>{@link LocalControl}</h3><br />
- * <i>Displays a tiny human input board on activation</i><br />
+ * <h3>{@link LocalControl}</h3><br>
+ * <i>Displays a tiny human input board on activation</i><br>
  *
  * <h3>Values</h3>
  * <ul>

@@ -18,8 +18,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Y;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.MAGNETIC_Z;
 
 /**
- * <h3>{@link Compass}</h3><br />
- * <i>3-axis compass with 0.1mG (milli Gauss) and 0.1° resolution</i><br />
+ * <h3>{@link Compass}</h3><br>
+ * <i>3-axis compass with 0.1mG (milli Gauss) and 0.1° resolution</i><br>
  *
  * <h3>Values</h3>
  * <ul>

@@ -18,8 +18,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.ROTARY;
 
 /**
- * <h3>{@link RotaryV2}</h3><br />
- * <i>360° rotary encoder with push-button</i><br />
+ * <h3>{@link RotaryV2}</h3><br>
+ * <i>360° rotary encoder with push-button</i><br>
  *
  * <h3>Values</h3>
  * <ul>

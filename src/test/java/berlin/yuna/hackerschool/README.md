@@ -1,6 +1,16 @@
 # TINKERFORGE SENSOR API
 ![logo](pictureEx_01.jpg "pictureEx_01")
 
+#### Hackerschool sessions (berlin)
+* [x] [24.11.18 (RatePAY)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_01_241118)
+* [x] [22.02.19 (RatePAY)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_02_220219)
+* [x] [18.05.19 (RatePAY)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_03_180519)
+* [ ] *<s>20.07.19 (Trabrennbahn/Mariendorf)</s>*
+* [ ] *<s>03.08.19 (Trabrennbahn/Mariendorf)</s>*
+* [X] [07.09.19 (DKB)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_04_070919)
+* [ ] *<s>16.11.19 (BSR/Mariendorf)</s>*
+* [X] 30.11.19 (DKB)
+
 ### Hardware Requirements
 * Tinkerforge Elements [https://www.tinkerforge.com](https://www.tinkerforge.com)
 * Tinkerforge Driver [Brick Daemon](https://www.tinkerforge.com/en/doc/Software/Brickd.html#brickd)

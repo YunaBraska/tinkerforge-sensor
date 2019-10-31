@@ -79,7 +79,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${java.version}</source>
@@ -87,11 +87,11 @@
                     <compilerVersion>${java.version}</compilerVersion>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>berlin.yuna</groupId>
-                <artifactId>deployment-maven-plugin</artifactId>
-                <version>12.0.2</version>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>berlin.yuna</groupId>-->
+<!--                <artifactId>deployment-maven-plugin</artifactId>-->
+<!--                <version>12.0.2</version>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

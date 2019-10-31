@@ -8,7 +8,7 @@
 * [ ] *<s>20.07.19 (Trabrennbahn/Mariendorf)</s>*
 * [ ] *<s>03.08.19 (Trabrennbahn/Mariendorf)</s>*
 * [X] [07.09.19 (DKB)](https://github.com/YunaBraska/tinkerforge-sensor/tree/master/src/test/java/berlin/yuna/hackerschool/session_04_070919)
-* [ ] *<s>16.11.19 (BSR/Mariendorf)</s>*
+* [ ] *<s>16.11.19 (BSR)</s>*
 * [X] 30.11.19 (DKB)
 
 ### Hardware Requirements

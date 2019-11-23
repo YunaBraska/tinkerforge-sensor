@@ -36,7 +36,7 @@ public class Test extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Test::onSensorEvent);
+        stack.consumers.add(Test::onSensorEvent);
         onStart();
     }
 

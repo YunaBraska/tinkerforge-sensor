@@ -14,7 +14,7 @@ public class Servo_Rotary_Example extends Helper {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.getValue(), event.getValueType()));
+        stack.consumers.add(event -> onSensorEvent(event.sensor(), event.getValue(), event.getValueType()));
     }
 
     private static boolean invert = false;

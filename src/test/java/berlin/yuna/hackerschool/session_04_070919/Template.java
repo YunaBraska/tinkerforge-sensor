@@ -26,7 +26,7 @@ public class Template extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Template::onSensorEvent);
+        stack.consumers.add(Template::onSensorEvent);
         onStart();
     }
 

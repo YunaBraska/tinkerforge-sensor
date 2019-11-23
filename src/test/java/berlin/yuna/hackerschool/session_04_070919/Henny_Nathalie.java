@@ -68,7 +68,7 @@ public class Henny_Nathalie extends Helper {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Henny_Nathalie::onSensorEvent);
+        stack.consumers.add(Henny_Nathalie::onSensorEvent);
         onStart();
 
     }

@@ -66,7 +66,7 @@ public class Mika_Nick extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Mika_Nick::onSensorEvent);
+        stack.consumers.add(Mika_Nick::onSensorEvent);
         onStart();
     }
 

@@ -14,7 +14,7 @@ public class Servo_Key_Example extends Helper {
     private static final Stack stack = ConnectionAndPrintValues_Example.connect();
 
     public static void main(final String[] args) {
-        stack.sensorEventConsumerList.add(Servo_Key_Example::onSensorEvent);
+        stack.consumers.add(Servo_Key_Example::onSensorEvent);
         stack.sensors().localControl().ledAdditional_setOn();
     }
 

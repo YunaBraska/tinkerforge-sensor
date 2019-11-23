@@ -10,7 +10,7 @@ public class MotionDetection_to_Speaker_Example {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.sensor(), event.getValue(), event.getValueType()));
+        stack.consumers.add(event -> onSensorEvent(event.sensor(), event.getValue(), event.getValueType()));
     }
 
     private static void onSensorEvent(final Sensor sensor, final Long value, final ValueType type) {

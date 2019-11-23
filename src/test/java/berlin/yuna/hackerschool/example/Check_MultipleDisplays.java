@@ -22,6 +22,6 @@ public class Check_MultipleDisplays extends Helper {
             final Sensor sensor = displays.get(i);
             sensor.ledAdditional_setOn().send("D" + i + ":P" + sensor.port());
         }
-        stack.disconnect();
+        stack.close();
     }
 }

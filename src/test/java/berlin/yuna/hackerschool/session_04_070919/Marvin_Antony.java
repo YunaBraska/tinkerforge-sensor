@@ -3,10 +3,12 @@ package berlin.yuna.hackerschool.session_04_070919;
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
+import berlin.yuna.tinkerforgesensor.logic.Stacks;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
+import static berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example.printAllValues;
 import static java.lang.String.format;
 
 
@@ -112,28 +114,12 @@ public class Marvin_Antony extends Helper {
     }
 
     //START FUNCTION
-    public static void main(final String[] args) {
-        stackRemote = ConnectionAndPrintValues_Example.connect();
-        stackRemote.sensorEventConsumerList.add(Marvin_Antony::onSensorEvent);
-
-        try {
-            stackRobot = new Stack("100.100.0.2", 4223, true);
-            stackRobot.sensorEventConsumerList.add(Marvin_Antony::printAllValues);
-            onStart();
-        } catch (NetworkConnectionException e) {
-            throw new RuntimeException(e);
-        }
+    public static void main(final String[] args) throws NetworkConnectionException {
+//        stackRemote = Stacks.connect("192.168.3.5", 4223).orElse(new Stack());
+        stackRobot = Stacks.connect("localhost", 4223).orElse(new Stack());
+        Stacks.addConsumer(Marvin_Antony::onSensorEvent);
+        printAllValues();
     }
-
-    private static void printAllValues(final SensorEvent sensorEvent) {
-        if (sensorEvent.getValueType().containsDeviceStatus()) {
-            System.out.println(format("Sensor [%s] type [%s] send [%s]", sensorEvent.sensor().name, sensorEvent.getValueType(), sensorEvent.getValue()));
-        } else if (!timePassed(256)) {
-            return;
-        }
-        System.out.println(stackRobot.valuesToString());
-    }
-
 
     private static void move(final long speedLeft, final long speedRight) {
         if (stackRobot == null) {

@@ -16,7 +16,7 @@ public class AllStatusLed_Loop_Example extends Helper {
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
         loop(AllStatusLed_Loop_Example::knightRider_example, 15);
-        stack.disconnect();
+        stack.close();
     }
 
 

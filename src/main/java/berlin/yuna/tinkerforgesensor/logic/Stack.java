@@ -19,12 +19,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static berlin.yuna.tinkerforgesensor.model.type.TimeoutExecutor.execute;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_ALREADY_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
@@ -34,13 +30,11 @@ import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.asyncStop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createAsync;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loops;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.Collectors.joining;
 
 /**
  * <h3>{@link Stack} implements {@link Closeable}</h3><br>
@@ -55,13 +49,13 @@ public class Stack implements Closeable {
     public IPConnection connection = new IPConnection();
 
     /**
-     * <h3>{@link Stack#sensorEventConsumerList}</h3>
+     * <h3>{@link Stack#consumers}</h3>
      * List of {@link Consumer} for getting all {@link SensorEvent}
      */
-    public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
-
+    public final List<Consumer<SensorEvent>> consumers = new CopyOnWriteArrayList<>();
     private final SensorList<Sensor> sensorList = new SensorList<>();
 
+    private final String id;
     private final String host;
     private final String password;
     private final Integer port;
@@ -69,8 +63,6 @@ public class Stack implements Closeable {
     private final int timeoutMs = 3000;
     private final boolean ignoreConnectionError;
     private final String connectionHandlerName = getClass().getSimpleName() + "_" + UUID.randomUUID();
-    private final String pingConnectionHandlerName = "Ping_" + connectionHandlerName;
-    private static final int MAX_PRINT_VALUES = 50;
 
     /**
      * <h3>Dummy Stack</h3>
@@ -135,6 +127,7 @@ public class Stack implements Closeable {
         this.password = password;
         this.port = port;
         this.ignoreConnectionError = ignoreConnectionError;
+        this.id = host + ":" + port;
         connect();
     }
 
@@ -165,7 +158,9 @@ public class Stack implements Closeable {
             }
         }
 //        createLoop(connectionHandlerName, timeoutMs, run -> checkConnection());
-        createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.getDefault(), System.currentTimeMillis(), PING));
+        if (!loops.containsKey(id)) {
+            createLoop(id, 8, run -> sendEvent(sensorList.getDefault(), System.currentTimeMillis(), PING));
+        }
     }
 
     /**
@@ -183,7 +178,7 @@ public class Stack implements Closeable {
      */
     public synchronized void disconnect() {
         sensorList.forEach(sensor -> sensor.refreshPeriod(0));
-        asyncStop(pingConnectionHandlerName, connectionHandlerName);
+        asyncStop(id);
         execute(timeoutMs + 256, () -> {
             try {
                 clearSensorList();
@@ -203,37 +198,6 @@ public class Stack implements Closeable {
     }
 
     /**
-     * <h3>valuesToString</h3>
-     *
-     * @return all values from all sensors as string
-     */
-    public String valuesToString() {
-        final StringBuilder lineHead = new StringBuilder();
-        final StringBuilder lineValue = new StringBuilder();
-        final List<ValueType> IGNORE_TYPES = asList(BUTTON_PRESSED, BUTTON_RELEASED);
-        for (Sensor sensor : sensors()) {
-            for (ValueType valueType : ValueType.values()) {
-                if (IGNORE_TYPES.contains(valueType)) {
-                    continue;
-                }
-                final List<Long> values = sensor.values().getList(valueType, -1);
-                if (!values.isEmpty()) {
-                    String value = values.stream().map(Object::toString).collect(joining(", "));
-                    value = value.length() > MAX_PRINT_VALUES ? value.substring(0, MAX_PRINT_VALUES) : value;
-                    final int valueLength = value.length();
-                    final int typeLength = valueType.toString().length();
-                    final int fieldSize = (Math.max(valueLength, typeLength)) + 1;
-                    lineHead.append(center(" " + valueType, fieldSize)).append(" |");
-                    lineValue.append(format("%" + fieldSize + "s |", value));
-                }
-            }
-        }
-        lineHead.append(format("%9s |", "Sensors"));
-        lineValue.append(format("%9s |", sensors().size()));
-        return System.lineSeparator() + lineHead.toString() + System.lineSeparator() + lineValue.toString();
-    }
-
-    /**
      * <h3>sensors</h3>
      *
      * @return List of sensors {@link Sensors}
@@ -249,6 +213,14 @@ public class Stack implements Closeable {
      */
     public Values values() {
         return new Values(sensorList);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    protected SensorList<Sensor> getSensorList() {
+        return sensorList;
     }
 
     private void doPlugAndPlay(
@@ -287,7 +259,7 @@ public class Stack implements Closeable {
                 sensorList.add(sensor);
                 sensorList.linkParent(sensor);
                 sendEvent(sensor, 42L, enumerationType);
-                sensor.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
+                sensor.addListener(sensorEvent -> consumers.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
             }
         } catch (DeviceNotSupportedException | NetworkConnectionException e) {
             System.err.println(format("doPlugAndPlay [ERROR] uid [%s] [%s]", uid, e.getMessage()));
@@ -296,7 +268,7 @@ public class Stack implements Closeable {
 
     private void sendEvent(final Sensor sensor, final long value, final ValueType valueType) {
         if (sensor != null) {
-            sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, valueType)));
+            consumers.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, valueType)));
         }
     }
 
@@ -334,20 +306,8 @@ public class Stack implements Closeable {
             final LocalControl localControl = new LocalControl(sensor.device, sensor.uid);
             sensorList.add(new LocalAudio(sensor.device, sensor.uid));
             sensorList.add(localControl);
-            localControl.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
+            localControl.addListener(sensorEvent -> consumers.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
         } catch (NetworkConnectionException ignored) {
         }
-    }
-
-    //TODO: move to utils
-    private String center(final String text, final int length) {
-        if (text.length() < length) {
-            final int left = (length - text.length()) / 2;
-            final int right = (length - text.length()) - left;
-            final String leftS = IntStream.range(0, left).mapToObj(i -> " ").collect(joining(""));
-            final String rightS = IntStream.range(0, right).mapToObj(i -> " ").collect(joining(""));
-            return leftS + text + rightS;
-        }
-        return text;
     }
 }

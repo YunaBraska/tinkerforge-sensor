@@ -1,7 +1,6 @@
 package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
-import berlin.yuna.tinkerforgesensor.model.AudioCmd;
 
 import java.net.URL;
 
@@ -16,7 +15,7 @@ public class Check_LocalAudio extends Helper {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.clear();
+        stack.consumers.clear();
 
         final URL siren = Check_LocalAudio.class.getClassLoader().getResource("siren.mp3");
         final URL cheer = Check_LocalAudio.class.getClassLoader().getResource("cheer.wav");
@@ -85,6 +84,6 @@ public class Check_LocalAudio extends Helper {
         sleep(1000);
         stack.sensors().localAudio().send(0, sonar, 10, false, PLAY);
         sleep(10000);
-        stack.disconnect();
+        stack.close();
     }
 }

@@ -1,6 +1,8 @@
 package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
+import berlin.yuna.tinkerforgesensor.logic.Stacks;
+import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.Color;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
@@ -14,9 +16,10 @@ public class Distance_to_LedStrip_Example extends Helper {
     private static final int startLed = 36;
     private static final int maxLed = 60;
 
-    public static void main(final String[] args) {
-        stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.getValue(), event.getValueType()));
+    public static void main(final String[] args) throws NetworkConnectionException {
+        Stacks.connect("localhost", 4223);
+        Stacks.addConsumer(event -> onSensorEvent(event.getValue(), event.getValueType()));
+        stack = Stacks.getFirstStack();
         while (!stack.sensors().ledStrip().isPresent()) {
             sleep(128);
         }

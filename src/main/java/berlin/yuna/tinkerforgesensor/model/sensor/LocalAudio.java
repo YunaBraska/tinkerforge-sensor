@@ -45,7 +45,7 @@ import static java.util.Arrays.asList;
  * <code>sensor.send(UNMUTE);</code>
  *
  * <h3>Parallel sounds</h3>
- * <i>Can be done by adding different playerIds at the start of the command</i><br>
+ * <i>Can be done by adding different playerIds at the startAsync of the command</i><br>
  * <code>sensor.send(1, "/Downloads/mySoundFile.wav");</code>
  * <code>sensor.send(2, "/Downloads/mySoundFile.wav");</code>
  */

@@ -61,6 +61,7 @@ public class TinkerForgeUtil {
 
         final Loop loop = new Loop(name, refreshMs, consumer);
         loops.put(name, loop);
+        loop.start();
         return loop;
     }
 
@@ -69,7 +70,7 @@ public class TinkerForgeUtil {
         for (String name : names) {
             final AsyncRun loop = loops.get(name);
             if (loop != null) {
-                loop.stop();
+                loop.stopAsync();
                 loops.remove(name);
             } else {
                 success = false;

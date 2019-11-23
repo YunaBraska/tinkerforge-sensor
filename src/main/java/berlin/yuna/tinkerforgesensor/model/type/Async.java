@@ -6,7 +6,7 @@ public class Async extends AsyncRun {
 
     public Async(final String name, final Consumer<Long> consumer) {
         super(name, consumer);
-        this.start();
+        this.startAsync();
     }
 
 //    private Thread thread;
@@ -18,7 +18,7 @@ public class Async extends AsyncRun {
 //    public Async(final String name, final long refreshMs, final Consumer<Long> consumer) {
 //        this.name = name;
 //        this.consumer = consumer;
-//        this.start();
+//        this.startAsync();
 //    }
 
     @Override
@@ -27,15 +27,15 @@ public class Async extends AsyncRun {
         running = false;
     }
 
-//    private synchronized void start() {
+//    private synchronized void startAsync() {
 //        if (running)
 //            return;
 //        running = true;
 //        thread = new Thread(this, name);
-//        thread.start();
+//        thread.startAsync();
 //    }
 //
-//    public synchronized void stop() {
+//    public synchronized void stopAsync() {
 //        Object result = TimeoutExecutor.execute(1000, () -> {
 //            if (running) {
 //                running = false;

@@ -1,5 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.type;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.RefreshType.EACH_SECOND;
@@ -10,10 +11,31 @@ public class Loop extends AsyncRun {
 
     private final long refreshMs;
 
-    public Loop(final String name, final long refreshMs, final Consumer<Long> consumer) {
-        super(name, consumer);
+    public Loop(final Consumer<Long> program) {
+        this("Loop " + UUID.randomUUID().toString(), 512, program);
+    }
+
+    public Loop(final long refreshMs, final Consumer<Long> program) {
+        this("Loop " + UUID.randomUUID().toString(), refreshMs, program);
+    }
+
+    public Loop(final String name, final long refreshMs, final Consumer<Long> program) {
+        super(name, program);
         this.refreshMs = refreshMs;
-        this.start();
+    }
+
+    public boolean isRunning() {
+        return super.running;
+    }
+
+    public Loop start() {
+        super.startAsync();
+        return this;
+    }
+
+    public Loop stop() {
+        super.stopAsync();
+        return this;
     }
 
     @Override

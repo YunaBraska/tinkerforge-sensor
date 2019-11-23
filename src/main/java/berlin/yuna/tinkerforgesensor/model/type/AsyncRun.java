@@ -15,10 +15,9 @@ public abstract class AsyncRun implements Runnable {
     protected AsyncRun(final String name, final Consumer<Long> consumer) {
         this.name = name;
         this.consumer = consumer;
-        this.start();
     }
 
-    public synchronized void stop() {
+    public synchronized void stopAsync() {
         final Object result = TimeoutExecutor.execute(1000, () -> {
             if (running) {
                 running = false;
@@ -35,7 +34,7 @@ public abstract class AsyncRun implements Runnable {
         return running;
     }
 
-    protected synchronized void start() {
+    protected synchronized void startAsync() {
         if (running)
             return;
         running = true;

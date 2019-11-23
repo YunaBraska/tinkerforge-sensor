@@ -18,10 +18,10 @@ public class Check_LocalAudio extends Helper {
         stack = ConnectionAndPrintValues_Example.connect();
         stack.sensorEventConsumerList.clear();
 
-        final URL siren = Check_LocalAudio.class.getClassLoader().getResource("siren.mp3");
-        final URL cheer = Check_LocalAudio.class.getClassLoader().getResource("cheer.wav");
-        final URL sonar = Check_LocalAudio.class.getClassLoader().getResource("sonar.wav");
-        final URL sonarLong = Check_LocalAudio.class.getClassLoader().getResource("sonarLong.wav");
+        final URL siren = Check_LocalAudio.class.getClassLoader().getResource("sounds/siren.mp3");
+        final URL cheer = Check_LocalAudio.class.getClassLoader().getResource("sounds/cheer.wav");
+        final URL sonar = Check_LocalAudio.class.getClassLoader().getResource("sounds/sonar.wav");
+        final URL sonarLong = Check_LocalAudio.class.getClassLoader().getResource("sounds/sonarLong.wav");
 
         console("Play mp3 sound file should be ignored");
         stack.sensors().localAudio().send(siren);
@@ -85,6 +85,6 @@ public class Check_LocalAudio extends Helper {
         sleep(1000);
         stack.sensors().localAudio().send(0, sonar, 10, false, PLAY);
         sleep(10000);
-        stack.disconnect();
+        stack.close();
     }
 }

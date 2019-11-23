@@ -1,5 +1,6 @@
 package berlin.yuna.tinkerforgesensor.logic;
 
+import berlin.yuna.tinkerforgesensor.model.Connection;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
 import berlin.yuna.tinkerforgesensor.model.builder.Values;
@@ -14,9 +15,11 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 
 import java.io.Closeable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -30,16 +33,15 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTE
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PING;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.asyncStop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createAsync;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
+import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loops;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.joining;
 
 /**
@@ -49,10 +51,11 @@ import static java.util.stream.Collectors.joining;
 public class Stack implements Closeable {
 
     /**
-     * <h3>{@link Stack#connection}</h3>
-     * IPConnection connection for {@link Sensor} in {@link Stack}
+     * <h3>{@link Stack#connections}</h3>
+     * Connection for {@link Sensor} in {@link Stack}
      */
-    public IPConnection connection = new IPConnection();
+    private final HashMap<String, SensorList<Sensor>> sensorList = new HashMap<>();
+    private final ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
 
     /**
      * <h3>{@link Stack#sensorEventConsumerList}</h3>
@@ -60,14 +63,9 @@ public class Stack implements Closeable {
      */
     public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
 
-    private final SensorList<Sensor> sensorList = new SensorList<>();
 
-    private final String host;
-    private final String password;
-    private final Integer port;
     private long lastConnect = System.currentTimeMillis();
     private final int timeoutMs = 3000;
-    private final boolean ignoreConnectionError;
     private final String connectionHandlerName = getClass().getSimpleName() + "_" + UUID.randomUUID();
     private final String pingConnectionHandlerName = "Ping_" + connectionHandlerName;
     private static final int MAX_PRINT_VALUES = 50;
@@ -79,93 +77,114 @@ public class Stack implements Closeable {
      * @throws NetworkConnectionException should never happen
      */
     public Stack() throws NetworkConnectionException {
-        this(null, null, null);
+        this(new Connection(null, null, null));
     }
 
     /**
      * <h3>Stack(host, port)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host for {@link Stack#connection}
-     * @param port for {@link Stack#connection}
+     * @param host for {@link Connection}
+     * @param port for {@link Connection}
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
     public Stack(final String host, final Integer port) throws NetworkConnectionException {
-        this(host, port, null, false);
+        this(new Connection(host, port, null, false));
     }
 
     /**
      * <h3>Stack(host, port, ignoreConnectionError)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host                  for {@link Stack#connection}
-     * @param port                  for {@link Stack#connection}
+     * @param host                  for {@link Connection}
+     * @param port                  for {@link Connection}
      * @param ignoreConnectionError ignores any {@link NetworkConnectionException} and tries to auto reconnect
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
     public Stack(final String host, final Integer port, final boolean ignoreConnectionError) throws NetworkConnectionException {
-        this(host, port, null, ignoreConnectionError);
+        this(new Connection(host, port, null, ignoreConnectionError));
     }
 
     /**
      * <h3>Stack(host, port, password)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host     for {@link Stack#connection}
-     * @param port     for {@link Stack#connection}
-     * @param password for {@link Stack#connection}
+     * @param host     for {@link Connection}
+     * @param port     for {@link Connection}
+     * @param password for {@link Connection}
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
     public Stack(final String host, final Integer port, final String password) throws NetworkConnectionException {
-        this(host, port, password, false);
+        this(new Connection(host, port, password, false));
     }
 
     /**
      * <h3>Stack(host, port, password, ignoreConnectionError)</h3>
      * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
      *
-     * @param host                  for {@link Stack#connection}
-     * @param port                  for {@link Stack#connection}
-     * @param password              for {@link Stack#connection}
-     * @param ignoreConnectionError ignores any {@link NetworkConnectionException} and tries to auto reconnect
+     * @param connection for {@link Stack#connections}
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
-    public Stack(final String host, final Integer port, final String password, final boolean ignoreConnectionError) throws NetworkConnectionException {
-        this.host = host;
-        this.password = password;
-        this.port = port;
-        this.ignoreConnectionError = ignoreConnectionError;
-        connect();
+    public Stack(final Connection connection) throws NetworkConnectionException {
+        addStack(connection);
+    }
+
+    /**
+     * <h3>addStack</h3>
+     * adds another stack to the current one
+     *
+     * @param connection for {@link Stack#connections}
+     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
+     */
+    public void addStack(final Connection connection) throws NetworkConnectionException {
+        if (connection == null) {
+            throw new RuntimeException("Connection [null] is not allowed");
+        } else {
+            if (connections.containsValue(connection)) {
+                System.err.println(format("Already exists connection [%s]", connection));
+                disconnect(connection.getStackId());
+            }
+            connections.put(connection.getStackId(), connection);
+            connect(connection.getStackId());
+        }
     }
 
     /**
      * <h3>connect</h3>
      * connects to given host - this method will be called from {@link Stack} constructor
      *
+     * @param stackId {@link Stack} connectionId
      * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
      */
-    public void connect() throws NetworkConnectionException {
-        connection = new IPConnection();
-        connection.setAutoReconnect(true);
-        connection.setTimeout(timeoutMs);
-        connection.addDisconnectedListener(event -> handleConnect(event, true));
-        connection.addConnectedListener(event -> handleConnect(event, false));
-        connection.addEnumerateListener(this::doPlugAndPlay);
-        clearSensorList();
-        if (host != null) {
+    private void connect(final String stackId) throws NetworkConnectionException {
+        final Connection connection = connections.get(stackId);
+        final IPConnection ipConnection = connection.getIpConnection();
+        ipConnection.setAutoReconnect(true);
+        ipConnection.setTimeout(timeoutMs);
+        ipConnection.addDisconnectedListener(event -> handleConnect(stackId, event, true));
+        ipConnection.addConnectedListener(event -> handleConnect(stackId, event, false));
+        ipConnection.addEnumerateListener(
+                (uid, connectedUid, position, hardwareVersion, firmwareVersion, deviceIdentifier, enumerationType)
+                        -> doPlugAndPlay(stackId, uid, connectedUid, position, hardwareVersion, firmwareVersion, deviceIdentifier, enumerationType)
+        );
+        sensorList.computeIfAbsent(stackId, sensorList -> new SensorList<>());
+        clearSensorList(stackId);
+        if (connection.getHost() != null) {
             final Object result = execute(timeoutMs, () -> {
-                connection.connect(host, port);
-                if (!isEmpty(password)) {
-                    connection.authenticate(password);
+                ipConnection.connect(connection.getHost(), connection.getPort());
+                if (!isEmpty(connection.getPassword())) {
+                    ipConnection.authenticate(connection.getPassword());
                 }
                 return true;
             });
-            if (!ignoreConnectionError && result instanceof Throwable) {
+            if (!connection.isIgnoreConnectionError() && result instanceof Throwable) {
                 throw new NetworkConnectionException((Throwable) result);
             }
         }
 //        createLoop(connectionHandlerName, timeoutMs, run -> checkConnection());
-        createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.getDefault(), System.currentTimeMillis(), PING));
+        if (!loops.containsKey(pingConnectionHandlerName)) {
+            createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.get(stackId).getDefault(), System.currentTimeMillis(), PING));
+        }
     }
 
     /**
@@ -177,18 +196,27 @@ public class Stack implements Closeable {
         return (lastConnect + (timeoutMs / 2)) > System.currentTimeMillis();
     }
 
+
+    private synchronized void disconnect() {
+        connections.forEach((key, value) -> disconnect(value.getStackId()));
+    }
+
     /**
      * <h3>disconnect</h3>
-     * disconnects all {@link Sensor} from the given host and removes the sensors from {@link Stack#sensorList}
+     * disconnects a stack {@link Sensor} from the given host and removes their sensors from {@link Stack#sensorList}
+     *
+     * @param stackId Stack to disconnect
      */
-    public synchronized void disconnect() {
-        sensorList.forEach(sensor -> sensor.refreshPeriod(0));
-        asyncStop(pingConnectionHandlerName, connectionHandlerName);
+    public synchronized void disconnect(final String stackId) {
         execute(timeoutMs + 256, () -> {
             try {
-                clearSensorList();
-                connection.disconnect();
+                clearSensorList(stackId);
+                if (connections.containsKey(stackId)) {
+                    connections.get(stackId).getIpConnection().disconnect();
+                }
             } catch (Exception ignored) {
+            } finally {
+                connections.remove(stackId);
             }
             return true;
         });
@@ -239,7 +267,7 @@ public class Stack implements Closeable {
      * @return List of sensors {@link Sensors}
      */
     public Sensors sensors() {
-        return new Sensors(sensorList);
+        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(Sensors::new));
     }
 
     /**
@@ -248,10 +276,11 @@ public class Stack implements Closeable {
      * @return List of sensors {@link Values}
      */
     public Values values() {
-        return new Values(sensorList);
+        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(Values::new));
     }
 
     private void doPlugAndPlay(
+            final String stackId,
             final String uid,
             final String connectedUid,
             final char position,
@@ -262,30 +291,30 @@ public class Stack implements Closeable {
     ) {
         switch (enumerationType) {
             case ENUMERATION_TYPE_AVAILABLE:
-                createAsync("Connect_" + uid, run -> initSensor(uid, deviceIdentifier, DEVICE_CONNECTED));
+                createAsync("Connect_" + uid, run -> initSensor(stackId, uid, deviceIdentifier, DEVICE_CONNECTED));
                 break;
             case ENUMERATION_TYPE_CONNECTED:
-                createAsync("Connect_" + uid, run -> initSensor(uid, deviceIdentifier, DEVICE_RECONNECTED));
+                createAsync("Connect_" + uid, run -> initSensor(stackId, uid, deviceIdentifier, DEVICE_RECONNECTED));
                 break;
             case ENUMERATION_TYPE_DISCONNECTED:
-                final Sensor sensor = sensorList.stream().filter(entity -> entity.uid.equals(uid)).findFirst().orElse(null);
+                final Sensor sensor = sensorList.get(stackId).stream().filter(entity -> entity.uid.equals(uid)).findFirst().orElse(null);
                 sendEvent(sensor, 2L, DEVICE_DISCONNECTED);
-                sensorList.remove(sensor);
+                sensorList.get(stackId).remove(sensor);
                 break;
         }
     }
 
-    private void initSensor(final String uid, final int deviceIdentifier, final ValueType enumerationType) {
+    private void initSensor(final String stackId, final String uid, final int deviceIdentifier, final ValueType enumerationType) {
         lastConnect = System.currentTimeMillis();
         try {
-            final Sensor sensor = Sensor.newInstance(deviceIdentifier, uid, connection);
-            final Optional<Sensor> previousSensor = sensorList.stream().filter(s -> s.equals(sensor)).findFirst();
+            final Sensor sensor = Sensor.newInstance(deviceIdentifier, uid, connections.get(stackId).getIpConnection());
+            final Optional<Sensor> previousSensor = sensorList.get(stackId).stream().filter(s -> s.equals(sensor)).findFirst();
             if (previousSensor.isPresent() && previousSensor.get().isConnected()) {
                 sendEvent(sensor, 42L, DEVICE_ALREADY_CONNECTED);
             } else {
                 sensor.flashLed();
-                sensorList.add(sensor);
-                sensorList.linkParent(sensor);
+                sensorList.get(stackId).add(sensor);
+                sensorList.get(stackId).linkParent(sensor);
                 sendEvent(sensor, 42L, enumerationType);
                 sensor.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
             }
@@ -300,34 +329,36 @@ public class Stack implements Closeable {
         }
     }
 
-    private void handleConnect(final short connectionEvent, final boolean disconnectEvent) {
+    private void handleConnect(final String stackId, final short connectionEvent, final boolean disconnectEvent) {
         if (disconnectEvent) {
             switch (connectionEvent) {
                 case IPConnection.DISCONNECT_REASON_REQUEST:
                 case IPConnection.DISCONNECT_REASON_ERROR:
                 case IPConnection.DISCONNECT_REASON_SHUTDOWN:
-                    clearSensorList();
-                    sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_DISCONNECTED);
+                    clearSensorList(stackId);
+                    sendEvent(sensorList.get(stackId).getDefault(), (long) connectionEvent, DEVICE_DISCONNECTED);
                     break;
             }
         } else {
             try {
-                connection.enumerate();
+                connections.get(stackId).getIpConnection().enumerate();
             } catch (Exception ignored) {
             }
 
             switch (connectionEvent) {
                 case IPConnection.CONNECT_REASON_REQUEST:
-                    sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_CONNECTED);
+                    sendEvent(sensorList.get(stackId).getDefault(), (long) connectionEvent, DEVICE_CONNECTED);
                     break;
                 case IPConnection.CONNECT_REASON_AUTO_RECONNECT:
-                    sendEvent(sensorList.getDefault(), (long) connectionEvent, DEVICE_RECONNECTED);
+                    sendEvent(sensorList.get(stackId).getDefault(), (long) connectionEvent, DEVICE_RECONNECTED);
                     break;
             }
         }
     }
 
-    private void clearSensorList() {
+    private void clearSensorList(final String stackId) {
+        final SensorList<Sensor> sensorList = this.sensorList.get(stackId);
+        sensorList.forEach(sensor -> sensor.refreshPeriod(0));
         sensorList.clear();
         try {
             final Sensor sensor = sensorList.getDefault();

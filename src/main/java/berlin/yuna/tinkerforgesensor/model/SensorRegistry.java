@@ -41,7 +41,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
-import berlin.yuna.tinkerforgesensor.model.sensor.PotiLiniarV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.PoiLinearMotor;
+import berlin.yuna.tinkerforgesensor.model.sensor.PoiLinearV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.PotiRotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.RotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
@@ -85,6 +86,7 @@ import com.tinkerforge.BrickletLEDStripV2;
 import com.tinkerforge.BrickletLinearPotiV2;
 import com.tinkerforge.BrickletMotionDetector;
 import com.tinkerforge.BrickletMotionDetectorV2;
+import com.tinkerforge.BrickletMotorizedLinearPoti;
 import com.tinkerforge.BrickletMultiTouchV2;
 import com.tinkerforge.BrickletPiezoSpeaker;
 import com.tinkerforge.BrickletRGBLEDButton;
@@ -155,7 +157,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickMaster} =&gt; Sensor {@link Master}</li>
  * <li>Device {@link BrickletMotionDetector} =&gt; Sensor {@link MotionDetector}</li>
  * <li>Device {@link BrickletMotionDetectorV2} =&gt; Sensor {@link MotionDetectorV2}</li>
- * <li>Device {@link BrickletLinearPotiV2} =&gt; Sensor {@link PotiLiniarV2}</li>
+ * <li>Device {@link BrickletMotorizedLinearPoti} =&gt; Sensor {@link PoiLinearMotor}</li>
+ * <li>Device {@link BrickletLinearPotiV2} =&gt; Sensor {@link PoiLinearV2}</li>
  * <li>Device {@link BrickletRotaryPotiV2} =&gt; Sensor {@link PotiRotaryV2}</li>
  * <li>Device {@link BrickletRotaryEncoderV2} =&gt; Sensor {@link RotaryV2}</li>
  * <li>Device {@link BrickServo} =&gt; Sensor {@link Servo}</li>
@@ -228,7 +231,8 @@ public class SensorRegistry {
         registry.put(BrickMaster.class, Master::new);
         registry.put(BrickletMotionDetector.class, MotionDetector::new);
         registry.put(BrickletMotionDetectorV2.class, MotionDetectorV2::new);
-        registry.put(BrickletLinearPotiV2.class, PotiLiniarV2::new);
+        registry.put(BrickletMotorizedLinearPoti.class, PoiLinearMotor::new);
+        registry.put(BrickletLinearPotiV2.class, PoiLinearV2::new);
         registry.put(BrickletRotaryPotiV2.class, PotiRotaryV2::new);
         registry.put(BrickletRotaryEncoderV2.class, RotaryV2::new);
         registry.put(BrickServo.class, Servo::new);
@@ -284,6 +288,7 @@ public class SensorRegistry {
         registry.put(BrickMaster.DEVICE_IDENTIFIER, BrickMaster::new);
         registry.put(BrickletMotionDetector.DEVICE_IDENTIFIER, BrickletMotionDetector::new);
         registry.put(BrickletMotionDetectorV2.DEVICE_IDENTIFIER, BrickletMotionDetectorV2::new);
+        registry.put(BrickletMotorizedLinearPoti.DEVICE_IDENTIFIER, BrickletMotorizedLinearPoti::new);
         registry.put(BrickletLinearPotiV2.DEVICE_IDENTIFIER, BrickletLinearPotiV2::new);
         registry.put(BrickletRotaryPotiV2.DEVICE_IDENTIFIER, BrickletRotaryPotiV2::new);
         registry.put(BrickletRotaryEncoderV2.DEVICE_IDENTIFIER, BrickletRotaryEncoderV2::new);

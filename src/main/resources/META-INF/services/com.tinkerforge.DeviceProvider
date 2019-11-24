@@ -31,6 +31,7 @@ com.tinkerforge.BrickletLEDStripV2Provider
 com.tinkerforge.BrickletLinearPotiV2Provider
 com.tinkerforge.BrickletMotionDetectorProvider
 com.tinkerforge.BrickletMotionDetectorV2Provider
+com.tinkerforge.BrickletMotorizedLinearPotiProvider
 com.tinkerforge.BrickletMultiTouchV2Provider
 com.tinkerforge.BrickletPiezoSpeakerProvider
 com.tinkerforge.BrickletRGBLEDButtonProvider

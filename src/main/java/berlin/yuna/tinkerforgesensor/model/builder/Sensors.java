@@ -42,7 +42,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
-import berlin.yuna.tinkerforgesensor.model.sensor.PotiLiniarV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.PoiLinearMotor;
+import berlin.yuna.tinkerforgesensor.model.sensor.PoiLinearV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.PotiRotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.RotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
@@ -170,16 +171,28 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
         return getSensor(PotiRotaryV2.class);
     }
 
-    public Sensor potiLiniar() {
-        return potiLiniar(0);
+    public Sensor poiLinear() {
+        return poiLinear(0);
     }
 
-    public Sensor potiLiniar(final int number) {
-        return getSensor(number, PotiLiniarV2.class);
+    public Sensor poiLinear(final int number) {
+        return getSensor(number, PoiLinearV2.class);
     }
 
-    public List<Sensor> getPotiLiniarList() {
-        return getSensor(PotiLiniarV2.class);
+    public List<Sensor> getPoiLinearList() {
+        return getSensor(PoiLinearV2.class);
+    }
+
+    public Sensor poiLinearMotor() {
+        return poiLinearMotor(0);
+    }
+
+    public Sensor poiLinearMotor(final int number) {
+        return getSensor(number, PoiLinearMotor.class);
+    }
+
+    public List<Sensor> getPoiLinearMotorList() {
+        return getSensor(PoiLinearMotor.class);
     }
 
     public Sensor motionDetector() {

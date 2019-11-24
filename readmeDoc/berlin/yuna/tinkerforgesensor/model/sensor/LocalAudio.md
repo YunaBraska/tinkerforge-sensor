@@ -61,7 +61,7 @@ sensor.send(UNMUTE);
 ```
  
 ### Parallel sounds
- *Can be done by adding different playerIds at the start of the command*
+ *Can be done by adding different playerIds at the startAsync of the command*
  
 ```java
 sensor.send(1, "/Downloads/mySoundFile.wav");

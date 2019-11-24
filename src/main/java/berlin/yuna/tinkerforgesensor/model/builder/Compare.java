@@ -41,7 +41,8 @@ import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
 import berlin.yuna.tinkerforgesensor.model.sensor.Master;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetector;
 import berlin.yuna.tinkerforgesensor.model.sensor.MotionDetectorV2;
-import berlin.yuna.tinkerforgesensor.model.sensor.PotiLiniarV2;
+import berlin.yuna.tinkerforgesensor.model.sensor.PoiLinearMotor;
+import berlin.yuna.tinkerforgesensor.model.sensor.PoiLinearV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.PotiRotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.RotaryV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
@@ -194,8 +195,12 @@ public class Compare {
         return is(MotionDetectorV2.class, MotionDetector.class);
     }
 
-    public boolean isPotiLiniar() {
-        return is(PotiLiniarV2.class);
+    public boolean isPoiLinearMotor() {
+        return is(PoiLinearMotor.class);
+    }
+
+    public boolean isPoiLinear() {
+        return is(PoiLinearV2.class);
     }
 
     public boolean isPotiRotary() {

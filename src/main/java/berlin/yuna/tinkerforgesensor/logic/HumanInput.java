@@ -186,7 +186,7 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
 
     private void onMouseEvent(final ValueType type, final MouseEvent event) {
         mouseType.setText(type.toString());
-        mouseMods.setText(String.valueOf(event.getModifiers()));
+        mouseMods.setText(String.valueOf(event.getModifiersEx()));
         sendEventToConsumer(mouseX, CURSOR_MOVE_X, (long) event.getX());
         sendEventToConsumer(mouseY, CURSOR_MOVE_Y, (long) event.getY());
         sendEventToConsumer(mouseClickCount, CURSOR_CLICK_COUNT, (long) event.getClickCount());

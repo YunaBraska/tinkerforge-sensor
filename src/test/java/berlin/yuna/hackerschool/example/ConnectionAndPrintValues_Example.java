@@ -1,6 +1,7 @@
 package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
+import berlin.yuna.tinkerforgesensor.model.Connection;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
@@ -27,7 +28,7 @@ public class ConnectionAndPrintValues_Example extends Helper {
         }
     }
 
-    public static void printAllValues(final SensorEvent sensorEvent) {
+    private static void printAllValues(final SensorEvent sensorEvent) {
         printAllValues(stack, sensorEvent);
     }
 

@@ -34,6 +34,10 @@ public abstract class AsyncRun implements Runnable {
         return running;
     }
 
+    public boolean isNotRunning() {
+        return !running;
+    }
+
     protected synchronized void startAsync() {
         if (running)
             return;

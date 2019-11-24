@@ -110,7 +110,7 @@ public class SensorList<T extends Sensor> extends CopyOnWriteArrayList<T> {
             final RollingList<Long> sensorValues = (RollingList<Long>) sensor.valueMap().get(valueType);
             if (sensorValues != null && !sensorValues.isEmpty()) {
                 result.put(sensor,
-                        new Double(sensorValues.stream().mapToLong(value -> value).summaryStatistics().getAverage()).longValue());
+                        Double.valueOf(sensorValues.stream().mapToLong(value -> value).summaryStatistics().getAverage()).longValue());
             }
 
         }

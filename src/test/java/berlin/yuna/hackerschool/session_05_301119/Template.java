@@ -7,7 +7,10 @@ import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
 import java.util.Random;
 
-
+/**
+ * Code Link: http://hs.yuna.berlin/
+ * Sensor Doku Link: https://github.com/YunaBraska/tinkerforge-sensor/blob/master/readmeDoc/berlin/yuna/tinkerforgesensor/model/sensor/README.md
+ */
 public class Template extends Helper {
 
     //VARIABLES

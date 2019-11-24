@@ -4,7 +4,6 @@ import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.Connection;
-import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
@@ -108,9 +107,9 @@ public class Marvin_Antony extends Helper {
     }
 
     //START FUNCTION
-    public static void main(final String[] args) throws NetworkConnectionException {
+    public static void main(final String[] args) throws Exception {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Marvin_Antony::onSensorEvent);
+        stack.consumers.add(Marvin_Antony::onSensorEvent);
         stack.addStack(new Connection("192.168.3.5", 4223, true));
         onStart();
     }

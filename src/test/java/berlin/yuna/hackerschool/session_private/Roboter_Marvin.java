@@ -171,7 +171,7 @@ public class Roboter_Marvin extends Helper {
     public static void main(final String[] args) throws NetworkConnectionException {
         final Roboter_Marvin app = new Roboter_Marvin();
         app.stack = ConnectionAndPrintValues_Example.connect();
-        app.stack.sensorEventConsumerList.add(app::onSensorEvent);
+        app.stack.consumers.add(app::onSensorEvent);
         app.stack.addStack(new Connection("192.168.3.5", 4223, true));
 
     }

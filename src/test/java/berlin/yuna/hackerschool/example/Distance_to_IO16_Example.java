@@ -10,7 +10,7 @@ public class Distance_to_IO16_Example {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.getValue(), event.getValueType()));
+        stack.consumers.add(event -> onSensorEvent(event.getValue(), event.getValueType()));
     }
 
     //VARIABLES

@@ -16,7 +16,7 @@ public class Distance_to_LedStrip_Example extends Helper {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(event -> onSensorEvent(event.getValue(), event.getValueType()));
+        stack.consumers.add(event -> onSensorEvent(event.getValue(), event.getValueType()));
         while (!stack.sensors().ledStrip().isPresent()) {
             sleep(128);
         }

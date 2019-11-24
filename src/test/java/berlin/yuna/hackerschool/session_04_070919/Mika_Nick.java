@@ -15,9 +15,6 @@ public class Mika_Nick extends Helper {
 
     private static boolean buttonClicked;
 
-    static void onStart() {
-    }
-
 
     private static long volumeMax = 0;
 
@@ -66,8 +63,7 @@ public class Mika_Nick extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Mika_Nick::onSensorEvent);
-        onStart();
+        stack.consumers.add(Mika_Nick::onSensorEvent);
     }
 
 

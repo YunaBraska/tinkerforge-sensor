@@ -1,7 +1,6 @@
 package berlin.yuna.hackerschool.example;
 
 import berlin.yuna.tinkerforgesensor.logic.Stack;
-import berlin.yuna.tinkerforgesensor.model.Connection;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
 
@@ -18,7 +17,7 @@ public class ConnectionAndPrintValues_Example extends Helper {
     public static Stack connect(final String host, final int port) {
         try {
             stack = new Stack(host, port, true);
-            stack.sensorEventConsumerList.add(ConnectionAndPrintValues_Example::printAllValues);
+            stack.consumers.add(ConnectionAndPrintValues_Example::printAllValues);
             while (stack.isConnecting()) {
                 sleep(128);
             }

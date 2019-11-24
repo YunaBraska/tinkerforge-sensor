@@ -9,7 +9,7 @@ public abstract class HackerSchoolTemplate extends Helper {
 
     public HackerSchoolTemplate() {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(this::onSensorEvent);
+        stack.consumers.add(this::onSensorEvent);
         onStart();
     }
 

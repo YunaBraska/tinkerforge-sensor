@@ -58,10 +58,10 @@ public class Stack implements Closeable {
     private final ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
 
     /**
-     * <h3>{@link Stack#sensorEventConsumerList}</h3>
+     * <h3>{@link Stack#consumers}</h3>
      * List of {@link Consumer} for getting all {@link SensorEvent}
      */
-    public final List<Consumer<SensorEvent>> sensorEventConsumerList = new CopyOnWriteArrayList<>();
+    public final List<Consumer<SensorEvent>> consumers = new CopyOnWriteArrayList<>();
 
 
     private long lastConnect = System.currentTimeMillis();
@@ -316,7 +316,7 @@ public class Stack implements Closeable {
                 sensorList.get(stackId).add(sensor);
                 sensorList.get(stackId).linkParent(sensor);
                 sendEvent(sensor, 42L, enumerationType);
-                sensor.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
+                sensor.addListener(sensorEvent -> consumers.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
             }
         } catch (DeviceNotSupportedException | NetworkConnectionException e) {
             System.err.println(format("doPlugAndPlay [ERROR] uid [%s] [%s]", uid, e.getMessage()));
@@ -325,7 +325,7 @@ public class Stack implements Closeable {
 
     private void sendEvent(final Sensor sensor, final long value, final ValueType valueType) {
         if (sensor != null) {
-            sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, valueType)));
+            consumers.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, valueType)));
         }
     }
 
@@ -365,7 +365,7 @@ public class Stack implements Closeable {
             final LocalControl localControl = new LocalControl(sensor.device, sensor.uid);
             sensorList.add(new LocalAudio(sensor.device, sensor.uid));
             sensorList.add(localControl);
-            localControl.addListener(sensorEvent -> sensorEventConsumerList.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
+            localControl.addListener(sensorEvent -> consumers.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
         } catch (NetworkConnectionException ignored) {
         }
     }

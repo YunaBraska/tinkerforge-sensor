@@ -11,9 +11,6 @@ public class Test extends Helper {
     //VARIABLES
     private static Stack stack;
 
-    static void onStart() {
-    }
-
     //CODE FUNCTION
     static void onSensorEvent(final SensorEvent event) {
         stack.sensors().displaySegment().sendLimit(2, stack.sensors().distanceUS().values().distance() / 100);
@@ -36,8 +33,7 @@ public class Test extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Test::onSensorEvent);
-        onStart();
+        stack.consumers.add(Test::onSensorEvent);
     }
 
 

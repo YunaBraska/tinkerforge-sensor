@@ -16,7 +16,7 @@ public class Nathalie extends Helper {
     //START FUNCTION
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Nathalie::onSensorEvent);
+        stack.consumers.add(Nathalie::onSensorEvent);
     }
 
     //VARIABLES

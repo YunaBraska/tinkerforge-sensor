@@ -14,10 +14,6 @@ public class Henny_Nathalie extends Helper {
     private static Stack stack;
     private static boolean ledIstAn;
 
-
-    static void onStart() {
-    }
-
     //CODE FUNCTION
     static void onSensorEvent(final SensorEvent event) {
 
@@ -68,8 +64,6 @@ public class Henny_Nathalie extends Helper {
 
     public static void main(final String[] args) {
         stack = ConnectionAndPrintValues_Example.connect();
-        stack.sensorEventConsumerList.add(Henny_Nathalie::onSensorEvent);
-        onStart();
-
+        stack.consumers.add(Henny_Nathalie::onSensorEvent);
     }
 }

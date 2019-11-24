@@ -28,6 +28,19 @@ public class Loop extends AsyncRun {
         return super.running;
     }
 
+    public boolean isNotRunning() {
+        return !super.running;
+    }
+
+    public Loop start(final boolean start) {
+        if (start && isNotRunning()) {
+            start();
+        } else if (!start && isRunning()) {
+            stop();
+        }
+        return this;
+    }
+
     public Loop start() {
         super.startAsync();
         return this;

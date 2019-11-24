@@ -65,9 +65,7 @@ public class Marvin_Antony extends Helper {
 
         loop("Sirene", run -> {
             if (sirene == true) {
-                //stack.sensors().speaker().send(1000, 600);
-
-                stack.sensors().speaker(1).send(550, 600);
+                stack.sensors().speaker().send(550, 600);
                 sleep(550);
                 stack.sensors().speaker().send(550, 745);
                 sleep(550);

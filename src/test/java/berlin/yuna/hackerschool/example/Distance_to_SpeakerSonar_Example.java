@@ -15,10 +15,7 @@ public class Distance_to_SpeakerSonar_Example extends Helper {
     private static void sonar() {
         while (true) {
             final Long distance = stack.values().distance();
-            if (distance > 1 && distance < 250 && timePassed(32)) {
-                stack.sensors().speaker().send(32);
-            }
-            if (distance > 1 && timePassed(distance + 200)) {
+            if (timePassed(distance) && distance > 1) {
                 stack.sensors().speaker().send(distance / 8);
             }
         }

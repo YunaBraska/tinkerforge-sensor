@@ -20,6 +20,8 @@ import java.util.List;
 
 import static berlin.yuna.tinkerforgesensor.model.AudioCmd.REPLAY;
 import static berlin.yuna.tinkerforgesensor.model.AudioCmd.UNKNOWN;
+import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
+import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static java.util.Arrays.asList;
 
 /**
@@ -158,7 +160,7 @@ public class LocalControl extends Sensor<DummyDevice> {
 
     @Override
     public Sensor<DummyDevice> ledAdditional(final Integer value) {
-        if(humanInput == null){
+        if(humanInput == null && LED_ADDITIONAL_ON.bit == value){
             humanInput = new HumanInput();
             humanInput.sensorEventConsumerList.add(this::sendEventUnchecked);
         }

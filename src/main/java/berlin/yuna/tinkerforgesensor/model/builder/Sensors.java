@@ -51,6 +51,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Servo;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundIntensity;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundPressure;
 import berlin.yuna.tinkerforgesensor.model.sensor.Speaker;
+import berlin.yuna.tinkerforgesensor.model.sensor.SpeakerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Temperature;
 import berlin.yuna.tinkerforgesensor.model.sensor.TemperatureV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Tilt;
@@ -104,11 +105,11 @@ public class Sensors extends CopyOnWriteArrayList<Sensor> {
     }
 
     public Sensor speaker(final int number) {
-        return getSensor(number, Speaker.class);
+        return getSensor(number, SpeakerV2.class, Speaker.class);
     }
 
     public List<Sensor> getSpeakerList() {
-        return getSensor(Speaker.class);
+        return getSensor(SpeakerV2.class, Speaker.class);
     }
 
     public Sensor soundPressure() {

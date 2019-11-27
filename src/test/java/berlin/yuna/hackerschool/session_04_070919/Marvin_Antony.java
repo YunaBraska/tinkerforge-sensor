@@ -79,9 +79,8 @@ public class Marvin_Antony extends Helper {
     //CODE FUNCTION
     static void onSensorEvent(final SensorEvent event) {
 
-        if (distance < 200 && timePassed(distance)) {
+        if (distance > 0 && distance < 200 && timePassed(distance)) {
             stack.sensors().speaker().send(100, 9000);
-
         }
 
         if (event.getValueType().isRotary()) {

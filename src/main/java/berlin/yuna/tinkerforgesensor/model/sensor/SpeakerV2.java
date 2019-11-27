@@ -2,7 +2,7 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.tinkerforge.BrickletPiezoSpeaker;
+import com.tinkerforge.BrickletPiezoSpeakerV2;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
@@ -13,8 +13,8 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
 import static java.util.Arrays.stream;
 
 /**
- * <h3>{@link Speaker}</h3><br>
- * <i>Creates beep with configurable frequency</i><br>
+ * <h3>{@link SpeakerV2}</h3><br>
+ * <i>Creates beep and alarm with configurable volume and frequency</i><br>
  *
  * <h3>Values</h3>
  * <ul>
@@ -23,83 +23,86 @@ import static java.util.Arrays.stream;
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
- * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Piezo_Speaker.html">Official documentation</a></li>
- * <li><a href="https://morsecode.scphillips.com/translator.html">Morse generator</a></li>
+ * <li><a href="https://www.tinkerforge.com/de/doc/Hardware/Bricklets/Piezo_Speaker_V2.html">Official documentation</a></li>
  * </ul>
  * <h6>Send 1 second beep</h6>
  * <code>sensor.send(1000)</code>
- * <h6>Send 2000 millisecond beep with 1000 frequency (585Hz - 7100Hz)</h6>
+ * <h6>Send 2000 millisecond beep with 1000 frequency (50Hz - 15000Hz)</h6>
  * <code>sensor.send(2000, 1000)</code>
+ * <h6>Send 2000 millisecond beep with 1000 frequency (50Hz - 15000Hz) and volume 10 (0-10)</h6>
+ * <code>sensor.send(2000, 1000, 10)</code>
  * <h6>Wait until sound is finished</h6>
  * <code>sensor.send(256, 4000, true)</code>
  */
-public class Speaker extends Sensor<BrickletPiezoSpeaker> {
+public class SpeakerV2 extends Sensor<BrickletPiezoSpeakerV2> {
 
     private int frequency = 2000;
+    private int volume = 1;
     private long duration = 200;
     private boolean wait = false;
 
-    public Speaker(final Device device, final String uid) throws NetworkConnectionException {
-        super((BrickletPiezoSpeaker) device, uid);
+    public SpeakerV2(final Device device, final String uid) throws NetworkConnectionException {
+        super((BrickletPiezoSpeakerV2) device, uid);
     }
 
     @Override
-    protected Sensor<BrickletPiezoSpeaker> initListener() {
+    protected Sensor<BrickletPiezoSpeakerV2> initListener() {
         device.addBeepFinishedListener(() -> sendEvent(BEEP_FINISH, 0L));
         return this;
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> send(final Object... values) {
+    public Sensor<BrickletPiezoSpeakerV2> send(final Object... values) {
         if (values != null && stream(values).anyMatch(v -> v instanceof Number)) {
             beep(
                     getDuration(0, values),
                     getFrequency(1, values),
+                    getVolume(2, values),
                     getWait(values)
             );
         }
         return this;
     }
 
-    public Sensor<BrickletPiezoSpeaker> send(final Object value) {
+    public Sensor<BrickletPiezoSpeakerV2> send(final Object value) {
         return send(value, frequency);
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> setLedStatus(final Integer value) {
+    public Sensor<BrickletPiezoSpeakerV2> setLedStatus(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> ledAdditional(final Integer value) {
+    public Sensor<BrickletPiezoSpeakerV2> ledAdditional(final Integer value) {
         return this;
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> initLedConfig() {
+    public Sensor<BrickletPiezoSpeakerV2> initLedConfig() {
         ledStatus = LED_NONE;
         ledAdditional = LED_NONE;
         return this;
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> flashLed() {
-        for (int i = 600; i < 2000; i++) {
-            send(50, i, false);
+    public Sensor<BrickletPiezoSpeakerV2> flashLed() {
+        for (int i = 600; i < 1000; i++) {
+            send(50, i, 1, false);
         }
         return this;
     }
 
     @Override
-    public Sensor<BrickletPiezoSpeaker> refreshPeriod(final int milliseconds) {
+    public Sensor<BrickletPiezoSpeakerV2> refreshPeriod(final int milliseconds) {
         return this;
     }
 
-    private void beep(final long duration, final int frequency, final boolean wait) {
+    private void beep(final long duration, final int frequency, final int volume, final boolean wait) {
         try {
             if (duration > 0) {
                 sendEvent(BEEP_ACTIVE, 1L);
-                device.beep(duration, frequency);
+                device.setBeep(frequency, volume, duration);
                 waitForEnd(wait ? duration : -1);
             }
         } catch (TinkerforgeException ignored) {
@@ -125,8 +128,15 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 
     private int getFrequency(final int index, final Object... values) {
         int result = getObject(index, Number.class, values).orElse(frequency).intValue();
-        result = (result < 585 || result > 7100) ? frequency : result;
+        result = (result < 50 || result > 15000) ? frequency : result;
         frequency = result;
+        return result;
+    }
+
+    private int getVolume(final int index, final Object... values) {
+        int result = getObject(index, Number.class, values).orElse(volume).intValue();
+        result = (result < 0 || result > 10) ? volume : result;
+        volume = result;
         return result;
     }
 

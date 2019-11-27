@@ -16,9 +16,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getDevice;
 import static berlin.yuna.tinkerforgesensor.model.SensorRegistry.getSensor;
@@ -73,6 +75,8 @@ public abstract class Sensor<T extends Device> {
     protected final int SENSOR_VALUE_LIMIT = 99;
 
     /**
+     * <h3>addListener</h3>
+     *
      * @param consumer to notify {@link Consumer} with {@link SensorEvent} at {@link Sensor#sendEventUnchecked(SensorEvent)}
      * @return {@link Sensor}
      */
@@ -82,6 +86,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>newInstance</h3>
      * Creates new {@link Sensor}
      *
      * @param device {@link Device} to wrap with {@link Sensor}
@@ -93,6 +98,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>newInstance</h3>
      * Creates new {@link Sensor}
      *
      * @param deviceIdentifier {@link Device} identifier
@@ -109,7 +115,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
-     * Constructor
+     * <h3>Sensor</h3>>
      *
      * @param device connected original {@link Device}
      * @param uid    cached uid of {@link Device#getIdentity()}
@@ -131,6 +137,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>isPresent</h3>
      * Tells if the sensor is real/present. The sensors are fake sensors as long as the connection is not established
      *
      * @return true if the sensor is present
@@ -140,6 +147,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>isConnected</h3>
      * This method should not be called to often as this slows down the sensors
      * Checks if the sensor is {@link Sensor#isPresent()} and checks the connection by {@link Sensor#port}
      *
@@ -150,6 +158,8 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>compare</h3>
+     *
      * @return {@link Compare} with predefined compare methods
      */
     public Compare compare() {
@@ -157,6 +167,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>hasLedStatus</h3>
      * For automation to know if its worth to call ledStatus_setStatus functions. Value is taken from {@link Sensor#initLedConfig()}
      *
      * @return true if the Sensor {@link Device} has ledStatus_setStatus
@@ -166,6 +177,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>hasLedAdditional</h3>
      * For automation to know if its worth to call ledAdditional functions. Value is taken from {@link Sensor#initLedConfig()}
      *
      * @return true if the Sensor {@link Device} has ledAdditional
@@ -175,6 +187,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>isBrick</h3>
      * Tells if the Sensor is a brick or bricklet calculated from {@link Sensor#initPort}
      *
      * @return true if sensor is a brick
@@ -184,6 +197,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>sendLimit</h3>
      * Same method as {@link Sensor#valueMap} with limitation of 1 call per millisecond
      *
      * @param limitPerSec sets message limit per seconds (hast to be > 0 and < 1000000000) else default method {@link Sensor#send(Object...)} will be called
@@ -201,12 +215,15 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>send</h3>
+     *
      * @param value some object like a "howdy" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor}
      */
     public abstract Sensor<T> send(final Object value);
 
     /**
+     * <h3>refreshLimit</h3>
      * Sets the refresh rate for the sensor values (e.g. for power issues)
      *
      * @param perSec hast to be in range of 0 to 1000 (0 = listen only on changes)
@@ -221,6 +238,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>refreshPeriod</h3>
      * Sets the refresh period directly to the {@link Device} - its safer to use the method {@link Sensor#refreshLimit(int)}
      *
      * @param milliseconds callBack period
@@ -229,6 +247,8 @@ public abstract class Sensor<T extends Device> {
     public abstract Sensor<T> refreshPeriod(final int milliseconds);
 
     /**
+     * <h3>send</h3>
+     *
      * @param values some objects like a "howdy", "howdy2" string for {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor}
      */
@@ -319,13 +339,8 @@ public abstract class Sensor<T extends Device> {
         return new HashMap<>(0);
     }
 
-    //Number                                getValue(Sensor, type, int timeIndex, int valueIndex)
-    //List<Number>                          getValueList(Sensor, type, int timeIndex)
-    //RollingList<List<Number>>             getValueTimeList(Sensor, type)
-    //Map<Type RollingList<List<Number>>>   getValueTimeListForType(sensor);
-    //getValueTimeListForTypeAndSensor(sensor);
-
     /**
+     * <h3>initLedConfig</h3>
      * Loads the led configurations for ledStatus_setStatus and ledAdditional
      *
      * @return current {@link Sensor}
@@ -333,6 +348,8 @@ public abstract class Sensor<T extends Device> {
     public abstract Sensor<T> initLedConfig();
 
     /**
+     * <h3>getLedStatus</h3>
+     *
      * @return {@link LedStatusType} state or null if ledStatus_setStatus is not present
      */
     public LedStatusType getLedStatus() {
@@ -340,6 +357,8 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>getLedAdditional</h3>
+     *
      * @return {@link LedStatusType} state or null if ledAdditional is not present
      */
     public LedStatusType getLedAdditional() {
@@ -347,6 +366,8 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>setLedStatus</h3>
+     *
      * @param ledStatusType for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor}
      */
@@ -355,12 +376,16 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>setLedStatus</h3>
+     *
      * @param value for status led like {@link LedStatusType#LED_STATUS_HEARTBEAT} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor}
      */
     public abstract Sensor<T> setLedStatus(final Integer value);
 
     /**
+     * <h3>ledAdditional</h3>
+     *
      * @param ledStatusType additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor}
      */
@@ -369,12 +394,15 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>ledAdditional</h3>
+     *
      * @param value additional led like {@link LedStatusType#LED_ADDITIONAL_ON} which the sensor could process - else it just should ignore it
      * @return current {@link Sensor}
      */
     public abstract Sensor<T> ledAdditional(final Integer value);
 
     /**
+     * <h3>ledStatus_setStatus</h3>
      * Status led try to show {@link LedStatusType#LED_STATUS} like the {@link com.tinkerforge.BrickletMotionDetectorV2} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -384,6 +412,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>ledStatus_setHeartbeat</h3>
      * Status led try to show {@link LedStatusType#LED_STATUS_HEARTBEAT} like the {@link com.tinkerforge.BrickletRGBLEDButton} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -393,6 +422,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>ledStatus_setOn</h3>
      * Status led try to show {@link LedStatusType#LED_STATUS_ON} like the {@link com.tinkerforge.BrickMaster} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -402,6 +432,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>ledStatus_setOff</h3>
      * Status led try to show {@link LedStatusType#LED_STATUS_OFF} like the {@link com.tinkerforge.BrickMaster} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -411,6 +442,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>ledAdditional_setOn</h3>
      * led try to show {@link LedStatusType#LED_ADDITIONAL_ON} like the display of {@link com.tinkerforge.BrickletLCD20x4} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -420,6 +452,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>ledAdditional_setOff</h3>
      * led try to show {@link LedStatusType#LED_ADDITIONAL_HEARTBEAT} like the flash led of {@link com.tinkerforge.BrickletColor} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -429,6 +462,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>setLedAdditional_Heartbeat</h3>
      * Additional led try to show {@link LedStatusType#LED_ADDITIONAL_HEARTBEAT} like the {@link com.tinkerforge.BrickletDualButtonV2} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -438,6 +472,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>setLedAdditional_Status</h3>
      * Additional led try to show {@link LedStatusType#LED_ADDITIONAL_STATUS} like the {@link com.tinkerforge.BrickletDualButtonV2} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -447,6 +482,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>setLedBrightness</h3>
      * led try to show {@link LedStatusType#LED_ADDITIONAL_ON} like display of {@link com.tinkerforge.BrickletSegmentDisplay4x7} which the sensor could process - else it just should ignore it
      *
      * @return current {@link Sensor}
@@ -456,6 +492,7 @@ public abstract class Sensor<T extends Device> {
     }
 
     /**
+     * <h3>port</h3>
      * Connected port first number represents the brick and the second the connected port
      *
      * @return port starts at 0
@@ -464,7 +501,15 @@ public abstract class Sensor<T extends Device> {
         return port;
     }
 
+    protected <T> Optional<T> getObject(final int index, final Class<T> type, final Object... values) {
+        if (values.length > index && type.isInstance(values[index])) {
+            return Optional.of(type.cast(values[index]));
+        }
+        return Optional.empty();
+    }
+
     /**
+     * <h3>initPort</h3>
      * Refreshes/Searches the {@link Sensor#port} by calculating from parent {@link Sensor#initPort()}
      * Should not be called to often to not interrupt the sensors
      */

@@ -50,6 +50,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Servo;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundIntensity;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundPressure;
 import berlin.yuna.tinkerforgesensor.model.sensor.Speaker;
+import berlin.yuna.tinkerforgesensor.model.sensor.SpeakerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Temperature;
 import berlin.yuna.tinkerforgesensor.model.sensor.TemperatureV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Tilt;
@@ -89,6 +90,7 @@ import com.tinkerforge.BrickletMotionDetectorV2;
 import com.tinkerforge.BrickletMotorizedLinearPoti;
 import com.tinkerforge.BrickletMultiTouchV2;
 import com.tinkerforge.BrickletPiezoSpeaker;
+import com.tinkerforge.BrickletPiezoSpeakerV2;
 import com.tinkerforge.BrickletRGBLEDButton;
 import com.tinkerforge.BrickletRGBLEDV2;
 import com.tinkerforge.BrickletRotaryEncoderV2;
@@ -165,6 +167,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletSoundIntensity} =&gt; Sensor {@link SoundIntensity}</li>
  * <li>Device {@link BrickletSoundPressureLevel} =&gt; Sensor {@link SoundPressure}</li>
  * <li>Device {@link BrickletPiezoSpeaker} =&gt; Sensor {@link Speaker}</li>
+ * <li>Device {@link BrickletPiezoSpeakerV2} =&gt; Sensor {@link SpeakerV2}</li>
  * <li>Device {@link BrickletTemperature} =&gt; Sensor {@link Temperature}</li>
  * <li>Device {@link BrickletTemperatureV2} =&gt; Sensor {@link TemperatureV2}</li>
  * <li>Device {@link BrickletTilt} =&gt; Sensor {@link Tilt}</li>
@@ -239,6 +242,7 @@ public class SensorRegistry {
         registry.put(BrickletSoundIntensity.class, SoundIntensity::new);
         registry.put(BrickletSoundPressureLevel.class, SoundPressure::new);
         registry.put(BrickletPiezoSpeaker.class, Speaker::new);
+        registry.put(BrickletPiezoSpeakerV2.class, SpeakerV2::new);
         registry.put(BrickletTemperature.class, Temperature::new);
         registry.put(BrickletTemperatureV2.class, TemperatureV2::new);
         registry.put(BrickletTilt.class, Tilt::new);
@@ -296,6 +300,7 @@ public class SensorRegistry {
         registry.put(BrickletSoundIntensity.DEVICE_IDENTIFIER, BrickletSoundIntensity::new);
         registry.put(BrickletSoundPressureLevel.DEVICE_IDENTIFIER, BrickletSoundPressureLevel::new);
         registry.put(BrickletPiezoSpeaker.DEVICE_IDENTIFIER, BrickletPiezoSpeaker::new);
+        registry.put(BrickletPiezoSpeakerV2.DEVICE_IDENTIFIER, BrickletPiezoSpeakerV2::new);
         registry.put(BrickletTemperature.DEVICE_IDENTIFIER, BrickletTemperature::new);
         registry.put(BrickletTemperatureV2.DEVICE_IDENTIFIER, BrickletTemperatureV2::new);
         registry.put(BrickletTilt.DEVICE_IDENTIFIER, BrickletTilt::new);

@@ -50,6 +50,7 @@ import berlin.yuna.tinkerforgesensor.model.sensor.Servo;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundIntensity;
 import berlin.yuna.tinkerforgesensor.model.sensor.SoundPressure;
 import berlin.yuna.tinkerforgesensor.model.sensor.Speaker;
+import berlin.yuna.tinkerforgesensor.model.sensor.SpeakerV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Temperature;
 import berlin.yuna.tinkerforgesensor.model.sensor.TemperatureV2;
 import berlin.yuna.tinkerforgesensor.model.sensor.Tilt;
@@ -224,7 +225,7 @@ public class Compare {
     }
 
     public boolean isSpeaker() {
-        return is(Speaker.class);
+        return is(SpeakerV2.class, Speaker.class);
     }
 
     public boolean isTemperature() {

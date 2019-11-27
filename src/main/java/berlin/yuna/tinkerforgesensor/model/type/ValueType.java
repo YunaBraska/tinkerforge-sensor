@@ -7,7 +7,7 @@ package berlin.yuna.tinkerforgesensor.model.type;
  * You can add new enumTypes without harm</i>
  *
  * ---
- * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>ORIENTATION</li><li>CALIBRATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_TOUCH</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>CURSOR_INPUT</li><li>CURSOR_CLICK_COUNT</li><li>CURSOR_PRESSED</li><li>CURSOR_RELEASED</li><li>CURSOR_ENTERED</li><li>CURSOR_EXITED</li><li>CURSOR_DRAGGED</li><li>CURSOR_MOVED</li><li>CURSOR_MOVE_X</li><li>CURSOR_MOVE_Y</li><li>CURSOR_WHEEL_MOVED</li></ul> */
+ * <ul><li>ALL</li><li>DUMMY</li><li>PING</li><li>DEVICE_STATUS</li><li>DEVICE_CONNECTED</li><li>DEVICE_RECONNECTED</li><li>DEVICE_DISCONNECTED</li><li>DEVICE_TIMEOUT</li><li>DEVICE_UNKNOWN</li><li>EMERGENCY_SHUTDOWN</li><li>DEVICE_SEARCH</li><li>DEVICE_ALREADY_CONNECTED</li><li>ENVIRONMENT</li><li>AIR_PRESSURE</li><li>IAQ_INDEX</li><li>HUMIDITY</li><li>TEMPERATURE</li><li>ALTITUDE</li><li>TILT</li><li>MOTION_DETECTED</li><li>DISTANCE</li><li>SOUND</li><li>SOUND_SPECTRUM</li><li>BEEP_ACTIVE</li><li>BEEP_FINISH</li><li>SOUND_INTENSITY</li><li>SOUND_DECIBEL</li><li>LIGHT</li><li>LIGHT_UV</li><li>LIGHT_UVA</li><li>LIGHT_UVB</li><li>LIGHT_LUX</li><li>COLOR</li><li>COLOR_R</li><li>COLOR_G</li><li>COLOR_B</li><li>COLOR_C</li><li>COLOR_RGB</li><li>COLOR_LUX</li><li>COLOR_TEMPERATURE</li><li>ORIENTATION</li><li>CALIBRATION</li><li>ORIENTATION_HEADING</li><li>ORIENTATION_ROLL</li><li>ORIENTATION_PITCH</li><li>ACCELERATION</li><li>ACCELERATION_X</li><li>ACCELERATION_Y</li><li>ACCELERATION_Z</li><li>MAGNET</li><li>MAGNET_DENSITY</li><li>MAGNET_COUNTER</li><li>MAGNET_HEADING</li><li>MAGNETIC_X</li><li>MAGNETIC_Y</li><li>MAGNETIC_Z</li><li>ANGULAR_VELOCITY</li><li>ANGULAR_VELOCITY_X</li><li>ANGULAR_VELOCITY_Y</li><li>ANGULAR_VELOCITY_Z</li><li>EULER_ANGLE</li><li>EULER_ANGLE_X</li><li>EULER_ANGLE_Y</li><li>EULER_ANGLE_Z</li><li>QUATERNION</li><li>QUATERNION_W</li><li>QUATERNION_X</li><li>QUATERNION_Y</li><li>QUATERNION_Z</li><li>LINEAR_ACCELERATION_X</li><li>LINEAR_ACCELERATION_Y</li><li>LINEAR_ACCELERATION_Z</li><li>GRAVITY</li><li>GRAVITY_VECTOR_X</li><li>GRAVITY_VECTOR_Y</li><li>GRAVITY_VECTOR_Z</li><li>ENERGY</li><li>POWER</li><li>VOLTAGE_USB</li><li>VOLTAGE</li><li>UNDER_VOLTAGE</li><li>CURRENT</li><li>BUTTON</li><li>BUTTON_TOUCH</li><li>BUTTON_PRESSED</li><li>BUTTON_RELEASED</li><li>ROTARY</li><li>PERCENTAGE</li><li>MOTOR</li><li>MOTOR_POSITION</li><li>MOTOR_VELOCITY</li><li>HUMAN_INPUT</li><li>KEY_INPUT</li><li>KEY_PRESSED</li><li>KEY_RELEASED</li><li>KEY_CHAR</li><li>CURSOR_INPUT</li><li>CURSOR_CLICK_COUNT</li><li>CURSOR_PRESSED</li><li>CURSOR_RELEASED</li><li>CURSOR_ENTERED</li><li>CURSOR_EXITED</li><li>CURSOR_DRAGGED</li><li>CURSOR_MOVED</li><li>CURSOR_MOVE_X</li><li>CURSOR_MOVE_Y</li><li>CURSOR_WHEEL_MOVED</li></ul> */
 public enum ValueType {
     ALL(null),
 
@@ -56,6 +56,8 @@ public enum ValueType {
     SOUND_SPECTRUM(SOUND),
 
     BEEP_ACTIVE(SOUND),
+
+    BEEP_FINISH(SOUND),
 
     SOUND_INTENSITY(SOUND),
 
@@ -417,6 +419,14 @@ public enum ValueType {
 
     public boolean containsBeepActive() {
         return this.is(BEEP_ACTIVE) || (this.parent != null && this.parent.contains(BEEP_ACTIVE));
+    }
+
+    public boolean isBeepFinish() {
+        return this == BEEP_FINISH;
+    }
+
+    public boolean containsBeepFinish() {
+        return this.is(BEEP_FINISH) || (this.parent != null && this.parent.contains(BEEP_FINISH));
     }
 
     public boolean isSoundIntensity() {

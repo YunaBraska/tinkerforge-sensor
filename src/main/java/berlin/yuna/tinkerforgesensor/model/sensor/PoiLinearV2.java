@@ -42,6 +42,10 @@ public class PoiLinearV2 extends Sensor<BrickletLinearPotiV2> {
         return this;
     }
 
+    public int getPercentage() {
+        return getValue(PERCENTAGE, -1, -1).intValue();
+    }
+
     @Override
     public Sensor<BrickletLinearPotiV2> send(final Object value) {
         return this;

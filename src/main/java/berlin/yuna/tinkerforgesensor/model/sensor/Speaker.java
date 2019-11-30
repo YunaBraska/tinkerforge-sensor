@@ -7,6 +7,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_FINISH;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
@@ -45,8 +46,39 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
 
     @Override
     protected Sensor<BrickletPiezoSpeaker> initListener() {
-        device.addBeepFinishedListener(() -> sendEvent(BEEP_FINISH, 0L));
+        device.addBeepFinishedListener(() -> {
+            sendEvent(BEEP, 0L);
+            sendEvent(BEEP_FINISH, 0L);
+        });
         return this;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public boolean isWait() {
+        return wait;
+    }
+
+    public boolean isBeepActive() {
+        return getValue(BEEP, -1, -1).intValue() == 1;
+    }
+
+    public Sensor<BrickletPiezoSpeaker> sendBeep(final long duration) {
+        return send(duration);
+    }
+
+    public Sensor<BrickletPiezoSpeaker> sendBeep(final long duration, final int frequency) {
+        return send(duration, frequency);
+    }
+
+    public Sensor<BrickletPiezoSpeaker> sendBeep(final long duration, final int frequency, final boolean waitToEnd) {
+        return send(duration, frequency, waitToEnd);
     }
 
     @Override
@@ -98,6 +130,7 @@ public class Speaker extends Sensor<BrickletPiezoSpeaker> {
     private void beep(final long duration, final int frequency, final boolean wait) {
         try {
             if (duration > 0) {
+                sendEvent(BEEP, 1L);
                 sendEvent(BEEP_ACTIVE, 1L);
                 device.beep(duration, frequency);
                 waitForEnd(wait ? duration : -1);

@@ -18,6 +18,7 @@ import java.util.List;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
 import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_REL_MAVEN;
 import static java.lang.Character.toUpperCase;
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 public class GeneratorTest {
@@ -50,6 +51,11 @@ public class GeneratorTest {
         GeneratorReadmeDoc.generate(jFiles);
     }
 
+    private void writeJavaFile(final List<JavaFile> javaFiles) throws IOException {
+        for(JavaFile javaFile : javaFiles){
+            writeJavaFile(javaFile);
+        }
+    }
     private void writeJavaFile(final JavaFile javaFile) throws IOException {
         //DEFAULT FILE WRITER
         javaFile.writeTo(new File(DIR_REL_MAVEN));
@@ -68,6 +74,7 @@ public class GeneratorTest {
         javaFileContent = javaFileContent.replace("  ", "    ");
 
         //SAVE CHANGES
+        System.out.println(format("Generated [%s]", javaFilePath));
         Files.write(javaFilePath, javaFileContent.getBytes());
     }
 

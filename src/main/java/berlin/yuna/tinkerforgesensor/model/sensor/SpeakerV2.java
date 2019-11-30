@@ -7,6 +7,7 @@ import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_NONE;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_FINISH;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
@@ -47,14 +48,54 @@ public class SpeakerV2 extends Sensor<BrickletPiezoSpeakerV2> {
 
     @Override
     protected Sensor<BrickletPiezoSpeakerV2> initListener() {
-        device.addBeepFinishedListener(() -> sendEvent(BEEP_FINISH, 0L));
+        device.addBeepFinishedListener(() -> {
+            sendEvent(BEEP, 0L);
+            sendEvent(BEEP_FINISH, 0L);
+        });
+        return this;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public boolean isWait() {
+        return wait;
+    }
+
+    public boolean isBeepActive() {
+        return getValue(BEEP, -1, -1).intValue() == 1;
+    }
+
+    public Sensor<BrickletPiezoSpeakerV2> sendBeep(final long duration) {
+        return send(duration);
+    }
+
+    public Sensor<BrickletPiezoSpeakerV2> sendBeep(final long duration, final int frequency) {
+        return send(duration, frequency);
+    }
+
+    public Sensor<BrickletPiezoSpeakerV2> sendBeep(final long duration, final int frequency, final int volume) {
+        return send(duration, frequency, volume);
+    }
+
+    public Sensor<BrickletPiezoSpeakerV2> sendBeep(final long duration, final int frequency, final int volume, final boolean waitToEnd) {
+        beep(duration, frequency, volume, waitToEnd);
         return this;
     }
 
     @Override
     public Sensor<BrickletPiezoSpeakerV2> send(final Object... values) {
         if (values != null && stream(values).anyMatch(v -> v instanceof Number)) {
-            beep(
+            return sendBeep(
                     getDuration(0, values),
                     getFrequency(1, values),
                     getVolume(2, values),
@@ -101,6 +142,7 @@ public class SpeakerV2 extends Sensor<BrickletPiezoSpeakerV2> {
     private void beep(final long duration, final int frequency, final int volume, final boolean wait) {
         try {
             if (duration > 0) {
+                sendEvent(BEEP, 1L);
                 sendEvent(BEEP_ACTIVE, 1L);
                 device.setBeep(frequency, volume, duration);
                 waitForEnd(wait ? duration : -1);

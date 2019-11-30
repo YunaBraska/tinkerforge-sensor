@@ -48,6 +48,10 @@ public class TemperatureV2 extends Sensor<BrickletTemperatureV2> {
         return this;
     }
 
+    public long getTemperature() {
+        return getValue(TEMPERATURE, -1, -1).intValue();
+    }
+
     @Override
     public Sensor<BrickletTemperatureV2> send(final Object value) {
         return this;

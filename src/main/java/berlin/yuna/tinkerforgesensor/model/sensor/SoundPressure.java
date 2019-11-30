@@ -6,7 +6,6 @@ import com.tinkerforge.BrickletSoundPressureLevel;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,10 +15,11 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_DECIBEL;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_TIMEOUT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_DECIBEL;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_INTENSITY;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
+import static java.lang.String.format;
 
 /**
  * <h3>{@link SoundPressure}</h3><br>
@@ -42,8 +42,6 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
  * <h6>Get sound spectrum list</h6>
  * <code>sensor.values().listSoundSpectrum_List();</code>
  * <h6>Setting FFT to size of 256</h6>
- * <code>sensor.send(256)</code>
- * <h6>Setting FFT to size of 256</h6>
  * <i>Allowed: 128, 256, 512, 1024</i>
  * <code>sensor.send(256)</code>
  * <h6>Setting weighting</h6>
@@ -54,7 +52,7 @@ import static berlin.yuna.tinkerforgesensor.model.type.ValueType.SOUND_SPECTRUM;
  */
 public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
 
-    private int weighting;
+    private int weighing;
     private int fftSize;
 
     public SoundPressure(final Device device, final String uid) throws NetworkConnectionException {
@@ -75,12 +73,43 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
         });
         refreshPeriod(1);
         send(256, 4);
+        if (getwWighing() != 4 || getFftSize() != 256) {
+            throw new IllegalStateException(format("Self test error weighting [%s] fftSize [%s]", getwWighing(), getFftSize()));
+        }
         return this;
+    }
+
+    public int[] getSoundIntensity() {
+        return getValueList(SOUND_INTENSITY, -1).stream().mapToInt(Number::intValue).toArray();
+    }
+
+    public int[] getSoundSpectrum() {
+        return getValueList(SOUND_SPECTRUM, -1).stream().mapToInt(Number::intValue).toArray();
+    }
+
+    public int getwWighing() {
+        return weighing;
+    }
+
+    public int getFftSize() {
+        return fftSize;
+    }
+
+    public void set(final int fftSize, final int weighting) {
+        setFftSize(fftSize);
+        setWeighting(weighting);
+    }
+
+    public void setWeighting(final int weighing) {
+        this.weighing = weighing;
+    }
+
+    public void setFftSize(final int fftSize) {
+        this.fftSize = fftSize;
     }
 
     @Override
     public Sensor<BrickletSoundPressureLevel> send(final Object... values) {
-        final List<Object> items = new ArrayList<>();
         if (values.length > 1 && values[1] instanceof Number) {
             final int value = ((Number) values[1]).intValue();
             if (value == 4) {
@@ -97,41 +126,46 @@ public class SoundPressure extends Sensor<BrickletSoundPressureLevel> {
 
     @Override
     public Sensor<BrickletSoundPressureLevel> send(final Object value) {
-        try {
-            int fftSize = this.fftSize;
-            int weighing = this.weighting;
-            if (value instanceof Character) {
-                switch ((Character) value) {
-                    case 'A':
-                        weighing = 0;
-                        break;
-                    case 'B':
-                        weighing = 1;
-                        break;
-                    case 'C':
-                        weighing = 2;
-                        break;
-                    case 'D':
-                        weighing = 3;
-                        break;
-                    case 'Z':
-                        weighing = 4;
-                        break;
-                }
-            } else if (value instanceof String) {
-                send(((String) value).charAt(0));
-            } else if (value instanceof Number) {
-                fftSize = ((Number) value).intValue();
+        int fftSize = this.fftSize;
+        int weighing = this.weighing;
+        if (value instanceof Character) {
+            switch ((Character) value) {
+                case 'A':
+                    weighing = 0;
+                    break;
+                case 'B':
+                    weighing = 1;
+                    break;
+                case 'C':
+                    weighing = 2;
+                    break;
+                case 'D':
+                    weighing = 3;
+                    break;
+                case 'Z':
+                    weighing = 4;
+                    break;
             }
-            if (this.fftSize != fftSize || this.weighting != weighing) {
+        } else if (value instanceof String) {
+            send(((String) value).charAt(0));
+        } else if (value instanceof Number) {
+            fftSize = ((Number) value).intValue();
+        }
+        updateConfiguration(fftSize, weighing);
+
+        return this;
+    }
+
+    private void updateConfiguration(final int fftSize, final int weighing) {
+        try {
+            if (this.fftSize != fftSize || this.weighing != weighing) {
                 this.fftSize = fftSize;
-                this.weighting = weighing;
+                this.weighing = weighing;
                 device.setConfiguration(fftSize, weighing);
             }
         } catch (TinkerforgeException ignored) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }
-        return this;
     }
 
     @Override

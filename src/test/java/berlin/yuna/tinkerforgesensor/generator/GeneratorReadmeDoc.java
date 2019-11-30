@@ -117,7 +117,7 @@ public class GeneratorReadmeDoc {
         Collections.reverse(classVersions);
         for (JFile classVersion : classVersions) {
             final Matcher match = PATTERN_FILE_VERSIONS.matcher(classVersion.getSimpleName());
-            final String linkDesc = match.find() ? match.group(0) : "V1";
+            final String linkDesc = match.find() ? match.group("version") : "V1";
             result.append("[").append(linkDesc.replace("_", ""));
 //            result.append("]").append("(").append(classVersion.getReadmeFileUrl().toString()).append(")").append(", ");
             result.append("]").append("(").append(classVersion.getRelativeMavenUrl().toString()).append(")").append(", ");

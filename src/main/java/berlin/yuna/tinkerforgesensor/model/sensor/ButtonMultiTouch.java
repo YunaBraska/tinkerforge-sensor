@@ -14,6 +14,7 @@ import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LE
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_ON;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_TOUCH;
@@ -29,6 +30,7 @@ import static java.util.stream.Collectors.toList;
  * <li>{@link ValueType#BUTTON_PRESSED} [1] = Pressed</li>
  * <li>{@link ValueType#BUTTON_RELEASED} [0] = Released</li>
  * <li>{@link ValueType#BUTTON_TOUCH} [0/1,...] = 13x Button Released/Pressed</li>
+ * <li>{@link ValueType#BUTTON} [0/1] = Released/Pressed</li>
  * </ul>
  * <h3>Technical Info</h3>
  * <ul>
@@ -116,6 +118,7 @@ public class ButtonMultiTouch extends Sensor<BrickletMultiTouchV2> {
             final boolean pressed = states.stream().anyMatch(state -> state.intValue() == 1);
 
             sendEvent((pressed ? BUTTON_PRESSED : BUTTON_RELEASED), (pressed ? 1 : 0), true);
+            sendEvent(BUTTON, (pressed ? 1 : 0), true);
             sendEvent(BUTTON_TOUCH, states, true);
         }
     }

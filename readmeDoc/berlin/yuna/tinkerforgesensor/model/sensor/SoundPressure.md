@@ -32,12 +32,6 @@ sensor.values().listSoundSpectrum_List();
 ```
  
 ###### Setting FFT to size of 256
- 
-```java
-sensor.send(256)
-```
- 
-###### Setting FFT to size of 256
  *Allowed: 128, 256, 512, 1024* 
 ```java
 sensor.send(256)

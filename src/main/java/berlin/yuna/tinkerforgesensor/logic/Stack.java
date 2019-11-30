@@ -3,6 +3,9 @@ package berlin.yuna.tinkerforgesensor.logic;
 import berlin.yuna.tinkerforgesensor.model.Connection;
 import berlin.yuna.tinkerforgesensor.model.SensorList;
 import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
+import berlin.yuna.tinkerforgesensor.model.builder.SensorsV1;
+import berlin.yuna.tinkerforgesensor.model.builder.SensorsV2;
+import berlin.yuna.tinkerforgesensor.model.builder.SensorsV3;
 import berlin.yuna.tinkerforgesensor.model.builder.Values;
 import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
@@ -26,12 +29,18 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static berlin.yuna.tinkerforgesensor.model.type.TimeoutExecutor.execute;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_FINISH;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_ALREADY_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PING;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createAsync;
 import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
@@ -238,7 +247,12 @@ public class Stack implements Closeable {
     public String valuesToString() {
         final StringBuilder lineHead = new StringBuilder();
         final StringBuilder lineValue = new StringBuilder();
-        final List<ValueType> IGNORE_TYPES = asList(BUTTON_PRESSED, BUTTON_RELEASED);
+        final List<ValueType> IGNORE_TYPES = asList(
+                BEEP_ACTIVE, BEEP_FINISH,
+                KEY_PRESSED, KEY_RELEASED,
+                CURSOR_PRESSED, CURSOR_RELEASED,
+                BUTTON_PRESSED, BUTTON_RELEASED
+        );
         for (Sensor sensor : sensors()) {
             for (ValueType valueType : ValueType.values()) {
                 if (IGNORE_TYPES.contains(valueType)) {
@@ -268,6 +282,33 @@ public class Stack implements Closeable {
      */
     public Sensors sensors() {
         return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(Sensors::new));
+    }
+
+    /**
+     * <h3>sensorsV1</h3>
+     *
+     * @return List of sensors with version 1 {@link Sensors}
+     */
+    public SensorsV1 sensorsV1() {
+        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(SensorsV1::new));
+    }
+
+    /**
+     * <h3>sensorsV2</h3>
+     *
+     * @return List of sensors with version 2 {@link Sensors}
+     */
+    public SensorsV2 sensorsV2() {
+        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(SensorsV2::new));
+    }
+
+    /**
+     * <h3>sensorsV3</h3>
+     *
+     * @return List of sensors with version 1 {@link Sensors}
+     */
+    public SensorsV3 sensorsV3() {
+        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(SensorsV3::new));
     }
 
     /**

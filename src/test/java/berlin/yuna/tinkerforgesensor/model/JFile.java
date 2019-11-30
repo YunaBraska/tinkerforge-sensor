@@ -43,7 +43,7 @@ public class JFile {
     public static final Pattern PATTERN_THROWS = Pattern.compile("(\\@throws\\s\\w*\\s?)");
     public static final Pattern PATTERN_SERIAL = Pattern.compile("(\\@serial?)");
     public static final Pattern PATTERN_RETURN = Pattern.compile("(\\@return?)");
-    public static final Pattern PATTERN_FILE_VERSIONS = Pattern.compile("(_*V\\d*?)$");
+    public static final Pattern PATTERN_FILE_VERSIONS = Pattern.compile("(?<name>.*)(_*(?<version>V\\d*?))$");
     //    public static final Pattern PATTERN_COMMENT = Pattern.compile("//.*|(\"(?:\\\\[^\"]|\\\\\"|.)*?\")|(?s)/\\*.*?\\*/");
     public static final String JAVA_EXTENSION = ".java";
     public static final File DIR_README = new File(DIR_PROJECT, "readmeDoc");
@@ -136,7 +136,7 @@ public class JFile {
     public String getBasicName() {
         final String className = getSimpleName();
         final Matcher match = PATTERN_FILE_VERSIONS.matcher(className);
-        return match.find() ? className.substring(0, className.length() - match.group(1).length()) : className;
+        return match.find() ? match.group("name") : className;
     }
 
     public static JFile getJFile(final Predicate<JFile> filter) {

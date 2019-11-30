@@ -629,6 +629,30 @@ public class Values extends CopyOnWriteArrayList<Sensor> {
         return getStatistics(ValueType.SOUND_SPECTRUM, valueIndex);
     }
 
+    public Long beep() {
+        return beep(-1);
+    }
+
+    public Long beep(final Number valueIndex) {
+        return get(ValueType.BEEP, -1L, valueIndex);
+    }
+
+    public List<Long> beep_List() {
+        return beep_List(-1);
+    }
+
+    public List<Long> beep_List(final Number timeIndex) {
+        return getList(ValueType.BEEP, timeIndex);
+    }
+
+    public LongSummaryStatistics beep_Statistics() {
+        return beep_Statistics(-1);
+    }
+
+    public LongSummaryStatistics beep_Statistics(final Number valueIndex) {
+        return getStatistics(ValueType.BEEP, valueIndex);
+    }
+
     public Long beepActive() {
         return beepActive(-1);
     }

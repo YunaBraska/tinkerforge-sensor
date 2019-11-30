@@ -1,7 +1,6 @@
 package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
@@ -31,6 +30,18 @@ public class Master extends Sensor<BrickMaster> {
         device.addUSBVoltageListener(value -> sendEvent(VOLTAGE_USB, (long) value));
         refreshPeriod(1000);
         return this;
+    }
+
+    public int getCurrent() {
+        return getValue(CURRENT, -1, -1).intValue();
+    }
+
+    public int getVoltage() {
+        return getValue(VOLTAGE, -1, -1).intValue();
+    }
+
+    public int getVoltageUsb() {
+        return getValue(VOLTAGE_USB, -1, -1).intValue();
     }
 
     @Override

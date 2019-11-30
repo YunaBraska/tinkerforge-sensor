@@ -45,16 +45,24 @@ public class RotaryV2 extends Sensor<BrickletRotaryEncoderV2> {
     protected Sensor<BrickletRotaryEncoderV2> initListener() {
         device.addCountListener(value -> sendEvent(ROTARY, (long) value, true));
         device.addPressedListener(() -> {
-            sendEvent(BUTTON_PRESSED, 1,true);
-            sendEvent(BUTTON, 1,true);
+            sendEvent(BUTTON_PRESSED, 1, true);
+            sendEvent(BUTTON, 1, true);
         });
         device.addReleasedListener(() -> {
-            sendEvent(BUTTON_RELEASED, 0,true);
-            sendEvent(BUTTON, 0,true);
+            sendEvent(BUTTON_RELEASED, 0, true);
+            sendEvent(BUTTON, 0, true);
         });
 
         refreshPeriod(1);
         return this;
+    }
+
+    public int getPosition() {
+        return getValue(ROTARY, -1, -1).intValue();
+    }
+
+    public boolean isPressed() {
+        return getValue(BUTTON, -1, -1).intValue() == 1;
     }
 
     @Override

@@ -38,6 +38,10 @@ public class Tilt extends Sensor<BrickletTilt> {
         return this;
     }
 
+    public long getTilt(){
+        return getValue(TILT, -1, -1).intValue();
+    }
+
     @Override
     public Sensor<BrickletTilt> send(final Object value) {
         return this;

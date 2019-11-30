@@ -25,18 +25,20 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_CLICK_COUNT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_DRAGGED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_ENTERED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_EXITED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_INPUT;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVE_X;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVE_Y;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_PRESSED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_RELEASED;
 import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_WHEEL_MOVED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_INPUT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_PRESSED;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_RELEASED;
 import static java.util.Objects.requireNonNull;
 
 public class HumanInput extends JFrame implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -196,6 +198,14 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
             sendEventToConsumer(mouseButton, CURSOR_PRESSED, (long) event.getButton());
         }
 
+        for (Consumer<SensorEvent> consumer : sensorEventConsumerList) {
+            if (type.isCursorClickCount()) {
+                consumer.accept(new SensorEvent(null, 0, CURSOR_INPUT));
+            } else {
+                consumer.accept(new SensorEvent(null, event.getButton(), CURSOR_INPUT));
+            }
+        }
+
     }
 
     private void onKeyEvent(final ValueType type, final KeyEvent event) {
@@ -206,6 +216,13 @@ public class HumanInput extends JFrame implements KeyListener, MouseListener, Mo
         keyAction.setText(String.valueOf(event.isActionKey()));
         keyLocation.setText(keyboardLocation(event.getKeyLocation()));
 
+        for (Consumer<SensorEvent> consumer : sensorEventConsumerList) {
+            if (type.isKeyPressed()) {
+                consumer.accept(new SensorEvent(null, 1, KEY_INPUT));
+            } else if (type.isKeyReleased()) {
+                consumer.accept(new SensorEvent(null, 0, KEY_INPUT));
+            }
+        }
         sendEventToConsumer(keyCode, type, (long) code);
     }
 

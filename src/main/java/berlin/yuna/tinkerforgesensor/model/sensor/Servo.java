@@ -103,6 +103,7 @@ public class Servo extends Sensor<BrickServo> {
 
     @Override
     protected Sensor<BrickServo> initListener() {
+        //TODO: add setters and getters
         //TODO: send more than one value e.g. Buttons, 1,2,3 Servo 1,2,3
         device.addPositionReachedListener((servoNum, position) -> sendEvent(MOTOR_POSITION, (long) position));
         device.addVelocityReachedListener((servoNum, velocity) -> sendEvent(MOTOR_VELOCITY, (long) velocity));

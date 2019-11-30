@@ -1,28 +1,16 @@
 package berlin.yuna.tinkerforgesensor.model.sensor;
 
-import berlin.yuna.tinkerforgesensor.logic.AudioControl;
 import berlin.yuna.tinkerforgesensor.logic.HumanInput;
-import berlin.yuna.tinkerforgesensor.model.AudioCmd;
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.type.AudioDevice;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
 import com.tinkerforge.Device;
 import com.tinkerforge.DummyDevice;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-
-import static berlin.yuna.tinkerforgesensor.model.AudioCmd.REPLAY;
-import static berlin.yuna.tinkerforgesensor.model.AudioCmd.UNKNOWN;
 import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_ADDITIONAL_ON;
-import static berlin.yuna.tinkerforgesensor.model.sensor.Sensor.LedStatusType.LED_STATUS_OFF;
-import static java.util.Arrays.asList;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_CLICK_COUNT;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_MOVE_Y;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_CHAR;
+import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_INPUT;
 
 /**
  * <h3>{@link LocalControl}</h3><br>
@@ -49,7 +37,6 @@ import static java.util.Arrays.asList;
 public class LocalControl extends Sensor<DummyDevice> {
 
     private static HumanInput humanInput;
-    private final HashMap<Integer, AudioDevice> players = new HashMap<>();
 
     public LocalControl(final Device device, final String uid) throws NetworkConnectionException {
         super((DummyDevice) device, uid);
@@ -60,92 +47,30 @@ public class LocalControl extends Sensor<DummyDevice> {
         return this;
     }
 
-    private AudioDevice getPlayer(final int playerId) {
-        if (playerId == -1) {
-            return new AudioControl().getDefaultDevice();
-        } else if (players.size() - 1 >= playerId) {
-            return players.get(playerId);
-        }
-        final AudioDevice player = new AudioDevice();
-        players.put(playerId, player);
-        return player;
+
+    public boolean getIsKeyPressed() {
+        return getValue(KEY_INPUT, -1, -1).intValue() == 1;
+    }
+
+    public Character getChar() {
+        return (char) getValue(KEY_CHAR, -1, -1).intValue();
+    }
+
+    public int getClickCount() {
+        return getValue(CURSOR_CLICK_COUNT, -1, -1).intValue();
+    }
+
+    public int getPosX() {
+        return getValue(CURSOR_MOVE_Y, -1, -1).intValue();
+    }
+
+    public int getPosY() {
+        return getValue(CURSOR_MOVE_Y, -1, -1).intValue();
     }
 
     @Override
     public Sensor<DummyDevice> send(final Object... valuesArray) {
-        List<Object> values = asList(valuesArray);
-        try {
-            int playerId = 0;
-            if (values.size() == 1 && values.get(0) instanceof Number) {
-                getPlayer(playerId).setVolume(((Number) values.get(0)).intValue());
-            } else if (values.size() > 1 && values.get(0) instanceof Number) {
-                playerId = ((Number) values.get(0)).intValue();
-                values = values.subList(1, values.size());
-            }
-
-            final AudioDevice player = getPlayer(playerId);
-            AudioCmd audioCmd = (values.size() == 1 &&
-                    values.get(0) instanceof URI
-                    || values.get(0) instanceof URL
-                    || values.get(0) instanceof File
-                    || values.get(0) instanceof Path
-                    || values.get(0) instanceof String) ? REPLAY : UNKNOWN;
-
-            for (Object value : values) {
-                if (value instanceof Number) {
-                    new AudioControl().getDefaultDevice().setVolume(((Number) value).intValue());
-                } else if (value instanceof Boolean) {
-                    new AudioControl().getDefaultDevice().setMute((Boolean) value);
-                } else if (value instanceof URL) {
-                    setAudioFile(playerId, (URL) value);
-                } else if (value instanceof URI) {
-                    setAudioFile(playerId, ((URI) value).toURL());
-                } else if (value instanceof String) {
-                    final File file = new File((String) value);
-                    if (file.exists()) {
-                        setAudioFile(playerId, file.toURI().toURL());
-                    }
-                } else if (value instanceof File) {
-                    final File file = (File) value;
-                    if (file.exists()) {
-                        setAudioFile(playerId, file.toURI().toURL());
-                    }
-                } else if (value instanceof Path) {
-                    final Path path = (Path) value;
-                    if (Files.exists(path)) {
-                        setAudioFile(playerId, path.toUri().toURL());
-                    }
-                } else if (value instanceof AudioCmd) {
-                    audioCmd = (AudioCmd) value;
-                }
-            }
-            switch (audioCmd) {
-                case PLAY:
-                    player.play();
-                    break;
-                case PAUSE:
-                    player.pause();
-                    break;
-                case REPLAY:
-                    player.replay();
-                    break;
-                case STOP:
-                    player.stop();
-                    break;
-                case MUTE:
-                    new AudioControl().getDefaultDevice().setMute(true);
-                    break;
-                case UNMUTE:
-                    new AudioControl().getDefaultDevice().setMute(false);
-                    break;
-            }
-        } catch (MalformedURLException ignored) {
-        }
         return this;
-    }
-
-    private void setAudioFile(final int playerId, final URL url) {
-        getPlayer(playerId).setSource(url);
     }
 
     @Override
@@ -160,11 +85,17 @@ public class LocalControl extends Sensor<DummyDevice> {
 
     @Override
     public Sensor<DummyDevice> ledAdditional(final Integer value) {
-        if(humanInput == null && LED_ADDITIONAL_ON.bit == value){
+        if (LED_ADDITIONAL_ON.bit == value) {
+            start();
+        }
+        return this;
+    }
+
+    public void start() {
+        if (humanInput == null) {
             humanInput = new HumanInput();
             humanInput.sensorEventConsumerList.add(this::sendEventUnchecked);
         }
-        return this;
     }
 
     @Override

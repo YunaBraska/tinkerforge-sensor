@@ -33,9 +33,13 @@ public class SoundIntensity extends Sensor<BrickletSoundIntensity> {
 
     @Override
     protected Sensor<BrickletSoundIntensity> initListener() {
-        device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) value  * 10));
+        device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, (long) value * 10));
         refreshPeriod(1);
         return this;
+    }
+
+    public int[] getSoundIntensity() {
+        return getValueList(SOUND_INTENSITY, -1).stream().mapToInt(Number::intValue).toArray();
     }
 
     @Override

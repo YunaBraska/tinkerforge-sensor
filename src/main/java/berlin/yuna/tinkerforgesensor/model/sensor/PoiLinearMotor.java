@@ -2,7 +2,6 @@ package berlin.yuna.tinkerforgesensor.model.sensor;
 
 import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
 import berlin.yuna.tinkerforgesensor.model.type.ValueType;
-import com.tinkerforge.BrickletIO16V2;
 import com.tinkerforge.BrickletMotorizedLinearPoti;
 import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
@@ -49,6 +48,10 @@ public class PoiLinearMotor extends Sensor<BrickletMotorizedLinearPoti> {
         device.addPositionListener(value -> sendEvent(PERCENTAGE, value, true));
         refreshPeriod(1);
         return this;
+    }
+
+    public int getPercentage() {
+        return getValue(PERCENTAGE, -1, -1).intValue();
     }
 
     @Override

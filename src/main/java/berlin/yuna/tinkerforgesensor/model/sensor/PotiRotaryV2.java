@@ -49,6 +49,14 @@ public class PotiRotaryV2 extends Sensor<BrickletRotaryPotiV2> {
         return this;
     }
 
+    public int getPosition() {
+        return getValue(ROTARY, -1, -1).intValue();
+    }
+
+    public int getPercentage() {
+        return getValue(PERCENTAGE, -1, -1).intValue();
+    }
+
     @Override
     public Sensor<BrickletRotaryPotiV2> send(final Object value) {
         return this;

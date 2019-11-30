@@ -43,6 +43,10 @@ public class MotionDetector extends Sensor<BrickletMotionDetector> {
         return this;
     }
 
+    public boolean isMotionDetected() {
+        return getValue(MOTION_DETECTED, -1, -1).intValue() == 1;
+    }
+
     @Override
     public Sensor<BrickletMotionDetector> send(final Object value) {
         return this;

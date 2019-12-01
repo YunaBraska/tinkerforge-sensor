@@ -45,7 +45,10 @@ public class PoiLinearMotor extends Sensor<BrickletMotorizedLinearPoti> {
 
     @Override
     protected Sensor<BrickletMotorizedLinearPoti> initListener() {
-        device.addPositionListener(value -> sendEvent(PERCENTAGE, value, true));
+        device.addPositionListener(value -> {
+            position = value;
+            sendEvent(PERCENTAGE, value, true);
+        });
         refreshPeriod(1);
         return this;
     }

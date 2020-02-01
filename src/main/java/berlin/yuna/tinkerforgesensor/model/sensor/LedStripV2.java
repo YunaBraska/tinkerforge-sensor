@@ -34,8 +34,8 @@ import static java.util.Collections.nCopies;
  * <h3>Before the start</h3>
  * <i>This bricklet is not starting without knowing the number of LEDs and the ChipType</i><br>
  * <h6>[Setup] Setting number of leds to 30 and chip type to "WS2812" {@link LedChipType}</h6>
- * <code>sensor.send(30, "WS2812");</code>
- * <code>sensor.send(30, LED_TYPE_WS2812);</code>
+ * <code>sensor.send('C', 30, "WS2812");</code>
+ * <code>sensor.send('C', 30, LED_TYPE_WS2812);</code>
  *
  * <h3>Technical Info</h3>
  * <ul>
@@ -86,9 +86,9 @@ public class LedStripV2 extends Sensor<BrickletLEDStripV2> {
     }
 
     public Sensor<BrickletLEDStripV2> process(final boolean update, final Object... values) {
-        if (values.length > 1 && values[0] instanceof Number) {
+        if (values.length > 2 && values[0] instanceof Character && values[1] instanceof Number) {
             //[LedNumber, chipType]
-            setChipTypeAndLedNumber(((Number) values[0]), values[1]);
+            setChipTypeAndLedNumber(((Number) values[1]), values[2]);
         } else if (everyTypeIsColorAwt(values)) {
             //[awt.Color...] to [Color...]
             process(update, stream(values).map(Color::toColor).toArray());
@@ -228,11 +228,10 @@ public class LedStripV2 extends Sensor<BrickletLEDStripV2> {
         ledList.addAll(new ArrayList<>(nCopies(ledNumber, BLACK)));
         try {
             for (int i = 0; i < ledList.size(); i++) {
-                setLed(i, GREEN);
+                send(i, GREEN);
                 if (i != 0) {
-                    setLed(i - 1, rainbow.get(i * (rainbow.size() / 150)));
+                    send(i - 1, rainbow.get(i * (rainbow.size() / 150)));
                 }
-                update();
                 Thread.sleep(4);
             }
             ledList.clear();

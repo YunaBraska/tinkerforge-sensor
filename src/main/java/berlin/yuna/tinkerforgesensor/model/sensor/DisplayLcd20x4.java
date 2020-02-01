@@ -7,7 +7,6 @@ import com.tinkerforge.Device;
 import com.tinkerforge.TinkerforgeException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,10 +58,10 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
     public static final String DYNAMIC_SPACE = "${s}";
     public static final int COLUMN_LIMIT = 20;
-    final Integer[] buttons = {0,0,0,0};
+    final Integer[] buttons = {0, 0, 0, 0};
 
     private static final String SPLIT_LINE = System.lineSeparator();
-    private final String[] cachedRows = new String[]{"", "", "", ""};
+//    private final String[] cachedRows = new String[]{"", "", "", ""};
 
     public DisplayLcd20x4(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletLCD20x4) device, uid);
@@ -233,10 +232,10 @@ public class DisplayLcd20x4 extends Sensor<BrickletLCD20x4> {
 
     private void sendToDisplay(final short x, final short y, final String line) {
         try {
-            if (!line.equals(cachedRows[y])) {
-                cachedRows[y] = line;
-                device.writeLine(y, x, line);
-            }
+//            if (!line.equals(cachedRows[y])) {
+//                cachedRows[y] = line;
+            device.writeLine(y, x, line);
+//            }
         } catch (TinkerforgeException e) {
             sendEvent(DEVICE_TIMEOUT, 404L);
         }

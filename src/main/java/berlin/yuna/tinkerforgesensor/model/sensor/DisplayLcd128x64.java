@@ -63,7 +63,7 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
     public static final int COLUMN_LIMIT = 128;
     public static final int ROW_LIMIT = 64;
     private BrickletLCD128x64.DisplayConfiguration config;
-    private final String[] cachedRows = new String[ROW_LIMIT];
+//    private final String[] cachedRows = new String[ROW_LIMIT];
 
     public DisplayLcd128x64(final Device device, final String uid) throws NetworkConnectionException {
         super((BrickletLCD128x64) device, uid);
@@ -276,13 +276,13 @@ public class DisplayLcd128x64 extends Sensor<BrickletLCD128x64> {
         try {
             final int posX = getPosX(x, font);
             final int posY = getPosY(y, font);
-            if (!line.equals(cachedRows[y])) {
-                cachedRows[y] = line;
-                if (font < 0) {
-                    device.writeLine(posY, posX, line);
-                } else {
-                    device.drawText(posX, posY, font, true, line);
-                }
+//            if (!line.equals(cachedRows[y])) {
+//                cachedRows[y] = line;
+            if (font < 0) {
+                device.writeLine(posY, posX, line);
+            } else {
+                device.drawText(posX, posY, font, true, line);
+//                }
             }
         } catch (TinkerforgeException e) {
             sendEvent(DEVICE_TIMEOUT, 404L);

@@ -13,11 +13,11 @@
 ###### [Setup] Setting number of leds to 30 and chip type to "WS2812" [LedChipType](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/type/LedChipType.java)
  
 ```java
-sensor.send(30, "WS2812");
+sensor.send('C', 30, "WS2812");
 ```
  
 ```java
-sensor.send(30, LED_TYPE_WS2812);
+sensor.send('C', 30, LED_TYPE_WS2812);
 ```
  
 ### Technical Info

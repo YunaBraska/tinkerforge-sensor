@@ -171,7 +171,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * <li>Device {@link BrickletTemperature} =&gt; Sensor {@link Temperature}</li>
  * <li>Device {@link BrickletTemperatureV2} =&gt; Sensor {@link TemperatureV2}</li>
  * <li>Device {@link BrickletTilt} =&gt; Sensor {@link Tilt}</li>
- * </ul> */
+ * </ul>
+ */
 public class SensorRegistry {
     public static final int CALLBACK_PERIOD = 64;
 

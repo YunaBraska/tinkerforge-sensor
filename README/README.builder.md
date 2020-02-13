@@ -1,44 +1,10 @@
-# tinkerforge-sensor
+[var target]: # (/)
+
+# !{project.name}
 *This library simplifies Tinkerforge's sensor API.*
 *It Removes the pain of sensor UIDs, sensor versions, ports and provides a generic API for every sensor.*
 
-[![Build][build_shield]][build_link]
-[![Maintainable][maintainable_shield]][maintainable_link]
-[![Coverage][coverage_shield]][coverage_link]
-[![Issues][issues_shield]][issues_link]
-[![Commit][commit_shield]][commit_link]
-[![Dependencies][dependency_shield]][dependency_link]
-[![License][license_shield]][license_link]
-[![Central][central_shield]][central_link]
-[![Tag][tag_shield]][tag_link]
-[![Javadoc][javadoc_shield]][javadoc_link]
-[![Size][size_shield]][size_shield]
-![Label][label_shield]
-
-[build_shield]: https://img.shields.io/travis/YunaBraska/tinkerforge-sensor/master?style=flat-square
-[build_link]: https://travis-ci.org/YunaBraska/tinkerforge-sensor
-[maintainable_shield]: https://img.shields.io/codeclimate/maintainability/YunaBraska/tinkerforge-sensor?style=flat-square
-[maintainable_link]: https://codeclimate.com/github/YunaBraska/tinkerforge-sensor/maintainability
-[coverage_shield]: https://img.shields.io/codecov/c/github/YunaBraska/tinkerforge-sensor?style=flat-square
-[coverage_link]: https://codecov.io/gh/YunaBraska/tinkerforge-sensor?branch=master
-[issues_shield]: https://img.shields.io/github/issues/YunaBraska/tinkerforge-sensor?style=flat-square
-[issues_link]: https://github.com/YunaBraska/tinkerforge-sensor/commits/master
-[commit_shield]: https://img.shields.io/github/last-commit/YunaBraska/tinkerforge-sensor?style=flat-square
-[commit_link]: https://github.com/YunaBraska/tinkerforge-sensor/issues
-[license_shield]: https://img.shields.io/github/license/YunaBraska/tinkerforge-sensor?style=flat-square
-[license_link]: https://github.com/YunaBraska/tinkerforge-sensor/blob/master/LICENSE
-[dependency_shield]: https://img.shields.io/librariesio/github/YunaBraska/tinkerforge-sensor?style=flat-square
-[dependency_link]: https://libraries.io/github/YunaBraska/tinkerforge-sensor
-[central_shield]: https://img.shields.io/maven-central/v/berlin.yuna/tinkerforge-sensor?style=flat-square
-[central_link]:https://search.maven.org/artifact/berlin.yuna/tinkerforge-sensor
-[tag_shield]: https://img.shields.io/github/v/tag/YunaBraska/tinkerforge-sensor?style=flat-square
-[tag_link]: https://github.com/YunaBraska/tinkerforge-sensor/releases
-[javadoc_shield]: https://javadoc.io/badge2/berlin.yuna/tinkerforge-sensor/javadoc.svg?style=flat-square
-[javadoc_link]: https://javadoc.io/doc/berlin.yuna/tinkerforge-sensor
-[size_shield]: https://img.shields.io/github/repo-size/YunaBraska/tinkerforge-sensor?style=flat-square
-[label_shield]: https://img.shields.io/badge/Yuna-QueenInside-blueviolet?style=flat-square
-[gitter_shield]: https://img.shields.io/gitter/room/YunaBraska/nats-streaming-server-embedded?style=flat-square
-[gitter_link]: https://gitter.im/nats-streaming-server-embedded/Lobby
+[include]: # (/README/shields.include.md)
 
 #### Sensor documentation
 * A list of all sensors behaviors and more can be found in the [ReadmeDoc](readmeDoc/README.md)

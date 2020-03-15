@@ -17,19 +17,17 @@ public class CharleenProgram extends Helper {
     static void onSensorEvent(final SensorEvent event) {
 
         stack.sensors().displaySegment().send("Love");
+
         if (event.getValueType().isMotionDetected() && event.getValue() == 1) {
             stack.sensors().displayLcd128x64().ledAdditional_setOn();
             stack.sensors().displayLcd128x64().send("Hello welcome :)");
             stack.sensors().speaker().send(2000, 100, 3);
             stack.sensors().motionDetector().send(1);
-
-
         }
 
         if (event.getValueType().isMotionDetected() && event.getValue() == 0) {
             stack.sensors().displayLcd128x64().ledAdditional_setOff();
             stack.sensors().motionDetector().send(0);
-
         }
     }
 

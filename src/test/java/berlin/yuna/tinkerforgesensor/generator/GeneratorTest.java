@@ -8,6 +8,7 @@ import berlin.yuna.tinkerforgesensor.model.JFile;
 import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
 import com.squareup.javapoet.JavaFile;
 import org.junit.Test;
+import org.junit.jupiter.api.Tag;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
+@Tag("UnitTest")
 public class GeneratorTest {
 
     /**

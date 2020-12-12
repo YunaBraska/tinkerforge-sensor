@@ -15,12 +15,12 @@
 [![Size][size_shield]][size_shield]
 ![Label][label_shield]
 
-[build_shield]: https://img.shields.io/travis/YunaBraska/tinkerforge-sensor/master?style=flat-square
-[build_link]: https://travis-ci.org/YunaBraska/tinkerforge-sensor
+[build_shield]: https://github.com/YunaBraska/tinkerforge-sensor/workflows/JAVA_CI/badge.svg
+[build_link]: https://github.com/YunaBraska/tinkerforge-sensor/actions?query=workflow%3AJAVA_CI
 [maintainable_shield]: https://img.shields.io/codeclimate/maintainability/YunaBraska/tinkerforge-sensor?style=flat-square
 [maintainable_link]: https://codeclimate.com/github/YunaBraska/tinkerforge-sensor/maintainability
-[coverage_shield]: https://img.shields.io/codecov/c/github/YunaBraska/tinkerforge-sensor?style=flat-square
-[coverage_link]: https://codecov.io/gh/YunaBraska/tinkerforge-sensor?branch=master
+[coverage_shield]: https://img.shields.io/codeclimate/coverage/YunaBraska/tinkerforge-sensor?style=flat-square
+[coverage_link]: https://codeclimate.com/github/YunaBraska/tinkerforge-sensor/test_coverage
 [issues_shield]: https://img.shields.io/github/issues/YunaBraska/tinkerforge-sensor?style=flat-square
 [issues_link]: https://github.com/YunaBraska/tinkerforge-sensor/commits/master
 [commit_shield]: https://img.shields.io/github/last-commit/YunaBraska/tinkerforge-sensor?style=flat-square

@@ -2,7 +2,6 @@ com.tinkerforge.BrickDCProvider
 com.tinkerforge.BrickIMUProvider
 com.tinkerforge.BrickIMUV2Provider
 com.tinkerforge.BrickMasterProvider
-com.tinkerforge.BrickServoProvider
 com.tinkerforge.BrickletAccelerometerProvider
 com.tinkerforge.BrickletAccelerometerV2Provider
 com.tinkerforge.BrickletAirQualityProvider
@@ -22,12 +21,7 @@ com.tinkerforge.BrickletDualButtonV2Provider
 com.tinkerforge.BrickletHallEffectV2Provider
 com.tinkerforge.BrickletHumidityProvider
 com.tinkerforge.BrickletHumidityV2Provider
-com.tinkerforge.BrickletIO16Provider
-com.tinkerforge.BrickletIO16V2Provider
 com.tinkerforge.BrickletJoystickV2Provider
-com.tinkerforge.BrickletLCD128x64Provider
-com.tinkerforge.BrickletLCD20x4Provider
-com.tinkerforge.BrickletLEDStripV2Provider
 com.tinkerforge.BrickletLinearPotiV2Provider
 com.tinkerforge.BrickletMotionDetectorProvider
 com.tinkerforge.BrickletMotionDetectorV2Provider
@@ -42,9 +36,8 @@ com.tinkerforge.BrickletRotaryPotiV2Provider
 com.tinkerforge.BrickletSegmentDisplay4x7Provider
 com.tinkerforge.BrickletSegmentDisplay4x7V2Provider
 com.tinkerforge.BrickletSoundIntensityProvider
-com.tinkerforge.BrickletSoundPressureLevelProvider
 com.tinkerforge.BrickletTemperatureProvider
-com.tinkerforge.BrickletTemperatureV2Provider
+com.tinkerforge.BrickletTemperatureIRV2Provider
 com.tinkerforge.BrickletTiltProvider
 com.tinkerforge.BrickletUVLightProvider
 com.tinkerforge.BrickletUVLightV2Provider

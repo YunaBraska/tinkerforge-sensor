@@ -1,14 +1,9 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
-import berlin.yuna.tinkerforgesensor.model.JFile;
-import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Matcher;
 
-import static berlin.yuna.tinkerforgesensor.model.JFile.PATTERN_FILE_VERSIONS;
 import static java.util.stream.Collectors.toList;
 
 public class GeneratorHelper {

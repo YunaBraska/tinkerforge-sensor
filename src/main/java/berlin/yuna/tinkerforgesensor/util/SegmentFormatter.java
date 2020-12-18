@@ -36,9 +36,9 @@ public class SegmentFormatter {
         if (value instanceof TemporalAccessor) {
             chars = dateTimeFormatter.format((TemporalAccessor) value).toCharArray();
         } else if (value instanceof String) {
-            chars = ((String) value).trim().toCharArray();
+            chars = ((String) value).toCharArray();
         } else {
-            chars = String.valueOf(value).trim().toCharArray();
+            chars = String.valueOf(value).toCharArray();
         }
         return chars;
     }

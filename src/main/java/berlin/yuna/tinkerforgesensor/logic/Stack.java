@@ -1,425 +1,209 @@
 package berlin.yuna.tinkerforgesensor.logic;
 
-import berlin.yuna.tinkerforgesensor.model.Connection;
-import berlin.yuna.tinkerforgesensor.model.SensorList;
-import berlin.yuna.tinkerforgesensor.model.builder.Sensors;
-import berlin.yuna.tinkerforgesensor.model.builder.SensorsV1;
-import berlin.yuna.tinkerforgesensor.model.builder.SensorsV2;
-import berlin.yuna.tinkerforgesensor.model.builder.SensorsV3;
-import berlin.yuna.tinkerforgesensor.model.builder.Values;
-import berlin.yuna.tinkerforgesensor.model.exception.DeviceNotSupportedException;
-import berlin.yuna.tinkerforgesensor.model.exception.NetworkConnectionException;
-import berlin.yuna.tinkerforgesensor.model.sensor.LocalAudio;
-import berlin.yuna.tinkerforgesensor.model.sensor.LocalControl;
-import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
-import berlin.yuna.tinkerforgesensor.model.type.SensorEvent;
-import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import berlin.yuna.tinkerforgesensor.exception.ConnectionException;
+import berlin.yuna.tinkerforgesensor.model.Registry;
+import berlin.yuna.tinkerforgesensor.model.ValueType;
+import berlin.yuna.tinkerforgesensor.model.helper.GetSensor;
+import berlin.yuna.tinkerforgesensor.util.ThreadUtil;
+import com.tinkerforge.AlreadyConnectedException;
 import com.tinkerforge.IPConnection;
+import com.tinkerforge.NetworkException;
 import com.tinkerforge.NotConnectedException;
 
 import java.io.Closeable;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import static berlin.yuna.tinkerforgesensor.model.type.TimeoutExecutor.execute;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_ACTIVE;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BEEP_FINISH;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.BUTTON_RELEASED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.CURSOR_RELEASED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_ALREADY_CONNECTED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_CONNECTED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_DISCONNECTED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.DEVICE_RECONNECTED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_PRESSED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.KEY_RELEASED;
-import static berlin.yuna.tinkerforgesensor.model.type.ValueType.PING;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createAsync;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.createLoop;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.isEmpty;
-import static berlin.yuna.tinkerforgesensor.util.TinkerForgeUtil.loops;
+import static com.tinkerforge.IPConnectionBase.CONNECTION_STATE_DISCONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_DISCONNECTED;
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.joining;
+import static java.lang.Character.getNumericValue;
+import static java.lang.Character.isDigit;
+import static java.lang.Character.toLowerCase;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 
-/**
- * <h3>{@link Stack} implements {@link Closeable}</h3><br>
- * <i>Stack connection and event handler</i><br>
- */
+//TODO Stack graceful shutdown on interrupt?
+//TODO Authentication https://www.tinkerforge.com/de/doc/Software/IPConnection_Java.html#authenticate
 public class Stack implements Closeable {
 
-    /**
-     * <h3>{@link Stack#connections}</h3>
-     * Connection for {@link Sensor} in {@link Stack}
-     */
-    private final HashMap<String, SensorList<Sensor>> sensorList = new HashMap<>();
-    private final ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
+    private String connectionKey;
+    private final Set<Sensor> sensors = ConcurrentHashMap.newKeySet();
+    private final Set<Consumer<SensorEvent>> listeners = ConcurrentHashMap.newKeySet();
+    private static final Map<String, IPConnection> connections = new ConcurrentHashMap<>();
 
-    /**
-     * <h3>{@link Stack#consumers}</h3>
-     * List of {@link Consumer} for getting all {@link SensorEvent}
-     */
-    public final List<Consumer<SensorEvent>> consumers = new CopyOnWriteArrayList<>();
-
-
-    private long lastConnect = System.currentTimeMillis();
-    private final int timeoutMs = 3000;
-    private final String connectionHandlerName = getClass().getSimpleName() + "_" + UUID.randomUUID();
-    private final String pingConnectionHandlerName = "Ping_" + connectionHandlerName;
-    private static final int MAX_PRINT_VALUES = 50;
-
-    /**
-     * <h3>Dummy Stack</h3>
-     * Dummy {@link Stack}, wont connect to any {@link Sensor} as the host is not set
-     *
-     * @throws NetworkConnectionException should never happen
-     */
-    public Stack() throws NetworkConnectionException {
-        this(new Connection(null, null, null));
+    public Stack connect() {
+        return connect("localhost", 4223);
     }
 
-    /**
-     * <h3>Stack(host, port)</h3>
-     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
-     *
-     * @param host for {@link Connection}
-     * @param port for {@link Connection}
-     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
-     */
-    public Stack(final String host, final Integer port) throws NetworkConnectionException {
-        this(new Connection(host, port, null, false));
+    public Stack connect(final String host) {
+        return connect(host, 4223);
     }
 
-    /**
-     * <h3>Stack(host, port, ignoreConnectionError)</h3>
-     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
-     *
-     * @param host                  for {@link Connection}
-     * @param port                  for {@link Connection}
-     * @param ignoreConnectionError ignores any {@link NetworkConnectionException} and tries to auto reconnect
-     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
-     */
-    public Stack(final String host, final Integer port, final boolean ignoreConnectionError) throws NetworkConnectionException {
-        this(new Connection(host, port, null, ignoreConnectionError));
+    public Stack connect(final String host, final int port) {
+        close();
+        connectionKey = host + ":" + port;
+        connections.computeIfAbsent(connectionKey, s -> newConnection(host, port));
+        return this;
     }
 
-    /**
-     * <h3>Stack(host, port, password)</h3>
-     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
-     *
-     * @param host     for {@link Connection}
-     * @param port     for {@link Connection}
-     * @param password for {@link Connection}
-     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
-     */
-    public Stack(final String host, final Integer port, final String password) throws NetworkConnectionException {
-        this(new Connection(host, port, password, false));
+    public boolean isConnected() {
+        return getConnection().getConnectionState() != CONNECTION_STATE_DISCONNECTED;
     }
 
-    /**
-     * <h3>Stack(host, port, password, ignoreConnectionError)</h3>
-     * Auto connects and auto {@link Closeable} {@link Stack#close()} {@link Sensor}s and manages the {@link Stack#sensorList} by creating {@link Thread}
-     *
-     * @param connection for {@link Stack#connections}
-     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
-     */
-    public Stack(final Connection connection) throws NetworkConnectionException {
-        addStack(connection);
+    public IPConnection getConnection() {
+        return connectionKey == null ? new IPConnection() : connections.getOrDefault(connectionKey, new IPConnection());
     }
 
-    /**
-     * <h3>addStack</h3>
-     * adds another stack to the current one
-     *
-     * @param connection for {@link Stack#connections}
-     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
-     */
-    public void addStack(final Connection connection) throws NetworkConnectionException {
-        if (connection == null) {
-            throw new RuntimeException("Connection [null] is not allowed");
-        } else {
-            if (connections.containsValue(connection)) {
-                System.err.println(format("Already exists connection [%s]", connection));
-                disconnect(connection.getStackId());
-            }
-            connections.put(connection.getStackId(), connection);
-            connect(connection.getStackId());
-        }
+    public Set<Sensor> getSensors() {
+        return new HashSet<>(sensors);
     }
 
-    /**
-     * <h3>connect</h3>
-     * connects to given host - this method will be called from {@link Stack} constructor
-     *
-     * @param stackId {@link Stack} connectionId
-     * @throws NetworkConnectionException if connection fails due/contains {@link NotConnectedException} {@link com.tinkerforge.AlreadyConnectedException} {@link com.tinkerforge.NetworkException}
-     */
-    private void connect(final String stackId) throws NetworkConnectionException {
-        final Connection connection = connections.get(stackId);
-        final IPConnection ipConnection = connection.getIpConnection();
-        ipConnection.setAutoReconnect(true);
-        ipConnection.setTimeout(timeoutMs);
-        ipConnection.addDisconnectedListener(event -> handleConnect(stackId, event, true));
-        ipConnection.addConnectedListener(event -> handleConnect(stackId, event, false));
-        ipConnection.addEnumerateListener(
-                (uid, connectedUid, position, hardwareVersion, firmwareVersion, deviceIdentifier, enumerationType)
-                        -> doPlugAndPlay(stackId, uid, connectedUid, position, hardwareVersion, firmwareVersion, deviceIdentifier, enumerationType)
-        );
-        sensorList.computeIfAbsent(stackId, sensorList -> new SensorList<>());
-        clearSensorList(stackId);
-        if (connection.getHost() != null) {
-            final Object result = execute(timeoutMs, () -> {
-                ipConnection.connect(connection.getHost(), connection.getPort());
-                if (!isEmpty(connection.getPassword())) {
-                    ipConnection.authenticate(connection.getPassword());
-                }
-                return true;
-            });
-            if (!connection.isIgnoreConnectionError() && result instanceof Throwable) {
-                throw new NetworkConnectionException((Throwable) result);
-            }
-        }
-//        createLoop(connectionHandlerName, timeoutMs, run -> checkConnection());
-        if (!loops.containsKey(pingConnectionHandlerName)) {
-            createLoop(pingConnectionHandlerName, 8, run -> sendEvent(sensorList.get(stackId).getDefault(), System.currentTimeMillis(), PING));
-        }
+    public Set<Sensor> getSensors(final Predicate<? super Sensor> filter) {
+        return sensors.stream().filter(filter).collect(Collectors.toSet());
     }
 
-    /**
-     * <h3>isConnecting</h3>
-     *
-     * @return true if stack is connecting to the sensors
-     */
-    public boolean isConnecting() {
-        return (lastConnect + (timeoutMs / 2)) > System.currentTimeMillis();
+    public List<Sensor> getSensorsSorted() {
+        return sensors.stream().sorted().collect(toList());
     }
 
-
-    private synchronized void disconnect() {
-        connections.forEach((key, value) -> disconnect(value.getStackId()));
+    public List<Sensor> getSensorsSorted(final Predicate<? super Sensor> filter) {
+        return sensors.stream().filter(filter).sorted().collect(toList());
     }
 
-    /**
-     * <h3>disconnect</h3>
-     * disconnects a stack {@link Sensor} from the given host and removes their sensors from {@link Stack#sensorList}
-     *
-     * @param stackId Stack to disconnect
-     */
-    public synchronized void disconnect(final String stackId) {
-        execute(timeoutMs + 256, () -> {
-            try {
-                clearSensorList(stackId);
-                if (connections.containsKey(stackId)) {
-                    connections.get(stackId).getIpConnection().disconnect();
-                }
-            } catch (Exception ignored) {
-            } finally {
-                connections.remove(stackId);
-            }
-            return true;
-        });
+    public Sensor getSensor(final int index, final Class<?>... types) {
+        final List<Sensor> result = getSensorList(types);
+        return result.isEmpty() || result.size() < index ? null : result.get(index);
     }
 
-    /**
-     * disconnects all {@link Sensor} from the given host see {@link Stack#disconnect()}
-     */
-    @Override
-    public void close() {
-        disconnect();
+    public List<Sensor> getSensorList(final Class<?>... types) {
+        return sensors.stream().filter(sensor -> stream(types).anyMatch(sensor::is)).sorted().collect(toList());
     }
 
-    /**
-     * <h3>valuesToString</h3>
-     *
-     * @return all values from all sensors as string
-     */
-    public String valuesToString() {
-        final StringBuilder lineHead = new StringBuilder();
-        final StringBuilder lineValue = new StringBuilder();
-        final List<ValueType> IGNORE_TYPES = asList(
-                BEEP_ACTIVE, BEEP_FINISH,
-                KEY_PRESSED, KEY_RELEASED,
-                CURSOR_PRESSED, CURSOR_RELEASED,
-                BUTTON_PRESSED, BUTTON_RELEASED
-        );
-        for (Sensor sensor : sensors()) {
-            for (ValueType valueType : ValueType.values()) {
-                if (IGNORE_TYPES.contains(valueType)) {
-                    continue;
-                }
-                final List<Long> values = sensor.values().getList(valueType, -1);
-                if (!values.isEmpty()) {
-                    String value = values.stream().map(Object::toString).collect(joining(", "));
-                    value = value.length() > MAX_PRINT_VALUES ? value.substring(0, MAX_PRINT_VALUES) : value;
-                    final int valueLength = value.length();
-                    final int typeLength = valueType.toString().length();
-                    final int fieldSize = (Math.max(valueLength, typeLength)) + 1;
-                    lineHead.append(center(" " + valueType, fieldSize)).append(" |");
-                    lineValue.append(format("%" + fieldSize + "s |", value));
-                }
-            }
-        }
-        lineHead.append(format("%9s |", "Sensors"));
-        lineValue.append(format("%9s |", sensors().size()));
-        return System.lineSeparator() + lineHead.toString() + System.lineSeparator() + lineValue.toString();
+    public Stack addListener(final Consumer<SensorEvent> listener) {
+        listeners.add(listener);
+        return this;
     }
 
-    /**
-     * <h3>sensors</h3>
-     *
-     * @return List of sensors {@link Sensors}
-     */
-    public Sensors sensors() {
-        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(Sensors::new));
+    public Sensor findSensor(String uid) {
+        return sensors.stream().filter(sensor -> sensor.getUid().equals(uid)).findFirst().orElse(null);
     }
 
-    /**
-     * <h3>sensorsV1</h3>
-     *
-     * @return List of sensors with version 1 {@link Sensors}
-     */
-    public SensorsV1 sensorsV1() {
-        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(SensorsV1::new));
+    public void disconnect() {
+        close();
     }
 
-    /**
-     * <h3>sensorsV2</h3>
-     *
-     * @return List of sensors with version 2 {@link Sensors}
-     */
-    public SensorsV2 sensorsV2() {
-        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(SensorsV2::new));
+    public void sendEvent(final SensorEvent event) {
+        listeners.forEach(listener -> listener.accept(event));
     }
 
-    /**
-     * <h3>sensorsV3</h3>
-     *
-     * @return List of sensors with version 1 {@link Sensors}
-     */
-    public SensorsV3 sensorsV3() {
-        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(SensorsV3::new));
+    public GetSensor get(){
+        return new GetSensor(this);
     }
 
-    /**
-     * <h3>values</h3>
-     *
-     * @return List of sensors {@link Values}
-     */
-    public Values values() {
-        return sensorList.values().stream().flatMap(List::stream).collect(Collectors.toCollection(Values::new));
-    }
-
-    private void doPlugAndPlay(
-            final String stackId,
+    private void connectionListener(
             final String uid,
-            final String connectedUid,
+            final String parentUid,
             final char position,
             final short[] hardwareVersion,
             final short[] firmwareVersion,
-            final int deviceIdentifier,
+            final int id,
             final short enumerationType
     ) {
-        switch (enumerationType) {
-            case ENUMERATION_TYPE_AVAILABLE:
-                createAsync("Connect_" + uid, run -> initSensor(stackId, uid, deviceIdentifier, DEVICE_CONNECTED));
-                break;
-            case ENUMERATION_TYPE_CONNECTED:
-                createAsync("Connect_" + uid, run -> initSensor(stackId, uid, deviceIdentifier, DEVICE_RECONNECTED));
-                break;
-            case ENUMERATION_TYPE_DISCONNECTED:
-                final Sensor sensor = sensorList.get(stackId).stream().filter(entity -> entity.uid.equals(uid)).findFirst().orElse(null);
-                sendEvent(sensor, 2L, DEVICE_DISCONNECTED);
-                sensorList.get(stackId).remove(sensor);
-                break;
-        }
+        Registry.findById(id).ifPresentOrElse(register -> {
+            if (enumerationType == ENUMERATION_TYPE_CONNECTED || enumerationType == ENUMERATION_TYPE_AVAILABLE) {
+                connectSensor(uid, parentUid, position, id, register);
+            } else if (enumerationType == ENUMERATION_TYPE_DISCONNECTED) {
+                sendEvent(new SensorEvent(findSensor(uid), 0, ValueType.DEVICE_DISCONNECTED));
+            }
+        }, () -> sendEvent(new SensorEvent(null, id, ValueType.DEVICE_UNKNOWN)));
     }
 
-    private void initSensor(final String stackId, final String uid, final int deviceIdentifier, final ValueType enumerationType) {
-        lastConnect = System.currentTimeMillis();
-        try {
-            final Sensor sensor = Sensor.newInstance(deviceIdentifier, uid, connections.get(stackId).getIpConnection());
-            final Optional<Sensor> previousSensor = sensorList.get(stackId).stream().filter(s -> s.equals(sensor)).findFirst();
-            if (previousSensor.isPresent() && previousSensor.get().isConnected()) {
-                sendEvent(sensor, 42L, DEVICE_ALREADY_CONNECTED);
+    private void connectSensor(final String uid, final String parentUid, final char position, final int id, Registry.Register register) {
+        ThreadUtil.createAsync("Connect_" + uid, run -> {
+            Sensor sensor = findSensor(uid);
+            if (sensor == null) {
+                sensor = new Sensor(id, uid, this, position, parentUid, register.getType(), register.getHandler());
+                sensors.add(sensor);
+                setPorts();
+                sendEvent(new SensorEvent(sensor.handler().initConfig().init().runTest().sensor(), 1, ValueType.DEVICE_CONNECTED));
             } else {
-                sensor.flashLed();
-                sensorList.get(stackId).add(sensor);
-                sensorList.get(stackId).linkParent(sensor);
-                sendEvent(sensor, 42L, enumerationType);
-                sensor.addListener(sensorEvent -> consumers.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
+                sendEvent(new SensorEvent(sensor, 1, ValueType.DEVICE_RECONNECTED));
             }
-        } catch (DeviceNotSupportedException | NetworkConnectionException e) {
-            System.err.println(format("doPlugAndPlay [ERROR] uid [%s] [%s]", uid, e.getMessage()));
-        }
+        });
     }
 
-    private void sendEvent(final Sensor sensor, final long value, final ValueType valueType) {
-        if (sensor != null) {
-            consumers.forEach(sensorConsumer -> sensorConsumer.accept(new SensorEvent(sensor, value, valueType)));
-        }
+    private void setPorts() {
+        new HashSet<>(sensors).stream().sorted().forEach(sensor -> {
+            if ("0".equals(sensor.getParentUid())) {
+                sensor.isBrick(true);
+                sensor.setPort(10);
+            } else if (isDigit(sensor.getPosition())) {
+                sensor.isBrick(true);
+                sensor.setPort((getNumericValue(sensor.getPosition()) + 1) * 10);
+            } else {
+                sensor.isBrick(false);
+                sensor.setPort((((int) toLowerCase(sensor.getPosition())) - 96) + sensor.getParent().map(Sensor::getPort).orElse(0));
+            }
+        });
     }
 
-    private void handleConnect(final String stackId, final short connectionEvent, final boolean disconnectEvent) {
-        if (disconnectEvent) {
-            switch (connectionEvent) {
-                case IPConnection.DISCONNECT_REASON_REQUEST:
-                case IPConnection.DISCONNECT_REASON_ERROR:
-                case IPConnection.DISCONNECT_REASON_SHUTDOWN:
-                    clearSensorList(stackId);
-                    sendEvent(sensorList.get(stackId).getDefault(), (long) connectionEvent, DEVICE_DISCONNECTED);
-                    break;
-            }
-        } else {
-            try {
-                connections.get(stackId).getIpConnection().enumerate();
-            } catch (Exception ignored) {
-            }
-
-            switch (connectionEvent) {
-                case IPConnection.CONNECT_REASON_REQUEST:
-                    sendEvent(sensorList.get(stackId).getDefault(), (long) connectionEvent, DEVICE_CONNECTED);
-                    break;
-                case IPConnection.CONNECT_REASON_AUTO_RECONNECT:
-                    sendEvent(sensorList.get(stackId).getDefault(), (long) connectionEvent, DEVICE_RECONNECTED);
-                    break;
-            }
-        }
-    }
-
-    private void clearSensorList(final String stackId) {
-        final SensorList<Sensor> sensorList = this.sensorList.get(stackId);
-        sensorList.forEach(sensor -> sensor.refreshPeriod(0));
-        sensorList.clear();
+    private IPConnection newConnection(final String host, final int port) {
+        final IPConnection connection = createIPConnection();
         try {
-            final Sensor sensor = sensorList.getDefault();
-            final LocalControl localControl = new LocalControl(sensor.device, sensor.uid);
-            sensorList.add(new LocalAudio(sensor.device, sensor.uid));
-            sensorList.add(localControl);
-            localControl.addListener(sensorEvent -> consumers.forEach(sensorConsumer -> sensorConsumer.accept((SensorEvent) sensorEvent)));
-        } catch (NetworkConnectionException ignored) {
+            connection.connect(host, port);
+            connection.addEnumerateListener(this::connectionListener);
+            connection.setAutoReconnect(true);
+            connection.enumerate();
+        } catch (NetworkException e) {
+            throw new ConnectionException("Unable to connect host [" + host + "] port [" + port + "]", e);
+        } catch (NotConnectedException | AlreadyConnectedException ignored) {
+        }
+        return connection;
+    }
+
+    protected IPConnection createIPConnection() {
+        return new IPConnection();
+    }
+
+    @Override
+    public void close() {
+        try {
+            getConnection().disconnect();
+            connections.remove(connectionKey);
+        } catch (Exception ignored) {
         }
     }
 
-    //TODO: move to utils
-    private String center(final String text, final int length) {
-        if (text.length() < length) {
-            final int left = (length - text.length()) / 2;
-            final int right = (length - text.length()) - left;
-            final String leftS = IntStream.range(0, left).mapToObj(i -> " ").collect(joining(""));
-            final String rightS = IntStream.range(0, right).mapToObj(i -> " ").collect(joining(""));
-            return leftS + text + rightS;
-        }
-        return text;
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Stack stack = (Stack) o;
+
+        return Objects.equals(connectionKey, stack.connectionKey);
     }
+
+    @Override
+    public int hashCode() {
+        return connectionKey != null ? connectionKey.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Stack{" +
+                "connectedTo='" + connectionKey + '\'' +
+                '}';
+    }
+
+
 }

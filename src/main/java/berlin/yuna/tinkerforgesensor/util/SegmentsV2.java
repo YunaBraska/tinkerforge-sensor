@@ -1,32 +1,31 @@
 package berlin.yuna.tinkerforgesensor.util;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SegmentsV2 {
+
+    private SegmentsV2() {
+    }
+
     private static final PairSmV2[] symbols = init();
 
-    public static boolean[] get(final List<PairSmV2> symbols, final char chr) {
+    public static boolean[][] toSegments(final char[] chars, final boolean[] dots, final int digitLimit) {
+        final boolean[][] result = new boolean[digitLimit][8];
+        for (int i = 0; i < digitLimit; i++) {
+            result[i] = SegmentsV2.get(chars[i]);
+            result[i][7] = dots[i];
+        }
+        return result;
+    }
+
+    private static boolean[] get(final char chr) {
         for (PairSmV2 pairSmV2 : symbols) {
             if (pairSmV2.getKey() == chr) {
                 return pairSmV2.getValue();
             }
         }
         return get(' ');
-    }
-
-    public static boolean[] get(final char chr) {
-        for (PairSmV2 pairSmV2 : symbols) {
-            if (pairSmV2.getKey() == chr) {
-                return pairSmV2.getValue();
-            }
-        }
-        return get(' ');
-    }
-
-    public static PairSmV2[] getSymbols() {
-        return symbols;
     }
 
     private static PairSmV2[] init() {

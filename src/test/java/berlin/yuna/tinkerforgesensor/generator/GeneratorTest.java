@@ -1,14 +1,10 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 
-import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorCompare;
-import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorSensors;
-import berlin.yuna.tinkerforgesensor.generator.builder.GeneratorValues;
-import berlin.yuna.tinkerforgesensor.model.JFile;
-import berlin.yuna.tinkerforgesensor.model.sensor.Sensor;
+import berlin.yuna.tinkerforgesensor.logic.SensorHandler;
 import com.squareup.javapoet.JavaFile;
-import org.junit.Test;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,14 +12,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_PROJECT;
-import static berlin.yuna.tinkerforgesensor.model.JFile.DIR_REL_MAVEN;
+import static berlin.yuna.tinkerforgesensor.generator.JFile.DIR_PROJECT;
+import static berlin.yuna.tinkerforgesensor.generator.JFile.DIR_REL_MAVEN;
 import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @Tag("UnitTest")
-public class GeneratorTest {
+class GeneratorTest {
 
     /**
      * Every method parameter with this suffix will be replaced with an 'dot array'
@@ -33,31 +29,19 @@ public class GeneratorTest {
     public static final String LINE_SEPARATOR = System.lineSeparator();
 
     @Test
-    public void generate() throws IOException {
+    void generate() throws IOException {
         final List<JFile> jFiles = JFile.getProjectJavaFiles();
-        final List<JFile> sensorList = jFiles.stream().filter(c -> c.getSuperClass() == Sensor.class).collect(toList());
+        final List<JFile> handlers = jFiles.stream().filter(c -> c.getSuperClass() == SensorHandler.class).collect(toList());
 
-        //Must be in order
-        writeJavaFile(GeneratorEnumValueType.generate());
-        writeJavaFile(GeneratorSensorRegistry.generate(sensorList));
+        writeJavaFile(GeneratorIsSensor.generate(handlers));
+        writeJavaFile(GeneratorGetSensor.generate(handlers));
+        writeJavaFile(GeneratorIsValueType.generate());
+        writeJavaFile(GeneratorContainsValueType.generate());
 
         //Deprecated...
         GeneratorDeviceProvider.generate();
-
-        //builder
-        writeJavaFile(GeneratorCompare.generate(sensorList));
-        writeJavaFile(GeneratorSensors.generate(sensorList));
-        writeJavaFile(GeneratorValues.generate(sensorList));
-
-        //README.md
-        GeneratorReadmeDoc.generate(jFiles);
     }
 
-    private void writeJavaFile(final List<JavaFile> javaFiles) throws IOException {
-        for(JavaFile javaFile : javaFiles){
-            writeJavaFile(javaFile);
-        }
-    }
     private void writeJavaFile(final JavaFile javaFile) throws IOException {
         //DEFAULT FILE WRITER
         javaFile.writeTo(new File(DIR_REL_MAVEN));
@@ -69,7 +53,7 @@ public class GeneratorTest {
         }
 
         //HANDLE DOT_ARRAY
-        String javaFileContent = javaFile.toString();
+        String javaFileContent = javaFile.toString().replace("import java.lang.SuppressWarnings;\n", "");
         javaFileContent = javaFileContent.replaceAll("(?<dynamic>\\[\\])(?<content>.*)(?<name>" + DOT_ARRAY + ")", "...${content}");
 
         //IDENT

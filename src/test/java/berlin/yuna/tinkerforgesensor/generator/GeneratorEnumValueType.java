@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 
-import berlin.yuna.tinkerforgesensor.model.type.ValueType;
+import berlin.yuna.tinkerforgesensor.model.ValueType;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;

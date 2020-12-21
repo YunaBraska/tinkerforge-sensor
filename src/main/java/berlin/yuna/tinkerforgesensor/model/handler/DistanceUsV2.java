@@ -13,8 +13,7 @@ import static berlin.yuna.tinkerforgesensor.model.ValueType.DISTANCE;
  * <li>{@link ValueType#DISTANCE} [x / 10.0 = cm]</li>
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
-public class
-DistanceUsV2 extends SensorHandler<BrickletDistanceUSV2> {
+public class DistanceUsV2 extends SensorHandler<BrickletDistanceUSV2> {
 
     public DistanceUsV2(final Sensor sensor, final Device device) {
         super(sensor, device);

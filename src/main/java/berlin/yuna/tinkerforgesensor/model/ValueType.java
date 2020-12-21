@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.model;
 
-import berlin.yuna.tinkerforgesensor.model.helper.IsValueType;
-import berlin.yuna.tinkerforgesensor.model.helper.ContainsValueType;
+import berlin.yuna.tinkerforgesensor.model.helper.IsType;
+import berlin.yuna.tinkerforgesensor.model.helper.ContainsType;
 
 import static java.util.Arrays.stream;
 
@@ -147,16 +147,16 @@ public enum ValueType {
         return parent;
     }
 
-    public ContainsValueType contains() {
-        return new ContainsValueType(this);
+    public ContainsType contains() {
+        return new ContainsType(this);
     }
 
     public boolean contains(final ValueType... types) {
         return stream(types).anyMatch(type -> type.is(type) || type.parent.contains(types));
     }
 
-    public IsValueType is() {
-        return new IsValueType(this);
+    public IsType is() {
+        return new IsType(this);
     }
 
     public boolean is(final ValueType... types) {

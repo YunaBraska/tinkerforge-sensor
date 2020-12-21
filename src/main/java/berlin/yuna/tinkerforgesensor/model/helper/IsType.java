@@ -112,10 +112,10 @@ import static berlin.yuna.tinkerforgesensor.model.ValueType.VOLTAGE_USB;
 import berlin.yuna.tinkerforgesensor.model.ValueType;
 
 @SuppressWarnings("unused")
-public class IsValueType {
+public class IsType {
     private final ValueType valuetype;
 
-    public IsValueType(final ValueType valuetype) {
+    public IsType(final ValueType valuetype) {
         this.valuetype = valuetype;
     }
 

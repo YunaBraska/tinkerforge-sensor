@@ -18,7 +18,6 @@ import com.tinkerforge.Device;
 import java.util.Objects;
 import java.util.Optional;
 
-import static berlin.yuna.tinkerforgesensor.logic.SensorHandler.CONFIG_INFO_LED_STATUS;
 import static berlin.yuna.tinkerforgesensor.logic.SensorHandler.initHandler;
 import static berlin.yuna.tinkerforgesensor.model.LedStatusType.LED_HEARTBEAT;
 import static berlin.yuna.tinkerforgesensor.model.LedStatusType.LED_OFF;
@@ -26,6 +25,7 @@ import static berlin.yuna.tinkerforgesensor.model.LedStatusType.LED_ON;
 import static berlin.yuna.tinkerforgesensor.model.LedStatusType.LED_STATUS;
 import static java.util.Arrays.stream;
 
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class Sensor implements Comparable<Sensor> {
 
     private final int id;
@@ -67,7 +67,7 @@ public class Sensor implements Comparable<Sensor> {
     }
 
     /**
-     * Sets {@link SensorHandler#CONFIG_HIGH_CONTRAST} for color inputs of {@link Sensor#setColor(Color)}
+     * Sets {@link SensorHandler#CONFIG_HIGH_CONTRAST} for color inputs of {@link Sensor#sendColor(Color)}
      * {@code used by} like {@link ButtonRGB}
      * {@link LedRGBV2}
      *
@@ -126,7 +126,7 @@ public class Sensor implements Comparable<Sensor> {
      * @param color value to set for the sensor
      * @return self {@link Sensor}
      */
-    public Sensor setColor(final Color color) {
+    public Sensor sendColor(final Color color) {
         send(color);
         return this;
     }
@@ -138,7 +138,7 @@ public class Sensor implements Comparable<Sensor> {
      * @param color value to set for the sensor
      * @return self {@link Sensor}
      */
-    public Sensor setColor(final Number color) {
+    public Sensor sendColor(final Number color) {
         send(color);
         return this;
     }
@@ -148,6 +148,16 @@ public class Sensor implements Comparable<Sensor> {
      */
     public boolean hasStatusLed() {
         return handler.hasStatusLed();
+    }
+
+    /**
+     * Sets status led to {@link berlin.yuna.tinkerforgesensor.model.LedStatusType#LED_ON}
+     *
+     * @return self {@link Sensor}
+     */
+    public Sensor setStatusLed(final LedStatusType type) {
+        handler.setStatusLed(type.bit);
+        return this;
     }
 
     /**
@@ -170,6 +180,7 @@ public class Sensor implements Comparable<Sensor> {
         return this;
     }
 
+
     /**
      * Sets info led to {@link berlin.yuna.tinkerforgesensor.model.LedStatusType#LED_ON}
      * {@code used by} {@link Sensor}s like
@@ -184,8 +195,26 @@ public class Sensor implements Comparable<Sensor> {
      *
      * @return self {@link Sensor}
      */
-    public Sensor setStatusInfoLedOn() {
-        handler.send(LED_ON.bit);
+    public boolean hasInfoLed() {
+        return handler.hasInfoLed();
+    }
+
+    /**
+     * Sets info led to {@link berlin.yuna.tinkerforgesensor.model.LedStatusType#LED_OFF}
+     * {@code used by} {@link Sensor}s like
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.ImuBrick}
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.ImuBrickV2}
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.Accelerometer}
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.AccelerometerV2}
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.LedRGBV2}
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.LightColor}
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.LightColorV2}
+     * {@link berlin.yuna.tinkerforgesensor.model.handler.MasterBrick}
+     *
+     * @return self {@link Sensor}
+     */
+    public Sensor setInfoLedON() {
+        handler.setInfoLed(LED_ON.bit);
         return this;
     }
 
@@ -204,9 +233,7 @@ public class Sensor implements Comparable<Sensor> {
      * @return self {@link Sensor}
      */
     public Sensor setInfoLedOff() {
-        if (handler.config.containsKey(CONFIG_INFO_LED_STATUS)) {
-            handler.send(LED_OFF.bit);
-        }
+            handler.setInfoLed(LED_OFF.bit);
         return this;
     }
 
@@ -216,9 +243,7 @@ public class Sensor implements Comparable<Sensor> {
      * @return self {@link Sensor}
      */
     public Sensor setStatusLedDefault() {
-        if (handler.config.containsKey(CONFIG_INFO_LED_STATUS)) {
-            handler.send(LED_STATUS.bit);
-        }
+        handler.setStatusLed(LED_STATUS.bit);
         return this;
     }
 
@@ -289,6 +314,20 @@ public class Sensor implements Comparable<Sensor> {
      */
     public Sensor sendSound(final int durationMs, final int frequency) {
         return send(new Beep(durationMs, frequency, -1, false));
+    }
+
+    /**
+     * Sends a sound
+     * {@code used by} like {@link Speaker} (600Hz - 7100Hz)
+     * {@link SpeakerV2} (50Hz - 15000Hz)
+     *
+     * @param durationMs time to send the sound
+     * @param frequency  frequency for the sound
+     * @param wait       waits until the sound is done
+     * @return self {@link Sensor}
+     */
+    public Sensor sendSound(final int durationMs, final int frequency, final boolean wait) {
+        return send(new Beep(durationMs, frequency, -1, wait));
     }
 
     /**

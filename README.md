@@ -15,9 +15,14 @@
 [![Size][size_shield]][size_shield]
 ![Label][label_shield]
 
+### Requirements
+* Install [Brick Daemon](https://www.tinkerforge.com/en/doc/Downloads.html#tools)
+* Install and open [IntelliJ](https://www.jetbrains.com/idea/download) (IDE / EDITOR) 
+* Install Java via IntelliJ: File -> Project Structure -> SDKs -> `+` Download JDK -> `AdoptOpenJdk` -> Version `11`
+* Compile / Initialize Project: Right click on `tinkerforge-senor` -> Maven -> `Reload Project` and `Generate Sources`
 
 ### Sensor documentation
-* A list of all supported Sensors (Bricks/Bricklets) [ReadmeDoc](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/handler)
+* A list of all supported Sensors (Bricks/Bricklets): [Sensors](https://github.com/YunaBraska/tinkerforge-sensor/blob/master/src/main/java/berlin/yuna/tinkerforgesensor/model/handler)
 
 ### Example
 ```java

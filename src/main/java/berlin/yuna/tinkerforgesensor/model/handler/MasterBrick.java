@@ -40,7 +40,7 @@ public class MasterBrick extends SensorHandler<BrickMaster> {
     public SensorHandler<BrickMaster> initConfig() {
         handleConnection(() -> {
             config.put(CONFIG_LED_STATUS, device.isStatusLEDEnabled() ? 1 : 0);
-            config.put(CONFIG_INFO_LED_STATUS, isWifi2Present() && device.isWifi2StatusLEDEnabled() ? 1 : 0);
+            config.put(CONFIG_LED_INFO, isWifi2Present() && device.isWifi2StatusLEDEnabled() ? 1 : 0);
         });
         return this;
     }
@@ -64,9 +64,9 @@ public class MasterBrick extends SensorHandler<BrickMaster> {
     public SensorHandler<BrickMaster> triggerFunctionA(int value) {
         if (isWifi2Present()) {
             if (isLedOn(value)) {
-                applyOnNewValue(CONFIG_INFO_LED_STATUS, 1, device::enableWifi2StatusLED);
+                applyOnNewValue(CONFIG_LED_INFO, 1, device::enableWifi2StatusLED);
             } else if (value == LED_OFF.bit) {
-                applyOnNewValue(CONFIG_INFO_LED_STATUS, 0, device::disableWifi2StatusLED);
+                applyOnNewValue(CONFIG_LED_INFO, 0, device::disableWifi2StatusLED);
             }
         }
         return this;

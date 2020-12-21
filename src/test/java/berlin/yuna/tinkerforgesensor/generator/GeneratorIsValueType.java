@@ -1,7 +1,7 @@
 package berlin.yuna.tinkerforgesensor.generator;
 
 import berlin.yuna.tinkerforgesensor.model.ValueType;
-import berlin.yuna.tinkerforgesensor.model.helper.IsValueType;
+import berlin.yuna.tinkerforgesensor.model.helper.IsType;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -17,7 +17,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
 public class GeneratorIsValueType {
 
-    private static final Class<?> TARGET_CLASS = IsValueType.class;
+    private static final Class<?> TARGET_CLASS = IsType.class;
     private static final Class<?> FIELD_TYPE = ValueType.class;
     private static final String FIELD_TYPE_NAME = FIELD_TYPE.getSimpleName().toLowerCase();
 

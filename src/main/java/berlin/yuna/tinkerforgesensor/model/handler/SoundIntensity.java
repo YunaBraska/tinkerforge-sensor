@@ -28,7 +28,7 @@ public class SoundIntensity extends SensorHandler<BrickletSoundIntensity> {
     public SensorHandler<BrickletSoundIntensity> init() {
         config.put(THRESHOLD_PREFIX + SOUND_INTENSITY, 32);
         device.addIntensityListener(value -> sendEvent(SOUND_INTENSITY, value * 10));
-        return setRefreshPeriod(512);
+        return setRefreshPeriod(16);
     }
 
     @Override

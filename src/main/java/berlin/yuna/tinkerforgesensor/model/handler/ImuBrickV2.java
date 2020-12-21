@@ -90,7 +90,7 @@ public class ImuBrickV2 extends SensorHandler<BrickIMUV2> {
     public SensorHandler<BrickIMUV2> initConfig() {
         RunThrowable.handleConnection(() -> {
             config.put(CONFIG_LED_STATUS, device.isStatusLEDEnabled() ? 1 : 0);
-            config.put(CONFIG_INFO_LED_STATUS, device.areLedsOn() ? 1 : 0);
+            config.put(CONFIG_LED_INFO, device.areLedsOn() ? 1 : 0);
         });
         return this;
     }
@@ -113,9 +113,9 @@ public class ImuBrickV2 extends SensorHandler<BrickIMUV2> {
     @Override
     public SensorHandler<BrickIMUV2> triggerFunctionA(int value) {
         if (isLedOn(value)) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 1, device::ledsOn);
+            applyOnNewValue(CONFIG_LED_INFO, 1, device::ledsOn);
         } else if (value == LedStatusType.LED_OFF.bit) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 0, device::ledsOff);
+            applyOnNewValue(CONFIG_LED_INFO, 0, device::ledsOff);
         }
         return this;
     }

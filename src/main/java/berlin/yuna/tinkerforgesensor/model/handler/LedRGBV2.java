@@ -41,7 +41,7 @@ public class LedRGBV2 extends SensorHandler<BrickletRGBLEDV2> {
             config.put(CONFIG_HIGH_CONTRAST, 0);
             config.put(CONFIG_LED_STATUS, device.getStatusLEDConfig());
             config.put(CONFIG_COLOR, Color.toRGB(new Color(color.r, color.g, color.b)).orElse(0));
-            config.put(CONFIG_INFO_LED_STATUS, color.r == 0 && color.g == 0 && color.b == 0 ? 0 : 1);
+            config.put(CONFIG_LED_INFO, color.r == 0 && color.g == 0 && color.b == 0 ? 0 : 1);
         });
         return this;
     }
@@ -68,9 +68,9 @@ public class LedRGBV2 extends SensorHandler<BrickletRGBLEDV2> {
     @Override
     public SensorHandler<BrickletRGBLEDV2> triggerFunctionA(int value) {
         if (isLedOn(value)) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 1, () -> sendColor(getConfig(CONFIG_COLOR).intValue()));
+            applyOnNewValue(CONFIG_LED_INFO, 1, () -> sendColor(getConfig(CONFIG_COLOR).intValue()));
         } else if (value == LedStatusType.LED_OFF.bit) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 0, () -> sendColor(Color.BLACK));
+            applyOnNewValue(CONFIG_LED_INFO, 0, () -> sendColor(Color.BLACK));
         }
         return this;
     }

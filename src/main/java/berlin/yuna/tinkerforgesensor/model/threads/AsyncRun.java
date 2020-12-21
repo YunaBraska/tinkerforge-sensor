@@ -44,12 +44,4 @@ public abstract class AsyncRun implements Runnable {
         thread = new Thread(this, name);
         thread.start();
     }
-
-    protected void sleep(final long milliSeconds) {
-        try {
-            Thread.sleep(milliSeconds);
-        } catch (InterruptedException ignored) {
-            System.err.printf("Interrupted [%s]%n", name);
-        }
-    }
 }

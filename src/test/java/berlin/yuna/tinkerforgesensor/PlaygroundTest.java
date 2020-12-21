@@ -2,7 +2,7 @@ package berlin.yuna.tinkerforgesensor;
 
 import berlin.yuna.tinkerforgesensor.model.threads.Color;
 import berlin.yuna.tinkerforgesensor.logic.Sensor;
-import berlin.yuna.tinkerforgesensor.logic.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -23,29 +23,30 @@ import static berlin.yuna.tinkerforgesensor.util.ThreadUtil.createLoop;
 //TODO Reaction Game RGB Button
 //TODO Night-Rider effect
 @Tag("UnitTest")
+@Disabled
 class PlaygroundTest {
 
     final Stack stack = new Stack();
     boolean ledStatusToggle = true;
 
     private void listen(final SensorEvent event) {
-        if (event.getValueType().equals(DEVICE_UNKNOWN)) {
+        if (event.getType().equals(DEVICE_UNKNOWN)) {
             System.err.println(event);
         } else {
             System.out.println(event);
         }
 
-        if (event.isValueType().buttonPressed() && event.isSensor().buttonRGB()) {
+        if (event.isType().buttonPressed() && event.isSensor().buttonRGB()) {
             ledStatusToggle = !ledStatusToggle;
             if (ledStatusToggle) {
-                stack.get().ledRGBList().forEach(button -> button.setColor(Color.GREEN));
-                stack.get().buttonRGBList().forEach(button -> button.setColor(Color.GREEN));
+                stack.get().ledRGBList().forEach(button -> button.sendColor(Color.GREEN));
+                stack.get().buttonRGBList().forEach(button -> button.sendColor(Color.GREEN));
                 stack.get().buttonDualList().forEach(button -> button.setLedState(0, 1));
                 stack.get().buttonDualList().forEach(button -> button.setLedState(1, 0));
                 stack.get().speakerList().forEach(speaker -> speaker.sendSound(128, 1000));
             } else {
-                stack.get().ledRGBList().forEach(button -> button.setColor(Color.RED));
-                stack.get().buttonRGBList().forEach(button -> button.setColor(Color.RED));
+                stack.get().ledRGBList().forEach(button -> button.sendColor(Color.RED));
+                stack.get().buttonRGBList().forEach(button -> button.sendColor(Color.RED));
                 stack.get().buttonDualList().forEach(button -> button.setLedState(0, 0));
                 stack.get().buttonDualList().forEach(button -> button.setLedState(1, 1));
                 stack.get().speakerList().forEach(speaker -> speaker.sendSound(128, 2000));
@@ -68,8 +69,8 @@ class PlaygroundTest {
             });
         }
 
-        if (event.isValueType().colorRgb()) {
-            stack.get().buttonRGBList().forEach(button -> button.setColor(event.getValue()));
+        if (event.isType().colorRgb()) {
+            stack.get().buttonRGBList().forEach(button -> button.sendColor(event.getValue()));
         }
     }
 

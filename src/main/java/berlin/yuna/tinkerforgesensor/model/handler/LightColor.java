@@ -44,14 +44,14 @@ public class LightColor extends SensorHandler<BrickletColor> {
     public SensorHandler<BrickletColor> initConfig() {
         handleConnection(() -> {
             config.put(CONFIG_HIGH_CONTRAST, 1);
-            config.put(CONFIG_INFO_LED_STATUS, device.isLightOn() == 0 ? 1 : 0);
+            config.put(CONFIG_LED_INFO, device.isLightOn() == 0 ? 1 : 0);
         });
         return this;
     }
 
     @Override
     public SensorHandler<BrickletColor> runTest() {
-        int before = getConfig(CONFIG_INFO_LED_STATUS).intValue();
+        int before = getConfig(CONFIG_LED_INFO).intValue();
         handleConnection(() -> {
             for (int i = 0; i < 7; i++) {
                 if (i % 2 == 0) {
@@ -74,9 +74,9 @@ public class LightColor extends SensorHandler<BrickletColor> {
     @Override
     public SensorHandler<BrickletColor> triggerFunctionA(int value) {
         if (isLedOn(value)) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 1, device::lightOn);
+            applyOnNewValue(CONFIG_LED_INFO, 1, device::lightOn);
         } else if (value == LED_OFF.bit) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 0, device::lightOff);
+            applyOnNewValue(CONFIG_LED_INFO, 0, device::lightOff);
         }
         return this;
     }

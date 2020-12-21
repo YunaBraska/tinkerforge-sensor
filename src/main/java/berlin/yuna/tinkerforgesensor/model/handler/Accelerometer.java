@@ -39,7 +39,7 @@ public class Accelerometer extends SensorHandler<BrickletAccelerometer> {
 
     @Override
     public SensorHandler<BrickletAccelerometer> initConfig() {
-        handleConnection(() -> config.put(CONFIG_INFO_LED_STATUS, device.isLEDOn() ? 1 : 0));
+        handleConnection(() -> config.put(CONFIG_LED_INFO, device.isLEDOn() ? 1 : 0));
         return this;
     }
 
@@ -56,9 +56,9 @@ public class Accelerometer extends SensorHandler<BrickletAccelerometer> {
     @Override
     public SensorHandler<BrickletAccelerometer> triggerFunctionA(int value) {
         if (isLedOn(value)) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 1, device::ledOn);
+            applyOnNewValue(CONFIG_LED_INFO, 1, device::ledOn);
         } else if (value == LED_OFF.bit) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 0, device::ledOn);
+            applyOnNewValue(CONFIG_LED_INFO, 0, device::ledOn);
         }
         return this;
     }

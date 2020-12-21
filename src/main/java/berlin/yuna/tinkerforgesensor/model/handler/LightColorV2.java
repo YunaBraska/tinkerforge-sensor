@@ -42,7 +42,7 @@ public class LightColorV2 extends SensorHandler<BrickletColorV2> {
         RunThrowable.handleConnection(() -> {
             config.put(CONFIG_HIGH_CONTRAST, 1);
             config.put(CONFIG_LED_STATUS, device.getStatusLEDConfig());
-            config.put(CONFIG_INFO_LED_STATUS, device.getLight() ? 1 : 0);
+            config.put(CONFIG_LED_INFO, device.getLight() ? 1 : 0);
         });
         return this;
     }
@@ -62,9 +62,9 @@ public class LightColorV2 extends SensorHandler<BrickletColorV2> {
     @Override
     public SensorHandler<BrickletColorV2> triggerFunctionA(int value) {
         if (isLedOn(value)) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 1, () -> device.setLight(true));
+            applyOnNewValue(CONFIG_LED_INFO, 1, () -> device.setLight(true));
         } else if (value == LedStatusType.LED_OFF.bit) {
-            applyOnNewValue(CONFIG_INFO_LED_STATUS, 0, () -> device.setLight(false));
+            applyOnNewValue(CONFIG_LED_INFO, 0, () -> device.setLight(false));
         }
         return this;
     }

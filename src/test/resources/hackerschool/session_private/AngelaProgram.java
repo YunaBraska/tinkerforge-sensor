@@ -2,7 +2,7 @@ package berlin.yuna.hackerschool.session_private;
 
 import berlin.yuna.hackerschool.example.ConnectionAndPrintValues_Example;
 import berlin.yuna.hackerschool.example.Helper;
-import berlin.yuna.tinkerforgesensor.logic.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.logic.Stack;
 import berlin.yuna.tinkerforgesensor.model.threads.AsyncRun;
 

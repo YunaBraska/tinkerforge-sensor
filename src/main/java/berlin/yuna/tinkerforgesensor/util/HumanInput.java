@@ -1,6 +1,6 @@
 package berlin.yuna.tinkerforgesensor.util;
 
-import berlin.yuna.tinkerforgesensor.logic.SensorEvent;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.ValueType;
 
 import javax.swing.BorderFactory;

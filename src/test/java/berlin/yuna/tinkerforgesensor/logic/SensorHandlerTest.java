@@ -1,6 +1,7 @@
 package berlin.yuna.tinkerforgesensor.logic;
 
 import berlin.yuna.tinkerforgesensor.model.LedStatusType;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.handler.DummyHandler;
 import com.tinkerforge.BrickMaster;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,7 +134,7 @@ class SensorHandlerTest {
 
         handler.sendEvent(VOLTAGE_USB, 3000);
         assertThat(triggeredEvent.get(), is(notNullValue()));
-        assertThat(triggeredEvent.get().getValueType(), is(VOLTAGE_USB));
+        assertThat(triggeredEvent.get().getType(), is(VOLTAGE_USB));
         assertThat(triggeredEvent.get().getValue(), is(equalTo(3000L)));
     }
 

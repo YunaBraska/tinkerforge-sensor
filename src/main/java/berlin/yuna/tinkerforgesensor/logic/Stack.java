@@ -2,9 +2,9 @@ package berlin.yuna.tinkerforgesensor.logic;
 
 import berlin.yuna.tinkerforgesensor.exception.ConnectionException;
 import berlin.yuna.tinkerforgesensor.model.Registry;
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.model.ValueType;
 import berlin.yuna.tinkerforgesensor.model.helper.GetSensor;
-import berlin.yuna.tinkerforgesensor.util.ThreadUtil;
 import com.tinkerforge.AlreadyConnectedException;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.NetworkException;
@@ -16,11 +16,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static berlin.yuna.tinkerforgesensor.util.ThreadUtil.createAsync;
+import static berlin.yuna.tinkerforgesensor.util.ThreadUtil.waitFor;
 import static com.tinkerforge.IPConnectionBase.CONNECTION_STATE_DISCONNECTED;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_AVAILABLE;
 import static com.tinkerforge.IPConnectionBase.ENUMERATION_TYPE_CONNECTED;
@@ -33,11 +36,15 @@ import static java.util.stream.Collectors.toList;
 
 //TODO Stack graceful shutdown on interrupt?
 //TODO Authentication https://www.tinkerforge.com/de/doc/Software/IPConnection_Java.html#authenticate
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class Stack implements Closeable {
 
     private String connectionKey;
+    private boolean postStart = true;
     private final Set<Sensor> sensors = ConcurrentHashMap.newKeySet();
+    private final Set<String> initUids = ConcurrentHashMap.newKeySet();
     private final Set<Consumer<SensorEvent>> listeners = ConcurrentHashMap.newKeySet();
+    private final Exception[] exceptions = new Exception[]{null};
     private static final Map<String, IPConnection> connections = new ConcurrentHashMap<>();
 
     public Stack connect() {
@@ -51,8 +58,14 @@ public class Stack implements Closeable {
     public Stack connect(final String host, final int port) {
         close();
         connectionKey = host + ":" + port;
-        connections.computeIfAbsent(connectionKey, s -> newConnection(host, port));
-        return this;
+        createAsync(
+                Stack.class.getSimpleName() + ".connect:" + UUID.randomUUID(),
+                run -> connections.computeIfAbsent(connectionKey,
+                        s -> newConnection(host, port))
+        );
+
+        validateConnectionStatus(host, port, waitFor(10000, () -> exceptions[0] != null || (initUids.isEmpty() && !sensors.isEmpty())));
+        return setPorts();
     }
 
     public boolean isConnected() {
@@ -97,19 +110,30 @@ public class Stack implements Closeable {
         return sensors.stream().filter(sensor -> sensor.getUid().equals(uid)).findFirst().orElse(null);
     }
 
-    public void disconnect() {
+    public Stack disconnect() {
         close();
+        return this;
     }
 
-    public void sendEvent(final SensorEvent event) {
+    public Stack sendEvent(final SensorEvent event) {
         listeners.forEach(listener -> listener.accept(event));
+        return this;
     }
 
-    public GetSensor get(){
+    public GetSensor get() {
         return new GetSensor(this);
     }
 
-    private void connectionListener(
+    public boolean hasPostStart() {
+        return postStart;
+    }
+
+    public Stack setPostStart(boolean postStart) {
+        this.postStart = postStart;
+        return this;
+    }
+
+    private Stack connectionListener(
             final String uid,
             final String parentUid,
             final char position,
@@ -125,23 +149,32 @@ public class Stack implements Closeable {
                 sendEvent(new SensorEvent(findSensor(uid), 0, ValueType.DEVICE_DISCONNECTED));
             }
         }, () -> sendEvent(new SensorEvent(null, id, ValueType.DEVICE_UNKNOWN)));
+        return this;
     }
 
-    private void connectSensor(final String uid, final String parentUid, final char position, final int id, Registry.Register register) {
-        ThreadUtil.createAsync("Connect_" + uid, run -> {
+    private Stack connectSensor(final String uid, final String parentUid, final char position, final int id, Registry.Register register) {
+        createAsync("Connect_" + uid, run -> {
             Sensor sensor = findSensor(uid);
             if (sensor == null) {
+                initUids.add(uid);
                 sensor = new Sensor(id, uid, this, position, parentUid, register.getType(), register.getHandler());
                 sensors.add(sensor);
                 setPorts();
-                sendEvent(new SensorEvent(sensor.handler().initConfig().init().runTest().sensor(), 1, ValueType.DEVICE_CONNECTED));
+                if (postStart) {
+                    sendEvent(new SensorEvent(sensor.handler().initConfig().init().runTest().sensor(), 1,
+                            ValueType.DEVICE_CONNECTED));
+                } else {
+                    sendEvent(new SensorEvent(sensor.handler().initConfig().init().sensor(), 1, ValueType.DEVICE_CONNECTED));
+                }
+                initUids.remove(uid);
             } else {
                 sendEvent(new SensorEvent(sensor, 1, ValueType.DEVICE_RECONNECTED));
             }
         });
+        return this;
     }
 
-    private void setPorts() {
+    private Stack setPorts() {
         new HashSet<>(sensors).stream().sorted().forEach(sensor -> {
             if ("0".equals(sensor.getParentUid())) {
                 sensor.isBrick(true);
@@ -154,6 +187,7 @@ public class Stack implements Closeable {
                 sensor.setPort((((int) toLowerCase(sensor.getPosition())) - 96) + sensor.getParent().map(Sensor::getPort).orElse(0));
             }
         });
+        return this;
     }
 
     private IPConnection newConnection(final String host, final int port) {
@@ -164,7 +198,7 @@ public class Stack implements Closeable {
             connection.setAutoReconnect(true);
             connection.enumerate();
         } catch (NetworkException e) {
-            throw new ConnectionException("Unable to connect host [" + host + "] port [" + port + "]", e);
+            exceptions[0] = e;
         } catch (NotConnectedException | AlreadyConnectedException ignored) {
         }
         return connection;
@@ -174,11 +208,22 @@ public class Stack implements Closeable {
         return new IPConnection();
     }
 
+    private void validateConnectionStatus(final String host, final int port, final boolean connected) {
+        if (!connected || exceptions[0] != null) {
+            throw new ConnectionException(
+                    "Unable to connect host [" + host + "] port [" + port + "]"
+                            + (!connected ? " no sensor was connected" : ""),
+                    exceptions[0] != null ? exceptions[0] : null
+            );
+        }
+    }
+
     @Override
     public void close() {
         try {
-            getConnection().disconnect();
             connections.remove(connectionKey);
+            sensors.clear();
+            getConnection().disconnect();
         } catch (Exception ignored) {
         }
     }

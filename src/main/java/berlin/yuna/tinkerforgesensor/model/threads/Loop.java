@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import static berlin.yuna.tinkerforgesensor.util.ThreadUtil.RefreshType.EACH_SECOND;
 import static berlin.yuna.tinkerforgesensor.util.ThreadUtil.RefreshType.POST_PROCESS;
+import static berlin.yuna.tinkerforgesensor.util.ThreadUtil.sleep;
 import static java.lang.System.currentTimeMillis;
 
 public class Loop extends AsyncRun {

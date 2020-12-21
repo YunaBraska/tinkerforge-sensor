@@ -6,7 +6,7 @@
 
     <groupId>berlin.yuna</groupId>
     <artifactId>tinkerforge-sensor</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -94,6 +94,12 @@
 
         <!-- CODE GENERATION -->
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
             <version>${javapoet.version}</version>
@@ -105,18 +111,12 @@
             <version>${reflections.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit-jupiter-api.version}</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.jsoup</groupId>-->
+<!--            <artifactId>jsoup</artifactId>-->
+<!--            <version>${jsoup.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -139,28 +139,28 @@
                     <excludedGroups>IntegrationTest</excludedGroups>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--                <version>${maven-failsafe-plugin.version}</version>-->
-<!--                <configuration>-->
-<!--                    <groups>IntegrationTest</groups>-->
-<!--                    <excludedGroups>UnitTest</excludedGroups>-->
-<!--                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>-->
-<!--                    <includes>-->
-<!--                        <include>**/*Test.java</include>-->
-<!--                    </includes>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>integration-test</id>-->
-<!--                        <goals>-->
-<!--                            <goal>integration-test</goal>-->
-<!--                            <goal>verify</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                    <groups>IntegrationTest</groups>
+                    <excludedGroups>UnitTest</excludedGroups>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

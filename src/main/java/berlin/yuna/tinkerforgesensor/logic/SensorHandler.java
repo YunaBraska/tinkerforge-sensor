@@ -1,5 +1,6 @@
 package berlin.yuna.tinkerforgesensor.logic;
 
+import berlin.yuna.tinkerforgesensor.model.SensorEvent;
 import berlin.yuna.tinkerforgesensor.util.RunThrowable;
 import berlin.yuna.tinkerforgesensor.exception.SensorInitialisationException;
 import berlin.yuna.tinkerforgesensor.model.ValueType;
@@ -25,7 +26,7 @@ public abstract class SensorHandler<D> {
     public static final String CONFIG_POSITION_HOLD = "CONFIG_POSITION_HOLD";
     public static final String CONFIG_BRIGHTNESS = "CONFIG_BRIGHTNESS";
     public static final String CONFIG_LED_STATUS = "CONFIG_LED_STATUS";
-    public static final String CONFIG_INFO_LED_STATUS = "CONFIG_INFO_LED_STATUS";
+    public static final String CONFIG_LED_INFO = "CONFIG_LED_INFO";
     public static final String CONFIG_FUNCTION_A = "CONFIG_LED_SECOND";
     public static final String THRESHOLD_PREFIX = "THRESHOLD_";
 
@@ -52,11 +53,23 @@ public abstract class SensorHandler<D> {
     public abstract SensorHandler<D> runTest();
 
     public boolean hasStatusLed() {
-        return config.containsKey(CONFIG_LED_STATUS);
+        return hasConfig(CONFIG_LED_STATUS);
     }
 
     public SensorHandler<D> setStatusLed(final int value) {
         return hasStatusLed() ? setStatusLedHandler(value) : this;
+    }
+
+    public boolean hasInfoLed() {
+        return hasConfig(CONFIG_LED_INFO);
+    }
+
+    public SensorHandler<D> setInfoLed(final int value) {
+        return hasConfig(CONFIG_LED_INFO) ? send(value) : this;
+    }
+
+    private boolean hasConfig(String configLedInfo) {
+        return config.containsKey(configLedInfo);
     }
 
     protected abstract SensorHandler<D> setStatusLedHandler(final int value);
@@ -70,7 +83,7 @@ public abstract class SensorHandler<D> {
     }
 
     public boolean hasBrightness() {
-        return config.containsKey(CONFIG_BRIGHTNESS);
+        return hasConfig(CONFIG_BRIGHTNESS);
     }
 
     public SensorHandler<D> setBrightness(final int brightness) {

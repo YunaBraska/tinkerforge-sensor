@@ -11,6 +11,7 @@ public interface RunThrowable extends Runnable {
         try {
             runThrows();
         } catch (final TinkerforgeException th) {
+            th.printStackTrace();
             //TODO: remove sensor from stack on TinkerForgeExceptions
         } catch (final Throwable th) {
             throw new ConnectionException("Unexpected error", th);

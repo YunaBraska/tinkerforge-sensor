@@ -6,7 +6,9 @@ import berlin.yuna.tinkerforgesensor.model.threads.Loop;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static berlin.yuna.tinkerforgesensor.util.ThreadUtil.RefreshType.EACH_SECOND;
 
@@ -21,7 +23,6 @@ public class ThreadUtil {
      * @param string to check on
      * @return true if string is null or empty otherwise false
      */
-
     public static boolean isEmpty(final String string) {
         return string == null || string.trim().equals("");
     }
@@ -85,6 +86,24 @@ public class ThreadUtil {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static boolean waitFor(final int timeoutMs, final BooleanSupplier actual) {
+        return waitFor(timeoutMs, actual, null);
+    }
+
+    public static <X extends Throwable> boolean waitFor(final int timeoutMs, final BooleanSupplier actual, final Supplier<? extends X> throwable) throws X {
+        long finalTime = System.currentTimeMillis() + timeoutMs;
+        while (!actual.getAsBoolean()) {
+            sleep(24);
+            if (System.currentTimeMillis() >= finalTime) {
+                if (throwable != null) {
+                    throw throwable.get();
+                }
+                return false;
+            }
+        }
+        return true;
     }
 
     public enum RefreshType {

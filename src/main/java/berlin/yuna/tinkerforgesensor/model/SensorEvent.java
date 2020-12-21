@@ -1,10 +1,11 @@
-package berlin.yuna.tinkerforgesensor.logic;
+package berlin.yuna.tinkerforgesensor.model;
 
 
+import berlin.yuna.tinkerforgesensor.logic.Sensor;
 import berlin.yuna.tinkerforgesensor.model.helper.IsSensor;
 import berlin.yuna.tinkerforgesensor.model.ValueType;
-import berlin.yuna.tinkerforgesensor.model.helper.ContainsValueType;
-import berlin.yuna.tinkerforgesensor.model.helper.IsValueType;
+import berlin.yuna.tinkerforgesensor.model.helper.ContainsType;
+import berlin.yuna.tinkerforgesensor.model.helper.IsType;
 
 import java.util.List;
 
@@ -26,11 +27,11 @@ public class SensorEvent {
         this.valueType = valueType;
     }
 
-    public IsValueType isValueType() {
+    public IsType isType() {
         return valueType.is();
     }
 
-    public ContainsValueType containsValueType() {
+    public ContainsType containsValueType() {
         return valueType.contains();
     }
 
@@ -38,7 +39,7 @@ public class SensorEvent {
         return sensor.is();
     }
 
-    public Sensor sensor() {
+    public Sensor getSensor() {
         return sensor;
     }
 
@@ -46,7 +47,7 @@ public class SensorEvent {
         return values;
     }
 
-    public ValueType getValueType() {
+    public ValueType getType() {
         return valueType;
     }
 

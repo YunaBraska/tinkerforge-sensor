@@ -48,7 +48,6 @@
         <tinkerforge.version>2.1.29</tinkerforge.version>
         <hamcrest-core.version>2.2</hamcrest-core.version>
         <mockito-core.version>3.6.28</mockito-core.version>
-        <junit-jupiter-api.version>5.7.0</junit-jupiter-api.version>
         <!-- VERSIONS -->
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-scm-plugin.version>1.11.2</maven-scm-plugin.version>
@@ -96,7 +95,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit-jupiter-api.version}</version>
+            <version>5.4.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -150,6 +149,7 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
+                    <failIfNoTests>false</failIfNoTests>
                 </configuration>
                 <executions>
                     <execution>

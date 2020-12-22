@@ -136,9 +136,9 @@ class StackTest {
 
     @Test
     void postStart() {
-        assertThat(stack.hasPostStart(), is(false));
-        stack.setPostStart(true);
         assertThat(stack.hasPostStart(), is(true));
+        stack.setPostStart(false);
+        assertThat(stack.hasPostStart(), is(false));
     }
 
     @Test

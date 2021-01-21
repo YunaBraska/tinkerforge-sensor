@@ -6,7 +6,7 @@
 
     <groupId>berlin.yuna</groupId>
     <artifactId>tinkerforge-sensor</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -45,7 +45,7 @@
         <jsoup.version>1.13.1</jsoup.version>
         <javapoet.version>1.13.0</javapoet.version>
         <reflections.version>0.9.12</reflections.version>
-        <tinkerforge.version>2.1.29</tinkerforge.version>
+        <tinkerforge.version>2.1.30</tinkerforge.version>
         <hamcrest-core.version>2.2</hamcrest-core.version>
         <mockito-core.version>3.7.7</mockito-core.version>
         <!-- VERSIONS -->

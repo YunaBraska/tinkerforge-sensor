@@ -52,7 +52,7 @@ private void listen(final SensorEvent event) {
 - [ ] 16IO manage also input
 - [ ] Spring integration
 
-[build_shield]: https://github.com/YunaBraska/tinkerforge-sensor/workflows/JAVA_CI/badge.svg
+[build_shield]: https://github.com/YunaBraska/tinkerforge-sensor/workflows/JAVA_CI_DAILY/badge.svg
 [build_link]: https://github.com/YunaBraska/tinkerforge-sensor/actions?query=workflow%3AJAVA_CI
 [maintainable_shield]: https://img.shields.io/codeclimate/maintainability/YunaBraska/tinkerforge-sensor?style=flat-square
 [maintainable_link]: https://codeclimate.com/github/YunaBraska/tinkerforge-sensor/maintainability

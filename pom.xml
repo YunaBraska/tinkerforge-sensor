@@ -6,7 +6,7 @@
 
     <groupId>berlin.yuna</groupId>
     <artifactId>tinkerforge-sensor</artifactId>
-    <version>0.1.34</version>
+    <version>0.1.35</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -47,7 +47,7 @@
         <reflections.version>0.10.2</reflections.version>
         <tinkerforge.version>2.1.32</tinkerforge.version>
         <hamcrest-core.version>2.2</hamcrest-core.version>
-        <mockito-core.version>4.6.1</mockito-core.version>
+        <mockito-core.version>4.7.0</mockito-core.version>
         <!-- VERSIONS -->
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-scm-plugin.version>1.11.2</maven-scm-plugin.version>

@@ -120,7 +120,7 @@ public class Sensor implements Comparable<Sensor> {
     }
 
     /**
-     * Used for sensors like {@link {@link ButtonRGB }}
+     * Used for sensors like {@link ButtonRGB}
      * {@link LedRGBV2}
      *
      * @param color value to set for the sensor
@@ -132,7 +132,7 @@ public class Sensor implements Comparable<Sensor> {
     }
 
     /**
-     * Used for sensors like {@link {@link ButtonRGB }}
+     * Used for sensors like {@link ButtonRGB}
      * {@link LedRGBV2}
      *
      * @param color value to set for the sensor

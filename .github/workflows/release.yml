@@ -41,8 +41,8 @@ jobs:
       deployments: write
     uses: YunaBraska/YunaBraska/.github/workflows/wc_java_publish_central.yml@f6c362d9c539d7a028b816572d812e892072c50b
     secrets:
-      CENTRAL_USER: ${{ secrets.CENTRAL_USER }}
-      CENTRAL_PASS: ${{ secrets.CENTRAL_PASS }}
+      CENTRAL_USER: ${{ secrets.OSSH_USER }}
+      CENTRAL_PASS: ${{ secrets.OSSH_PASS }}
       GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
       GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
